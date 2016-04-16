@@ -59,7 +59,7 @@
 - (void)customizeTabBarForController:(RDVTabBarController *)tabBarController{
     UIImage *finishiedImage = [UIImage imageNamed:@"tabbar_selected_background"];
     UIImage *unfinishiedImage = [UIImage imageNamed:@"tabbar_normal_background"];
-    NSArray *tabBarItemImages = @[@"first", @"second", @"third", @"four"];
+    NSArray *tabBarItemImages = @[@"tabbar_home", @"tabbar_order", @"tabbar_profile", @"four"];
     NSArray *tabBarItemTitles = @[@"点餐", @"已点菜单", @"我的", @"iBeacon"];
     
     RDVTabBar *tabBar = [tabBarController tabBar];
