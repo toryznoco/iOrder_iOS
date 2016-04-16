@@ -1,0 +1,40 @@
+//
+//  IOIOrder.pch
+//  iOrder
+//
+//  Created by 易无解 on 4/9/16.
+//  Copyright © 2016 易无解. All rights reserved.
+//
+
+#ifndef IOIOrder_pch
+#define IOIOrder_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+#ifdef __OBJC__
+
+#import "UIView+YWJFrame.h"
+
+#define YWJUserDefaults [NSUserDefaults standardUserDefaults]
+#define YWJMainScreenBounds [UIScreen mainScreen].bounds
+#define YWJKeyWindow [UIApplication sharedApplication].keyWindow
+
+//------------ key ----------------
+#define kTransmitterKey @"transmitters"
+#define kHistoryUUIDKey @"historyUUIDs"
+#define kVersionKey @"version"
+
+#ifdef DEBUG // 调试
+
+#define YWJLog(...) NSLog(__VA_ARGS__)
+
+#else // 发布
+
+#define NSLog(...)
+
+#endif
+
+#endif
+
+#endif /* IOIOrder_pch */

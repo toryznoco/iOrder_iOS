@@ -1,0 +1,13 @@
+PODS:
+  - AprilSDK (2.0.3)
+  - RDVTabBarController (1.1.9)
+
+DEPENDENCIES:
+  - AprilSDK
+  - RDVTabBarController
+
+SPEC CHECKSUMS:
+  AprilSDK: 55c85534d5e30bf6e82884038ce0e2541837c2f6
+  RDVTabBarController: 67794f7a7a37f8e32f046f85ac67d06ab92d624a
+
+COCOAPODS: 0.39.0
