@@ -4,7 +4,7 @@
 //
 //  Created by 易无解 on 3/25/16.
 //  Copyright © 2016 易无解. All rights reserved.
-//
+//  程序的开始
 
 #import <UIKit/UIKit.h>
 #import "AppDelegate.h"
