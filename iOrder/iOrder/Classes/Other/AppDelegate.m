@@ -13,7 +13,7 @@
 
 @interface AppDelegate ()
 
-@property (nonatomic, assign) UIBackgroundTaskIdentifier taskId;
+@property (nonatomic) UIBackgroundTaskIdentifier taskId;
 
 @end
 
@@ -72,14 +72,14 @@
 #pragma mark - beacon manager delegate
 - (void)beaconManager:(ABBeaconManager *)manager didEnterRegion:(ABBeaconRegion *)region{
     UILocalNotification *notification = [[UILocalNotification alloc] init];
-    notification.alertBody = @"Enter monitoring region";
+    notification.alertBody = @"欢迎进入点餐区域";
     notification.soundName = UILocalNotificationDefaultSoundName;
     [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
 }
 
 - (void)beaconManager:(ABBeaconManager *)manager didExitRegion:(ABBeaconRegion *)region{
     UILocalNotification *notification = [[UILocalNotification alloc] init];
-    notification.alertBody = @"Exit monitoring region";
+    notification.alertBody = @"谢谢惠顾，欢迎下次再来";
     notification.soundName = UILocalNotificationDefaultSoundName;
     [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
 }

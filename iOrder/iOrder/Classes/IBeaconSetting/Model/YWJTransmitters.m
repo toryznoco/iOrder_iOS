@@ -36,7 +36,7 @@
 
 - (NSArray *)historyUUIDs{
     NSArray *result = [YWJHistoryUUIDTool historyUUIDs];
-    if (!result) {
+    if (nil == result) {
         NSArray *transmitters = [self transmitters];
         NSMutableArray *history = [NSMutableArray arrayWithCapacity:transmitters.count];
         for (NSDictionary *data in transmitters) {
@@ -44,7 +44,7 @@
                 [history addObject:data[@"uuid"]];
             }
         }
-        [YWJHistoryUUIDTool saveHistoryUUID:history];
+        [[NSUserDefaults standardUserDefaults] setObject:history forKey:kHistoryUUIDKey];
         result = history;
     }
     return result;
@@ -59,7 +59,9 @@
     }
     [mutableResult addObject:transmitter];
     
-    [YWJTransmitterTool saveTransmitter:mutableResult];
+//    [YWJTransmitterTool saveTransmitter:mutableResult];
+    [[NSUserDefaults standardUserDefaults] setObject:mutableResult forKey:kTransmitterKey];
+    [[NSUserDefaults standardUserDefaults] synchronize];
     return YES;
 }
 
@@ -76,14 +78,18 @@
 - (void)replaceAtIndex:(NSInteger)index withTransmitter:(NSDictionary *)transmitter{
     NSMutableArray *mutableResult = [[self transmitters] mutableCopy];
     [mutableResult replaceObjectAtIndex:index withObject:transmitter];
-    [YWJTransmitterTool saveTransmitter:mutableResult];
+//    [YWJTransmitterTool saveTransmitter:mutableResult];
+    [[NSUserDefaults standardUserDefaults] setObject:mutableResult forKey:kTransmitterKey];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (void)removeTransmitterAtIndex:(NSInteger)index{
     NSMutableArray *mutableResult = [[self transmitters] mutableCopy];
     if (index < mutableResult.count) {
         [mutableResult removeObjectAtIndex:index];
-        [YWJTransmitterTool saveTransmitter:mutableResult];
+//        [YWJTransmitterTool saveTransmitter:mutableResult];
+        [[NSUserDefaults standardUserDefaults] setObject:mutableResult forKey:kTransmitterKey];
+        [[NSUserDefaults standardUserDefaults] synchronize];
     }
 }
 
@@ -98,20 +104,62 @@
     if (result.count > 20) {
         [result removeObjectAtIndex:0];
     }
-    [YWJHistoryUUIDTool saveHistoryUUID:result];
+    [[NSUserDefaults standardUserDefaults] setObject:result forKey:kHistoryUUIDKey];
 }
 
 #pragma mark - private
 - (void)setupData{
-    NSArray *data = @[
-                      @{
-                          @"name":@"AprilBeacon_7DEB",
-                          @"uuid":@"FDA50693-A4E2-4FB1-AFCF-C6EB07647825",
-                          @"major":@20,
-                          @"minor":@32235,
-                          @"power":@-59
-                          }];
-    [YWJTransmitterTool saveTransmitter:data];
+    NSArray *data =
+//  @[
+//                      @{
+//                          @"name":@"AprilBeacon_7DEB",
+//                          @"uuid":@"FDA50693-A4E2-4FB1-AFCF-C6EB07647825",
+//                          @"major":@20,
+//                          @"minor":@32235,
+//                          @"power":@-59
+//                          }];
+    @[
+      @{
+          @"name" : @"AprilBeacon",
+          @"uuid" : @"E2C56DB5-DFFB-48D2-B060-D0F5A71096E0",
+          @"major" : @0,
+          @"minor" : @0,
+          @"power" : @-59
+          },
+      
+      @{
+          @"name" : @"Apple AirLocate",
+          @"uuid" : @"5A4BCFCE-174E-4BAC-A814-092E77F6B7E5",
+          @"major" : @0,
+          @"minor" : @0,
+          @"power" : @-59
+          },
+      @{
+          @"name" : @"Apple AirLocate2",
+          @"uuid" : @"74278BDA-B644-4520-8F0C-720EAF059935",
+          @"major" : @0,
+          @"minor" : @0,
+          @"power" : @-59
+          },
+      @{
+          @"name" : @"ESTimote",
+          @"uuid" : @"B9407F30-F5F8-466E-AFF9-25556B57FE6D",
+          @"major" : @0,
+          @"minor" : @0,
+          @"power" : @-59
+          },
+      
+      @{
+          @"name" : @"WeixinForBeacon",
+          @"uuid" : @"FDA50693-A4E2-4FB1-AFCF-C6EB07647825",
+          @"major" : @0,
+          @"minor" : @0,
+          @"power" : @-59
+          }
+      ];
+//    [YWJTransmitterTool saveTransmitter:data];
+    [[NSUserDefaults standardUserDefaults] setObject:data forKey:kTransmitterKey];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 @end
