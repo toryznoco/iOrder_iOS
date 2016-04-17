@@ -12,7 +12,7 @@
 
 #import "YWJTransmitters.h"
 
-@interface IOIBeaconViewController ()
+@interface IOIBeaconViewController ()<UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong) ABBeaconManager *beaconManager;
 @property (nonatomic, strong) NSMutableDictionary *tableData;
