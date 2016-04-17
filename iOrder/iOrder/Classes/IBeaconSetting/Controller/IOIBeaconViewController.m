@@ -10,7 +10,7 @@
 #import "IONotificationViewController.h"
 #import "YWJTransmitters.h"
 
-@interface IOIBeaconViewController ()<UITableViewDataSource, UITableViewDelegate>
+@interface IOIBeaconViewController () <UITableViewDataSource>
 
 @property (nonatomic, strong) ABBeaconManager *beaconManager;
 @property (nonatomic, strong) NSMutableDictionary *tableData;
