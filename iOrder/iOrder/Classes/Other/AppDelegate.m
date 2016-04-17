@@ -13,7 +13,7 @@
 
 @interface AppDelegate ()
 
-@property (nonatomic, assign) UIBackgroundTaskIdentifier taskId;
+@property (nonatomic) UIBackgroundTaskIdentifier taskId;
 
 @end
 
@@ -47,6 +47,7 @@
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
 }
+
 //    进入后台
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     
@@ -72,14 +73,14 @@
 #pragma mark - beacon manager delegate
 - (void)beaconManager:(ABBeaconManager *)manager didEnterRegion:(ABBeaconRegion *)region{
     UILocalNotification *notification = [[UILocalNotification alloc] init];
-    notification.alertBody = @"Enter monitoring region";
+    notification.alertBody = @"欢迎进入点餐区域";
     notification.soundName = UILocalNotificationDefaultSoundName;
     [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
 }
 
 - (void)beaconManager:(ABBeaconManager *)manager didExitRegion:(ABBeaconRegion *)region{
     UILocalNotification *notification = [[UILocalNotification alloc] init];
-    notification.alertBody = @"Exit monitoring region";
+    notification.alertBody = @"谢谢惠顾，欢迎下次再来";
     notification.soundName = UILocalNotificationDefaultSoundName;
     [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
 }
