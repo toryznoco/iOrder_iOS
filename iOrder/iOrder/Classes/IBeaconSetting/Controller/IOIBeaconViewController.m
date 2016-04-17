@@ -63,17 +63,14 @@
 #pragma mark - Table view data source
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    NSLog(@"行数:%lu", [[_tableData allValues][section] count]);
     return [[_tableData allValues][section] count];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    NSLog(@"组数:%lu", _tableData.count);
     return _tableData.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSLog(@"sb了");
     ABBeacon *beacon = [_tableData allValues][indexPath.section][indexPath.row];
     static NSString *Identifier = @"IOBeaconCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:Identifier];

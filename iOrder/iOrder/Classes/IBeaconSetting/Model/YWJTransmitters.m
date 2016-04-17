@@ -59,9 +59,7 @@
     }
     [mutableResult addObject:transmitter];
     
-//    [YWJTransmitterTool saveTransmitter:mutableResult];
-    [[NSUserDefaults standardUserDefaults] setObject:mutableResult forKey:kTransmitterKey];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [YWJTransmitterTool saveTransmitter:mutableResult];
     return YES;
 }
 
@@ -78,18 +76,14 @@
 - (void)replaceAtIndex:(NSInteger)index withTransmitter:(NSDictionary *)transmitter{
     NSMutableArray *mutableResult = [[self transmitters] mutableCopy];
     [mutableResult replaceObjectAtIndex:index withObject:transmitter];
-//    [YWJTransmitterTool saveTransmitter:mutableResult];
-    [[NSUserDefaults standardUserDefaults] setObject:mutableResult forKey:kTransmitterKey];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [YWJTransmitterTool saveTransmitter:mutableResult];
 }
 
 - (void)removeTransmitterAtIndex:(NSInteger)index{
     NSMutableArray *mutableResult = [[self transmitters] mutableCopy];
     if (index < mutableResult.count) {
         [mutableResult removeObjectAtIndex:index];
-//        [YWJTransmitterTool saveTransmitter:mutableResult];
-        [[NSUserDefaults standardUserDefaults] setObject:mutableResult forKey:kTransmitterKey];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+        [YWJTransmitterTool saveTransmitter:mutableResult];
     }
 }
 
@@ -157,9 +151,7 @@
           @"power" : @-59
           }
       ];
-//    [YWJTransmitterTool saveTransmitter:data];
-    [[NSUserDefaults standardUserDefaults] setObject:data forKey:kTransmitterKey];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [YWJTransmitterTool saveTransmitter:data];
 }
 
 @end
