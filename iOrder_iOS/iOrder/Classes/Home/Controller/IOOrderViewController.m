@@ -46,7 +46,6 @@
     self.tableView.rowHeight = 70;
     
     _shopInfos = [self shopInfos];
-    //    YWJLog(@"%@", _shopInfos);
 }
 
 - (void)didReceiveMemoryWarning {
