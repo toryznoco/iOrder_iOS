@@ -292,8 +292,8 @@
 			isa = PBXGroup;
 			children = (
 				CAE8F0441CB94170005618B0 /* Classes */,
-				CAE8F0851CB9417F005618B0 /* Assets.xcassets */,
 				CAE8F0111CB940E2005618B0 /* Supporting Files */,
+				CAE8F0851CB9417F005618B0 /* Assets.xcassets */,
 			);
 			path = iOrder;
 			sourceTree = "<group>";
