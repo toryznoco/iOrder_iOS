@@ -118,7 +118,6 @@
 
 - (void)setupShopInfo{
     [_shopIcon setImage:[UIImage imageNamed:_shopInfo.shopIcon]];
-    _shopIcon.backgroundColor = [UIColor greenColor];
     _shopName.text = _shopInfo.shopName;
     _shopName.font = [UIFont systemFontOfSize:15];
     [_shopIcon sizeToFit];

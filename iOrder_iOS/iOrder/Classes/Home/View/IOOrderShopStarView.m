@@ -25,29 +25,12 @@
     return _stars;
 }
 
-- (void)layoutSubviews{
-    [super layoutSubviews];
-    
-    UIImageView *star = _stars[0];
-    CGFloat starX = 0;
-    CGFloat starY = 0;
-    CGFloat starW = star.width;
-    CGFloat starH = star.height;
-    NSInteger i = 0;
-    for (UIImageView *imageV in _stars) {
-        starX = i * starW;
-        imageV.frame = CGRectMake(starX, starY, starW, starH);
-        i++;
-    }
-    
-    self.width = i * starW;
-    self.height = starH;
-}
-
 #pragma mark - public
 
 - (void)setStartCount:(NSString *)startCount{
     _startCount = startCount;
+    
+    _stars = [self stars];
     
     [self setupAllChildView];
 }
@@ -55,19 +38,25 @@
 #pragma mark - custom methods
 
 - (void)setupAllChildView{
-    for (int i = 0; i < 5; i++) {
+    CGFloat starX = 0;
+    CGFloat starY = 0;
+    CGFloat starW = 16;
+    CGFloat starH = 16;
+    for (NSInteger i = 0; i < 5; i++) {
+        starX = i * starW;
         UIImageView *star = [[UIImageView alloc] init];
         if (i < [_startCount intValue]) {
-            [star setImage:[UIImage imageNamed:@"helighted"]];
-            [star sizeToFit];
+            [star setImage:[UIImage imageNamed:@"tabbar_home_selected"]];
             [self addSubview:star];
         }else{
-            [star setImage:[UIImage imageNamed:@"normal"]];
-            [star sizeToFit];
+            [star setImage:[UIImage imageNamed:@"tabbar_home_normal"]];
             [self addSubview:star];
         }
+        star.frame = CGRectMake(starX, starY, starW, starH);
         [_stars addObject:star];
     }
+    self.width = _stars.count * starW;
+    self.height = starH;
 }
 
 /*
