@@ -9,6 +9,17 @@
 /* Begin PBXBuildFile section */
 		0C39DD33B6D8ED391FA88ED5 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AA08641E7F59BD859B41E36B /* libPods.a */; };
 		9A7E9FC61CBF25AA00E44BE1 /* IOOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A7E9FC31CBF25AA00E44BE1 /* IOOrderViewController.m */; };
+		CA51A80E1CC67BF500CEC94B /* IOShopInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = CA51A80D1CC67BF500CEC94B /* IOShopInfo.m */; settings = {ASSET_TAGS = (); }; };
+		CA51A8131CC67C0A00CEC94B /* IOOrderShopStarView.m in Sources */ = {isa = PBXBuildFile; fileRef = CA51A8101CC67C0A00CEC94B /* IOOrderShopStarView.m */; settings = {ASSET_TAGS = (); }; };
+		CA51A8141CC67C0A00CEC94B /* IOOrderViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CA51A8121CC67C0A00CEC94B /* IOOrderViewCell.m */; settings = {ASSET_TAGS = (); }; };
+		CA51A8251CC67C7500CEC94B /* MJConst.m in Sources */ = {isa = PBXBuildFile; fileRef = CA51A8171CC67C7500CEC94B /* MJConst.m */; settings = {ASSET_TAGS = (); }; };
+		CA51A8261CC67C7500CEC94B /* MJFoundation.m in Sources */ = {isa = PBXBuildFile; fileRef = CA51A81A1CC67C7500CEC94B /* MJFoundation.m */; settings = {ASSET_TAGS = (); }; };
+		CA51A8271CC67C7500CEC94B /* MJIvar.m in Sources */ = {isa = PBXBuildFile; fileRef = CA51A81C1CC67C7500CEC94B /* MJIvar.m */; settings = {ASSET_TAGS = (); }; };
+		CA51A8281CC67C7500CEC94B /* MJType.m in Sources */ = {isa = PBXBuildFile; fileRef = CA51A81E1CC67C7500CEC94B /* MJType.m */; settings = {ASSET_TAGS = (); }; };
+		CA51A8291CC67C7500CEC94B /* NSObject+MJCoding.m in Sources */ = {isa = PBXBuildFile; fileRef = CA51A8201CC67C7500CEC94B /* NSObject+MJCoding.m */; settings = {ASSET_TAGS = (); }; };
+		CA51A82A1CC67C7500CEC94B /* NSObject+MJIvar.m in Sources */ = {isa = PBXBuildFile; fileRef = CA51A8221CC67C7500CEC94B /* NSObject+MJIvar.m */; settings = {ASSET_TAGS = (); }; };
+		CA51A82B1CC67C7500CEC94B /* NSObject+MJKeyValue.m in Sources */ = {isa = PBXBuildFile; fileRef = CA51A8241CC67C7500CEC94B /* NSObject+MJKeyValue.m */; settings = {ASSET_TAGS = (); }; };
+		CA51A82D1CC67CB200CEC94B /* ShopInfos.plist in Resources */ = {isa = PBXBuildFile; fileRef = CA51A82C1CC67CB200CEC94B /* ShopInfos.plist */; settings = {ASSET_TAGS = (); }; };
 		CA6539561CBD40E6000972E2 /* IONewFeatureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA6539551CBD40E6000972E2 /* IONewFeatureViewController.m */; };
 		CA6539591CBD44CF000972E2 /* YWJNewFeatureScrollPage.m in Sources */ = {isa = PBXBuildFile; fileRef = CA6539581CBD44CF000972E2 /* YWJNewFeatureScrollPage.m */; };
 		CA798F301CBA501000A05CA8 /* IOIBeaconViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA798F2F1CBA501000A05CA8 /* IOIBeaconViewController.m */; };
@@ -54,6 +65,28 @@
 		9A7E9FC21CBF25AA00E44BE1 /* IOOrderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOOrderViewController.h; sourceTree = "<group>"; };
 		9A7E9FC31CBF25AA00E44BE1 /* IOOrderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOOrderViewController.m; sourceTree = "<group>"; };
 		AA08641E7F59BD859B41E36B /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		CA51A80C1CC67BF500CEC94B /* IOShopInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOShopInfo.h; sourceTree = "<group>"; };
+		CA51A80D1CC67BF500CEC94B /* IOShopInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOShopInfo.m; sourceTree = "<group>"; };
+		CA51A80F1CC67C0A00CEC94B /* IOOrderShopStarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOOrderShopStarView.h; sourceTree = "<group>"; };
+		CA51A8101CC67C0A00CEC94B /* IOOrderShopStarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOOrderShopStarView.m; sourceTree = "<group>"; };
+		CA51A8111CC67C0A00CEC94B /* IOOrderViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOOrderViewCell.h; sourceTree = "<group>"; };
+		CA51A8121CC67C0A00CEC94B /* IOOrderViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOOrderViewCell.m; sourceTree = "<group>"; };
+		CA51A8161CC67C7500CEC94B /* MJConst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJConst.h; sourceTree = "<group>"; };
+		CA51A8171CC67C7500CEC94B /* MJConst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJConst.m; sourceTree = "<group>"; };
+		CA51A8181CC67C7500CEC94B /* MJExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJExtension.h; sourceTree = "<group>"; };
+		CA51A8191CC67C7500CEC94B /* MJFoundation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJFoundation.h; sourceTree = "<group>"; };
+		CA51A81A1CC67C7500CEC94B /* MJFoundation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJFoundation.m; sourceTree = "<group>"; };
+		CA51A81B1CC67C7500CEC94B /* MJIvar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJIvar.h; sourceTree = "<group>"; };
+		CA51A81C1CC67C7500CEC94B /* MJIvar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJIvar.m; sourceTree = "<group>"; };
+		CA51A81D1CC67C7500CEC94B /* MJType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJType.h; sourceTree = "<group>"; };
+		CA51A81E1CC67C7500CEC94B /* MJType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJType.m; sourceTree = "<group>"; };
+		CA51A81F1CC67C7500CEC94B /* NSObject+MJCoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+MJCoding.h"; sourceTree = "<group>"; };
+		CA51A8201CC67C7500CEC94B /* NSObject+MJCoding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+MJCoding.m"; sourceTree = "<group>"; };
+		CA51A8211CC67C7500CEC94B /* NSObject+MJIvar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+MJIvar.h"; sourceTree = "<group>"; };
+		CA51A8221CC67C7500CEC94B /* NSObject+MJIvar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+MJIvar.m"; sourceTree = "<group>"; };
+		CA51A8231CC67C7500CEC94B /* NSObject+MJKeyValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+MJKeyValue.h"; sourceTree = "<group>"; };
+		CA51A8241CC67C7500CEC94B /* NSObject+MJKeyValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+MJKeyValue.m"; sourceTree = "<group>"; };
+		CA51A82C1CC67CB200CEC94B /* ShopInfos.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ShopInfos.plist; sourceTree = "<group>"; };
 		CA6539541CBD40E6000972E2 /* IONewFeatureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IONewFeatureViewController.h; sourceTree = "<group>"; };
 		CA6539551CBD40E6000972E2 /* IONewFeatureViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IONewFeatureViewController.m; sourceTree = "<group>"; };
 		CA6539571CBD44CF000972E2 /* YWJNewFeatureScrollPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWJNewFeatureScrollPage.h; sourceTree = "<group>"; };
@@ -162,6 +195,8 @@
 		9A7E9FC41CBF25AA00E44BE1 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				CA51A80C1CC67BF500CEC94B /* IOShopInfo.h */,
+				CA51A80D1CC67BF500CEC94B /* IOShopInfo.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -169,6 +204,10 @@
 		9A7E9FC51CBF25AA00E44BE1 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				CA51A80F1CC67C0A00CEC94B /* IOOrderShopStarView.h */,
+				CA51A8101CC67C0A00CEC94B /* IOOrderShopStarView.m */,
+				CA51A8111CC67C0A00CEC94B /* IOOrderViewCell.h */,
+				CA51A8121CC67C0A00CEC94B /* IOOrderViewCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -179,6 +218,28 @@
 				AA08641E7F59BD859B41E36B /* libPods.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CA51A8151CC67C7500CEC94B /* MJExtension */ = {
+			isa = PBXGroup;
+			children = (
+				CA51A8161CC67C7500CEC94B /* MJConst.h */,
+				CA51A8171CC67C7500CEC94B /* MJConst.m */,
+				CA51A8181CC67C7500CEC94B /* MJExtension.h */,
+				CA51A8191CC67C7500CEC94B /* MJFoundation.h */,
+				CA51A81A1CC67C7500CEC94B /* MJFoundation.m */,
+				CA51A81B1CC67C7500CEC94B /* MJIvar.h */,
+				CA51A81C1CC67C7500CEC94B /* MJIvar.m */,
+				CA51A81D1CC67C7500CEC94B /* MJType.h */,
+				CA51A81E1CC67C7500CEC94B /* MJType.m */,
+				CA51A81F1CC67C7500CEC94B /* NSObject+MJCoding.h */,
+				CA51A8201CC67C7500CEC94B /* NSObject+MJCoding.m */,
+				CA51A8211CC67C7500CEC94B /* NSObject+MJIvar.h */,
+				CA51A8221CC67C7500CEC94B /* NSObject+MJIvar.m */,
+				CA51A8231CC67C7500CEC94B /* NSObject+MJKeyValue.h */,
+				CA51A8241CC67C7500CEC94B /* NSObject+MJKeyValue.m */,
+			);
+			path = MJExtension;
 			sourceTree = "<group>";
 		};
 		CA798F2A1CBA4FB600A05CA8 /* IBeaconSetting */ = {
@@ -302,6 +363,7 @@
 			isa = PBXGroup;
 			children = (
 				CAE8F0221CB940E2005618B0 /* Info.plist */,
+				CA51A82C1CC67CB200CEC94B /* ShopInfos.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -438,6 +500,7 @@
 		CAE8F0651CB94170005618B0 /* Lib */ = {
 			isa = PBXGroup;
 			children = (
+				CA51A8151CC67C7500CEC94B /* MJExtension */,
 			);
 			path = Lib;
 			sourceTree = "<group>";
@@ -601,6 +664,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CA51A82D1CC67CB200CEC94B /* ShopInfos.plist in Resources */,
 				CAE8F0861CB9417F005618B0 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -674,25 +738,35 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CA51A8291CC67C7500CEC94B /* NSObject+MJCoding.m in Sources */,
 				CAE8F0831CB94170005618B0 /* main.m in Sources */,
 				CA798F3A1CBA67EC00A05CA8 /* YWJTransmitterTool.m in Sources */,
 				CADAA6C81CBBD5BD00E601DC /* YWJVersionTool.m in Sources */,
 				CA798F3D1CBA69D800A05CA8 /* YWJHistoryUUIDTool.m in Sources */,
+				CA51A8271CC67C7500CEC94B /* MJIvar.m in Sources */,
 				CAE8F0A61CB95CA2005618B0 /* YWJRootTool.m in Sources */,
 				CAE8F0811CB94170005618B0 /* UIView+YWJFrame.m in Sources */,
 				9A7E9FC61CBF25AA00E44BE1 /* IOOrderViewController.m in Sources */,
+				CA51A8131CC67C0A00CEC94B /* IOOrderShopStarView.m in Sources */,
 				CA6539591CBD44CF000972E2 /* YWJNewFeatureScrollPage.m in Sources */,
+				CA51A8281CC67C7500CEC94B /* MJType.m in Sources */,
 				CAE8F0921CB9461C005618B0 /* IOProfileViewController.m in Sources */,
+				CA51A8251CC67C7500CEC94B /* MJConst.m in Sources */,
 				CAE8F08F1CB9459B005618B0 /* IOOrderedViewController.m in Sources */,
 				CAE8F07C1CB94170005618B0 /* YWJTabBar.m in Sources */,
 				CAE8F07B1CB94170005618B0 /* YWJBadgeView.m in Sources */,
 				CA798F431CBA739000A05CA8 /* IONotificationViewController.m in Sources */,
 				CAE8F0951CB946E8005618B0 /* IONavigationController.m in Sources */,
+				CA51A8141CC67C0A00CEC94B /* IOOrderViewCell.m in Sources */,
 				CAE8F07D1CB94170005618B0 /* YWJTabBarButton.m in Sources */,
 				CA798F401CBA720E00A05CA8 /* YWJTransmitters.m in Sources */,
 				CAE8F0801CB94170005618B0 /* AppDelegate.m in Sources */,
 				CA798F301CBA501000A05CA8 /* IOIBeaconViewController.m in Sources */,
+				CA51A80E1CC67BF500CEC94B /* IOShopInfo.m in Sources */,
 				CA6539561CBD40E6000972E2 /* IONewFeatureViewController.m in Sources */,
+				CA51A82A1CC67C7500CEC94B /* NSObject+MJIvar.m in Sources */,
+				CA51A8261CC67C7500CEC94B /* MJFoundation.m in Sources */,
+				CA51A82B1CC67C7500CEC94B /* NSObject+MJKeyValue.m in Sources */,
 				CAE8F0AF1CB9680B005618B0 /* IOTabBarController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

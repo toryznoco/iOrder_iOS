@@ -8,23 +8,45 @@
 
 #import "IOOrderViewController.h"
 
+#import "IOOrderViewCell.h"
+#import "IOShopInfo.h"
+
 @interface IOOrderViewController ()
+
+@property (nonatomic, strong) NSMutableArray *shopInfos;
 
 @end
 
 @implementation IOOrderViewController
 
+#pragma mark - privacy
+
+- (NSMutableArray *)shopInfos{
+    if (!_shopInfos) {
+        NSString *shopInfosPath = [[NSBundle mainBundle] pathForResource:@"ShopInfos" ofType:@"plist"];
+        NSMutableArray *shopDatas = [NSMutableArray arrayWithContentsOfFile:shopInfosPath];
+        NSMutableArray *shopInfosArray = [NSMutableArray array];
+        
+        for (NSDictionary *dic in shopDatas) {
+            IOShopInfo *shopInfo = [IOShopInfo objectWithKeyValues:dic];
+            [shopInfosArray addObject:shopInfo];
+        }
+        
+        _shopInfos = shopInfosArray;
+    }
+    return _shopInfos;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     self.title = @"Order";
-    self.view.backgroundColor = [UIColor redColor];
+    self.view.backgroundColor = [UIColor whiteColor];
+    //    设置行高
+    self.tableView.rowHeight = 70;
     
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    _shopInfos = [self shopInfos];
+    //    YWJLog(@"%@", _shopInfos);
 }
 
 - (void)didReceiveMemoryWarning {
@@ -35,24 +57,22 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-#warning Incomplete implementation, return the number of sections
-    return 0;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-#warning Incomplete implementation, return the number of rows
-    return 0;
+    return self.shopInfos.count;
 }
 
-/*
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
+    IOOrderViewCell *cell = [IOOrderViewCell cellWithTableView:tableView];
     
-    // Configure the cell...
+    IOShopInfo *info = self.shopInfos[indexPath.row];
+    cell.shopInfo = info;
     
     return cell;
 }
-*/
 
 /*
 // Override to support conditional editing of the table view.
