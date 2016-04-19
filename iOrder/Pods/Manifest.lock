@@ -1,13 +1,16 @@
 PODS:
   - AprilSDK (2.0.3)
   - RDVTabBarController (1.1.9)
+  - Reveal-iOS-SDK (1.6.2)
 
 DEPENDENCIES:
   - AprilSDK
   - RDVTabBarController
+  - Reveal-iOS-SDK
 
 SPEC CHECKSUMS:
   AprilSDK: 55c85534d5e30bf6e82884038ce0e2541837c2f6
   RDVTabBarController: 67794f7a7a37f8e32f046f85ac67d06ab92d624a
+  Reveal-iOS-SDK: e2250b3c155bcfac53ae223ddc1f76d08f206c33
 
 COCOAPODS: 0.39.0

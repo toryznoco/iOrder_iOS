@@ -1,6 +1,7 @@
+FRAMEWORK_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/Reveal-iOS-SDK/Reveal-Framework-iOS-1.6.2"
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
-HEADER_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/AprilSDK" "${PODS_ROOT}/Headers/Public/RDVTabBarController"
+HEADER_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/AprilSDK" "${PODS_ROOT}/Headers/Public/RDVTabBarController" "${PODS_ROOT}/Headers/Public/Reveal-iOS-SDK"
 LIBRARY_SEARCH_PATHS = $(PODS_ROOT)/AprilSDK $(inherited) "${PODS_ROOT}/AprilSDK/AprilSDK"
-OTHER_CFLAGS = $(inherited) -isystem "${PODS_ROOT}/Headers/Public" -isystem "${PODS_ROOT}/Headers/Public/AprilSDK" -isystem "${PODS_ROOT}/Headers/Public/RDVTabBarController"
-OTHER_LDFLAGS = $(inherited) -ObjC -all_load -l"AprilBeaconSDK" -l"RDVTabBarController" -framework "CoreGraphics" -framework "Foundation" -framework "UIKit"
+OTHER_CFLAGS = $(inherited) -isystem "${PODS_ROOT}/Headers/Public" -isystem "${PODS_ROOT}/Headers/Public/AprilSDK" -isystem "${PODS_ROOT}/Headers/Public/RDVTabBarController" -isystem "${PODS_ROOT}/Headers/Public/Reveal-iOS-SDK"
+OTHER_LDFLAGS = $(inherited) -ObjC -all_load -l"AprilBeaconSDK" -l"RDVTabBarController" -l"z" -framework "CFNetwork" -framework "CoreGraphics" -framework "Foundation" -framework "QuartzCore" -framework "Reveal" -framework "UIKit"
 PODS_ROOT = ${SRCROOT}/Pods
