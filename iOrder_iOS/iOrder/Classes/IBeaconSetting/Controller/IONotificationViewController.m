@@ -69,10 +69,12 @@
 #pragma mark - Custom methods
 - (void)setupAllChildView {
     _enterSwitch = [[UISwitch alloc] init];
+    _enterSwitch.on = YES;
     [_enterSwitch addTarget:self action:@selector(clickEnterSwitchChanged) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_enterSwitch];
     
     _exitSwitch = [[UISwitch alloc] init];
+    _exitSwitch.on = YES;
     [_exitSwitch addTarget:self action:@selector(clickExitSwitchChanged) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_exitSwitch];
     
