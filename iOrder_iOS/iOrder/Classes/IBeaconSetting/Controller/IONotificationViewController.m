@@ -8,7 +8,8 @@
 
 #import "IONotificationViewController.h"
 
-#define kMargin 10
+//  尺寸
+#define kMargin 20
 #define kEnter self.view.height * 0.4
 #define kExit self.view.height * 0.5
 
@@ -44,9 +45,7 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - Custom methods
-
-- (void)startMonitoringForReigion{
+- (void)startMonitoringForReigion {
     if (!_region) {
         self.region = [[ABBeaconRegion alloc] initWithProximityUUID:_beaconn.proximityUUID identifier:_beaconn.proximityUUID.UUIDString];
     }else{
@@ -59,33 +58,40 @@
     [_beaconManager startMonitoringForRegion:self.region];
 }
 
-- (void)setupAllChildView{
+- (void)clickEnterSwitchChanged {
+    [self startMonitoringForReigion];
+}
+
+- (void)clickExitSwitchChanged {
+    [self startMonitoringForReigion];
+}
+
+#pragma mark - Custom methods
+- (void)setupAllChildView {
     _enterSwitch = [[UISwitch alloc] init];
+    _enterSwitch.on = YES;
     [_enterSwitch addTarget:self action:@selector(clickEnterSwitchChanged) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:_enterSwitch];
     
     _exitSwitch = [[UISwitch alloc] init];
+    _exitSwitch.on = YES;
     [_exitSwitch addTarget:self action:@selector(clickExitSwitchChanged) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:_exitSwitch];
     
     _enterLabel = [[UILabel alloc] init];
     _enterLabel.text = @"Enter region notification";
+    [self.view addSubview:_enterLabel];
     
     _exitLabel = [[UILabel alloc] init];
     _exitLabel.text = @"Exit region nofification";
+    [self.view addSubview:_exitLabel];
 }
 
 - (void)setupAllChildViewFrame{
-    self.enterLabel.frame = CGRectMake(kMargin, kEnter, self.enterLabel.bounds.size.width, self.enterLabel.bounds.size.height);
-    self.enterSwitch.frame = CGRectMake(self.view.width - self.enterSwitch.bounds.size.width - kMargin, kEnter, self.enterLabel.bounds.size.width, self.enterLabel.bounds.size.height);
-    self.exitLabel.frame = CGRectMake(kMargin, kExit, self.enterLabel.bounds.size.width, self.enterLabel.bounds.size.height);
-    self.exitSwitch.frame = CGRectMake(self.view.width - self.exitSwitch.bounds.size.width - kMargin, kExit, self.enterLabel.bounds.size.width, self.enterLabel.bounds.size.height);
-}
-
-- (void)clickEnterSwitchChanged{
-    [self startMonitoringForReigion];
-}
-
-- (void)clickExitSwitchChanged{
-    [self startMonitoringForReigion];
+    self.enterLabel.frame = CGRectMake(kMargin, 143, 183, 21);
+    self.enterSwitch.frame = CGRectMake(251, 138, self.enterSwitch.bounds.size.width, self.enterSwitch.bounds.size.height);
+    self.exitLabel.frame = CGRectMake(kMargin, 194, 171, 21);
+    self.exitSwitch.frame = CGRectMake(251, 189, self.exitSwitch.bounds.size.width, self.exitSwitch.bounds.size.height);
 }
 
 @end
