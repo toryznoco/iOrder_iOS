@@ -65,6 +65,7 @@
 		9A7E9FC21CBF25AA00E44BE1 /* IOOrderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOOrderViewController.h; sourceTree = "<group>"; };
 		9A7E9FC31CBF25AA00E44BE1 /* IOOrderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOOrderViewController.m; sourceTree = "<group>"; };
 		AA08641E7F59BD859B41E36B /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		CA10A4961CC7B3B500131D56 /* Reveal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Reveal.framework; sourceTree = "<group>"; };
 		CA51A80C1CC67BF500CEC94B /* IOShopInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOShopInfo.h; sourceTree = "<group>"; };
 		CA51A80D1CC67BF500CEC94B /* IOShopInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOShopInfo.m; sourceTree = "<group>"; };
 		CA51A80F1CC67C0A00CEC94B /* IOOrderShopStarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOOrderShopStarView.h; sourceTree = "<group>"; };
@@ -215,6 +216,7 @@
 		AC53E7F2F1CB4D0E4F921365 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CA10A4961CC7B3B500131D56 /* Reveal.framework */,
 				AA08641E7F59BD859B41E36B /* libPods.a */,
 			);
 			name = Frameworks;
@@ -890,6 +892,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PREFIX_HEADER = iOrder/Classes/Other/IOIOrder.pch;
 				HEADER_SEARCH_PATHS = /Users/yiwujie/Github/iOrder/iOrder/iOrder/iOrder/Classes/Other/Lib/AprilSDK/Headers;
 				INFOPLIST_FILE = iOrder/Info.plist;
@@ -898,6 +904,30 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/iOrder/Classes/Other/Lib/AprilSDK",
+				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-all_load",
+					"-l\"AprilBeaconSDK\"",
+					"-l\"RDVTabBarController\"",
+					"-l\"z\"",
+					"-framework",
+					"\"CFNetwork\"",
+					"-framework",
+					"\"CoreGraphics\"",
+					"-framework",
+					"\"Foundation\"",
+					"-framework",
+					"\"QuartzCore\"",
+					"-framework",
+					"\"Reveal\"",
+					"-framework",
+					"\"UIKit\"",
+					"-ObjC",
+					"-lz",
+					"-framework",
+					Reveal,
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = cn.net.normcore.iOrder;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -912,6 +942,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PREFIX_HEADER = iOrder/Classes/Other/IOIOrder.pch;
 				HEADER_SEARCH_PATHS = /Users/yiwujie/Github/iOrder/iOrder/iOrder/iOrder/Classes/Other/Lib/AprilSDK/Headers;
 				INFOPLIST_FILE = iOrder/Info.plist;
@@ -920,6 +954,30 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/iOrder/Classes/Other/Lib/AprilSDK",
+				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-all_load",
+					"-l\"AprilBeaconSDK\"",
+					"-l\"RDVTabBarController\"",
+					"-l\"z\"",
+					"-framework",
+					"\"CFNetwork\"",
+					"-framework",
+					"\"CoreGraphics\"",
+					"-framework",
+					"\"Foundation\"",
+					"-framework",
+					"\"QuartzCore\"",
+					"-framework",
+					"\"Reveal\"",
+					"-framework",
+					"\"UIKit\"",
+					"-ObjC",
+					"-lz",
+					"-framework",
+					Reveal,
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = cn.net.normcore.iOrder;
 				PRODUCT_NAME = "$(TARGET_NAME)";
