@@ -10,27 +10,16 @@
 
 @interface IOOrderShopStarView ()
 
-@property (nonatomic, strong) NSMutableArray *stars;
-
 @end
 
 @implementation IOOrderShopStarView
 
 #pragma mark - privacy
 
-- (NSMutableArray *)stars{
-    if (!_stars) {
-        _stars = [NSMutableArray array];
-    }
-    return _stars;
-}
-
 #pragma mark - public
 
 - (void)setStartCount:(NSString *)startCount{
     _startCount = startCount;
-    
-    _stars = [self stars];
     
     [self setupAllChildView];
 }
@@ -53,9 +42,8 @@
             [self addSubview:star];
         }
         star.frame = CGRectMake(starX, starY, starW, starH);
-        [_stars addObject:star];
     }
-    self.width = _stars.count * starW;
+    self.width = 5 * starW;
     self.height = starH;
 }
 
