@@ -8,6 +8,7 @@
 
 #import "IOOrderViewController.h"
 
+#import "IOOrderHeaderView.h"
 #import "IOOrderViewCell.h"
 #import "IOShopInfo.h"
 
@@ -46,6 +47,8 @@
     self.tableView.rowHeight = 70;
     
     _shopInfos = [self shopInfos];
+    
+    self.tableView.tableHeaderView = [[IOOrderHeaderView alloc] init];
 }
 
 - (void)didReceiveMemoryWarning {
