@@ -1,3 +1,5 @@
 pod 'Reveal-iOS-SDK'
 pod 'RDVTabBarController'
 pod 'AprilSDK'
+pod 'SDCycleScrollView','~> 1.64'
+pod 'MJExtension'
