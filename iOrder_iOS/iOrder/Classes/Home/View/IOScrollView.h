@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+#import "SDCycleScrollView.h"
+
 @interface IOScrollView : UIView
+
+@property (nonatomic, strong) NSArray *images;
 
 @end

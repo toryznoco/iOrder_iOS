@@ -61,9 +61,14 @@
 #pragma mark - custom methods
 
 - (void)setupAllChildView{
+    NSArray *images = @[@"h1.jpg",
+                        @"h2.jpg",
+                        @"h3.jpg",
+                        @"h4.jpg"];
     IOScrollView *scrollView = [[IOScrollView alloc] init];
     [self addSubview:scrollView];
     _scrollView = scrollView;
+    _scrollView.images = images;
     
     IOSpecialView *specialView = [[IOSpecialView alloc] init];
     [self addSubview:specialView];
