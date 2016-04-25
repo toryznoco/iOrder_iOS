@@ -12,7 +12,7 @@
 #import "IOOrderViewCell.h"
 #import "IOShopInfo.h"
 
-@interface IOOrderViewController ()
+@interface IOOrderViewController ()<UITableViewDelegate>
 
 @property (nonatomic, strong) NSMutableArray *shopInfos;
 
@@ -29,7 +29,7 @@
         NSMutableArray *shopInfosArray = [NSMutableArray array];
         
         for (NSDictionary *dic in shopDatas) {
-            IOShopInfo *shopInfo = [IOShopInfo objectWithKeyValues:dic];
+            IOShopInfo *shopInfo = [IOShopInfo mj_objectWithKeyValues:dic];
             [shopInfosArray addObject:shopInfo];
         }
         
@@ -74,6 +74,12 @@
     cell.shopInfo = info;
     
     return cell;
+}
+
+#pragma mark - UITableViewDelegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    YWJLog(@"xuanzhongle   hahahh ---------");
 }
 
 /*

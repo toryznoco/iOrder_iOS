@@ -81,9 +81,11 @@
     RDVTabBarItem *item = [RDVTabBarItem appearanceWhenContainedInInstancesOfClasses:@[[super class]]];
     NSMutableDictionary *selTitleAttr = [NSMutableDictionary dictionary];
     selTitleAttr[NSForegroundColorAttributeName] = [UIColor orangeColor];
+    selTitleAttr[NSFontAttributeName] = [UIFont systemFontOfSize:11];
     item.selectedTitleAttributes = selTitleAttr;
     NSMutableDictionary *unselTitleAttr = [NSMutableDictionary dictionary];
-    unselTitleAttr[NSForegroundColorAttributeName] = [UIColor blackColor];
+    unselTitleAttr[NSForegroundColorAttributeName] = [UIColor colorWithRed:180/255.0 green:180/255.0 blue:180/255.0 alpha:1];
+    unselTitleAttr[NSFontAttributeName] = [UIFont systemFontOfSize:11];
     item.unselectedTitleAttributes = unselTitleAttr;
 }
 

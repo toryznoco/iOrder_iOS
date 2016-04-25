@@ -30,9 +30,10 @@
         _cycleScrollView = cycleScrollView;
         
         cycleScrollView.delegate = self;
-        cycleScrollView.pageControlStyle = SDCycleScrollViewPageContolStyleAnimated;
+        cycleScrollView.pageControlStyle = SDCycleScrollViewPageContolStyleClassic;
+        cycleScrollView.pageControlAliment = SDCycleScrollViewPageContolAlimentRight;
         cycleScrollView.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-        cycleScrollView.autoScrollTimeInterval = 1.0;
+        cycleScrollView.autoScrollTimeInterval = 4.0;
     }
     return self;
 }
