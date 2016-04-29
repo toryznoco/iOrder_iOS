@@ -54,25 +54,28 @@
     CGFloat titleViewW = scrollViewW;
     CGFloat titleViewH = 25;
     CGFloat titleViewX = 0;
-    CGFloat titleViewY = CGRectGetMaxY(_specialView.frame) + 10;
+    CGFloat titleViewY = CGRectGetMaxY(_specialView.frame) + 9;
     _titleView.frame = CGRectMake(titleViewX, titleViewY, titleViewW, titleViewH);
 }
 
 #pragma mark - custom methods
 
 - (void)setupAllChildView{
-    NSArray *images = @[@"h1.jpg",
-                        @"h2.jpg",
-                        @"h3.jpg",
-                        @"h4.jpg"];
+    NSArray *images = @[@"roll_image_1.png",
+                        @"roll_image_2.png",
+                        @"roll_image_3.png"];
     IOScrollView *scrollView = [[IOScrollView alloc] init];
     [self addSubview:scrollView];
     _scrollView = scrollView;
     _scrollView.images = images;
     
+    NSArray *datas = @[@"weekend_bargain_image.png",
+                       @"bargain_price_image.png",
+                       @"new_products_image.png"];
     IOSpecialView *specialView = [[IOSpecialView alloc] init];
     [self addSubview:specialView];
     _specialView = specialView;
+    _specialView.datas = datas;
     
     IOTitleView *titleView = [[IOTitleView alloc] init];
     [self addSubview:titleView];

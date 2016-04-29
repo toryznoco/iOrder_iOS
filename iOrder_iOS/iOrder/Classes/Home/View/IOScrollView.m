@@ -31,11 +31,15 @@
         
         cycleScrollView.delegate = self;
         cycleScrollView.pageControlStyle = SDCycleScrollViewPageContolStyleClassic;
-        cycleScrollView.pageControlAliment = SDCycleScrollViewPageContolAlimentRight;
+        cycleScrollView.pageControlAliment = SDCycleScrollViewPageContolAlimentCenter;
         cycleScrollView.scrollDirection = UICollectionViewScrollDirectionHorizontal;
         cycleScrollView.autoScrollTimeInterval = 4.0;
     }
     return self;
+}
+
+- (void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - public

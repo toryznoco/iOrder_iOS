@@ -17,13 +17,13 @@
 
 #import "RDVTabBarItem.h"
 
-@interface IOTabBarController ()
+@interface IOTabBarController ()<IONavigationControllerDelegate>
 
 @end
 
 @implementation IOTabBarController
 
-#pragma mark - self
+#pragma mark - privacy
 - (instancetype)init{
     if (self = [super init]) {
 //        设置所有的子控制器
@@ -35,18 +35,23 @@
     return self;
 }
 
+#pragma mark - Custom Methods
+
 - (void)setupViewControllers{
     //点餐
     UIViewController *order = [[IOOrderViewController alloc] init];
-    UIViewController *orderNav = [[IONavigationController alloc] initWithRootViewController:order];
+    IONavigationController *orderNav = [[IONavigationController alloc] initWithRootViewController:order];
+    orderNav.navigationDelegate = self;
     
     //已点菜单
     UIViewController *ordered = [[IOOrderedViewController alloc] init];
-    UIViewController *orderedNav = [[IONavigationController alloc] initWithRootViewController:ordered];
+    IONavigationController *orderedNav = [[IONavigationController alloc] initWithRootViewController:ordered];
+    orderedNav.navigationDelegate = self;
     
     //我的
     UIViewController *profile = [[IOProfileViewController alloc] init];
-    UIViewController *profileNav = [[IONavigationController alloc] initWithRootViewController:profile];
+    IONavigationController *profileNav = [[IONavigationController alloc] initWithRootViewController:profile];
+    profileNav.navigationDelegate = self;
     
     //iBeacon
     UIViewController *iBeacon = [[IOIBeaconViewController alloc] init];
@@ -89,6 +94,10 @@
     item.unselectedTitleAttributes = unselTitleAttr;
 }
 
+- (void)orderVcWillDisappear:(IOOrderViewController *)orderVc{
+    [self setHidesBottomBarWhenPushed:YES];
+}
+
 - (void)customizeInterface{
 #warning comprehension later
     UINavigationBar *navigationBarAppearance = [UINavigationBar appearance];
@@ -119,6 +128,12 @@
     [navigationBarAppearance setBackgroundImage:backgroundImage
                                   forBarMetrics:UIBarMetricsDefault];
     [navigationBarAppearance setTitleTextAttributes:textAttributes];
+}
+
+#pragma mark - navigationcontroller delegate
+
+- (void)navigationControllerWillDisappear:(IONavigationController *)navigationVc isHidden:(BOOL)hidden{
+    [self setTabBarHidden:hidden animated:YES];
 }
 
 @end

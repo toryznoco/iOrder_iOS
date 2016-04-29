@@ -64,9 +64,9 @@
     for (NSInteger i = 0; i < _stars.count; i++) {
         UIImageView *star = _stars[i];
         if (i < [_startCount intValue]) {
-            [star setImage:[UIImage imageNamed:@"tabbar_home_selected"]];
+            [star setImage:[UIImage imageNamed:@"star_highlight_icon"]];
         }else{
-            [star setImage:[UIImage imageNamed:@"tabbar_home_normal"]];
+            [star setImage:[UIImage imageNamed:@"star_common_icon"]];
         }
     }
 }

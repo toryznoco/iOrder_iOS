@@ -10,4 +10,6 @@
 
 @interface IOSpecialView : UIView
 
+@property (nonatomic, strong) NSArray *datas;
+
 @end

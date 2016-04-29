@@ -8,6 +8,8 @@
 
 #import "IOOrderViewController.h"
 
+#import "IOShopViewController.h"
+
 #import "IOOrderHeaderView.h"
 #import "IOOrderViewCell.h"
 #import "IOShopInfo.h"
@@ -56,6 +58,10 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -79,7 +85,10 @@
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    YWJLog(@"xuanzhongle   hahahh ---------");
+    
+    IOShopViewController *shopVc = [[IOShopViewController alloc] init];
+    
+    [self.navigationController pushViewController:shopVc animated:YES];
 }
 
 /*

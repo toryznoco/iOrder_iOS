@@ -8,6 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
+@class IONavigationController;
+
+@protocol IONavigationControllerDelegate <NSObject>
+
+@optional
+- (void)navigationControllerWillDisappear:(IONavigationController *)navigationVc isHidden:(BOOL)hidden;
+
+@end
 @interface IONavigationController : UINavigationController
+
+@property (nonatomic, weak) id<IONavigationControllerDelegate> navigationDelegate;
 
 @end

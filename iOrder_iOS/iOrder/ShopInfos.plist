@@ -4,39 +4,7 @@
 <array>
 	<dict>
 		<key>shopIcon</key>
-		<string>tabbar_profile_selected</string>
-		<key>shopName</key>
-		<string>冒火烧烤</string>
-		<key>shopIntro</key>
-		<string>1100元代金券</string>
-		<key>shopDistance</key>
-		<string>1.1</string>
-		<key>shopStar</key>
-		<string>5</string>
-		<key>shopPrice</key>
-		<string>38</string>
-		<key>shopSaleCount</key>
-		<string>118</string>
-	</dict>
-	<dict>
-		<key>shopIcon</key>
-		<string>tabbar_profile_selected</string>
-		<key>shopName</key>
-		<string>冒火烧烤</string>
-		<key>shopIntro</key>
-		<string>1100元代金券</string>
-		<key>shopDistance</key>
-		<string>1.1</string>
-		<key>shopStar</key>
-		<string>3</string>
-		<key>shopPrice</key>
-		<string>38</string>
-		<key>shopSaleCount</key>
-		<string>118</string>
-	</dict>
-	<dict>
-		<key>shopIcon</key>
-		<string>tabbar_profile_selected</string>
+		<string>barbecue_image</string>
 		<key>shopName</key>
 		<string>冒火烧烤</string>
 		<key>shopIntro</key>
@@ -52,13 +20,45 @@
 	</dict>
 	<dict>
 		<key>shopIcon</key>
-		<string>tabbar_profile_selected</string>
+		<string>cake_image</string>
 		<key>shopName</key>
-		<string>冒火烧烤</string>
+		<string>风雅老树咖啡</string>
 		<key>shopIntro</key>
-		<string>1100元代金券</string>
+		<string>2人套餐</string>
 		<key>shopDistance</key>
-		<string>1.1</string>
+		<string>1.8</string>
+		<key>shopStar</key>
+		<string>5</string>
+		<key>shopPrice</key>
+		<string>59</string>
+		<key>shopSaleCount</key>
+		<string>147</string>
+	</dict>
+	<dict>
+		<key>shopIcon</key>
+		<string>sushi_image</string>
+		<key>shopName</key>
+		<string>樱木寿司</string>
+		<key>shopIntro</key>
+		<string>全部菜品9折</string>
+		<key>shopDistance</key>
+		<string>2.4</string>
+		<key>shopStar</key>
+		<string>4</string>
+		<key>shopPrice</key>
+		<string>25</string>
+		<key>shopSaleCount</key>
+		<string>147</string>
+	</dict>
+	<dict>
+		<key>shopIcon</key>
+		<string>chiken_image</string>
+		<key>shopName</key>
+		<string>正宗黄焖鸡饭</string>
+		<key>shopIntro</key>
+		<string>单人餐</string>
+		<key>shopDistance</key>
+		<string>3.1</string>
 		<key>shopStar</key>
 		<string>5</string>
 		<key>shopPrice</key>

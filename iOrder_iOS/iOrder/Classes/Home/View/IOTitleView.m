@@ -21,7 +21,7 @@
 
 - (instancetype)init{
     if (self = [super init]) {
-        self.backgroundColor = [UIColor yellowColor];
+        self.backgroundColor = [UIColor whiteColor];
         [self setupAllChildView];
     }
     return self;
@@ -47,9 +47,10 @@
 
 - (void)setupAllChildView{
     UIImageView *iconView = [[UIImageView alloc] init];
-    iconView.backgroundColor = [UIColor redColor];
     [self addSubview:iconView];
     _iconView = iconView;
+    
+    _iconView.image = [UIImage imageNamed:@"store_image"];
     
     UILabel *title = [[UILabel alloc] init];
     [self addSubview:title];

@@ -31,12 +31,14 @@
     //    设置代理
     self.delegate = self;
 }
+
 //
 //- (void)didReceiveMemoryWarning {
 //    [super didReceiveMemoryWarning];
 //    // Dispose of any resources that can be recreated.
 //}
 //
+
 //#pragma mark - Navigation Controller
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated{
     //    获取主窗口的rootViewController, 即tabBarController
@@ -46,6 +48,16 @@
     for (UIView *tabBarButton in tabBarC.tabBar.subviews) {
         if ([tabBarButton isKindOfClass:NSClassFromString(@"UITabBarButton")]) {
             [tabBarButton removeFromSuperview];
+        }
+    }
+    
+    if (viewController != self.viewControllers[0]) {
+        if ([_navigationDelegate respondsToSelector:@selector(navigationControllerWillDisappear:isHidden:)]) {
+            [_navigationDelegate navigationControllerWillDisappear:self isHidden:YES];
+        }
+    }else{
+        if ([_navigationDelegate respondsToSelector:@selector(navigationControllerWillDisappear:isHidden:)]) {
+            [_navigationDelegate navigationControllerWillDisappear:self isHidden:NO];
         }
     }
 }
