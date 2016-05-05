@@ -118,16 +118,8 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell;
-    
     if (tableView == self.optionTableView) {
         cell = [IOOrderShopOptionCell cellWithTableView:tableView];
-        UIView *selectedBgView = [[UIView alloc] initWithFrame:cell.frame];
-        selectedBgView.backgroundColor = YWJRGBColor(217, 217, 217, 0.5);
-        cell.selectedBackgroundView = selectedBgView;
-        
-        UIView *liner = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 5, 51)];
-        liner.backgroundColor = [UIColor orangeColor];
-        [selectedBgView addSubview:liner];
         
         IODishInfo *dishInfo = _dishInfos[indexPath.row];
         
