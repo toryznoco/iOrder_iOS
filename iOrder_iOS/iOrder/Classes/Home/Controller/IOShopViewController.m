@@ -8,6 +8,12 @@
 
 #import "IOShopViewController.h"
 
+#import "IOOrderShopMenuCell.h"
+#import "IOOrderShopOptionCell.h"
+
+#import "IODishInfo.h"
+#import "IODish.h"
+
 @interface IOShopViewController ()<UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong) NSArray *dataArray;
@@ -16,11 +22,37 @@
 @property (nonatomic, strong) UITableView *optionTableView;
 @property (nonatomic, strong) UITableView *menuTableView;
 
+@property (nonatomic, strong) NSMutableArray *dishInfos;
+
 @end
 
 @implementation IOShopViewController
 
 #pragma mark - privacy
+
+- (NSMutableArray *)dishInfos{
+    if (!_dishInfos) {
+        NSString *dishInfoPath = [[NSBundle mainBundle] pathForResource:@"DishInfos" ofType:@"plist"];
+        NSMutableArray *dishData = [NSMutableArray arrayWithContentsOfFile:dishInfoPath];
+        NSMutableArray *dishInfosArray = [NSMutableArray array];
+        
+        for (NSDictionary *dishInfoDic in dishData) {
+            IODishInfo *dishInfo = [IODishInfo mj_objectWithKeyValues:dishInfoDic];
+            
+            NSMutableArray *dishArray = [NSMutableArray array];
+            for (NSDictionary *dishDic in dishInfo.dishs) {
+                IODish *dish = [IODish mj_objectWithKeyValues:dishDic];
+                [dishArray addObject:dish];
+            }
+            
+            dishInfo.dishs = dishArray;
+            [dishInfosArray addObject:dishInfo];
+        }
+        
+        _dishInfos = dishInfosArray;
+    }
+    return _dishInfos;
+}
 
 - (UITableView *)optionTableView{
     if (!_optionTableView) {
@@ -47,9 +79,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self setupSelfView];
+//    加载数据
+    [self dishInfos];
     
-    [self loadNewData];
+    [self setupSelfView];
     
     [self optionTableView];
     
@@ -69,38 +102,43 @@
     if (tableView == self.optionTableView) {
         return 1;
     }else{
-        return [_dataArray count];
+        return _dishInfos.count;
     }
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    NSDictionary *item = _dataArray[section];
+    IODishInfo *dishInfo = _dishInfos[section];
     if (tableView == self.optionTableView) {
-        return [_dataArray count];
+        return _dishInfos.count;
     }else{
-        return [item[@"list"] count];
+        return dishInfo.dishs.count;
     }
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *reuseId = @"menuCell";
-    [tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:reuseId];
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseId];
+    UITableViewCell *cell;
     
     if (tableView == self.optionTableView) {
+        cell = [IOOrderShopOptionCell cellWithTableView:tableView];
         UIView *selectedBgView = [[UIView alloc] initWithFrame:cell.frame];
         selectedBgView.backgroundColor = YWJRGBColor(217, 217, 217, 0.5);
         cell.selectedBackgroundView = selectedBgView;
         
-        UIView *liner = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 5, 60)];
+        UIView *liner = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 5, 51)];
         liner.backgroundColor = [UIColor orangeColor];
         [selectedBgView addSubview:liner];
         
-        cell.textLabel.text = _dataArray[indexPath.row][@"title"];
+        IODishInfo *dishInfo = _dishInfos[indexPath.row];
+        
+        ((IOOrderShopOptionCell *)cell).textLabel.text = dishInfo.category;
     }else{
-        NSDictionary *item = _dataArray[indexPath.section];
-        cell.textLabel.text = item[@"list"][indexPath.row];
+        cell = [IOOrderShopMenuCell cellWithTableView:tableView];
+        
+        IODishInfo *dishInfo = _dishInfos[indexPath.section];
+        IODish *dish = dishInfo.dishs[indexPath.row];
+        
+        ((IOOrderShopMenuCell *)cell).dish = dish;
     }
     
     return cell;
@@ -110,9 +148,9 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (tableView == self.optionTableView) {
-        return 60;
+        return 51;
     }else{
-        return 90;
+        return 68;
     }
 }
 
@@ -120,7 +158,7 @@
     if (tableView == self.optionTableView) {
         return 0;
     }else{
-        return 30;
+        return 22;
     }
 }
 
@@ -138,9 +176,8 @@
         view.backgroundColor = YWJRGBColor(217, 217, 217, 0.7);
         
         UILabel *label = [[UILabel alloc] initWithFrame:view.bounds];
-        NSDictionary *item = _dataArray[section];
-        NSString *title = item[@"title"];
-        label.text = [NSString stringWithFormat:@"   %@", title];
+        IODishInfo *dishInfo = _dishInfos[section];
+        label.text = [NSString stringWithFormat:@"   %@", dishInfo.category];
         [view addSubview:label];
         
         return view;
@@ -153,7 +190,6 @@
     if (_isRelate) {
 //      获得一个UITableView的可见部分的第一个cell， 然后算出它属于哪个组
         NSInteger topCellSection = [[[tableView indexPathsForVisibleRows] firstObject] section];
-        YWJLog(@"+++++ %ld", topCellSection);
         if (tableView == self.menuTableView) {
             [self.optionTableView selectRowAtIndexPath:[NSIndexPath indexPathForItem:topCellSection inSection:0] animated:YES scrollPosition:UITableViewScrollPositionMiddle];
         }
@@ -163,7 +199,6 @@
 - (void)tableView:(UITableView *)tableView didEndDisplayingFooterView:(UIView *)view forSection:(NSInteger)section{
     if (_isRelate) {
         NSInteger topCellSection = [[[tableView indexPathsForVisibleRows] firstObject] section];
-        YWJLog(@"----- %ld", topCellSection);
         if (tableView == self.menuTableView) {
             [self.optionTableView selectRowAtIndexPath:[NSIndexPath indexPathForItem:topCellSection inSection:0] animated:YES scrollPosition:UITableViewScrollPositionMiddle];
         }
@@ -195,62 +230,6 @@
     float navBarH = self.navigationController.navigationBar.height + 20;
     viewBounds.size.height = YWJMainScreenBounds.size.height - navBarH;
     self.view.bounds = viewBounds;
-}
-
-- (void)loadNewData{
-    _dataArray = @[
-                   @{@"title" : @"00",
-                     @"list" : @[@"Soldier", @"aaa0", @"aaa", @"aaa", @"aaa", @"aaa", @"aaa", @"aaa1", @"aaa"]
-                     },
-                   @{@"title" : @"01",
-                     @"list" : @[@"Soldier", @"aaa1", @"aaa", @"aaa", @"aaa", @"aaa", @"aaa", @"aaa1", @"aaa"]
-                     },
-                   @{@"title" : @"02",
-                     @"list" : @[@"Soldier", @"aaa2", @"aaa"]
-                     },
-                   @{@"title" : @"03",
-                     @"list" : @[@"Soldier", @"aaa3", @"aaa", @"aaa", @"aaa", @"aaa", @"aaa", @"aaa1", @"aaa"]
-                     },
-                   @{@"title" : @"04",
-                     @"list" : @[@"Soldier", @"aaa4", @"aaa"]
-                     },
-                   @{@"title" : @"05",
-                     @"list" : @[@"Soldier", @"aaa5", @"aaa", @"aaa", @"aaa", @"aaa", @"aaa", @"aaa", @"aaa1", @"aaa"]
-                     },
-                   @{@"title" : @"06",
-                     @"list" : @[@"Soldier", @"aaa6", @"aaa", @"aaa", @"aaa", @"aaa", @"aaa", @"aaa"]
-                     },
-                   @{@"title" : @"07",
-                     @"list": @[@"Soldier", @"aaa7", @"aaa"]
-                     },
-                   @{@"title": @"08",
-                     @"list": @[@"Soldier" ,@"aaa8", @"aaa", @"aaa", @"aaa", @"aaa", @"aaa", @"aaa"]
-                     },
-                   @{@"title" : @"09",
-                     @"list" : @[@"Soldier", @"aaa9", @"aaa", @"aaa", @"aaa", @"aaa", @"aaa", @"aaa", @"aaa"]
-                     },
-                   @{@"title" : @"10",
-                     @"list" : @[@"Soldier", @"aaa10", @"aaa", @"aaa", @"aaa", @"aaa", @"aaa", @"aaa"]
-                     },
-                   @{@"title" : @"11",
-                     @"list" : @[@"Soldier", @"aaa11", @"aaa", @"aaa", @"aaa", @"aaa", @"aaa", @"aaa"]
-                     },
-                   @{@"title" : @"12",
-                     @"list" : @[@"Soldier", @"aaa12", @"aaa", @"aaa", @"aaa", @"aaa", @"aaa", @"aaa1", @"aaa"]
-                     },
-                   @{@"title" : @"13",
-                     @"list" : @[@"Soldier", @"aaa13", @"aaa", @"aaa", @"aaa", @"aaa", @"aaa", @"aaa1", @"aaa"]
-                     },
-                   @{@"title" : @"14",
-                     @"list" : @[@"Soldier", @"aaa14", @"aaa", @"aaa", @"aaa1", @"aaa", @"aaa", @"aaa", @"aaa"]
-                     },
-                   @{@"title" : @"15",
-                     @"list" : @[@"Soldier", @"aaa15", @"aaa", @"aaa", @"aaa", @"aaa", @"aaa", @"aaa1", @"aaa"]
-                     },
-                   @{@"title" : @"16",
-                     @"list" : @[@"Soldier", @"aaa16", @"aaa", @"aaa", @"aaa", @"aaa", @"aaa", @"aaa"]
-                     }
-                   ];
 }
 
 @end
