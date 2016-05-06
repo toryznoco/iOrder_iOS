@@ -21,6 +21,8 @@
 		CA798F401CBA720E00A05CA8 /* YWJTransmitters.m in Sources */ = {isa = PBXBuildFile; fileRef = CA798F3F1CBA720E00A05CA8 /* YWJTransmitters.m */; };
 		CA798F431CBA739000A05CA8 /* IONotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA798F421CBA739000A05CA8 /* IONotificationViewController.m */; };
 		CA97D1DE1CCE42C200816ECB /* IOShopViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA97D1DD1CCE42C200816ECB /* IOShopViewController.m */; settings = {ASSET_TAGS = (); }; };
+		CABD83C01CD8E2C4000A5066 /* IOOrderShopMenuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CABD83BF1CD8E2C4000A5066 /* IOOrderShopMenuCell.m */; settings = {ASSET_TAGS = (); }; };
+		CABD83C31CD8E2EF000A5066 /* IOOrderShopOptionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CABD83C21CD8E2EF000A5066 /* IOOrderShopOptionCell.m */; settings = {ASSET_TAGS = (); }; };
 		CADAA6C81CBBD5BD00E601DC /* YWJVersionTool.m in Sources */ = {isa = PBXBuildFile; fileRef = CADAA6C71CBBD5BD00E601DC /* YWJVersionTool.m */; };
 		CAE206E51CC931EE00F6538B /* IOScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE206E41CC931EE00F6538B /* IOScrollView.m */; settings = {ASSET_TAGS = (); }; };
 		CAE206E81CC932FE00F6538B /* IOSpecialView.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE206E71CC932FE00F6538B /* IOSpecialView.m */; settings = {ASSET_TAGS = (); }; };
@@ -39,6 +41,9 @@
 		CAE8F0951CB946E8005618B0 /* IONavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F0941CB946E8005618B0 /* IONavigationController.m */; };
 		CAE8F0A61CB95CA2005618B0 /* YWJRootTool.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F0A51CB95CA2005618B0 /* YWJRootTool.m */; };
 		CAE8F0AF1CB9680B005618B0 /* IOTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F0AE1CB9680B005618B0 /* IOTabBarController.m */; };
+		CAF4AB601CD34B39008CA9D8 /* DishInfos.plist in Resources */ = {isa = PBXBuildFile; fileRef = CAF4AB5F1CD34B39008CA9D8 /* DishInfos.plist */; settings = {ASSET_TAGS = (); }; };
+		CAF4AB631CD3BBFD008CA9D8 /* IODishInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = CAF4AB621CD3BBFD008CA9D8 /* IODishInfo.m */; settings = {ASSET_TAGS = (); }; };
+		CAF4AB661CD3BDB7008CA9D8 /* IODish.m in Sources */ = {isa = PBXBuildFile; fileRef = CAF4AB651CD3BDB7008CA9D8 /* IODish.m */; settings = {ASSET_TAGS = (); }; };
 		CAF9A0DD1CC8F42100411AD0 /* IOOrderHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = CAF9A0DC1CC8F42100411AD0 /* IOOrderHeaderView.m */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
@@ -87,6 +92,10 @@
 		CA798F421CBA739000A05CA8 /* IONotificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IONotificationViewController.m; sourceTree = "<group>"; };
 		CA97D1DC1CCE42C200816ECB /* IOShopViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOShopViewController.h; sourceTree = "<group>"; };
 		CA97D1DD1CCE42C200816ECB /* IOShopViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOShopViewController.m; sourceTree = "<group>"; };
+		CABD83BE1CD8E2C4000A5066 /* IOOrderShopMenuCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOOrderShopMenuCell.h; sourceTree = "<group>"; };
+		CABD83BF1CD8E2C4000A5066 /* IOOrderShopMenuCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOOrderShopMenuCell.m; sourceTree = "<group>"; };
+		CABD83C11CD8E2EF000A5066 /* IOOrderShopOptionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOOrderShopOptionCell.h; sourceTree = "<group>"; };
+		CABD83C21CD8E2EF000A5066 /* IOOrderShopOptionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOOrderShopOptionCell.m; sourceTree = "<group>"; };
 		CADAA6C61CBBD5BD00E601DC /* YWJVersionTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWJVersionTool.h; sourceTree = "<group>"; };
 		CADAA6C71CBBD5BD00E601DC /* YWJVersionTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWJVersionTool.m; sourceTree = "<group>"; };
 		CAE206E31CC931EE00F6538B /* IOScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOScrollView.h; sourceTree = "<group>"; };
@@ -126,6 +135,11 @@
 		CAE8F0A51CB95CA2005618B0 /* YWJRootTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWJRootTool.m; sourceTree = "<group>"; };
 		CAE8F0AD1CB9680B005618B0 /* IOTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOTabBarController.h; sourceTree = "<group>"; };
 		CAE8F0AE1CB9680B005618B0 /* IOTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOTabBarController.m; sourceTree = "<group>"; };
+		CAF4AB5F1CD34B39008CA9D8 /* DishInfos.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = DishInfos.plist; sourceTree = "<group>"; };
+		CAF4AB611CD3BBFD008CA9D8 /* IODishInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IODishInfo.h; sourceTree = "<group>"; };
+		CAF4AB621CD3BBFD008CA9D8 /* IODishInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IODishInfo.m; sourceTree = "<group>"; };
+		CAF4AB641CD3BDB7008CA9D8 /* IODish.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IODish.h; sourceTree = "<group>"; };
+		CAF4AB651CD3BDB7008CA9D8 /* IODish.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IODish.m; sourceTree = "<group>"; };
 		CAF9A0DB1CC8F42100411AD0 /* IOOrderHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOOrderHeaderView.h; sourceTree = "<group>"; };
 		CAF9A0DC1CC8F42100411AD0 /* IOOrderHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOOrderHeaderView.m; sourceTree = "<group>"; };
 		CD440F0C591F9F0ECB765D3A /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
@@ -193,6 +207,10 @@
 			children = (
 				CA51A80C1CC67BF500CEC94B /* IOShopInfo.h */,
 				CA51A80D1CC67BF500CEC94B /* IOShopInfo.m */,
+				CAF4AB611CD3BBFD008CA9D8 /* IODishInfo.h */,
+				CAF4AB621CD3BBFD008CA9D8 /* IODishInfo.m */,
+				CAF4AB641CD3BDB7008CA9D8 /* IODish.h */,
+				CAF4AB651CD3BDB7008CA9D8 /* IODish.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -212,6 +230,10 @@
 				CAE206E71CC932FE00F6538B /* IOSpecialView.m */,
 				CAE206E91CC9344C00F6538B /* IOTitleView.h */,
 				CAE206EA1CC9344C00F6538B /* IOTitleView.m */,
+				CABD83BE1CD8E2C4000A5066 /* IOOrderShopMenuCell.h */,
+				CABD83BF1CD8E2C4000A5066 /* IOOrderShopMenuCell.m */,
+				CABD83C11CD8E2EF000A5066 /* IOOrderShopOptionCell.h */,
+				CABD83C21CD8E2EF000A5066 /* IOOrderShopOptionCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -347,6 +369,7 @@
 			children = (
 				CAE8F0221CB940E2005618B0 /* Info.plist */,
 				CA51A82C1CC67CB200CEC94B /* ShopInfos.plist */,
+				CAF4AB5F1CD34B39008CA9D8 /* DishInfos.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -639,6 +662,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CA51A82D1CC67CB200CEC94B /* ShopInfos.plist in Resources */,
+				CAF4AB601CD34B39008CA9D8 /* DishInfos.plist in Resources */,
 				CAE8F0861CB9417F005618B0 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -714,7 +738,9 @@
 			files = (
 				CAE8F0831CB94170005618B0 /* main.m in Sources */,
 				CA798F3A1CBA67EC00A05CA8 /* YWJTransmitterTool.m in Sources */,
+				CAF4AB631CD3BBFD008CA9D8 /* IODishInfo.m in Sources */,
 				CADAA6C81CBBD5BD00E601DC /* YWJVersionTool.m in Sources */,
+				CABD83C01CD8E2C4000A5066 /* IOOrderShopMenuCell.m in Sources */,
 				CA798F3D1CBA69D800A05CA8 /* YWJHistoryUUIDTool.m in Sources */,
 				CAE8F0A61CB95CA2005618B0 /* YWJRootTool.m in Sources */,
 				CAE8F0811CB94170005618B0 /* UIView+YWJFrame.m in Sources */,
@@ -724,6 +750,7 @@
 				CA6539591CBD44CF000972E2 /* YWJNewFeatureScrollPage.m in Sources */,
 				CA97D1DE1CCE42C200816ECB /* IOShopViewController.m in Sources */,
 				CAE206E51CC931EE00F6538B /* IOScrollView.m in Sources */,
+				CAF4AB661CD3BDB7008CA9D8 /* IODish.m in Sources */,
 				CAE8F0921CB9461C005618B0 /* IOProfileViewController.m in Sources */,
 				CAE8F08F1CB9459B005618B0 /* IOOrderedViewController.m in Sources */,
 				CAE8F07C1CB94170005618B0 /* YWJTabBar.m in Sources */,
@@ -734,6 +761,7 @@
 				CAE8F07D1CB94170005618B0 /* YWJTabBarButton.m in Sources */,
 				CA798F401CBA720E00A05CA8 /* YWJTransmitters.m in Sources */,
 				CAE8F0801CB94170005618B0 /* AppDelegate.m in Sources */,
+				CABD83C31CD8E2EF000A5066 /* IOOrderShopOptionCell.m in Sources */,
 				CAE206E81CC932FE00F6538B /* IOSpecialView.m in Sources */,
 				CA798F301CBA501000A05CA8 /* IOIBeaconViewController.m in Sources */,
 				CA51A80E1CC67BF500CEC94B /* IOShopInfo.m in Sources */,
