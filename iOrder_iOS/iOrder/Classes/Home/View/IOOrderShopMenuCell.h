@@ -8,12 +8,20 @@
 
 #import <UIKit/UIKit.h>
 
-@class IODish;
+@class IODish, IOOrderShopMenuCell;
+
+@protocol IOOrderShopMenuCellDelegate <NSObject>
+
+- (void)orderShopMenuCell:(IOOrderShopMenuCell *)shopMenuCell dishPrice:(NSString *)dishPrice clickedBtn:(UIButton *)btn;
+
+@end
 
 @interface IOOrderShopMenuCell : UITableViewCell
 
 + (instancetype)cellWithTableView:(UITableView *)tableView;
 
 @property (nonatomic, strong) IODish *dish;
+
+@property (nonatomic, weak) id<IOOrderShopMenuCellDelegate> delegate;
 
 @end

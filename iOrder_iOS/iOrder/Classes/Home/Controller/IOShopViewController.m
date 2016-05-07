@@ -17,7 +17,7 @@
 
 #define kScale 0.25
 
-@interface IOShopViewController ()<UITableViewDataSource, UITableViewDelegate>
+@interface IOShopViewController ()<UITableViewDataSource, UITableViewDelegate, IOOrderShopMenuCellDelegate>
 
 @property (nonatomic, strong) NSArray *dataArray;
 @property (nonatomic, assign) BOOL isRelate;
@@ -26,6 +26,9 @@
 @property (nonatomic, strong) UITableView *menuTableView;
 
 @property (nonatomic, strong) NSMutableArray *dishInfos;
+
+@property (nonatomic, weak) UIButton *shoppingCarBtn;
+@property (nonatomic, weak) UIView *checkOutView;
 @property (nonatomic, weak) UILabel *totalPrice;
 @property (nonatomic, weak) IOBadgeButton *badge;
 
@@ -87,6 +90,7 @@
         ((IOOrderShopOptionCell *)cell).category = dishInfo.category;
     }else{
         cell = [IOOrderShopMenuCell cellWithTableView:tableView];
+        ((IOOrderShopMenuCell *)cell).delegate = self;
         
         IODishInfo *dishInfo = _dishInfos[indexPath.section];
         IODish *dish = dishInfo.dishs[indexPath.row];
@@ -234,15 +238,19 @@
     [self.view addSubview:shoppingView];
     
     UIButton *shoppingCarBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    shoppingCarBtn.enabled = NO;
     shoppingCarBtn.frame = CGRectMake(25, 0, 44, 44);
     shoppingCarBtn.layer.cornerRadius = 17;
     shoppingCarBtn.clipsToBounds = YES;
-    [shoppingCarBtn setImage:[UIImage imageNamed:@"1"] forState:UIControlStateNormal];
+    [shoppingCarBtn setImage:[UIImage imageNamed:@"1"] forState:UIControlStateDisabled];
+    [shoppingCarBtn setImage:[UIImage imageNamed:@"barbecue_image"] forState:UIControlStateNormal];
     [shoppingView addSubview:shoppingCarBtn];
+    _shoppingCarBtn = shoppingCarBtn;
     
-    UILabel *totalPrice = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(shoppingCarBtn.frame) + 6, 24, 200, 10)];
-    totalPrice.font = [UIFont systemFontOfSize:11];
-    totalPrice.text = @"haha";
+    UILabel *totalPrice = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(shoppingCarBtn.frame) + 5, 24, 200, 14)];
+    totalPrice.textColor = [UIColor lightGrayColor];
+    totalPrice.font = [UIFont systemFontOfSize:17];
+    totalPrice.text = @"购物车是空的";
     _totalPrice = totalPrice;
     [shoppingView addSubview:totalPrice];
     
@@ -250,22 +258,15 @@
     checkOutView.frame = CGRectMake(self.view.width * (1 - kScale), 10, self.view.width * kScale, 44);
     checkOutView.backgroundColor = [UIColor lightGrayColor];
     [shoppingView addSubview:checkOutView];
+    _checkOutView = checkOutView;
     
     UIButton *checkOutBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    CGPoint center = CGPointMake(checkOutBtn.center.x - checkOutView.x, checkOutBtn.y);
-    checkOutBtn.center = center;
     [checkOutView addSubview:checkOutBtn];
     [checkOutBtn setTitle:@"去结算" forState:UIControlStateNormal];
-    YWJLog(@"%lf %lf", center.x, center.y);
-    
-//    UILabel *checkOut = [[UILabel alloc] init];
-//    checkOut.userInteractionEnabled = YES;
-//    checkOut.textAlignment = NSTextAlignmentCenter;
-//    checkOut.frame = CGRectMake(0, 0, checkOutView.width, checkOutView.height);
-//    [checkOut setText:@"去结算"];
-//    [checkOut setTextColor:[UIColor whiteColor]];
-//    checkOut.font = [UIFont systemFontOfSize:15];
-//    [checkOutView addSubview:checkOut];
+    CGPoint center = CGPointMake(checkOutView.width * 0.5, checkOutView.height * 0.5);
+    [checkOutBtn sizeToFit];
+    checkOutBtn.center = center;
+    [checkOutBtn addTarget:self action:@selector(clickedCheckOut) forControlEvents:UIControlEventTouchUpInside];
     
     IOBadgeButton *badge = [[IOBadgeButton alloc] initWithFrame:CGRectMake(50, 3, 1, 1)];
     _badge = badge;
@@ -282,7 +283,19 @@
 }
 
 - (void)clickedCheckOut{
-    
+    YWJLog(@"点击 结账按钮");
+}
+
+#pragma mark shop menu cell delegate
+
+- (void)orderShopMenuCell:(IOOrderShopMenuCell *)shopMenuCell dishPrice:(NSString *)dishPrice clickedBtn:(UIButton *)btn{
+    _checkOutView.backgroundColor = [UIColor orangeColor];
+    _shoppingCarBtn.enabled = YES;
+    _totalPrice.textColor = [UIColor greenColor];
+    if ([_totalPrice.text isEqualToString:@"购物车是空的"]) {
+        _totalPrice.text = @"0";
+    }
+    _totalPrice.text = [NSString stringWithFormat:@"¥%lld", ([[_totalPrice.text substringFromIndex:1] longLongValue] + [dishPrice longLongValue])];
 }
 
 @end
