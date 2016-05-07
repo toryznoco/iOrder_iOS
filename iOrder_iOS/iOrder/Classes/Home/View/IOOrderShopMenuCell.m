@@ -138,7 +138,7 @@
     //    菜品销售量
     UILabel *dishSaleCount = [[UILabel alloc] init];
     dishSaleCount.font = [UIFont systemFontOfSize:11];
-    dishSaleCount.textColor = [UIColor colorWithRed:180/255.0 green:180/255.0 blue:180/255.0 alpha:1];
+    dishSaleCount.textColor = YWJRGBColor(180, 180, 180, 1);
     [self addSubview:dishSaleCount];
     _dishSaleCount = dishSaleCount;
     
@@ -151,7 +151,7 @@
     //    点赞数
     UILabel *followCount = [[UILabel alloc] init];
     followCount.font = [UIFont systemFontOfSize:11];
-    followCount.textColor = [UIColor colorWithRed:180/255.0 green:180/255.0 blue:180/255.0 alpha:1];
+    followCount.textColor = YWJRGBColor(180, 180, 180, 1);
     [self addSubview:followCount];
     _followCount = followCount;
     
@@ -165,14 +165,14 @@
     UILabel *dishPriceSuffix = [[UILabel alloc] init];
     dishPriceSuffix.font = [UIFont systemFontOfSize:12];
     dishPriceSuffix.text = @"/份";
-    dishPriceSuffix.textColor = [UIColor colorWithRed:180/255.0 green:180/255.0 blue:180/255.0 alpha:1];
+    dishPriceSuffix.textColor = YWJRGBColor(180, 180, 180, 1);
     [self addSubview:dishPriceSuffix];
     _dishPriceSuffix = dishPriceSuffix;
     
     //    预定按钮
     UIButton *orderBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [orderBtn setImage:[UIImage imageNamed:@"iOrder_home_orderBtn"] forState:UIControlStateNormal];
-    [orderBtn addTarget:self action:@selector(orderBtnClicked) forControlEvents:UIControlEventTouchDown];
+    [orderBtn addTarget:self action:@selector(orderBtnClicked:) forControlEvents:UIControlEventTouchDown];
     [self addSubview:orderBtn];
     _orderBtn = orderBtn;
 }
@@ -190,8 +190,10 @@
     _dishPrice.font = [UIFont systemFontOfSize:15];
 }
 
-- (void)orderBtnClicked{
-    YWJLog(@"Click the orderBtn");
+- (void)orderBtnClicked:(UIButton *)btn{
+    if ([_delegate respondsToSelector:@selector(orderShopMenuCell:dishPrice:clickedBtn:)]) {
+        [_delegate orderShopMenuCell:self dishPrice:_dish.dishPrice clickedBtn:btn];
+    }
 }
 
 @end
