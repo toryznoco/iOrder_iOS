@@ -4,8 +4,9 @@
 	"http://struts.apache.org/dtds/struts-2.3.dtd">
 <struts>
 
-	<package name="iorder-default" extends="json-default" namespace="/">
-		
+	<package name="iorder-default" extends="json-default"
+		namespace="/">
+
 	</package>
 
 	<include file="struts-actions.xml"></include>
