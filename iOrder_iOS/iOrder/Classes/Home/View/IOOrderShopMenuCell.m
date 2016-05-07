@@ -172,7 +172,7 @@
     //    预定按钮
     UIButton *orderBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [orderBtn setImage:[UIImage imageNamed:@"iOrder_home_orderBtn"] forState:UIControlStateNormal];
-    [orderBtn addTarget:self action:@selector(orderBtnClicked) forControlEvents:UIControlEventTouchDown];
+    [orderBtn addTarget:self action:@selector(orderBtnClicked:) forControlEvents:UIControlEventTouchDown];
     [self addSubview:orderBtn];
     _orderBtn = orderBtn;
 }
@@ -190,8 +190,10 @@
     _dishPrice.font = [UIFont systemFontOfSize:15];
 }
 
-- (void)orderBtnClicked{
-    YWJLog(@"Click the orderBtn");
+- (void)orderBtnClicked:(UIButton *)btn{
+    if ([_delegate respondsToSelector:@selector(orderShopMenuCell:dishPrice:clickedBtn:)]) {
+        [_delegate orderShopMenuCell:self dishPrice:_dish.dishPrice clickedBtn:btn];
+    }
 }
 
 @end
