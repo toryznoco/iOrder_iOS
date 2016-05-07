@@ -268,9 +268,25 @@
     checkOutBtn.center = center;
     [checkOutBtn addTarget:self action:@selector(clickedCheckOut) forControlEvents:UIControlEventTouchUpInside];
     
-    IOBadgeButton *badge = [[IOBadgeButton alloc] initWithFrame:CGRectMake(50, 3, 1, 1)];
-    _badge = badge;
-    [shoppingView addSubview:badge];
+    
+    
+//    IOBadgeButton *badge = [[IOBadgeButton alloc] initWithFrame:CGRectMake(0, 10, 50, 50)];
+//    badge.titleLabel.text = @"hahahha";
+//    _badge = badge;
+//    _badge.badgeValue = @"5";
+//    [shoppingView addSubview:badge];
+//    UIButton *hahh = [UIButton buttonWithType:UIButtonTypeCustom];
+//    hahh.frame = CGRectMake(0, 10, 40, 20);
+//    hahh.titleLabel.text = @"哈哈";
+////    hahh.titleLabel.textColor = [UIColor greenColor];
+////    hahh.backgroundColor = [UIColor redColor];
+//    [shoppingView addSubview:hahh];
+//    [hahh bringSubviewToFront:shoppingView];
+    UILabel *hhhhh = [[UILabel alloc] init];
+    hhhhh.layer.cornerRadius = 5;
+    hhhhh.text = @"hhhhhhhh";
+    [hhhhh sizeToFit];
+    [shoppingView addSubview:hhhhh];
 }
 
 - (void)setupSelfView{
@@ -289,13 +305,23 @@
 #pragma mark shop menu cell delegate
 
 - (void)orderShopMenuCell:(IOOrderShopMenuCell *)shopMenuCell dishPrice:(NSString *)dishPrice clickedBtn:(UIButton *)btn{
-    _checkOutView.backgroundColor = [UIColor orangeColor];
-    _shoppingCarBtn.enabled = YES;
-    _totalPrice.textColor = [UIColor greenColor];
-    if ([_totalPrice.text isEqualToString:@"购物车是空的"]) {
-        _totalPrice.text = @"0";
+    if (btn.tag == 1) {
+        _checkOutView.backgroundColor = [UIColor orangeColor];
+        _shoppingCarBtn.enabled = YES;
+        _totalPrice.textColor = [UIColor greenColor];
+        if ([_totalPrice.text isEqualToString:@"购物车是空的"]) {
+            _totalPrice.text = @"0";
+        }
+        _totalPrice.text = [NSString stringWithFormat:@"¥%lld", ([[_totalPrice.text substringFromIndex:1] longLongValue] + [dishPrice longLongValue])];
+    }else{
+        _totalPrice.text = [NSString stringWithFormat:@"¥%lld", ([[_totalPrice.text substringFromIndex:1] longLongValue] - [dishPrice longLongValue])];
+        if ([_totalPrice.text isEqualToString:@"¥0"]) {
+            _checkOutView.backgroundColor = [UIColor lightGrayColor];
+            _shoppingCarBtn.enabled = NO;
+            _totalPrice.textColor = [UIColor lightGrayColor];
+            _totalPrice.text = @"购物车是空的";
+        }
     }
-    _totalPrice.text = [NSString stringWithFormat:@"¥%lld", ([[_totalPrice.text substringFromIndex:1] longLongValue] + [dishPrice longLongValue])];
 }
 
 @end

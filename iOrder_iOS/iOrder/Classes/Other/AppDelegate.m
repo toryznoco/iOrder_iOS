@@ -6,6 +6,8 @@
 //  Copyright © 2016 易无解. All rights reserved.
 //
 
+
+
 #import "AppDelegate.h"
 
 #import "YWJRootTool.h"
@@ -22,6 +24,8 @@
 #pragma mark - self
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    
+    
     
 //    创建管理者
     self.beaconManager = [[ABBeaconManager alloc] init];

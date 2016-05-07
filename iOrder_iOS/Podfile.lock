@@ -1,4 +1,19 @@
 PODS:
+  - AFNetworking (3.1.0):
+    - AFNetworking/NSURLSession (= 3.1.0)
+    - AFNetworking/Reachability (= 3.1.0)
+    - AFNetworking/Security (= 3.1.0)
+    - AFNetworking/Serialization (= 3.1.0)
+    - AFNetworking/UIKit (= 3.1.0)
+  - AFNetworking/NSURLSession (3.1.0):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (3.1.0)
+  - AFNetworking/Security (3.1.0)
+  - AFNetworking/Serialization (3.1.0)
+  - AFNetworking/UIKit (3.1.0):
+    - AFNetworking/NSURLSession
   - AprilSDK (2.0.3)
   - MJExtension (3.0.10)
   - RDVTabBarController (1.1.9)
@@ -10,6 +25,7 @@ PODS:
   - SDWebImage/Core (3.7.5)
 
 DEPENDENCIES:
+  - AFNetworking
   - AprilSDK
   - MJExtension
   - RDVTabBarController
@@ -17,6 +33,7 @@ DEPENDENCIES:
   - SDCycleScrollView (~> 1.64)
 
 SPEC CHECKSUMS:
+  AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
   AprilSDK: 55c85534d5e30bf6e82884038ce0e2541837c2f6
   MJExtension: d86aacb740c87519d20e3cca55b6fa4be6cc7548
   RDVTabBarController: 67794f7a7a37f8e32f046f85ac67d06ab92d624a

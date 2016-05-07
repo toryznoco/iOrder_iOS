@@ -19,6 +19,8 @@
 @property (nonatomic, weak) UILabel *followCount;
 @property (nonatomic, weak) UILabel *dishPrice;
 @property (nonatomic, weak) UILabel *dishPriceSuffix;
+@property (nonatomic, weak) UIButton *unOrderBtn;
+@property (nonatomic, weak) UILabel *dishCount;
 @property (nonatomic, weak) UIButton *orderBtn;
 
 @end
@@ -91,6 +93,18 @@
     CGFloat orderBtnX = self.width - orderBtnW - 8;
     CGFloat orderBtnY = 40;
     _orderBtn.frame = CGRectMake(orderBtnX, orderBtnY, orderBtnW, orderBtnH);
+    
+    CGFloat dishCountW = 25;
+    CGFloat dishCountH = 15;
+    CGFloat dishCountX = orderBtnX - dishCountW - 2;
+    CGFloat dishCountY = orderBtnY + 4;
+    _dishCount.frame  = CGRectMake(dishCountX, dishCountY, dishCountW, dishCountH);
+    
+    CGFloat unOrderBtnW = 25;
+    CGFloat unOrderBtnH = orderBtnH;
+    CGFloat unOrderBtnX = dishCountX - unOrderBtnW - 2;
+    CGFloat unOrderBtnY = orderBtnY;
+    _unOrderBtn.frame = CGRectMake(unOrderBtnX, unOrderBtnY, unOrderBtnW, unOrderBtnH);
 }
 
 - (void)awakeFromNib {
@@ -171,10 +185,32 @@
     
     //    预定按钮
     UIButton *orderBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    orderBtn.tag = 1;
     [orderBtn setImage:[UIImage imageNamed:@"iOrder_home_orderBtn"] forState:UIControlStateNormal];
     [orderBtn addTarget:self action:@selector(orderBtnClicked:) forControlEvents:UIControlEventTouchDown];
     [self addSubview:orderBtn];
     _orderBtn = orderBtn;
+    
+    //    当前菜品已点的份数
+    UILabel *dishCount = [[UILabel alloc] init];
+    dishCount.hidden = YES;
+    dishCount.textAlignment = NSTextAlignmentCenter;
+    dishCount.font = [UIFont systemFontOfSize:13];
+    dishCount.text = @"0";
+    [self addSubview:dishCount];
+    _dishCount = dishCount;
+    
+    //    取消订购按钮
+    UIButton *unOrderBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    unOrderBtn.hidden = YES;
+    unOrderBtn.enabled = NO;
+    unOrderBtn.tag = 2;
+    [unOrderBtn setImage:[UIImage imageNamed:@"iOrder_home_unOrderBtn"] forState:UIControlStateNormal];
+    [unOrderBtn addTarget:self action:@selector(orderBtnClicked:) forControlEvents:UIControlEventTouchDown];
+    [self addSubview:unOrderBtn];
+    _unOrderBtn = unOrderBtn;
+    
+    
 }
 
 - (void)setupDish{
@@ -191,6 +227,22 @@
 }
 
 - (void)orderBtnClicked:(UIButton *)btn{
+    if (btn.tag == 1) {
+        _dishCount.text = [NSString stringWithFormat:@"%lld", [_dishCount.text longLongValue] + 1];
+        if ([_dishCount.text longLongValue] - 1 == 0) {
+            _dishCount.hidden = NO;
+            _unOrderBtn.hidden = NO;
+            _unOrderBtn.enabled = YES;
+        }
+    }else{
+        _dishCount.text = [NSString stringWithFormat:@"%lld", [_dishCount.text longLongValue] - 1];
+        if ([_dishCount.text longLongValue] + 1 == 1) {
+            _dishCount.hidden = YES;
+            _unOrderBtn.hidden = YES;
+            _unOrderBtn.enabled = NO;
+        }
+    }
+    
     if ([_delegate respondsToSelector:@selector(orderShopMenuCell:dishPrice:clickedBtn:)]) {
         [_delegate orderShopMenuCell:self dishPrice:_dish.dishPrice clickedBtn:btn];
     }
