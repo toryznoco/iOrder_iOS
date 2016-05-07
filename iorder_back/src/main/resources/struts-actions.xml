@@ -5,7 +5,13 @@
 <struts>
 
 	<package name="iorder-actions" extends="iorder-default"
-		namespace="/">
+		namespace="/server">
+		
+		<action name="shop" class="cn.net.normcore.iorder.action.ShopAction">
+			<result name="shops" type="json">
+				<param name="root">shops</param>
+			</result>
+		</action>
 		
 	</package>
 
