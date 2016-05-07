@@ -12,4 +12,6 @@
 
 + (instancetype)cellWithTableView:(UITableView *)tableView;
 
+@property (nonatomic, copy) NSString *category;
+
 @end

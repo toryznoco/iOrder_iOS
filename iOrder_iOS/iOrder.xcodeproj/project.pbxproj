@@ -21,6 +21,7 @@
 		CA798F401CBA720E00A05CA8 /* YWJTransmitters.m in Sources */ = {isa = PBXBuildFile; fileRef = CA798F3F1CBA720E00A05CA8 /* YWJTransmitters.m */; };
 		CA798F431CBA739000A05CA8 /* IONotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA798F421CBA739000A05CA8 /* IONotificationViewController.m */; };
 		CA97D1DE1CCE42C200816ECB /* IOShopViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA97D1DD1CCE42C200816ECB /* IOShopViewController.m */; settings = {ASSET_TAGS = (); }; };
+		CAA40B5F1CDC2C3B008253A4 /* IOBadgeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CAA40B5E1CDC2C3B008253A4 /* IOBadgeButton.m */; settings = {ASSET_TAGS = (); }; };
 		CABD83C01CD8E2C4000A5066 /* IOOrderShopMenuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CABD83BF1CD8E2C4000A5066 /* IOOrderShopMenuCell.m */; settings = {ASSET_TAGS = (); }; };
 		CABD83C31CD8E2EF000A5066 /* IOOrderShopOptionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CABD83C21CD8E2EF000A5066 /* IOOrderShopOptionCell.m */; settings = {ASSET_TAGS = (); }; };
 		CADAA6C81CBBD5BD00E601DC /* YWJVersionTool.m in Sources */ = {isa = PBXBuildFile; fileRef = CADAA6C71CBBD5BD00E601DC /* YWJVersionTool.m */; };
@@ -92,6 +93,8 @@
 		CA798F421CBA739000A05CA8 /* IONotificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IONotificationViewController.m; sourceTree = "<group>"; };
 		CA97D1DC1CCE42C200816ECB /* IOShopViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOShopViewController.h; sourceTree = "<group>"; };
 		CA97D1DD1CCE42C200816ECB /* IOShopViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOShopViewController.m; sourceTree = "<group>"; };
+		CAA40B5D1CDC2C3B008253A4 /* IOBadgeButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOBadgeButton.h; sourceTree = "<group>"; };
+		CAA40B5E1CDC2C3B008253A4 /* IOBadgeButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOBadgeButton.m; sourceTree = "<group>"; };
 		CABD83BE1CD8E2C4000A5066 /* IOOrderShopMenuCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOOrderShopMenuCell.h; sourceTree = "<group>"; };
 		CABD83BF1CD8E2C4000A5066 /* IOOrderShopMenuCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOOrderShopMenuCell.m; sourceTree = "<group>"; };
 		CABD83C11CD8E2EF000A5066 /* IOOrderShopOptionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOOrderShopOptionCell.h; sourceTree = "<group>"; };
@@ -234,6 +237,8 @@
 				CABD83BF1CD8E2C4000A5066 /* IOOrderShopMenuCell.m */,
 				CABD83C11CD8E2EF000A5066 /* IOOrderShopOptionCell.h */,
 				CABD83C21CD8E2EF000A5066 /* IOOrderShopOptionCell.m */,
+				CAA40B5D1CDC2C3B008253A4 /* IOBadgeButton.h */,
+				CAA40B5E1CDC2C3B008253A4 /* IOBadgeButton.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -740,6 +745,7 @@
 				CA798F3A1CBA67EC00A05CA8 /* YWJTransmitterTool.m in Sources */,
 				CAF4AB631CD3BBFD008CA9D8 /* IODishInfo.m in Sources */,
 				CADAA6C81CBBD5BD00E601DC /* YWJVersionTool.m in Sources */,
+				CAA40B5F1CDC2C3B008253A4 /* IOBadgeButton.m in Sources */,
 				CABD83C01CD8E2C4000A5066 /* IOOrderShopMenuCell.m in Sources */,
 				CA798F3D1CBA69D800A05CA8 /* YWJHistoryUUIDTool.m in Sources */,
 				CAE8F0A61CB95CA2005618B0 /* YWJRootTool.m in Sources */,

@@ -13,6 +13,9 @@
 
 #import "IODishInfo.h"
 #import "IODish.h"
+#import "IOBadgeButton.h"
+
+#define kScale 0.25
 
 @interface IOShopViewController ()<UITableViewDataSource, UITableViewDelegate>
 
@@ -23,58 +26,14 @@
 @property (nonatomic, strong) UITableView *menuTableView;
 
 @property (nonatomic, strong) NSMutableArray *dishInfos;
+@property (nonatomic, weak) UILabel *totalPrice;
+@property (nonatomic, weak) IOBadgeButton *badge;
 
 @end
 
 @implementation IOShopViewController
 
 #pragma mark - privacy
-
-- (NSMutableArray *)dishInfos{
-    if (!_dishInfos) {
-        NSString *dishInfoPath = [[NSBundle mainBundle] pathForResource:@"DishInfos" ofType:@"plist"];
-        NSMutableArray *dishData = [NSMutableArray arrayWithContentsOfFile:dishInfoPath];
-        NSMutableArray *dishInfosArray = [NSMutableArray array];
-        
-        for (NSDictionary *dishInfoDic in dishData) {
-            IODishInfo *dishInfo = [IODishInfo mj_objectWithKeyValues:dishInfoDic];
-            
-            NSMutableArray *dishArray = [NSMutableArray array];
-            for (NSDictionary *dishDic in dishInfo.dishs) {
-                IODish *dish = [IODish mj_objectWithKeyValues:dishDic];
-                [dishArray addObject:dish];
-            }
-            
-            dishInfo.dishs = dishArray;
-            [dishInfosArray addObject:dishInfo];
-        }
-        
-        _dishInfos = dishInfosArray;
-    }
-    return _dishInfos;
-}
-
-- (UITableView *)optionTableView{
-    if (!_optionTableView) {
-        _optionTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 100, self.view.height)];
-        _optionTableView.backgroundColor = [UIColor whiteColor];
-        _optionTableView.dataSource = self;
-        _optionTableView.delegate = self;
-        [self.view addSubview:_optionTableView];
-    }
-    return _optionTableView;
-}
-
-- (UITableView *)menuTableView{
-    if (!_menuTableView) {
-        _menuTableView = [[UITableView alloc] initWithFrame:CGRectMake(100, 0, self.view.width - 100, self.view.height)];
-        _menuTableView.backgroundColor = [UIColor whiteColor];
-        _menuTableView.dataSource = self;
-        _menuTableView.delegate = self;
-        [self.view addSubview:_menuTableView];
-    }
-    return _menuTableView;
-}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -87,6 +46,8 @@
     [self optionTableView];
     
     [self menuTableView];
+    
+    [self shoppingView];
     
     _isRelate = YES;
 }
@@ -123,7 +84,7 @@
         
         IODishInfo *dishInfo = _dishInfos[indexPath.row];
         
-        ((IOOrderShopOptionCell *)cell).textLabel.text = dishInfo.category;
+        ((IOOrderShopOptionCell *)cell).category = dishInfo.category;
     }else{
         cell = [IOOrderShopMenuCell cellWithTableView:tableView];
         
@@ -164,12 +125,14 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     if (tableView == self.menuTableView) {
-        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.width, 30)];
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.width, 22)];
         view.backgroundColor = YWJRGBColor(217, 217, 217, 0.7);
         
         UILabel *label = [[UILabel alloc] initWithFrame:view.bounds];
         IODishInfo *dishInfo = _dishInfos[section];
         label.text = [NSString stringWithFormat:@"   %@", dishInfo.category];
+        label.textColor = YWJRGBColor(88, 88, 88, 1);
+        label.font = [UIFont systemFontOfSize:15];
         [view addSubview:label];
         
         return view;
@@ -215,6 +178,100 @@
 
 #pragma mark - custom methods
 
+- (NSMutableArray *)dishInfos{
+    if (!_dishInfos) {
+        NSString *dishInfoPath = [[NSBundle mainBundle] pathForResource:@"DishInfos" ofType:@"plist"];
+        NSMutableArray *dishData = [NSMutableArray arrayWithContentsOfFile:dishInfoPath];
+        NSMutableArray *dishInfosArray = [NSMutableArray array];
+        
+        for (NSDictionary *dishInfoDic in dishData) {
+            IODishInfo *dishInfo = [IODishInfo mj_objectWithKeyValues:dishInfoDic];
+            
+            NSMutableArray *dishArray = [NSMutableArray array];
+            for (NSDictionary *dishDic in dishInfo.dishs) {
+                IODish *dish = [IODish mj_objectWithKeyValues:dishDic];
+                [dishArray addObject:dish];
+            }
+            
+            dishInfo.dishs = dishArray;
+            [dishInfosArray addObject:dishInfo];
+        }
+        
+        _dishInfos = dishInfosArray;
+    }
+    return _dishInfos;
+}
+
+- (UITableView *)optionTableView{
+    if (!_optionTableView) {
+        _optionTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.width * kScale, self.view.height)];
+        _optionTableView.backgroundColor = [UIColor whiteColor];
+        _optionTableView.dataSource = self;
+        _optionTableView.delegate = self;
+        [self.view addSubview:_optionTableView];
+    }
+    return _optionTableView;
+}
+
+- (UITableView *)menuTableView{
+    if (!_menuTableView) {
+        _menuTableView = [[UITableView alloc] initWithFrame:CGRectMake(self.view.width * kScale, 0, self.view.width * (1 - kScale), self.view.height)];
+        _menuTableView.backgroundColor = [UIColor whiteColor];
+        _menuTableView.dataSource = self;
+        _menuTableView.delegate = self;
+        [self.view addSubview:_menuTableView];
+    }
+    return _menuTableView;
+}
+
+- (void)shoppingView{
+    UIView *shoppingView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.height - 54, self.view.width, 54)];
+    shoppingView.backgroundColor = [UIColor clearColor];
+    CALayer *back = [CALayer layer];
+    back.frame = CGRectMake(0, 10, self.view.width, 44);
+    back.backgroundColor = YWJRGBColor(238, 240, 241, 1).CGColor;
+    [shoppingView.layer addSublayer:back];
+    [self.view addSubview:shoppingView];
+    
+    UIButton *shoppingCarBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    shoppingCarBtn.frame = CGRectMake(25, 0, 44, 44);
+    shoppingCarBtn.layer.cornerRadius = 17;
+    shoppingCarBtn.clipsToBounds = YES;
+    [shoppingCarBtn setImage:[UIImage imageNamed:@"1"] forState:UIControlStateNormal];
+    [shoppingView addSubview:shoppingCarBtn];
+    
+    UILabel *totalPrice = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(shoppingCarBtn.frame) + 6, 24, 200, 10)];
+    totalPrice.font = [UIFont systemFontOfSize:11];
+    totalPrice.text = @"haha";
+    _totalPrice = totalPrice;
+    [shoppingView addSubview:totalPrice];
+    
+    UIView *checkOutView = [[UIView alloc] init];
+    checkOutView.frame = CGRectMake(self.view.width * (1 - kScale), 10, self.view.width * kScale, 44);
+    checkOutView.backgroundColor = [UIColor lightGrayColor];
+    [shoppingView addSubview:checkOutView];
+    
+    UIButton *checkOutBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    CGPoint center = CGPointMake(checkOutBtn.center.x - checkOutView.x, checkOutBtn.y);
+    checkOutBtn.center = center;
+    [checkOutView addSubview:checkOutBtn];
+    [checkOutBtn setTitle:@"去结算" forState:UIControlStateNormal];
+    YWJLog(@"%lf %lf", center.x, center.y);
+    
+//    UILabel *checkOut = [[UILabel alloc] init];
+//    checkOut.userInteractionEnabled = YES;
+//    checkOut.textAlignment = NSTextAlignmentCenter;
+//    checkOut.frame = CGRectMake(0, 0, checkOutView.width, checkOutView.height);
+//    [checkOut setText:@"去结算"];
+//    [checkOut setTextColor:[UIColor whiteColor]];
+//    checkOut.font = [UIFont systemFontOfSize:15];
+//    [checkOutView addSubview:checkOut];
+    
+    IOBadgeButton *badge = [[IOBadgeButton alloc] initWithFrame:CGRectMake(50, 3, 1, 1)];
+    _badge = badge;
+    [shoppingView addSubview:badge];
+}
+
 - (void)setupSelfView{
 //    布局就是从导航栏下面开始
     self.edgesForExtendedLayout = UIRectEdgeNone;
@@ -222,6 +279,10 @@
     float navBarH = self.navigationController.navigationBar.height + 20;
     viewBounds.size.height = YWJMainScreenBounds.size.height - navBarH;
     self.view.bounds = viewBounds;
+}
+
+- (void)clickedCheckOut{
+    
 }
 
 @end

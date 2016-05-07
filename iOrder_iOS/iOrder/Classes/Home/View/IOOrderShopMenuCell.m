@@ -138,7 +138,7 @@
     //    菜品销售量
     UILabel *dishSaleCount = [[UILabel alloc] init];
     dishSaleCount.font = [UIFont systemFontOfSize:11];
-    dishSaleCount.textColor = [UIColor colorWithRed:180/255.0 green:180/255.0 blue:180/255.0 alpha:1];
+    dishSaleCount.textColor = YWJRGBColor(180, 180, 180, 1);
     [self addSubview:dishSaleCount];
     _dishSaleCount = dishSaleCount;
     
@@ -151,7 +151,7 @@
     //    点赞数
     UILabel *followCount = [[UILabel alloc] init];
     followCount.font = [UIFont systemFontOfSize:11];
-    followCount.textColor = [UIColor colorWithRed:180/255.0 green:180/255.0 blue:180/255.0 alpha:1];
+    followCount.textColor = YWJRGBColor(180, 180, 180, 1);
     [self addSubview:followCount];
     _followCount = followCount;
     
@@ -165,7 +165,7 @@
     UILabel *dishPriceSuffix = [[UILabel alloc] init];
     dishPriceSuffix.font = [UIFont systemFontOfSize:12];
     dishPriceSuffix.text = @"/份";
-    dishPriceSuffix.textColor = [UIColor colorWithRed:180/255.0 green:180/255.0 blue:180/255.0 alpha:1];
+    dishPriceSuffix.textColor = YWJRGBColor(180, 180, 180, 1);
     [self addSubview:dishPriceSuffix];
     _dishPriceSuffix = dishPriceSuffix;
     

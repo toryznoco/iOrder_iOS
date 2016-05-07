@@ -31,6 +31,15 @@
     return cell;
 }
 
+- (void)setCategory:(NSString *)category{
+    _category = category;
+    
+    self.textLabel.text = category;
+    self.textLabel.font = [UIFont systemFontOfSize:15];
+    self.textLabel.textColor = YWJRGBColor(88, 88, 88, 1);
+    self.textLabel.numberOfLines = 0;
+}
+
 - (void)awakeFromNib {
     // Initialization code
 }
@@ -40,6 +49,8 @@
 
     // Configure the view for the selected state
 }
+
+#pragma mark - custom methods
 
 - (void)setupAllChidView{
     UIView *selectedBgView = [[UIView alloc] initWithFrame:self.frame];
