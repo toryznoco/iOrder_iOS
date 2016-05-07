@@ -14,9 +14,9 @@
 
 - (NSArray *)transmitters;
 - (NSArray *)historyUUIDs;
-- (void)addHistoryUUID:(NSString *)uuid;
-- (BOOL)addTransmitter:(NSDictionary *)transmitter;
-- (void)replaceAtIndex:(NSInteger)index withTransmitter:(NSDictionary *)transmitter;
-- (void)removeTransmitterAtIndex:(NSInteger)index;
+//- (void)addHistoryUUID:(NSString *)uuid;
+//- (BOOL)addTransmitter:(NSDictionary *)transmitter;
+//- (void)replaceAtIndex:(NSInteger)index withTransmitter:(NSDictionary *)transmitter;
+//- (void)removeTransmitterAtIndex:(NSInteger)index;
 
 @end

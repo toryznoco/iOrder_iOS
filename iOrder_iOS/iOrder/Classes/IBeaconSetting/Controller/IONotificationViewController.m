@@ -87,7 +87,7 @@
     [self.view addSubview:_exitLabel];
 }
 
-- (void)setupAllChildViewFrame{
+- (void)setupAllChildViewFrame {
     self.enterLabel.frame = CGRectMake(kMargin, 143, 183, 21);
     self.enterSwitch.frame = CGRectMake(251, 138, self.enterSwitch.bounds.size.width, self.enterSwitch.bounds.size.height);
     self.exitLabel.frame = CGRectMake(kMargin, 194, 171, 21);
