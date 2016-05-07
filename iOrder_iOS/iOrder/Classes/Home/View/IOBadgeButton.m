@@ -14,7 +14,8 @@
 
 - (instancetype)initWithFrame:(CGRect)frame{
     if (self = [super initWithFrame:frame]) {
-        self.hidden = YES;
+        self.hidden = NO;
+        self.backgroundColor = [UIColor redColor];
         self.userInteractionEnabled = NO;
         UIImage *image = [UIImage imageNamed:@"main_badge"];
         [self setBackgroundImage:[image stretchableImageWithLeftCapWidth:image.size.width * 0.5 topCapHeight:image.size.height * 0.5] forState:UIControlStateNormal];

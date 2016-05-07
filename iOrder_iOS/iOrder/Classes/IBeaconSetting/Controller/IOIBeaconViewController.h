@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "AprilBeaconSDK.h"
 
+#import "AprilBeaconSDK.h"
+
 @interface IOIBeaconViewController : UITableViewController<ABBeaconManagerDelegate>
 
 @end
