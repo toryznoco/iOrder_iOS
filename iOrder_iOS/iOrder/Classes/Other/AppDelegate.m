@@ -13,6 +13,9 @@
 #import "YWJRootTool.h"
 #import "YWJVersionTool.h"
 
+
+#import "AFNetworking.h"
+
 @interface AppDelegate ()
 
 @property (nonatomic) UIBackgroundTaskIdentifier taskId;
@@ -24,8 +27,6 @@
 #pragma mark - self
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    
-    
     
 //    创建管理者
     self.beaconManager = [[ABBeaconManager alloc] init];
