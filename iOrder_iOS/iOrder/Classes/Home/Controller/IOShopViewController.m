@@ -13,7 +13,7 @@
 
 #import "IODishInfo.h"
 #import "IODish.h"
-#import "IOBadgeButton.h"
+#import "IOBadgeView.h"
 
 #define kScale 0.25
 
@@ -30,7 +30,7 @@
 @property (nonatomic, weak) UIButton *shoppingCarBtn;
 @property (nonatomic, weak) UIView *checkOutView;
 @property (nonatomic, weak) UILabel *totalPrice;
-@property (nonatomic, weak) IOBadgeButton *badge;
+@property (nonatomic, weak) IOBadgeView *badge;
 
 @end
 
@@ -228,6 +228,9 @@
     return _menuTableView;
 }
 
+/**
+ *  购物栏的View
+ */
 - (void)shoppingView{
     UIView *shoppingView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.height - 54, self.view.width, 54)];
     shoppingView.backgroundColor = [UIColor clearColor];
@@ -247,6 +250,13 @@
     [shoppingView addSubview:shoppingCarBtn];
     _shoppingCarBtn = shoppingCarBtn;
     
+    
+    IOBadgeView *badge = [[IOBadgeView alloc] init];
+    badge.x = CGRectGetMaxX(shoppingCarBtn.frame) - 14;
+    _badge = badge;
+    _badge.badgeValue = @"0";
+    [shoppingView addSubview:badge];
+
     UILabel *totalPrice = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(shoppingCarBtn.frame) + 5, 24, 200, 14)];
     totalPrice.textColor = [UIColor lightGrayColor];
     totalPrice.font = [UIFont systemFontOfSize:17];
@@ -267,26 +277,6 @@
     [checkOutBtn sizeToFit];
     checkOutBtn.center = center;
     [checkOutBtn addTarget:self action:@selector(clickedCheckOut) forControlEvents:UIControlEventTouchUpInside];
-    
-    
-    
-//    IOBadgeButton *badge = [[IOBadgeButton alloc] initWithFrame:CGRectMake(0, 10, 50, 50)];
-//    badge.titleLabel.text = @"hahahha";
-//    _badge = badge;
-//    _badge.badgeValue = @"5";
-//    [shoppingView addSubview:badge];
-//    UIButton *hahh = [UIButton buttonWithType:UIButtonTypeCustom];
-//    hahh.frame = CGRectMake(0, 10, 40, 20);
-//    hahh.titleLabel.text = @"哈哈";
-////    hahh.titleLabel.textColor = [UIColor greenColor];
-////    hahh.backgroundColor = [UIColor redColor];
-//    [shoppingView addSubview:hahh];
-//    [hahh bringSubviewToFront:shoppingView];
-    UILabel *hhhhh = [[UILabel alloc] init];
-    hhhhh.layer.cornerRadius = 5;
-    hhhhh.text = @"hhhhhhhh";
-    [hhhhh sizeToFit];
-    [shoppingView addSubview:hhhhh];
 }
 
 - (void)setupSelfView{
@@ -312,8 +302,10 @@
         if ([_totalPrice.text isEqualToString:@"购物车是空的"]) {
             _totalPrice.text = @"0";
         }
+        _badge.badgeValue = [NSString stringWithFormat:@"%lld", [_badge.badgeValue longLongValue] + 1];
         _totalPrice.text = [NSString stringWithFormat:@"¥%lld", ([[_totalPrice.text substringFromIndex:1] longLongValue] + [dishPrice longLongValue])];
     }else{
+        _badge.badgeValue = [NSString stringWithFormat:@"%lld", [_badge.badgeValue longLongValue] - 1];
         _totalPrice.text = [NSString stringWithFormat:@"¥%lld", ([[_totalPrice.text substringFromIndex:1] longLongValue] - [dishPrice longLongValue])];
         if ([_totalPrice.text isEqualToString:@"¥0"]) {
             _checkOutView.backgroundColor = [UIColor lightGrayColor];
