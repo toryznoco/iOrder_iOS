@@ -18,7 +18,6 @@ public class ShopAction extends BaseAction {
 	public String getNearestShops() {
 		shops = getServMgr().getShopService().callNearestShops(userLat, userLng,
 				startId, amount);
-		log.info(shops);
 		
 		return "shops";
 	}

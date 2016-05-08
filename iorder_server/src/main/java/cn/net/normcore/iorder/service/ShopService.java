@@ -13,6 +13,7 @@ public class ShopService extends BaseService {
 	public List<Map<String, Object>> callNearestShops(double userLat,
 			double userLng, int startId, int amount) {
 		// TODO Auto-generated method stub
+		
 		return cst.callForList("call getNearestShops(?, ?, ?, ?)",
 				new Object[] { startId, amount, userLng, userLat },
 				new DataExtracter() {
