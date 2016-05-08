@@ -209,8 +209,6 @@
     [unOrderBtn addTarget:self action:@selector(orderBtnClicked:) forControlEvents:UIControlEventTouchDown];
     [self addSubview:unOrderBtn];
     _unOrderBtn = unOrderBtn;
-    
-    
 }
 
 - (void)setupDish{

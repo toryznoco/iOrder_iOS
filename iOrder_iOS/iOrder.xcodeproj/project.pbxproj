@@ -22,6 +22,7 @@
 		CA798F431CBA739000A05CA8 /* IONotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA798F421CBA739000A05CA8 /* IONotificationViewController.m */; };
 		CA97D1DE1CCE42C200816ECB /* IOShopViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA97D1DD1CCE42C200816ECB /* IOShopViewController.m */; settings = {ASSET_TAGS = (); }; };
 		CAB8E48C1CDED993000C4158 /* IOBadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = CAB8E48B1CDED993000C4158 /* IOBadgeView.m */; settings = {ASSET_TAGS = (); }; };
+		CAB8E48F1CDEE2F8000C4158 /* IODishViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CAB8E48E1CDEE2F8000C4158 /* IODishViewController.m */; settings = {ASSET_TAGS = (); }; };
 		CABD83C01CD8E2C4000A5066 /* IOOrderShopMenuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CABD83BF1CD8E2C4000A5066 /* IOOrderShopMenuCell.m */; settings = {ASSET_TAGS = (); }; };
 		CABD83C31CD8E2EF000A5066 /* IOOrderShopOptionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CABD83C21CD8E2EF000A5066 /* IOOrderShopOptionCell.m */; settings = {ASSET_TAGS = (); }; };
 		CADAA6C81CBBD5BD00E601DC /* YWJVersionTool.m in Sources */ = {isa = PBXBuildFile; fileRef = CADAA6C71CBBD5BD00E601DC /* YWJVersionTool.m */; };
@@ -95,6 +96,8 @@
 		CA97D1DD1CCE42C200816ECB /* IOShopViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOShopViewController.m; sourceTree = "<group>"; };
 		CAB8E48A1CDED993000C4158 /* IOBadgeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOBadgeView.h; sourceTree = "<group>"; };
 		CAB8E48B1CDED993000C4158 /* IOBadgeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOBadgeView.m; sourceTree = "<group>"; };
+		CAB8E48D1CDEE2F8000C4158 /* IODishViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IODishViewController.h; sourceTree = "<group>"; };
+		CAB8E48E1CDEE2F8000C4158 /* IODishViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IODishViewController.m; sourceTree = "<group>"; };
 		CABD83BE1CD8E2C4000A5066 /* IOOrderShopMenuCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOOrderShopMenuCell.h; sourceTree = "<group>"; };
 		CABD83BF1CD8E2C4000A5066 /* IOOrderShopMenuCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOOrderShopMenuCell.m; sourceTree = "<group>"; };
 		CABD83C11CD8E2EF000A5066 /* IOOrderShopOptionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOOrderShopOptionCell.h; sourceTree = "<group>"; };
@@ -201,6 +204,8 @@
 				9A7E9FC31CBF25AA00E44BE1 /* IOOrderViewController.m */,
 				CA97D1DC1CCE42C200816ECB /* IOShopViewController.h */,
 				CA97D1DD1CCE42C200816ECB /* IOShopViewController.m */,
+				CAB8E48D1CDEE2F8000C4158 /* IODishViewController.h */,
+				CAB8E48E1CDEE2F8000C4158 /* IODishViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -757,6 +762,7 @@
 				CAE206E51CC931EE00F6538B /* IOScrollView.m in Sources */,
 				CAF4AB661CD3BDB7008CA9D8 /* IODish.m in Sources */,
 				CAE8F0921CB9461C005618B0 /* IOProfileViewController.m in Sources */,
+				CAB8E48F1CDEE2F8000C4158 /* IODishViewController.m in Sources */,
 				CAE8F08F1CB9459B005618B0 /* IOOrderedViewController.m in Sources */,
 				CAE8F07C1CB94170005618B0 /* YWJTabBar.m in Sources */,
 				CAE8F07B1CB94170005618B0 /* YWJBadgeView.m in Sources */,
@@ -935,7 +941,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = cn.net.normcore.iOrder;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				USER_HEADER_SEARCH_PATHS = "";
+				USER_HEADER_SEARCH_PATHS = "$(PODS_ROOT)/**";
 			};
 			name = Debug;
 		};
@@ -985,7 +991,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = cn.net.normcore.iOrder;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				USER_HEADER_SEARCH_PATHS = "";
+				USER_HEADER_SEARCH_PATHS = "$(PODS_ROOT)/**";
 			};
 			name = Release;
 		};
