@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+	default-autowire="byName" default-merge="true">
+
+	<bean id="serviceManager" class="cn.net.normcore.iorder.service.ServiceManager" />
+
+	<bean id="shopService" parent="baseTxService">
+		<property name="target">
+			<bean class="cn.net.normcore.iorder.service.ShopService"></bean>
+		</property>
+	</bean>
+
+</beans>
