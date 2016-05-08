@@ -13,6 +13,7 @@ public class ShopService extends BaseService {
 	public List<Map<String, Object>> callNearestShops(double userLat,
 			double userLng, int startId, int amount) {
 		// TODO Auto-generated method stub
+		
 		return cst.callForList("call getNearestShops(?, ?, ?, ?)",
 				new Object[] { startId, amount, userLng, userLat },
 				new DataExtracter() {
@@ -22,6 +23,7 @@ public class ShopService extends BaseService {
 							throws SQLException {
 						// TODO Auto-generated method stub
 						Map<String, Object> map = new HashMap<String, Object>();
+						map.put("id", rst.getInt("id"));
 						map.put("name", rst.getString("name"));
 						map.put("cheap", rst.getString("cheap"));
 						map.put("picture", rst.getString("picture"));
