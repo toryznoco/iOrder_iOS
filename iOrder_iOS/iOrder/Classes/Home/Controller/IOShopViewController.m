@@ -10,6 +10,7 @@
 
 #import "IOOrderShopMenuCell.h"
 #import "IOOrderShopOptionCell.h"
+#import "IODishViewController.h"
 
 #import "IODishInfo.h"
 #import "IODish.h"
@@ -171,6 +172,9 @@
         [self.menuTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:indexPath.row] atScrollPosition:UITableViewScrollPositionTop animated:YES];
     }else{
         [self.menuTableView deselectRowAtIndexPath:indexPath animated:NO];
+        
+        IODishViewController *dishVc = [[IODishViewController alloc] init];
+        [self.navigationController pushViewController:dishVc animated:YES];
     }
 }
 
