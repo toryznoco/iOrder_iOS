@@ -11,6 +11,10 @@
 			<result name="shops" type="json">
 				<param name="root">shops</param>
 			</result>
+			
+			<result name="shopDishes" type="json">
+				<param name="root">shopDishes</param>
+			</result>
 		</action>
 		
 	</package>

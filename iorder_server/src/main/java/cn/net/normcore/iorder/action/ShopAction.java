@@ -14,11 +14,17 @@ public class ShopAction extends BaseAction {
 	private double userLng; // 用户所在位置经度
 	private int startId;
 	private int amount;
+	private int shopId;
+	private List<Map<String, Object>> shopDishes;
+
+	public String getShopDishesInfo() {
+		shopDishes = getServMgr().getShopService().getShopDishes(shopId);
+		return "shopDishes";
+	}
 
 	public String getNearestShops() {
-		shops = getServMgr().getShopService().callNearestShops(userLat, userLng,
-				startId, amount);
-		
+		shops = getServMgr().getShopService().callNearestShops(userLat,
+				userLng, startId, amount);
 		return "shops";
 	}
 
@@ -41,4 +47,13 @@ public class ShopAction extends BaseAction {
 	public void setAmount(int amount) {
 		this.amount = amount;
 	}
+
+	public void setShopId(int shopId) {
+		this.shopId = shopId;
+	}
+
+	public List<Map<String, Object>> getShopDishes() {
+		return shopDishes;
+	}
+
 }
