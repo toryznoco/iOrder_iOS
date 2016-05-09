@@ -21,7 +21,7 @@ public class ShopAction extends BaseAction {
 				getServMgr().getShopService().getShopDishes(shopId));
 		return "jsonResult";
 	}
-
+	
 	public String getNearestShops() {
 		json.put(
 				"shops",
