@@ -12,7 +12,6 @@
 #import "IOOrderViewController.h"
 #import "IOOrderedViewController.h"
 #import "IOProfileViewController.h"
-#import "IOIBeaconViewController.h"
 #import "IONavigationController.h"
 
 #import "RDVTabBarItem.h"
