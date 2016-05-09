@@ -6,17 +6,13 @@
 
 	<package name="iorder-actions" extends="iorder-default"
 		namespace="/server">
-		
+
 		<action name="shop" class="cn.net.normcore.iorder.action.ShopAction">
-			<result name="shops" type="json">
-				<param name="root">shops</param>
-			</result>
-			
-			<result name="shopDishes" type="json">
-				<param name="root">shopDishes</param>
+			<result name="jsonResult" type="json">
+				<param name="root">json</param>
 			</result>
 		</action>
-		
+
 	</package>
 
 </struts>

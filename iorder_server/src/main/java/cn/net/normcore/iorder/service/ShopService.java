@@ -24,11 +24,11 @@ public class ShopService extends BaseService {
 							throws SQLException {
 						// TODO Auto-generated method stub
 						Map<String, Object> map = new HashMap<String, Object>();
-						map.put("id", rst.getInt("id"));
+						map.put("shopId", rst.getInt("id"));
 						map.put("name", rst.getString("name"));
 						map.put("cheap", rst.getString("cheap"));
 						map.put("picture", rst.getString("picture"));
-						map.put("score", rst.getInt("score"));
+						map.put("score", rst.getFloat("score"));
 						map.put("perPri", rst.getFloat("perPri"));
 						map.put("toSal", rst.getInt("toSal"));
 						map.put("distance", rst.getInt("distance"));
