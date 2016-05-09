@@ -12,6 +12,7 @@
 
 #import "YWJRootTool.h"
 #import "YWJVersionTool.h"
+#import "IOTransmitters.h"
 
 
 #import "AFNetworking.h"
@@ -19,6 +20,7 @@
 @interface AppDelegate ()
 
 @property (nonatomic) UIBackgroundTaskIdentifier taskId;
+@property (nonatomic, strong) ABBeaconRegion *region;
 
 @end
 
@@ -37,6 +39,8 @@
         [application registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert|UIUserNotificationTypeBadge|UIUserNotificationTypeSound categories:nil]];
     }
     
+    [self startMonitoring];
+    
 #warning 以后不需要此行代码，此处便于调试
     [YWJVersionTool saveVersion:@"0.1"];
     
@@ -46,6 +50,22 @@
     [YWJRootTool chooseRootViewController:self.window];
     
     return YES;
+}
+
+- (void)startMonitoring {
+//    if (!_region) {
+//    }else{
+//        [_beaconManager stopMonitoringForRegion:self.region];
+//    }
+    IOTransmitters *tran = [IOTransmitters sharedTransmitters];
+    [[tran transmitters] enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        NSUUID *proximityUUID = [[NSUUID alloc] initWithUUIDString:obj[@"uuid"]];
+        self.region = [[ABBeaconRegion alloc] initWithProximityUUID:proximityUUID identifier:proximityUUID.UUIDString];
+    }];
+    self.region.notifyOnEntry = YES;
+    self.region.notifyOnExit = YES;
+    self.region.notifyEntryStateOnDisplay = YES;
+    [_beaconManager startMonitoringForRegion:self.region];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
