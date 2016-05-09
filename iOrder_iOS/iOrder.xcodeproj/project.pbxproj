@@ -13,6 +13,7 @@
 		CA51A8131CC67C0A00CEC94B /* IOOrderShopStarView.m in Sources */ = {isa = PBXBuildFile; fileRef = CA51A8101CC67C0A00CEC94B /* IOOrderShopStarView.m */; settings = {ASSET_TAGS = (); }; };
 		CA51A8141CC67C0A00CEC94B /* IOOrderViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CA51A8121CC67C0A00CEC94B /* IOOrderViewCell.m */; settings = {ASSET_TAGS = (); }; };
 		CA51A82D1CC67CB200CEC94B /* ShopInfos.plist in Resources */ = {isa = PBXBuildFile; fileRef = CA51A82C1CC67CB200CEC94B /* ShopInfos.plist */; settings = {ASSET_TAGS = (); }; };
+		CA5C16BA1CDF78BC006BEC5D /* IOShoppingView.m in Sources */ = {isa = PBXBuildFile; fileRef = CA5C16B91CDF78BC006BEC5D /* IOShoppingView.m */; settings = {ASSET_TAGS = (); }; };
 		CA6539561CBD40E6000972E2 /* IONewFeatureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA6539551CBD40E6000972E2 /* IONewFeatureViewController.m */; };
 		CA6539591CBD44CF000972E2 /* YWJNewFeatureScrollPage.m in Sources */ = {isa = PBXBuildFile; fileRef = CA6539581CBD44CF000972E2 /* YWJNewFeatureScrollPage.m */; };
 		CA798F301CBA501000A05CA8 /* IOIBeaconViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA798F2F1CBA501000A05CA8 /* IOIBeaconViewController.m */; };
@@ -78,6 +79,8 @@
 		CA51A8111CC67C0A00CEC94B /* IOOrderViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOOrderViewCell.h; sourceTree = "<group>"; };
 		CA51A8121CC67C0A00CEC94B /* IOOrderViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOOrderViewCell.m; sourceTree = "<group>"; };
 		CA51A82C1CC67CB200CEC94B /* ShopInfos.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ShopInfos.plist; sourceTree = "<group>"; };
+		CA5C16B81CDF78BC006BEC5D /* IOShoppingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOShoppingView.h; sourceTree = "<group>"; };
+		CA5C16B91CDF78BC006BEC5D /* IOShoppingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOShoppingView.m; sourceTree = "<group>"; };
 		CA6539541CBD40E6000972E2 /* IONewFeatureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IONewFeatureViewController.h; sourceTree = "<group>"; };
 		CA6539551CBD40E6000972E2 /* IONewFeatureViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IONewFeatureViewController.m; sourceTree = "<group>"; };
 		CA6539571CBD44CF000972E2 /* YWJNewFeatureScrollPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWJNewFeatureScrollPage.h; sourceTree = "<group>"; };
@@ -244,6 +247,8 @@
 				CABD83C21CD8E2EF000A5066 /* IOOrderShopOptionCell.m */,
 				CAB8E48A1CDED993000C4158 /* IOBadgeView.h */,
 				CAB8E48B1CDED993000C4158 /* IOBadgeView.m */,
+				CA5C16B81CDF78BC006BEC5D /* IOShoppingView.h */,
+				CA5C16B91CDF78BC006BEC5D /* IOShoppingView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -754,6 +759,7 @@
 				CA798F3D1CBA69D800A05CA8 /* YWJHistoryUUIDTool.m in Sources */,
 				CAE8F0A61CB95CA2005618B0 /* YWJRootTool.m in Sources */,
 				CAE8F0811CB94170005618B0 /* UIView+YWJFrame.m in Sources */,
+				CA5C16BA1CDF78BC006BEC5D /* IOShoppingView.m in Sources */,
 				9A7E9FC61CBF25AA00E44BE1 /* IOOrderViewController.m in Sources */,
 				CAE206EB1CC9344C00F6538B /* IOTitleView.m in Sources */,
 				CA51A8131CC67C0A00CEC94B /* IOOrderShopStarView.m in Sources */,
