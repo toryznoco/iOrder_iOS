@@ -9,7 +9,7 @@
 #import "IOOrderViewCell.h"
 
 #import "IOOrderShopStarView.h"
-#import "IOShopInfo.h"
+#import "IOShop.h"
 
 @interface IOOrderViewCell ()
 
@@ -108,8 +108,8 @@
     return cell;
 }
 
-- (void)setShopInfo:(IOShopInfo *)shopInfo{
-    _shopInfo = shopInfo;
+- (void)setShop:(IOShop *)shop{
+    _shop = shop;
     
     [self setupShopInfo];
 }
@@ -117,26 +117,28 @@
 #pragma custom methods
 
 - (void)setupShopInfo{
-    [_shopIcon setImage:[UIImage imageNamed:_shopInfo.shopIcon]];
-    _shopName.text = _shopInfo.shopName;
+//    [_shopIcon setImage:[UIImage imageNamed:_shop.picture]];
+    [_shopIcon setImage:[UIImage imageNamed:@"barbecue_image"]];
+    
+    _shopName.text = _shop.name;
     _shopName.font = [UIFont systemFontOfSize:15];
     [_shopIcon sizeToFit];
     
-    _shopIntro.text = _shopInfo.shopIntro;
+    _shopIntro.text = _shop.cheap;
     _shopIntro.textColor = [UIColor colorWithRed:180/255.0 green:180/255.0 blue:180/255.0 alpha:1];
     _shopIntro.font = [UIFont systemFontOfSize:13];
     
-    _shopDistance.text = [NSString stringWithFormat:@"%@km", _shopInfo.shopDistance];
+    _shopDistance.text = [NSString stringWithFormat:@"%dkm", _shop.distance];
     _shopDistance.textColor = [UIColor colorWithRed:180/255.0 green:180/255.0 blue:180/255.0 alpha:1];
     _shopDistance.font = [UIFont systemFontOfSize:13];
     
-    _shopStarView.startCount = _shopInfo.shopStar;
+    _shopStarView.startCount = _shop.score;
     
-    _shopPrice.text = [NSString stringWithFormat:@"¥%@/人", _shopInfo.shopPrice];
+    _shopPrice.text = [NSString stringWithFormat:@"¥%.2f/人", _shop.perPri];
     _shopPrice.font = [UIFont systemFontOfSize:13];
     _shopPrice.textColor = [UIColor colorWithRed:180/255.0 green:180/255.0 blue:180/255.0 alpha:1];
     
-    _shopSaleCount.text = [NSString stringWithFormat:@"已售%@", _shopInfo.shopSaleCount];
+    _shopSaleCount.text = [NSString stringWithFormat:@"已售%d", _shop.toSal];
     _shopSaleCount.font = [UIFont systemFontOfSize:13];
     _shopSaleCount.textColor = [UIColor colorWithRed:180/255.0 green:180/255.0 blue:180/255.0 alpha:1];
 }
