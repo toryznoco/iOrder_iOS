@@ -17,6 +17,10 @@
 
 #import "IOShoppingView.h"
 
+#import "IODishes.h"
+#import "IODish.h"
+#import "YWJDishesTool.h"
+
 #define kScale 0.25
 
 @interface IOShopViewController ()<UITableViewDataSource, UITableViewDelegate, IOOrderShopMenuCellDelegate>
@@ -40,8 +44,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-//    加载数据
+    //    初始化数组和加载数据
     [self dishInfos];
+    [self loadDishInfos];
     
     [self setupSelfView];
     
@@ -51,7 +56,7 @@
     
     [self setUpShoppingView];
     
-    _isRelate = YES;
+//    _isRelate = YES;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -70,11 +75,11 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    IODishInfo *dishInfo = _dishInfos[section];
+    IODishes *dishInfo = _dishInfos[section];
     if (tableView == self.optionTableView) {
         return _dishInfos.count;
     }else{
-        return dishInfo.dishs.count;
+        return dishInfo.dishes.count;
     }
 }
 
@@ -84,15 +89,15 @@
     if (tableView == self.optionTableView) {
         cell = [IOOrderShopOptionCell cellWithTableView:tableView];
         
-        IODishInfo *dishInfo = _dishInfos[indexPath.row];
+        IODishes *dishInfo = _dishInfos[indexPath.row];
         
-        ((IOOrderShopOptionCell *)cell).category = dishInfo.category;
+        ((IOOrderShopOptionCell *)cell).category = dishInfo.catgName;
     }else{
         cell = [IOOrderShopMenuCell cellWithTableView:tableView];
         ((IOOrderShopMenuCell *)cell).delegate = self;
         
-        IODishInfo *dishInfo = _dishInfos[indexPath.section];
-        IODish *dish = dishInfo.dishs[indexPath.row];
+        IODishes *dishInfo = _dishInfos[indexPath.section];
+        IODish *dish = dishInfo.dishes[indexPath.row];
         
         ((IOOrderShopMenuCell *)cell).dish = dish;
     }
@@ -132,8 +137,8 @@
         view.backgroundColor = YWJRGBColor(217, 217, 217, 0.7);
         
         UILabel *label = [[UILabel alloc] initWithFrame:view.bounds];
-        IODishInfo *dishInfo = _dishInfos[section];
-        label.text = [NSString stringWithFormat:@"   %@", dishInfo.category];
+        IODishes *dishInfo = _dishInfos[section];
+        label.text = [NSString stringWithFormat:@"   %@", dishInfo.catgName];
         label.textColor = YWJRGBColor(88, 88, 88, 1);
         label.font = [UIFont systemFontOfSize:15];
         [view addSubview:label];
@@ -161,6 +166,8 @@
             [self.optionTableView selectRowAtIndexPath:[NSIndexPath indexPathForItem:topCellSection inSection:0] animated:YES scrollPosition:UITableViewScrollPositionMiddle];
         }
     }
+#warning todo:
+//    [UITableView _contentOffsetForScrollingToRowAtIndexPath:atScrollPosition:]
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -186,34 +193,41 @@
 
 - (NSMutableArray *)dishInfos{
     if (!_dishInfos) {
-        NSString *dishInfoPath = [[NSBundle mainBundle] pathForResource:@"DishInfos" ofType:@"plist"];
-        NSMutableArray *dishData = [NSMutableArray arrayWithContentsOfFile:dishInfoPath];
+        _dishInfos = [NSMutableArray array];
+    }
+    return _dishInfos;
+}
+
+- (void)loadDishInfos{
+    [YWJDishesTool newShopDishesWithShopId:1 Success:^(NSArray *shops) {
         NSMutableArray *dishInfosArray = [NSMutableArray array];
-        
-        for (NSDictionary *dishInfoDic in dishData) {
-            IODishInfo *dishInfo = [IODishInfo mj_objectWithKeyValues:dishInfoDic];
-            
+        for (NSDictionary *dishInfoDic in shops) {
+            IODishes *dishes = [IODishes mj_objectWithKeyValues:dishInfoDic];
             NSMutableArray *dishArray = [NSMutableArray array];
-            for (NSDictionary *dishDic in dishInfo.dishs) {
+            for (NSDictionary *dishDic in dishes.dishes) {
                 IODish *dish = [IODish mj_objectWithKeyValues:dishDic];
                 [dishArray addObject:dish];
             }
-            
-            dishInfo.dishs = dishArray;
-            [dishInfosArray addObject:dishInfo];
+            dishes.dishes = dishArray;
+            [dishInfosArray addObject:dishes];
         }
         
-        _dishInfos = dishInfosArray;
-    }
-    return _dishInfos;
+        [_dishInfos addObjectsFromArray:dishInfosArray];
+        _optionTableView.dataSource = self;
+        _optionTableView.delegate = self;
+        _menuTableView.dataSource = self;
+        _menuTableView.delegate = self;
+        [_menuTableView reloadData];
+        [_optionTableView reloadData];
+    } failure:^(NSError *error) {
+        YWJLog(@"%@", error);
+    }];
 }
 
 - (UITableView *)optionTableView{
     if (!_optionTableView) {
         _optionTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.width * kScale, self.view.height)];
         _optionTableView.backgroundColor = [UIColor whiteColor];
-        _optionTableView.dataSource = self;
-        _optionTableView.delegate = self;
         [self.view addSubview:_optionTableView];
     }
     return _optionTableView;
@@ -223,8 +237,6 @@
     if (!_menuTableView) {
         _menuTableView = [[UITableView alloc] initWithFrame:CGRectMake(self.view.width * kScale, 0, self.view.width * (1 - kScale), self.view.height)];
         _menuTableView.backgroundColor = [UIColor whiteColor];
-        _menuTableView.dataSource = self;
-        _menuTableView.delegate = self;
         [self.view addSubview:_menuTableView];
     }
     return _menuTableView;
@@ -250,7 +262,7 @@
 
 #pragma mark shop menu cell delegate
 
-- (void)orderShopMenuCell:(IOOrderShopMenuCell *)shopMenuCell dishPrice:(NSString *)dishPrice clickedBtn:(UIButton *)btn{
+- (void)orderShopMenuCell:(IOOrderShopMenuCell *)shopMenuCell dishPrice:(float)dishPrice clickedBtn:(UIButton *)btn{
     if (btn.tag == 1) {
         _shoppingView.checkOutView.backgroundColor = [UIColor orangeColor];
         _shoppingView.shoppingCarBtn.enabled = YES;
@@ -260,10 +272,10 @@
             _shoppingView.checkOutBtn.enabled = YES;
         }
         _shoppingView.badge.badgeValue = [NSString stringWithFormat:@"%lld", [_shoppingView.badge.badgeValue longLongValue] + 1];
-        _shoppingView.totalPrice.text = [NSString stringWithFormat:@"¥%lld", ([[_shoppingView.totalPrice.text substringFromIndex:1] longLongValue] + [dishPrice longLongValue])];
+        _shoppingView.totalPrice.text = [NSString stringWithFormat:@"¥%.2f", ([[_shoppingView.totalPrice.text substringFromIndex:1] floatValue] + dishPrice)];
     }else{
         _shoppingView.badge.badgeValue = [NSString stringWithFormat:@"%lld", [_shoppingView.badge.badgeValue longLongValue] - 1];
-        _shoppingView.totalPrice.text = [NSString stringWithFormat:@"¥%lld", ([[_shoppingView.totalPrice.text substringFromIndex:1] longLongValue] - [dishPrice longLongValue])];
+        _shoppingView.totalPrice.text = [NSString stringWithFormat:@"¥%.2f", ([[_shoppingView.totalPrice.text substringFromIndex:1] floatValue] - dishPrice)];
         if ([_shoppingView.totalPrice.text isEqualToString:@"¥0"]) {
             _shoppingView.checkOutBtn.enabled = NO;
             _shoppingView.checkOutView.backgroundColor = [UIColor lightGrayColor];

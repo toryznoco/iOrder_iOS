@@ -21,7 +21,6 @@
 		9A8CC36D1CE0AFC7005E19D9 /* IODish.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC34E1CE0AFC7005E19D9 /* IODish.m */; };
 		9A8CC36E1CE0AFC7005E19D9 /* IODishInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC3501CE0AFC7005E19D9 /* IODishInfo.m */; };
 		9A8CC36F1CE0AFC7005E19D9 /* IOShop.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC3521CE0AFC7005E19D9 /* IOShop.m */; };
-		9A8CC3701CE0AFC7005E19D9 /* IOShopInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC3541CE0AFC7005E19D9 /* IOShopInfo.m */; };
 		9A8CC3711CE0AFC7005E19D9 /* IOBadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC3571CE0AFC7005E19D9 /* IOBadgeView.m */; };
 		9A8CC3721CE0AFC7005E19D9 /* IOOrderHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC3591CE0AFC7005E19D9 /* IOOrderHeaderView.m */; };
 		9A8CC3731CE0AFC7005E19D9 /* IOOrderShopMenuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC35B1CE0AFC7005E19D9 /* IOOrderShopMenuCell.m */; };
@@ -35,6 +34,10 @@
 		CA51A82D1CC67CB200CEC94B /* ShopInfos.plist in Resources */ = {isa = PBXBuildFile; fileRef = CA51A82C1CC67CB200CEC94B /* ShopInfos.plist */; };
 		CA6539561CBD40E6000972E2 /* IONewFeatureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA6539551CBD40E6000972E2 /* IONewFeatureViewController.m */; };
 		CA6539591CBD44CF000972E2 /* YWJNewFeatureScrollPage.m in Sources */ = {isa = PBXBuildFile; fileRef = CA6539581CBD44CF000972E2 /* YWJNewFeatureScrollPage.m */; };
+		CA9019911CE16B7A00AC5712 /* YWJDishesParam.m in Sources */ = {isa = PBXBuildFile; fileRef = CA90198B1CE16B7A00AC5712 /* YWJDishesParam.m */; settings = {ASSET_TAGS = (); }; };
+		CA9019921CE16B7A00AC5712 /* YWJDishesResult.m in Sources */ = {isa = PBXBuildFile; fileRef = CA90198E1CE16B7A00AC5712 /* YWJDishesResult.m */; settings = {ASSET_TAGS = (); }; };
+		CA9019931CE16B7A00AC5712 /* YWJDishesTool.m in Sources */ = {isa = PBXBuildFile; fileRef = CA9019901CE16B7A00AC5712 /* YWJDishesTool.m */; settings = {ASSET_TAGS = (); }; };
+		CA9019961CE16C1200AC5712 /* IODishes.m in Sources */ = {isa = PBXBuildFile; fileRef = CA9019951CE16C1200AC5712 /* IODishes.m */; settings = {ASSET_TAGS = (); }; };
 		CAE8F02C1CB940E2005618B0 /* iOrderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F02B1CB940E2005618B0 /* iOrderTests.m */; };
 		CAE8F0371CB940E2005618B0 /* iOrderUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F0361CB940E2005618B0 /* iOrderUITests.m */; };
 		CAE8F07B1CB94170005618B0 /* YWJBadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F04E1CB94170005618B0 /* YWJBadgeView.m */; };
@@ -95,8 +98,6 @@
 		9A8CC3501CE0AFC7005E19D9 /* IODishInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IODishInfo.m; sourceTree = "<group>"; };
 		9A8CC3511CE0AFC7005E19D9 /* IOShop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOShop.h; sourceTree = "<group>"; };
 		9A8CC3521CE0AFC7005E19D9 /* IOShop.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOShop.m; sourceTree = "<group>"; };
-		9A8CC3531CE0AFC7005E19D9 /* IOShopInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOShopInfo.h; sourceTree = "<group>"; };
-		9A8CC3541CE0AFC7005E19D9 /* IOShopInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOShopInfo.m; sourceTree = "<group>"; };
 		9A8CC3561CE0AFC7005E19D9 /* IOBadgeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOBadgeView.h; sourceTree = "<group>"; };
 		9A8CC3571CE0AFC7005E19D9 /* IOBadgeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOBadgeView.m; sourceTree = "<group>"; };
 		9A8CC3581CE0AFC7005E19D9 /* IOOrderHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOOrderHeaderView.h; sourceTree = "<group>"; };
@@ -124,6 +125,14 @@
 		CA6539551CBD40E6000972E2 /* IONewFeatureViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IONewFeatureViewController.m; sourceTree = "<group>"; };
 		CA6539571CBD44CF000972E2 /* YWJNewFeatureScrollPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWJNewFeatureScrollPage.h; sourceTree = "<group>"; };
 		CA6539581CBD44CF000972E2 /* YWJNewFeatureScrollPage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWJNewFeatureScrollPage.m; sourceTree = "<group>"; };
+		CA90198A1CE16B7A00AC5712 /* YWJDishesParam.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWJDishesParam.h; sourceTree = "<group>"; };
+		CA90198B1CE16B7A00AC5712 /* YWJDishesParam.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWJDishesParam.m; sourceTree = "<group>"; };
+		CA90198D1CE16B7A00AC5712 /* YWJDishesResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWJDishesResult.h; sourceTree = "<group>"; };
+		CA90198E1CE16B7A00AC5712 /* YWJDishesResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWJDishesResult.m; sourceTree = "<group>"; };
+		CA90198F1CE16B7A00AC5712 /* YWJDishesTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWJDishesTool.h; sourceTree = "<group>"; };
+		CA9019901CE16B7A00AC5712 /* YWJDishesTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWJDishesTool.m; sourceTree = "<group>"; };
+		CA9019941CE16C1200AC5712 /* IODishes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IODishes.h; sourceTree = "<group>"; };
+		CA9019951CE16C1200AC5712 /* IODishes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IODishes.m; sourceTree = "<group>"; };
 		CAE8F00E1CB940E2005618B0 /* iOrder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOrder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CAE8F0221CB940E2005618B0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CAE8F0271CB940E2005618B0 /* iOrderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iOrderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -205,6 +214,7 @@
 		9A8CC32B1CE0AF84005E19D9 /* Tool */ = {
 			isa = PBXGroup;
 			children = (
+				CA9019881CE16B7A00AC5712 /* Dishes */,
 				9A8CC32C1CE0AF84005E19D9 /* Http */,
 				9A8CC32F1CE0AF84005E19D9 /* Preference */,
 				9A8CC3321CE0AF84005E19D9 /* Root */,
@@ -297,12 +307,12 @@
 			children = (
 				9A8CC34D1CE0AFC7005E19D9 /* IODish.h */,
 				9A8CC34E1CE0AFC7005E19D9 /* IODish.m */,
+				CA9019941CE16C1200AC5712 /* IODishes.h */,
+				CA9019951CE16C1200AC5712 /* IODishes.m */,
 				9A8CC34F1CE0AFC7005E19D9 /* IODishInfo.h */,
 				9A8CC3501CE0AFC7005E19D9 /* IODishInfo.m */,
 				9A8CC3511CE0AFC7005E19D9 /* IOShop.h */,
 				9A8CC3521CE0AFC7005E19D9 /* IOShop.m */,
-				9A8CC3531CE0AFC7005E19D9 /* IOShopInfo.h */,
-				9A8CC3541CE0AFC7005E19D9 /* IOShopInfo.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -341,6 +351,35 @@
 				AA08641E7F59BD859B41E36B /* libPods.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CA9019881CE16B7A00AC5712 /* Dishes */ = {
+			isa = PBXGroup;
+			children = (
+				CA9019891CE16B7A00AC5712 /* Param */,
+				CA90198C1CE16B7A00AC5712 /* Result */,
+				CA90198F1CE16B7A00AC5712 /* YWJDishesTool.h */,
+				CA9019901CE16B7A00AC5712 /* YWJDishesTool.m */,
+			);
+			path = Dishes;
+			sourceTree = "<group>";
+		};
+		CA9019891CE16B7A00AC5712 /* Param */ = {
+			isa = PBXGroup;
+			children = (
+				CA90198A1CE16B7A00AC5712 /* YWJDishesParam.h */,
+				CA90198B1CE16B7A00AC5712 /* YWJDishesParam.m */,
+			);
+			path = Param;
+			sourceTree = "<group>";
+		};
+		CA90198C1CE16B7A00AC5712 /* Result */ = {
+			isa = PBXGroup;
+			children = (
+				CA90198D1CE16B7A00AC5712 /* YWJDishesResult.h */,
+				CA90198E1CE16B7A00AC5712 /* YWJDishesResult.m */,
+			);
+			path = Result;
 			sourceTree = "<group>";
 		};
 		CADAA6BC1CBBC26100E601DC /* NewFeature */ = {
@@ -756,15 +795,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CA9019911CE16B7A00AC5712 /* YWJDishesParam.m in Sources */,
 				CAE8F0831CB94170005618B0 /* main.m in Sources */,
 				9A8CC3261CDF779B005E19D9 /* IOTransmitters.m in Sources */,
 				CAE8F0811CB94170005618B0 /* UIView+YWJFrame.m in Sources */,
-				9A8CC3701CE0AFC7005E19D9 /* IOShopInfo.m in Sources */,
 				9A8CC36F1CE0AFC7005E19D9 /* IOShop.m in Sources */,
 				9A8CC36E1CE0AFC7005E19D9 /* IODishInfo.m in Sources */,
 				9A8CC3411CE0AF84005E19D9 /* YWJShopsParam.m in Sources */,
 				9A8CC3751CE0AFC7005E19D9 /* IOOrderShopStarView.m in Sources */,
 				9A8CC3711CE0AFC7005E19D9 /* IOBadgeView.m in Sources */,
+				CA9019921CE16B7A00AC5712 /* YWJDishesResult.m in Sources */,
 				CA6539591CBD44CF000972E2 /* YWJNewFeatureScrollPage.m in Sources */,
 				9A8CC33E1CE0AF84005E19D9 /* YWJHttpTool.m in Sources */,
 				9A8CC3431CE0AF84005E19D9 /* YWJShopsTool.m in Sources */,
@@ -779,11 +819,13 @@
 				9A8CC36D1CE0AFC7005E19D9 /* IODish.m in Sources */,
 				CAE8F0951CB946E8005618B0 /* IONavigationController.m in Sources */,
 				9A8CC36C1CE0AFC7005E19D9 /* IOShopViewController.m in Sources */,
+				CA9019961CE16C1200AC5712 /* IODishes.m in Sources */,
 				CAE8F07D1CB94170005618B0 /* YWJTabBarButton.m in Sources */,
 				9A8CC3791CE0AFC7005E19D9 /* IOSpecialView.m in Sources */,
 				9A8CC37A1CE0AFC7005E19D9 /* IOTitleView.m in Sources */,
 				9A8CC3781CE0AFC7005E19D9 /* IOShoppingView.m in Sources */,
 				CAE8F0801CB94170005618B0 /* AppDelegate.m in Sources */,
+				CA9019931CE16B7A00AC5712 /* YWJDishesTool.m in Sources */,
 				9A8CC36A1CE0AFC7005E19D9 /* IODishViewController.m in Sources */,
 				9A8CC3731CE0AFC7005E19D9 /* IOOrderShopMenuCell.m in Sources */,
 				9A8CC3761CE0AFC7005E19D9 /* IOOrderViewCell.m in Sources */,
@@ -953,7 +995,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = cn.net.normcore.iOrder;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				USER_HEADER_SEARCH_PATHS = "";
+				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/**";
 			};
 			name = Debug;
 		};
@@ -1003,7 +1045,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = cn.net.normcore.iOrder;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				USER_HEADER_SEARCH_PATHS = "";
+				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/**";
 			};
 			name = Release;
 		};

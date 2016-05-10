@@ -12,7 +12,7 @@
 
 @protocol IOOrderShopMenuCellDelegate <NSObject>
 
-- (void)orderShopMenuCell:(IOOrderShopMenuCell *)shopMenuCell dishPrice:(NSString *)dishPrice clickedBtn:(UIButton *)btn;
+- (void)orderShopMenuCell:(IOOrderShopMenuCell *)shopMenuCell dishPrice:(float)dishPrice clickedBtn:(UIButton *)btn;
 
 @end
 
