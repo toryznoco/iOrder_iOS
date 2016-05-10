@@ -13,6 +13,16 @@
 			</result>
 		</action>
 
+		<action name="user" class="cn.net.normcore.iorder.action.UserAction">
+			<result name="loginResult" type="json">
+				<param name="root">json</param>
+				<param name="excludeProperties">user.userPass</param>
+			</result>
+		</action>
+		
+		<action name="dishes" class="cn.net.normcore.iorder.action.DishesAction">
+		</action>
+
 	</package>
 
 </struts>

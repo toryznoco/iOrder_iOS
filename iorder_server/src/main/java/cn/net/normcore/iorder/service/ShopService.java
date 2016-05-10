@@ -45,13 +45,16 @@ public class ShopService extends BaseService {
 		List<Map<String, Object>> shopCatgs = jt.queryForList(sqlGetShopCatg,
 				shopId);
 
-		String sqlGetCatgDishes = "SELECT `name`, praise_amount AS praAmt, comm_amount AS comAmt, month_sales AS monSal, price, picture FROM dishes WHERE s_id = ? AND c_id = ?";
+		String sqlGetCatgDishes = "SELECT id AS dishesId, `name`, praise_amount AS praAmt, comm_amount AS comAmt, month_sales AS monSal, price, picture FROM dishes WHERE s_id = ? AND c_id = ?";
 
 		for (Map<String, Object> map : shopCatgs) {
+			List<Map<String, Object>> aCatDishes = jt.queryForList(
+					sqlGetCatgDishes, shopId, map.get("id"));
+			if (aCatDishes == null || aCatDishes.size() < 1)
+				continue;
 			Map<String, Object> aCatg = new HashMap<String, Object>();
 			aCatg.put("catgName", map.get("name"));
-			aCatg.put("dishes",
-					jt.queryForList(sqlGetCatgDishes, shopId, map.get("id")));
+			aCatg.put("dishes", aCatDishes);
 			result.add(aCatg);
 		}
 
