@@ -17,7 +17,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = @"Ordered";
+    self.title = @"订单";
     self.view.backgroundColor = [UIColor orangeColor];
     
     // Uncomment the following line to preserve selection between presentations.

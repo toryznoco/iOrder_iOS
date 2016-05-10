@@ -17,7 +17,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = @"Profile";
+    self.title = @"我的";
     self.view.backgroundColor = [UIColor greenColor];
     
     // Uncomment the following line to preserve selection between presentations.
