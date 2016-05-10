@@ -18,7 +18,6 @@
     [super viewDidLoad];
     
     self.title = @"订单";
-    self.view.backgroundColor = [UIColor orangeColor];
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
