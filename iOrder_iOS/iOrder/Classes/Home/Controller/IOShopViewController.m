@@ -70,20 +70,17 @@
     if (tableView == self.optionTableView) {
         return 1;
     }else{
-        YWJLog(@"----1----%@", _dishInfos);
         return _dishInfos.count;
     }
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    YWJLog(@"-----2-----%@", _dishInfos);
     IODishes *dishInfo = _dishInfos[section];
     if (tableView == self.optionTableView) {
         return _dishInfos.count;
     }else{
         return dishInfo.dishes.count;
     }
-//    return 0;
 }
 
 
