@@ -35,7 +35,7 @@
 
 #pragma mark - public
 
-- (void)setStartCount:(NSString *)startCount{
+- (void)setStartCount:(float)startCount{
     _startCount = startCount;
     
     [self setupData];
@@ -61,10 +61,18 @@
 }
 
 - (void)setupData{
+    int count = ((int)(_startCount * 10)) % 10;
+    int index = -1;
+    if (count >= 5 && count <= 9) {
+        index = ((int)_startCount) + 1;
+    }
+    
     for (NSInteger i = 0; i < _stars.count; i++) {
         UIImageView *star = _stars[i];
-        if (i < [_startCount intValue]) {
+        if (i < ((int)_startCount)) {
             [star setImage:[UIImage imageNamed:@"star_highlight_icon"]];
+        }else if(index != -1){
+            [star setImage:[UIImage imageNamed:@"star_common_icon"]];
         }else{
             [star setImage:[UIImage imageNamed:@"star_common_icon"]];
         }

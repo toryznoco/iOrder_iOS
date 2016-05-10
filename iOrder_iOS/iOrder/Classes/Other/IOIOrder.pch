@@ -23,8 +23,6 @@
 #define YWJRGBColor(r, g, b, a) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:a]
 
 //------------ key ----------------
-#define kTransmitterKey @"transmitters"
-#define kHistoryUUIDKey @"historyUUIDs"
 #define kVersionKey @"version"
 
 #ifdef DEBUG // 调试

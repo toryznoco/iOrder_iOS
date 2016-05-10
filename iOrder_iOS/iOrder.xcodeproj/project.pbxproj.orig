@@ -1,0 +1,1139 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0C39DD33B6D8ED391FA88ED5 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AA08641E7F59BD859B41E36B /* libPods.a */; };
+		9A7E9FC61CBF25AA00E44BE1 /* IOOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A7E9FC31CBF25AA00E44BE1 /* IOOrderViewController.m */; };
+<<<<<<< HEAD
+		CA51A8131CC67C0A00CEC94B /* IOOrderShopStarView.m in Sources */ = {isa = PBXBuildFile; fileRef = CA51A8101CC67C0A00CEC94B /* IOOrderShopStarView.m */; settings = {ASSET_TAGS = (); }; };
+		CA51A8141CC67C0A00CEC94B /* IOOrderViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CA51A8121CC67C0A00CEC94B /* IOOrderViewCell.m */; settings = {ASSET_TAGS = (); }; };
+		CA51A82D1CC67CB200CEC94B /* ShopInfos.plist in Resources */ = {isa = PBXBuildFile; fileRef = CA51A82C1CC67CB200CEC94B /* ShopInfos.plist */; settings = {ASSET_TAGS = (); }; };
+		CA5C16BA1CDF78BC006BEC5D /* IOShoppingView.m in Sources */ = {isa = PBXBuildFile; fileRef = CA5C16B91CDF78BC006BEC5D /* IOShoppingView.m */; settings = {ASSET_TAGS = (); }; };
+		CA6539561CBD40E6000972E2 /* IONewFeatureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA6539551CBD40E6000972E2 /* IONewFeatureViewController.m */; };
+		CA6539591CBD44CF000972E2 /* YWJNewFeatureScrollPage.m in Sources */ = {isa = PBXBuildFile; fileRef = CA6539581CBD44CF000972E2 /* YWJNewFeatureScrollPage.m */; };
+		CA798F301CBA501000A05CA8 /* IOIBeaconViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA798F2F1CBA501000A05CA8 /* IOIBeaconViewController.m */; };
+		CA798F3A1CBA67EC00A05CA8 /* YWJTransmitterTool.m in Sources */ = {isa = PBXBuildFile; fileRef = CA798F391CBA67EC00A05CA8 /* YWJTransmitterTool.m */; };
+		CA798F3D1CBA69D800A05CA8 /* YWJHistoryUUIDTool.m in Sources */ = {isa = PBXBuildFile; fileRef = CA798F3C1CBA69D800A05CA8 /* YWJHistoryUUIDTool.m */; };
+		CA798F401CBA720E00A05CA8 /* YWJTransmitters.m in Sources */ = {isa = PBXBuildFile; fileRef = CA798F3F1CBA720E00A05CA8 /* YWJTransmitters.m */; };
+		CA798F431CBA739000A05CA8 /* IONotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA798F421CBA739000A05CA8 /* IONotificationViewController.m */; };
+		CA97D1DE1CCE42C200816ECB /* IOShopViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA97D1DD1CCE42C200816ECB /* IOShopViewController.m */; settings = {ASSET_TAGS = (); }; };
+		CAB8E48C1CDED993000C4158 /* IOBadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = CAB8E48B1CDED993000C4158 /* IOBadgeView.m */; settings = {ASSET_TAGS = (); }; };
+		CAB8E48F1CDEE2F8000C4158 /* IODishViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CAB8E48E1CDEE2F8000C4158 /* IODishViewController.m */; settings = {ASSET_TAGS = (); }; };
+		CABD83C01CD8E2C4000A5066 /* IOOrderShopMenuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CABD83BF1CD8E2C4000A5066 /* IOOrderShopMenuCell.m */; settings = {ASSET_TAGS = (); }; };
+		CABD83C31CD8E2EF000A5066 /* IOOrderShopOptionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CABD83C21CD8E2EF000A5066 /* IOOrderShopOptionCell.m */; settings = {ASSET_TAGS = (); }; };
+		CACC8CDF1CE0171F00F566FA /* YWJShopsParam.m in Sources */ = {isa = PBXBuildFile; fileRef = CACC8CDE1CE0171F00F566FA /* YWJShopsParam.m */; settings = {ASSET_TAGS = (); }; };
+		CACC8CE21CE01BC700F566FA /* YWJShopsTool.m in Sources */ = {isa = PBXBuildFile; fileRef = CACC8CE11CE01BC700F566FA /* YWJShopsTool.m */; settings = {ASSET_TAGS = (); }; };
+		CACC8CE51CE01DD800F566FA /* YWJShopsResult.m in Sources */ = {isa = PBXBuildFile; fileRef = CACC8CE41CE01DD800F566FA /* YWJShopsResult.m */; settings = {ASSET_TAGS = (); }; };
+		CACC8CEC1CE026C600F566FA /* YWJHttpTool.m in Sources */ = {isa = PBXBuildFile; fileRef = CACC8CEB1CE026C600F566FA /* YWJHttpTool.m */; settings = {ASSET_TAGS = (); }; };
+=======
+		9A8CC3261CDF779B005E19D9 /* IOTransmitters.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC3251CDF779B005E19D9 /* IOTransmitters.m */; };
+		CA51A80E1CC67BF500CEC94B /* IOShopInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = CA51A80D1CC67BF500CEC94B /* IOShopInfo.m */; };
+		CA51A8131CC67C0A00CEC94B /* IOOrderShopStarView.m in Sources */ = {isa = PBXBuildFile; fileRef = CA51A8101CC67C0A00CEC94B /* IOOrderShopStarView.m */; };
+		CA51A8141CC67C0A00CEC94B /* IOOrderViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CA51A8121CC67C0A00CEC94B /* IOOrderViewCell.m */; };
+		CA51A82D1CC67CB200CEC94B /* ShopInfos.plist in Resources */ = {isa = PBXBuildFile; fileRef = CA51A82C1CC67CB200CEC94B /* ShopInfos.plist */; };
+		CA6539561CBD40E6000972E2 /* IONewFeatureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA6539551CBD40E6000972E2 /* IONewFeatureViewController.m */; };
+		CA6539591CBD44CF000972E2 /* YWJNewFeatureScrollPage.m in Sources */ = {isa = PBXBuildFile; fileRef = CA6539581CBD44CF000972E2 /* YWJNewFeatureScrollPage.m */; };
+		CA97D1DE1CCE42C200816ECB /* IOShopViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA97D1DD1CCE42C200816ECB /* IOShopViewController.m */; };
+		CAA40B5F1CDC2C3B008253A4 /* IOBadgeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CAA40B5E1CDC2C3B008253A4 /* IOBadgeButton.m */; };
+		CABD83C01CD8E2C4000A5066 /* IOOrderShopMenuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CABD83BF1CD8E2C4000A5066 /* IOOrderShopMenuCell.m */; };
+		CABD83C31CD8E2EF000A5066 /* IOOrderShopOptionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CABD83C21CD8E2EF000A5066 /* IOOrderShopOptionCell.m */; };
+>>>>>>> 7bf4c82fcd2a0e827736e8f56812e777eed09aee
+		CADAA6C81CBBD5BD00E601DC /* YWJVersionTool.m in Sources */ = {isa = PBXBuildFile; fileRef = CADAA6C71CBBD5BD00E601DC /* YWJVersionTool.m */; };
+		CAE206E51CC931EE00F6538B /* IOScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE206E41CC931EE00F6538B /* IOScrollView.m */; };
+		CAE206E81CC932FE00F6538B /* IOSpecialView.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE206E71CC932FE00F6538B /* IOSpecialView.m */; };
+		CAE206EB1CC9344C00F6538B /* IOTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE206EA1CC9344C00F6538B /* IOTitleView.m */; };
+		CAE8F02C1CB940E2005618B0 /* iOrderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F02B1CB940E2005618B0 /* iOrderTests.m */; };
+		CAE8F0371CB940E2005618B0 /* iOrderUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F0361CB940E2005618B0 /* iOrderUITests.m */; };
+		CAE8F07B1CB94170005618B0 /* YWJBadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F04E1CB94170005618B0 /* YWJBadgeView.m */; };
+		CAE8F07C1CB94170005618B0 /* YWJTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F0501CB94170005618B0 /* YWJTabBar.m */; };
+		CAE8F07D1CB94170005618B0 /* YWJTabBarButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F0521CB94170005618B0 /* YWJTabBarButton.m */; };
+		CAE8F0801CB94170005618B0 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F0611CB94170005618B0 /* AppDelegate.m */; };
+		CAE8F0811CB94170005618B0 /* UIView+YWJFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F0641CB94170005618B0 /* UIView+YWJFrame.m */; };
+		CAE8F0831CB94170005618B0 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F0711CB94170005618B0 /* main.m */; };
+		CAE8F0861CB9417F005618B0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CAE8F0851CB9417F005618B0 /* Assets.xcassets */; };
+		CAE8F08F1CB9459B005618B0 /* IOOrderedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F08E1CB9459B005618B0 /* IOOrderedViewController.m */; };
+		CAE8F0921CB9461C005618B0 /* IOProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F0911CB9461C005618B0 /* IOProfileViewController.m */; };
+		CAE8F0951CB946E8005618B0 /* IONavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F0941CB946E8005618B0 /* IONavigationController.m */; };
+		CAE8F0A61CB95CA2005618B0 /* YWJRootTool.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F0A51CB95CA2005618B0 /* YWJRootTool.m */; };
+		CAE8F0AF1CB9680B005618B0 /* IOTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F0AE1CB9680B005618B0 /* IOTabBarController.m */; };
+<<<<<<< HEAD
+		CAF4AB601CD34B39008CA9D8 /* DishInfos.plist in Resources */ = {isa = PBXBuildFile; fileRef = CAF4AB5F1CD34B39008CA9D8 /* DishInfos.plist */; settings = {ASSET_TAGS = (); }; };
+		CAF4AB661CD3BDB7008CA9D8 /* IODish.m in Sources */ = {isa = PBXBuildFile; fileRef = CAF4AB651CD3BDB7008CA9D8 /* IODish.m */; settings = {ASSET_TAGS = (); }; };
+		CAF9A0DD1CC8F42100411AD0 /* IOOrderHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = CAF9A0DC1CC8F42100411AD0 /* IOOrderHeaderView.m */; settings = {ASSET_TAGS = (); }; };
+		CAFEB54A1CE0642400D5A206 /* IOShop.m in Sources */ = {isa = PBXBuildFile; fileRef = CAFEB5491CE0642400D5A206 /* IOShop.m */; settings = {ASSET_TAGS = (); }; };
+		CAFEB54D1CE0763D00D5A206 /* IODishInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = CAFEB54C1CE0763D00D5A206 /* IODishInfo.m */; settings = {ASSET_TAGS = (); }; };
+		CAFEB5501CE0764A00D5A206 /* IOShopInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = CAFEB54F1CE0764A00D5A206 /* IOShopInfo.m */; settings = {ASSET_TAGS = (); }; };
+=======
+		CAF4AB601CD34B39008CA9D8 /* DishInfos.plist in Resources */ = {isa = PBXBuildFile; fileRef = CAF4AB5F1CD34B39008CA9D8 /* DishInfos.plist */; };
+		CAF4AB631CD3BBFD008CA9D8 /* IODishInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = CAF4AB621CD3BBFD008CA9D8 /* IODishInfo.m */; };
+		CAF4AB661CD3BDB7008CA9D8 /* IODish.m in Sources */ = {isa = PBXBuildFile; fileRef = CAF4AB651CD3BDB7008CA9D8 /* IODish.m */; };
+		CAF9A0DD1CC8F42100411AD0 /* IOOrderHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = CAF9A0DC1CC8F42100411AD0 /* IOOrderHeaderView.m */; };
+>>>>>>> 7bf4c82fcd2a0e827736e8f56812e777eed09aee
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		CAE8F0281CB940E2005618B0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CAE8F0061CB940E2005618B0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CAE8F00D1CB940E2005618B0;
+			remoteInfo = iOrder;
+		};
+		CAE8F0331CB940E2005618B0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CAE8F0061CB940E2005618B0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CAE8F00D1CB940E2005618B0;
+			remoteInfo = iOrder;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		9A7E9FC21CBF25AA00E44BE1 /* IOOrderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOOrderViewController.h; sourceTree = "<group>"; };
+		9A7E9FC31CBF25AA00E44BE1 /* IOOrderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOOrderViewController.m; sourceTree = "<group>"; };
+		9A8CC3241CDF779B005E19D9 /* IOTransmitters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOTransmitters.h; sourceTree = "<group>"; };
+		9A8CC3251CDF779B005E19D9 /* IOTransmitters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOTransmitters.m; sourceTree = "<group>"; };
+		AA08641E7F59BD859B41E36B /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		CA10A4961CC7B3B500131D56 /* Reveal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Reveal.framework; sourceTree = "<group>"; };
+		CA51A80F1CC67C0A00CEC94B /* IOOrderShopStarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOOrderShopStarView.h; sourceTree = "<group>"; };
+		CA51A8101CC67C0A00CEC94B /* IOOrderShopStarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOOrderShopStarView.m; sourceTree = "<group>"; };
+		CA51A8111CC67C0A00CEC94B /* IOOrderViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOOrderViewCell.h; sourceTree = "<group>"; };
+		CA51A8121CC67C0A00CEC94B /* IOOrderViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOOrderViewCell.m; sourceTree = "<group>"; };
+		CA51A82C1CC67CB200CEC94B /* ShopInfos.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ShopInfos.plist; sourceTree = "<group>"; };
+		CA5C16B81CDF78BC006BEC5D /* IOShoppingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOShoppingView.h; sourceTree = "<group>"; };
+		CA5C16B91CDF78BC006BEC5D /* IOShoppingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOShoppingView.m; sourceTree = "<group>"; };
+		CA6539541CBD40E6000972E2 /* IONewFeatureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IONewFeatureViewController.h; sourceTree = "<group>"; };
+		CA6539551CBD40E6000972E2 /* IONewFeatureViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IONewFeatureViewController.m; sourceTree = "<group>"; };
+		CA6539571CBD44CF000972E2 /* YWJNewFeatureScrollPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWJNewFeatureScrollPage.h; sourceTree = "<group>"; };
+		CA6539581CBD44CF000972E2 /* YWJNewFeatureScrollPage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWJNewFeatureScrollPage.m; sourceTree = "<group>"; };
+		CA97D1DC1CCE42C200816ECB /* IOShopViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOShopViewController.h; sourceTree = "<group>"; };
+		CA97D1DD1CCE42C200816ECB /* IOShopViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOShopViewController.m; sourceTree = "<group>"; };
+		CAB8E48A1CDED993000C4158 /* IOBadgeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOBadgeView.h; sourceTree = "<group>"; };
+		CAB8E48B1CDED993000C4158 /* IOBadgeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOBadgeView.m; sourceTree = "<group>"; };
+		CAB8E48D1CDEE2F8000C4158 /* IODishViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IODishViewController.h; sourceTree = "<group>"; };
+		CAB8E48E1CDEE2F8000C4158 /* IODishViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IODishViewController.m; sourceTree = "<group>"; };
+		CABD83BE1CD8E2C4000A5066 /* IOOrderShopMenuCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOOrderShopMenuCell.h; sourceTree = "<group>"; };
+		CABD83BF1CD8E2C4000A5066 /* IOOrderShopMenuCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOOrderShopMenuCell.m; sourceTree = "<group>"; };
+		CABD83C11CD8E2EF000A5066 /* IOOrderShopOptionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOOrderShopOptionCell.h; sourceTree = "<group>"; };
+		CABD83C21CD8E2EF000A5066 /* IOOrderShopOptionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOOrderShopOptionCell.m; sourceTree = "<group>"; };
+		CACC8CDD1CE0171F00F566FA /* YWJShopsParam.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWJShopsParam.h; sourceTree = "<group>"; };
+		CACC8CDE1CE0171F00F566FA /* YWJShopsParam.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWJShopsParam.m; sourceTree = "<group>"; };
+		CACC8CE01CE01BC700F566FA /* YWJShopsTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWJShopsTool.h; sourceTree = "<group>"; };
+		CACC8CE11CE01BC700F566FA /* YWJShopsTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWJShopsTool.m; sourceTree = "<group>"; };
+		CACC8CE31CE01DD800F566FA /* YWJShopsResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWJShopsResult.h; sourceTree = "<group>"; };
+		CACC8CE41CE01DD800F566FA /* YWJShopsResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWJShopsResult.m; sourceTree = "<group>"; };
+		CACC8CEA1CE026C600F566FA /* YWJHttpTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWJHttpTool.h; sourceTree = "<group>"; };
+		CACC8CEB1CE026C600F566FA /* YWJHttpTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWJHttpTool.m; sourceTree = "<group>"; };
+		CADAA6C61CBBD5BD00E601DC /* YWJVersionTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWJVersionTool.h; sourceTree = "<group>"; };
+		CADAA6C71CBBD5BD00E601DC /* YWJVersionTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWJVersionTool.m; sourceTree = "<group>"; };
+		CAE206E31CC931EE00F6538B /* IOScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOScrollView.h; sourceTree = "<group>"; };
+		CAE206E41CC931EE00F6538B /* IOScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOScrollView.m; sourceTree = "<group>"; };
+		CAE206E61CC932FE00F6538B /* IOSpecialView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOSpecialView.h; sourceTree = "<group>"; };
+		CAE206E71CC932FE00F6538B /* IOSpecialView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOSpecialView.m; sourceTree = "<group>"; };
+		CAE206E91CC9344C00F6538B /* IOTitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOTitleView.h; sourceTree = "<group>"; };
+		CAE206EA1CC9344C00F6538B /* IOTitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOTitleView.m; sourceTree = "<group>"; };
+		CAE8F00E1CB940E2005618B0 /* iOrder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOrder.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CAE8F0221CB940E2005618B0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CAE8F0271CB940E2005618B0 /* iOrderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iOrderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CAE8F02B1CB940E2005618B0 /* iOrderTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iOrderTests.m; sourceTree = "<group>"; };
+		CAE8F02D1CB940E2005618B0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CAE8F0321CB940E2005618B0 /* iOrderUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iOrderUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CAE8F0361CB940E2005618B0 /* iOrderUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iOrderUITests.m; sourceTree = "<group>"; };
+		CAE8F0381CB940E2005618B0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CAE8F04D1CB94170005618B0 /* YWJBadgeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWJBadgeView.h; sourceTree = "<group>"; };
+		CAE8F04E1CB94170005618B0 /* YWJBadgeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWJBadgeView.m; sourceTree = "<group>"; };
+		CAE8F04F1CB94170005618B0 /* YWJTabBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWJTabBar.h; sourceTree = "<group>"; };
+		CAE8F0501CB94170005618B0 /* YWJTabBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWJTabBar.m; sourceTree = "<group>"; };
+		CAE8F0511CB94170005618B0 /* YWJTabBarButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWJTabBarButton.h; sourceTree = "<group>"; };
+		CAE8F0521CB94170005618B0 /* YWJTabBarButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWJTabBarButton.m; sourceTree = "<group>"; };
+		CAE8F0601CB94170005618B0 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		CAE8F0611CB94170005618B0 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		CAE8F0631CB94170005618B0 /* UIView+YWJFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+YWJFrame.h"; sourceTree = "<group>"; };
+		CAE8F0641CB94170005618B0 /* UIView+YWJFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+YWJFrame.m"; sourceTree = "<group>"; };
+		CAE8F0711CB94170005618B0 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		CAE8F0851CB9417F005618B0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		CAE8F08D1CB9459B005618B0 /* IOOrderedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOOrderedViewController.h; sourceTree = "<group>"; };
+		CAE8F08E1CB9459B005618B0 /* IOOrderedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOOrderedViewController.m; sourceTree = "<group>"; };
+		CAE8F0901CB9461C005618B0 /* IOProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOProfileViewController.h; sourceTree = "<group>"; };
+		CAE8F0911CB9461C005618B0 /* IOProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOProfileViewController.m; sourceTree = "<group>"; };
+		CAE8F0931CB946E8005618B0 /* IONavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IONavigationController.h; sourceTree = "<group>"; };
+		CAE8F0941CB946E8005618B0 /* IONavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IONavigationController.m; sourceTree = "<group>"; };
+		CAE8F0971CB947D7005618B0 /* IOIOrder.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IOIOrder.pch; sourceTree = "<group>"; };
+		CAE8F0A41CB95CA2005618B0 /* YWJRootTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWJRootTool.h; sourceTree = "<group>"; };
+		CAE8F0A51CB95CA2005618B0 /* YWJRootTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWJRootTool.m; sourceTree = "<group>"; };
+		CAE8F0AD1CB9680B005618B0 /* IOTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOTabBarController.h; sourceTree = "<group>"; };
+		CAE8F0AE1CB9680B005618B0 /* IOTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOTabBarController.m; sourceTree = "<group>"; };
+		CAF4AB5F1CD34B39008CA9D8 /* DishInfos.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = DishInfos.plist; sourceTree = "<group>"; };
+		CAF4AB641CD3BDB7008CA9D8 /* IODish.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IODish.h; sourceTree = "<group>"; };
+		CAF4AB651CD3BDB7008CA9D8 /* IODish.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IODish.m; sourceTree = "<group>"; };
+		CAF9A0DB1CC8F42100411AD0 /* IOOrderHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOOrderHeaderView.h; sourceTree = "<group>"; };
+		CAF9A0DC1CC8F42100411AD0 /* IOOrderHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOOrderHeaderView.m; sourceTree = "<group>"; };
+		CAFEB5481CE0642400D5A206 /* IOShop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOShop.h; sourceTree = "<group>"; };
+		CAFEB5491CE0642400D5A206 /* IOShop.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOShop.m; sourceTree = "<group>"; };
+		CAFEB54B1CE0763D00D5A206 /* IODishInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IODishInfo.h; sourceTree = "<group>"; };
+		CAFEB54C1CE0763D00D5A206 /* IODishInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IODishInfo.m; sourceTree = "<group>"; };
+		CAFEB54E1CE0764A00D5A206 /* IOShopInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOShopInfo.h; sourceTree = "<group>"; };
+		CAFEB54F1CE0764A00D5A206 /* IOShopInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOShopInfo.m; sourceTree = "<group>"; };
+		CD440F0C591F9F0ECB765D3A /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		CD94856A0BB8EB254EBFD826 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		CAE8F00B1CB940E2005618B0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0C39DD33B6D8ED391FA88ED5 /* libPods.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CAE8F0241CB940E2005618B0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CAE8F02F1CB940E2005618B0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		71C142701D6985C588AB91CD /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				CD440F0C591F9F0ECB765D3A /* Pods.debug.xcconfig */,
+				CD94856A0BB8EB254EBFD826 /* Pods.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		9A7E9FC01CBF25AA00E44BE1 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				9A7E9FC11CBF25AA00E44BE1 /* Controller */,
+				9A7E9FC41CBF25AA00E44BE1 /* Model */,
+				9A7E9FC51CBF25AA00E44BE1 /* View */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		9A7E9FC11CBF25AA00E44BE1 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				9A7E9FC21CBF25AA00E44BE1 /* IOOrderViewController.h */,
+				9A7E9FC31CBF25AA00E44BE1 /* IOOrderViewController.m */,
+				CA97D1DC1CCE42C200816ECB /* IOShopViewController.h */,
+				CA97D1DD1CCE42C200816ECB /* IOShopViewController.m */,
+				CAB8E48D1CDEE2F8000C4158 /* IODishViewController.h */,
+				CAB8E48E1CDEE2F8000C4158 /* IODishViewController.m */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		9A7E9FC41CBF25AA00E44BE1 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				CAFEB54B1CE0763D00D5A206 /* IODishInfo.h */,
+				CAFEB54C1CE0763D00D5A206 /* IODishInfo.m */,
+				CAFEB54E1CE0764A00D5A206 /* IOShopInfo.h */,
+				CAFEB54F1CE0764A00D5A206 /* IOShopInfo.m */,
+				CAF4AB641CD3BDB7008CA9D8 /* IODish.h */,
+				CAF4AB651CD3BDB7008CA9D8 /* IODish.m */,
+				CAFEB5481CE0642400D5A206 /* IOShop.h */,
+				CAFEB5491CE0642400D5A206 /* IOShop.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		9A7E9FC51CBF25AA00E44BE1 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				CA51A80F1CC67C0A00CEC94B /* IOOrderShopStarView.h */,
+				CA51A8101CC67C0A00CEC94B /* IOOrderShopStarView.m */,
+				CA51A8111CC67C0A00CEC94B /* IOOrderViewCell.h */,
+				CA51A8121CC67C0A00CEC94B /* IOOrderViewCell.m */,
+				CAF9A0DB1CC8F42100411AD0 /* IOOrderHeaderView.h */,
+				CAF9A0DC1CC8F42100411AD0 /* IOOrderHeaderView.m */,
+				CAE206E31CC931EE00F6538B /* IOScrollView.h */,
+				CAE206E41CC931EE00F6538B /* IOScrollView.m */,
+				CAE206E61CC932FE00F6538B /* IOSpecialView.h */,
+				CAE206E71CC932FE00F6538B /* IOSpecialView.m */,
+				CAE206E91CC9344C00F6538B /* IOTitleView.h */,
+				CAE206EA1CC9344C00F6538B /* IOTitleView.m */,
+				CABD83BE1CD8E2C4000A5066 /* IOOrderShopMenuCell.h */,
+				CABD83BF1CD8E2C4000A5066 /* IOOrderShopMenuCell.m */,
+				CABD83C11CD8E2EF000A5066 /* IOOrderShopOptionCell.h */,
+				CABD83C21CD8E2EF000A5066 /* IOOrderShopOptionCell.m */,
+				CAB8E48A1CDED993000C4158 /* IOBadgeView.h */,
+				CAB8E48B1CDED993000C4158 /* IOBadgeView.m */,
+				CA5C16B81CDF78BC006BEC5D /* IOShoppingView.h */,
+				CA5C16B91CDF78BC006BEC5D /* IOShoppingView.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		9A8CC3231CDF7788005E19D9 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				9A8CC3241CDF779B005E19D9 /* IOTransmitters.h */,
+				9A8CC3251CDF779B005E19D9 /* IOTransmitters.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		AC53E7F2F1CB4D0E4F921365 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CA10A4961CC7B3B500131D56 /* Reveal.framework */,
+				AA08641E7F59BD859B41E36B /* libPods.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CA798F341CBA66C300A05CA8 /* Preference */ = {
+			isa = PBXGroup;
+			children = (
+				CADAA6C61CBBD5BD00E601DC /* YWJVersionTool.h */,
+				CADAA6C71CBBD5BD00E601DC /* YWJVersionTool.m */,
+			);
+			path = Preference;
+			sourceTree = "<group>";
+		};
+		CACC8CDA1CE016BF00F566FA /* Shops */ = {
+			isa = PBXGroup;
+			children = (
+				CACC8CDB1CE016BF00F566FA /* Param */,
+				CACC8CDC1CE016BF00F566FA /* Result */,
+				CACC8CE01CE01BC700F566FA /* YWJShopsTool.h */,
+				CACC8CE11CE01BC700F566FA /* YWJShopsTool.m */,
+			);
+			path = Shops;
+			sourceTree = "<group>";
+		};
+		CACC8CDB1CE016BF00F566FA /* Param */ = {
+			isa = PBXGroup;
+			children = (
+				CACC8CDD1CE0171F00F566FA /* YWJShopsParam.h */,
+				CACC8CDE1CE0171F00F566FA /* YWJShopsParam.m */,
+			);
+			path = Param;
+			sourceTree = "<group>";
+		};
+		CACC8CDC1CE016BF00F566FA /* Result */ = {
+			isa = PBXGroup;
+			children = (
+				CACC8CE31CE01DD800F566FA /* YWJShopsResult.h */,
+				CACC8CE41CE01DD800F566FA /* YWJShopsResult.m */,
+			);
+			path = Result;
+			sourceTree = "<group>";
+		};
+		CACC8CE91CE0269A00F566FA /* Http */ = {
+			isa = PBXGroup;
+			children = (
+				CACC8CEA1CE026C600F566FA /* YWJHttpTool.h */,
+				CACC8CEB1CE026C600F566FA /* YWJHttpTool.m */,
+			);
+			path = Http;
+			sourceTree = "<group>";
+		};
+		CADAA6BC1CBBC26100E601DC /* NewFeature */ = {
+			isa = PBXGroup;
+			children = (
+				CADAA6BD1CBBC26100E601DC /* Controller */,
+				CADAA6BE1CBBC26100E601DC /* Model */,
+				CADAA6BF1CBBC26100E601DC /* View */,
+			);
+			path = NewFeature;
+			sourceTree = "<group>";
+		};
+		CADAA6BD1CBBC26100E601DC /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				CA6539541CBD40E6000972E2 /* IONewFeatureViewController.h */,
+				CA6539551CBD40E6000972E2 /* IONewFeatureViewController.m */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		CADAA6BE1CBBC26100E601DC /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		CADAA6BF1CBBC26100E601DC /* View */ = {
+			isa = PBXGroup;
+			children = (
+				CA6539571CBD44CF000972E2 /* YWJNewFeatureScrollPage.h */,
+				CA6539581CBD44CF000972E2 /* YWJNewFeatureScrollPage.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		CAE8F0051CB940E2005618B0 = {
+			isa = PBXGroup;
+			children = (
+				CAE8F0101CB940E2005618B0 /* iOrder */,
+				CAE8F02A1CB940E2005618B0 /* iOrderTests */,
+				CAE8F0351CB940E2005618B0 /* iOrderUITests */,
+				CAE8F00F1CB940E2005618B0 /* Products */,
+				71C142701D6985C588AB91CD /* Pods */,
+				AC53E7F2F1CB4D0E4F921365 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		CAE8F00F1CB940E2005618B0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CAE8F00E1CB940E2005618B0 /* iOrder.app */,
+				CAE8F0271CB940E2005618B0 /* iOrderTests.xctest */,
+				CAE8F0321CB940E2005618B0 /* iOrderUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CAE8F0101CB940E2005618B0 /* iOrder */ = {
+			isa = PBXGroup;
+			children = (
+				CAE8F0441CB94170005618B0 /* Classes */,
+				CAE8F0111CB940E2005618B0 /* Supporting Files */,
+				CAE8F0851CB9417F005618B0 /* Assets.xcassets */,
+			);
+			path = iOrder;
+			sourceTree = "<group>";
+		};
+		CAE8F0111CB940E2005618B0 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				CAE8F0221CB940E2005618B0 /* Info.plist */,
+				CA51A82C1CC67CB200CEC94B /* ShopInfos.plist */,
+				CAF4AB5F1CD34B39008CA9D8 /* DishInfos.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		CAE8F02A1CB940E2005618B0 /* iOrderTests */ = {
+			isa = PBXGroup;
+			children = (
+				CAE8F02B1CB940E2005618B0 /* iOrderTests.m */,
+				CAE8F02D1CB940E2005618B0 /* Info.plist */,
+			);
+			path = iOrderTests;
+			sourceTree = "<group>";
+		};
+		CAE8F0351CB940E2005618B0 /* iOrderUITests */ = {
+			isa = PBXGroup;
+			children = (
+				CAE8F0361CB940E2005618B0 /* iOrderUITests.m */,
+				CAE8F0381CB940E2005618B0 /* Info.plist */,
+			);
+			path = iOrderUITests;
+			sourceTree = "<group>";
+		};
+		CAE8F0441CB94170005618B0 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				CADAA6BC1CBBC26100E601DC /* NewFeature */,
+				CAE8F0A21CB95C66005618B0 /* Tool */,
+				CAE8F0451CB94170005618B0 /* Main */,
+				9A7E9FC01CBF25AA00E44BE1 /* Home */,
+				CAE8F0591CB94170005618B0 /* Ordered */,
+				CAE8F0731CB94170005618B0 /* Profile */,
+				CAE8F05F1CB94170005618B0 /* Other */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		CAE8F0451CB94170005618B0 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				CAE8F0461CB94170005618B0 /* Controller */,
+				9A8CC3231CDF7788005E19D9 /* Model */,
+				CAE8F04C1CB94170005618B0 /* View */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		CAE8F0461CB94170005618B0 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				CAE8F0931CB946E8005618B0 /* IONavigationController.h */,
+				CAE8F0941CB946E8005618B0 /* IONavigationController.m */,
+				CAE8F0AD1CB9680B005618B0 /* IOTabBarController.h */,
+				CAE8F0AE1CB9680B005618B0 /* IOTabBarController.m */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		CAE8F04C1CB94170005618B0 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				CAE8F04D1CB94170005618B0 /* YWJBadgeView.h */,
+				CAE8F04E1CB94170005618B0 /* YWJBadgeView.m */,
+				CAE8F04F1CB94170005618B0 /* YWJTabBar.h */,
+				CAE8F0501CB94170005618B0 /* YWJTabBar.m */,
+				CAE8F0511CB94170005618B0 /* YWJTabBarButton.h */,
+				CAE8F0521CB94170005618B0 /* YWJTabBarButton.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		CAE8F0591CB94170005618B0 /* Ordered */ = {
+			isa = PBXGroup;
+			children = (
+				CAE8F05A1CB94170005618B0 /* Controller */,
+				CAE8F05D1CB94170005618B0 /* Model */,
+				CAE8F05E1CB94170005618B0 /* View */,
+			);
+			path = Ordered;
+			sourceTree = "<group>";
+		};
+		CAE8F05A1CB94170005618B0 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				CAE8F08D1CB9459B005618B0 /* IOOrderedViewController.h */,
+				CAE8F08E1CB9459B005618B0 /* IOOrderedViewController.m */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		CAE8F05D1CB94170005618B0 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		CAE8F05E1CB94170005618B0 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		CAE8F05F1CB94170005618B0 /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				CAE8F0621CB94170005618B0 /* Category */,
+				CAE8F0601CB94170005618B0 /* AppDelegate.h */,
+				CAE8F0611CB94170005618B0 /* AppDelegate.m */,
+				CAE8F0711CB94170005618B0 /* main.m */,
+				CAE8F0971CB947D7005618B0 /* IOIOrder.pch */,
+			);
+			path = Other;
+			sourceTree = "<group>";
+		};
+		CAE8F0621CB94170005618B0 /* Category */ = {
+			isa = PBXGroup;
+			children = (
+				CAE8F0631CB94170005618B0 /* UIView+YWJFrame.h */,
+				CAE8F0641CB94170005618B0 /* UIView+YWJFrame.m */,
+			);
+			path = Category;
+			sourceTree = "<group>";
+		};
+		CAE8F0731CB94170005618B0 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				CAE8F0741CB94170005618B0 /* Controller */,
+				CAE8F0771CB94170005618B0 /* Model */,
+				CAE8F0781CB94170005618B0 /* View */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
+		CAE8F0741CB94170005618B0 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				CAE8F0901CB9461C005618B0 /* IOProfileViewController.h */,
+				CAE8F0911CB9461C005618B0 /* IOProfileViewController.m */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		CAE8F0771CB94170005618B0 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		CAE8F0781CB94170005618B0 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		CAE8F0A21CB95C66005618B0 /* Tool */ = {
+			isa = PBXGroup;
+			children = (
+				CA798F341CBA66C300A05CA8 /* Preference */,
+				CAE8F0A31CB95C66005618B0 /* Root */,
+				CACC8CDA1CE016BF00F566FA /* Shops */,
+				CACC8CE91CE0269A00F566FA /* Http */,
+			);
+			path = Tool;
+			sourceTree = "<group>";
+		};
+		CAE8F0A31CB95C66005618B0 /* Root */ = {
+			isa = PBXGroup;
+			children = (
+				CAE8F0A41CB95CA2005618B0 /* YWJRootTool.h */,
+				CAE8F0A51CB95CA2005618B0 /* YWJRootTool.m */,
+			);
+			path = Root;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		CAE8F00D1CB940E2005618B0 /* iOrder */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CAE8F03B1CB940E2005618B0 /* Build configuration list for PBXNativeTarget "iOrder" */;
+			buildPhases = (
+				11CE56D60DDED8D0E7D58377 /* Check Pods Manifest.lock */,
+				CAE8F00A1CB940E2005618B0 /* Sources */,
+				CAE8F00B1CB940E2005618B0 /* Frameworks */,
+				CAE8F00C1CB940E2005618B0 /* Resources */,
+				AF6DC4783BD80C3A613BB8C5 /* Embed Pods Frameworks */,
+				119A797B832F53534C4D67CE /* Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = iOrder;
+			productName = iOrder;
+			productReference = CAE8F00E1CB940E2005618B0 /* iOrder.app */;
+			productType = "com.apple.product-type.application";
+		};
+		CAE8F0261CB940E2005618B0 /* iOrderTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CAE8F03E1CB940E2005618B0 /* Build configuration list for PBXNativeTarget "iOrderTests" */;
+			buildPhases = (
+				CAE8F0231CB940E2005618B0 /* Sources */,
+				CAE8F0241CB940E2005618B0 /* Frameworks */,
+				CAE8F0251CB940E2005618B0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CAE8F0291CB940E2005618B0 /* PBXTargetDependency */,
+			);
+			name = iOrderTests;
+			productName = iOrderTests;
+			productReference = CAE8F0271CB940E2005618B0 /* iOrderTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		CAE8F0311CB940E2005618B0 /* iOrderUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CAE8F0411CB940E2005618B0 /* Build configuration list for PBXNativeTarget "iOrderUITests" */;
+			buildPhases = (
+				CAE8F02E1CB940E2005618B0 /* Sources */,
+				CAE8F02F1CB940E2005618B0 /* Frameworks */,
+				CAE8F0301CB940E2005618B0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CAE8F0341CB940E2005618B0 /* PBXTargetDependency */,
+			);
+			name = iOrderUITests;
+			productName = iOrderUITests;
+			productReference = CAE8F0321CB940E2005618B0 /* iOrderUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		CAE8F0061CB940E2005618B0 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = IO;
+				LastUpgradeCheck = 0700;
+				ORGANIZATIONNAME = "易无解";
+				TargetAttributes = {
+					CAE8F00D1CB940E2005618B0 = {
+						CreatedOnToolsVersion = 7.0.1;
+						DevelopmentTeam = CQA977E7GY;
+					};
+					CAE8F0261CB940E2005618B0 = {
+						CreatedOnToolsVersion = 7.0.1;
+						TestTargetID = CAE8F00D1CB940E2005618B0;
+					};
+					CAE8F0311CB940E2005618B0 = {
+						CreatedOnToolsVersion = 7.0.1;
+						TestTargetID = CAE8F00D1CB940E2005618B0;
+					};
+				};
+			};
+			buildConfigurationList = CAE8F0091CB940E2005618B0 /* Build configuration list for PBXProject "iOrder" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = CAE8F0051CB940E2005618B0;
+			productRefGroup = CAE8F00F1CB940E2005618B0 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				CAE8F00D1CB940E2005618B0 /* iOrder */,
+				CAE8F0261CB940E2005618B0 /* iOrderTests */,
+				CAE8F0311CB940E2005618B0 /* iOrderUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		CAE8F00C1CB940E2005618B0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CA51A82D1CC67CB200CEC94B /* ShopInfos.plist in Resources */,
+				CAF4AB601CD34B39008CA9D8 /* DishInfos.plist in Resources */,
+				CAE8F0861CB9417F005618B0 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CAE8F0251CB940E2005618B0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CAE8F0301CB940E2005618B0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		119A797B832F53534C4D67CE /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		11CE56D60DDED8D0E7D58377 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		AF6DC4783BD80C3A613BB8C5 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		CAE8F00A1CB940E2005618B0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CAE8F0831CB94170005618B0 /* main.m in Sources */,
+<<<<<<< HEAD
+				CA798F3A1CBA67EC00A05CA8 /* YWJTransmitterTool.m in Sources */,
+=======
+				9A8CC3261CDF779B005E19D9 /* IOTransmitters.m in Sources */,
+				CAF4AB631CD3BBFD008CA9D8 /* IODishInfo.m in Sources */,
+>>>>>>> 7bf4c82fcd2a0e827736e8f56812e777eed09aee
+				CADAA6C81CBBD5BD00E601DC /* YWJVersionTool.m in Sources */,
+				CABD83C01CD8E2C4000A5066 /* IOOrderShopMenuCell.m in Sources */,
+				CAE8F0A61CB95CA2005618B0 /* YWJRootTool.m in Sources */,
+				CACC8CEC1CE026C600F566FA /* YWJHttpTool.m in Sources */,
+				CAE8F0811CB94170005618B0 /* UIView+YWJFrame.m in Sources */,
+				CA5C16BA1CDF78BC006BEC5D /* IOShoppingView.m in Sources */,
+				9A7E9FC61CBF25AA00E44BE1 /* IOOrderViewController.m in Sources */,
+				CAE206EB1CC9344C00F6538B /* IOTitleView.m in Sources */,
+				CA51A8131CC67C0A00CEC94B /* IOOrderShopStarView.m in Sources */,
+				CA6539591CBD44CF000972E2 /* YWJNewFeatureScrollPage.m in Sources */,
+				CA97D1DE1CCE42C200816ECB /* IOShopViewController.m in Sources */,
+				CAFEB54A1CE0642400D5A206 /* IOShop.m in Sources */,
+				CAFEB54D1CE0763D00D5A206 /* IODishInfo.m in Sources */,
+				CAE206E51CC931EE00F6538B /* IOScrollView.m in Sources */,
+				CACC8CE51CE01DD800F566FA /* YWJShopsResult.m in Sources */,
+				CAF4AB661CD3BDB7008CA9D8 /* IODish.m in Sources */,
+				CAE8F0921CB9461C005618B0 /* IOProfileViewController.m in Sources */,
+				CAB8E48F1CDEE2F8000C4158 /* IODishViewController.m in Sources */,
+				CAFEB5501CE0764A00D5A206 /* IOShopInfo.m in Sources */,
+				CACC8CE21CE01BC700F566FA /* YWJShopsTool.m in Sources */,
+				CAE8F08F1CB9459B005618B0 /* IOOrderedViewController.m in Sources */,
+				CAE8F07C1CB94170005618B0 /* YWJTabBar.m in Sources */,
+				CAE8F07B1CB94170005618B0 /* YWJBadgeView.m in Sources */,
+				CAE8F0951CB946E8005618B0 /* IONavigationController.m in Sources */,
+				CA51A8141CC67C0A00CEC94B /* IOOrderViewCell.m in Sources */,
+				CAE8F07D1CB94170005618B0 /* YWJTabBarButton.m in Sources */,
+<<<<<<< HEAD
+				CA798F401CBA720E00A05CA8 /* YWJTransmitters.m in Sources */,
+				CACC8CDF1CE0171F00F566FA /* YWJShopsParam.m in Sources */,
+				CAE8F0801CB94170005618B0 /* AppDelegate.m in Sources */,
+				CABD83C31CD8E2EF000A5066 /* IOOrderShopOptionCell.m in Sources */,
+				CAE206E81CC932FE00F6538B /* IOSpecialView.m in Sources */,
+				CA798F301CBA501000A05CA8 /* IOIBeaconViewController.m in Sources */,
+				CAB8E48C1CDED993000C4158 /* IOBadgeView.m in Sources */,
+=======
+				CAE8F0801CB94170005618B0 /* AppDelegate.m in Sources */,
+				CABD83C31CD8E2EF000A5066 /* IOOrderShopOptionCell.m in Sources */,
+				CAE206E81CC932FE00F6538B /* IOSpecialView.m in Sources */,
+				CA51A80E1CC67BF500CEC94B /* IOShopInfo.m in Sources */,
+>>>>>>> 7bf4c82fcd2a0e827736e8f56812e777eed09aee
+				CA6539561CBD40E6000972E2 /* IONewFeatureViewController.m in Sources */,
+				CAF9A0DD1CC8F42100411AD0 /* IOOrderHeaderView.m in Sources */,
+				CAE8F0AF1CB9680B005618B0 /* IOTabBarController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CAE8F0231CB940E2005618B0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CAE8F02C1CB940E2005618B0 /* iOrderTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CAE8F02E1CB940E2005618B0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CAE8F0371CB940E2005618B0 /* iOrderUITests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		CAE8F0291CB940E2005618B0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CAE8F00D1CB940E2005618B0 /* iOrder */;
+			targetProxy = CAE8F0281CB940E2005618B0 /* PBXContainerItemProxy */;
+		};
+		CAE8F0341CB940E2005618B0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CAE8F00D1CB940E2005618B0 /* iOrder */;
+			targetProxy = CAE8F0331CB940E2005618B0 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		CAE8F0391CB940E2005618B0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		CAE8F03A1CB940E2005618B0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		CAE8F03C1CB940E2005618B0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = CD440F0C591F9F0ECB765D3A /* Pods.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				GCC_PREFIX_HEADER = iOrder/Classes/Other/IOIOrder.pch;
+				HEADER_SEARCH_PATHS = /Users/yiwujie/Github/iOrder/iOrder/iOrder/iOrder/Classes/Other/Lib/AprilSDK/Headers;
+				INFOPLIST_FILE = iOrder/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/iOrder/Classes/Other/Lib/AprilSDK",
+				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-all_load",
+					"-l\"AprilBeaconSDK\"",
+					"-l\"RDVTabBarController\"",
+					"-l\"z\"",
+					"-framework",
+					"\"CFNetwork\"",
+					"-framework",
+					"\"CoreGraphics\"",
+					"-framework",
+					"\"Foundation\"",
+					"-framework",
+					"\"QuartzCore\"",
+					"-framework",
+					"\"Reveal\"",
+					"-framework",
+					"\"UIKit\"",
+					"-ObjC",
+					"-lz",
+					"-framework",
+					Reveal,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = cn.net.normcore.iOrder;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "$(PODS_ROOT)/**";
+			};
+			name = Debug;
+		};
+		CAE8F03D1CB940E2005618B0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = CD94856A0BB8EB254EBFD826 /* Pods.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				GCC_PREFIX_HEADER = iOrder/Classes/Other/IOIOrder.pch;
+				HEADER_SEARCH_PATHS = /Users/yiwujie/Github/iOrder/iOrder/iOrder/iOrder/Classes/Other/Lib/AprilSDK/Headers;
+				INFOPLIST_FILE = iOrder/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/iOrder/Classes/Other/Lib/AprilSDK",
+				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-all_load",
+					"-l\"AprilBeaconSDK\"",
+					"-l\"RDVTabBarController\"",
+					"-l\"z\"",
+					"-framework",
+					"\"CFNetwork\"",
+					"-framework",
+					"\"CoreGraphics\"",
+					"-framework",
+					"\"Foundation\"",
+					"-framework",
+					"\"QuartzCore\"",
+					"-framework",
+					"\"Reveal\"",
+					"-framework",
+					"\"UIKit\"",
+					"-ObjC",
+					"-lz",
+					"-framework",
+					Reveal,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = cn.net.normcore.iOrder;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "$(PODS_ROOT)/**";
+			};
+			name = Release;
+		};
+		CAE8F03F1CB940E2005618B0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = iOrderTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = yiwujie.iOrderTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/iOrder.app/iOrder";
+			};
+			name = Debug;
+		};
+		CAE8F0401CB940E2005618B0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = iOrderTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = yiwujie.iOrderTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/iOrder.app/iOrder";
+			};
+			name = Release;
+		};
+		CAE8F0421CB940E2005618B0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = iOrderUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = yiwujie.iOrderUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = iOrder;
+				USES_XCTRUNNER = YES;
+			};
+			name = Debug;
+		};
+		CAE8F0431CB940E2005618B0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = iOrderUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = yiwujie.iOrderUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = iOrder;
+				USES_XCTRUNNER = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		CAE8F0091CB940E2005618B0 /* Build configuration list for PBXProject "iOrder" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CAE8F0391CB940E2005618B0 /* Debug */,
+				CAE8F03A1CB940E2005618B0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CAE8F03B1CB940E2005618B0 /* Build configuration list for PBXNativeTarget "iOrder" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CAE8F03C1CB940E2005618B0 /* Debug */,
+				CAE8F03D1CB940E2005618B0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CAE8F03E1CB940E2005618B0 /* Build configuration list for PBXNativeTarget "iOrderTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CAE8F03F1CB940E2005618B0 /* Debug */,
+				CAE8F0401CB940E2005618B0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CAE8F0411CB940E2005618B0 /* Build configuration list for PBXNativeTarget "iOrderUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CAE8F0421CB940E2005618B0 /* Debug */,
+				CAE8F0431CB940E2005618B0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = CAE8F0061CB940E2005618B0 /* Project object */;
+}

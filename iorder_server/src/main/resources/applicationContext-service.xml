@@ -12,4 +12,16 @@
 		</property>
 	</bean>
 
+	<bean id="userService" parent="baseTxService">
+		<property name="target">
+			<bean class="cn.net.normcore.iorder.service.UserService"></bean>
+		</property>
+	</bean>
+
+	<bean id="dishesService" parent="baseTxService">
+		<property name="target">
+			<bean class="cn.net.normcore.iorder.service.DishesService"></bean>
+		</property>
+	</bean>
+
 </beans>

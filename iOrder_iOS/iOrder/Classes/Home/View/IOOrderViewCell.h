@@ -8,14 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
-@class IOShopInfo;
+@class IOShop;
 
 @interface IOOrderViewCell : UITableViewCell
 
 /**
  *  店家数据
  */
-@property (nonatomic, strong) IOShopInfo *shopInfo;
+@property (nonatomic, strong) IOShop *shop;
 
 /**
  *  用于创建一个cell

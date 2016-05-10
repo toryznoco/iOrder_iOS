@@ -13,6 +13,6 @@
 /**
  *  店铺评价
  */
-@property (nonatomic, copy) NSString *startCount;
+@property (nonatomic, assign) float startCount;
 
 @end

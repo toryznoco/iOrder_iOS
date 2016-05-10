@@ -12,11 +12,15 @@
 
 #import "IOOrderHeaderView.h"
 #import "IOOrderViewCell.h"
-#import "IOShopInfo.h"
+
+#import "YWJShopsTool.h"
+#import "IOShop.h"
+
+#import "MJRefresh.h"
 
 @interface IOOrderViewController ()<UITableViewDelegate>
 
-@property (nonatomic, strong) NSMutableArray *shopInfos;
+@property (nonatomic, strong) NSMutableArray *shops;
 
 @end
 
@@ -24,31 +28,24 @@
 
 #pragma mark - privacy
 
-- (NSMutableArray *)shopInfos{
-    if (!_shopInfos) {
-        NSString *shopInfosPath = [[NSBundle mainBundle] pathForResource:@"ShopInfos" ofType:@"plist"];
-        NSMutableArray *shopDatas = [NSMutableArray arrayWithContentsOfFile:shopInfosPath];
-        NSMutableArray *shopInfosArray = [NSMutableArray array];
-        
-        for (NSDictionary *dic in shopDatas) {
-            IOShopInfo *shopInfo = [IOShopInfo mj_objectWithKeyValues:dic];
-            [shopInfosArray addObject:shopInfo];
-        }
-        
-        _shopInfos = shopInfosArray;
+- (NSMutableArray *)shops{
+    if (!_shops) {
+        _shops = [NSMutableArray array];
     }
-    return _shopInfos;
+    return _shops;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    _shops = [self shops];
+    
+    [self loadShopInfos];
+    
     self.title = @"Order";
     self.view.backgroundColor = [UIColor whiteColor];
     //    设置行高
     self.tableView.rowHeight = 70;
-    
-    _shopInfos = [self shopInfos];
     
     self.tableView.tableHeaderView = [[IOOrderHeaderView alloc] init];
 }
@@ -69,15 +66,15 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.shopInfos.count;
+    return self.shops.count;
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     IOOrderViewCell *cell = [IOOrderViewCell cellWithTableView:tableView];
     
-    IOShopInfo *info = self.shopInfos[indexPath.row];
-    cell.shopInfo = info;
+    IOShop *info = self.shops[indexPath.row];
+    cell.shop = info;
     
     return cell;
 }
@@ -89,6 +86,18 @@
     IOShopViewController *shopVc = [[IOShopViewController alloc] init];
     
     [self.navigationController pushViewController:shopVc animated:YES];
+}
+
+#pragma mark - custom method
+
+- (void)loadShopInfos{
+    [YWJShopsTool newShopsSuccess:^(NSArray *shops) {
+        [_shops addObjectsFromArray:shops];
+        
+        [self.tableView reloadData];
+    } failure:^(NSError *error) {
+        YWJLog(@"%@", error);
+    }];
 }
 
 /*
