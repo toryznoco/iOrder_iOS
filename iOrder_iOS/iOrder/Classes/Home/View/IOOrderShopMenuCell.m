@@ -212,15 +212,15 @@
 }
 
 - (void)setupDish{
-    [_dishIcon setImage:[UIImage imageNamed:_dish.dishIcon]];
+    [_dishIcon setImage:[UIImage imageNamed:_dish.picture]];
     
-    _dishName.text = _dish.dishName;
+    _dishName.text = _dish.name;
     
-    _dishSaleCount.text = [NSString stringWithFormat:@"月售%@", _dish.dishSalesCount];
+    _dishSaleCount.text = [NSString stringWithFormat:@"月售%d", _dish.monSal];
     
-    _followCount.text = _dish.dishFollow;
+    _followCount.text = [NSString stringWithFormat:@"%d", _dish.praAmt];
     
-    _dishPrice.text = [NSString stringWithFormat:@"¥%@", _dish.dishPrice];
+    _dishPrice.text = [NSString stringWithFormat:@"¥%.2f", _dish.price];
     _dishPrice.font = [UIFont systemFontOfSize:15];
 }
 
@@ -242,7 +242,7 @@
     }
     
     if ([_delegate respondsToSelector:@selector(orderShopMenuCell:dishPrice:clickedBtn:)]) {
-        [_delegate orderShopMenuCell:self dishPrice:_dish.dishPrice clickedBtn:btn];
+        [_delegate orderShopMenuCell:self dishPrice:_dish.price clickedBtn:btn];
     }
 }
 

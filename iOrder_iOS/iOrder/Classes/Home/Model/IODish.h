@@ -13,28 +13,33 @@
 @interface IODish : NSObject<MJKeyValue>
 
 /**
- *  菜的图标
+ *  菜品图片url，不包含图片服务器根地址，需自行拼接
  */
-@property (nonatomic, copy) NSString *dishIcon;
+@property (nonatomic, copy) NSString *picture;
 
 /**
- *  菜的名称
+ *  菜品名称
  */
-@property (nonatomic, copy) NSString *dishName;
+@property (nonatomic, copy) NSString *name;
 
 /**
- *  菜的销售量
+ *  菜品月售数量
  */
-@property (nonatomic, copy) NSString *dishSalesCount;
+@property (nonatomic, assign) int monSal;
 
 /**
- *  菜获取的赞
+ *  菜品点赞数量
  */
-@property (nonatomic, copy) NSString *dishFollow;
+@property (nonatomic, assign) int praAmt;
 
 /**
- *  菜的价格
+ *  菜品价格，两位小数
  */
-@property (nonatomic, copy) NSString *dishPrice;
+@property (nonatomic, assign) float price;
+
+/**
+ *  菜品评论数量
+ */
+@property (nonatomic, assign) int comAmt;
 
 @end
