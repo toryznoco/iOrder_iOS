@@ -37,12 +37,12 @@
 #pragma mark - Custom Methods
 
 - (void)setupViewControllers{
-    //点餐
+    //首页
     UIViewController *order = [[IOOrderViewController alloc] init];
     IONavigationController *orderNav = [[IONavigationController alloc] initWithRootViewController:order];
     orderNav.navigationDelegate = self;
     
-    //已点菜单
+    //订单
     UIViewController *ordered = [[IOOrderedViewController alloc] init];
     IONavigationController *orderedNav = [[IONavigationController alloc] initWithRootViewController:ordered];
     orderedNav.navigationDelegate = self;
