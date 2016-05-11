@@ -6,25 +6,25 @@
 //  Copyright © 2016 易无解. All rights reserved.
 //
 
-#import "IOOrderViewController.h"
+#import "IOHomeViewController.h"
 
 #import "IOShopViewController.h"
 
 #import "IOOrderHeaderView.h"
-#import "IOOrderViewCell.h"
+#import "IOHomeViewCell.h"
 
 #import "YWJShopsTool.h"
 #import "IOShop.h"
 
 #import "MJRefresh.h"
 
-@interface IOOrderViewController ()<UITableViewDelegate>
+@interface IOHomeViewController ()<UITableViewDelegate>
 
 @property (nonatomic, strong) NSMutableArray *shops;
 
 @end
 
-@implementation IOOrderViewController
+@implementation IOHomeViewController
 
 #pragma mark - privacy
 
@@ -71,7 +71,7 @@
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    IOOrderViewCell *cell = [IOOrderViewCell cellWithTableView:tableView];
+    IOHomeViewCell *cell = [IOHomeViewCell cellWithTableView:tableView];
     
     IOShop *info = self.shops[indexPath.row];
     cell.shop = info;

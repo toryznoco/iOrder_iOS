@@ -16,6 +16,10 @@
 
 #import "UIView+YWJFrame.h"
 
+//  尺寸
+#define kIOScreenWidth [UIScreen mainScreen].bounds.size.width
+#define kIOScreenHeight [UIScreen mainScreen].bounds.size.height
+
 //------------ tool ---------------
 #define YWJUserDefaults [NSUserDefaults standardUserDefaults]
 #define YWJMainScreenBounds [UIScreen mainScreen].bounds

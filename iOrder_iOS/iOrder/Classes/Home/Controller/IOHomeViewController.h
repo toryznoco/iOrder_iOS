@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface IOOrderViewController : UITableViewController
+@interface IOHomeViewController : UITableViewController
 
 @end

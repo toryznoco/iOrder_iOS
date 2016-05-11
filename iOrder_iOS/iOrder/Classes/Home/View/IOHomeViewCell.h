@@ -10,7 +10,7 @@
 
 @class IOShop;
 
-@interface IOOrderViewCell : UITableViewCell
+@interface IOHomeViewCell : UITableViewCell
 
 /**
  *  店家数据

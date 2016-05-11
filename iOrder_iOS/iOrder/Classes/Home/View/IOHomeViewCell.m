@@ -6,13 +6,13 @@
 //  Copyright © 2016 易无解. All rights reserved.
 //
 
-#import "IOOrderViewCell.h"
+#import "IOHomeViewCell.h"
 
 #import "IOOrderShopStarView.h"
 #import "IOShop.h"
 #import "UIImageView+WebCache.h"
 
-@interface IOOrderViewCell ()
+@interface IOHomeViewCell ()
 
 @property (nonatomic, weak) UIImageView *shopIcon;
 @property (nonatomic, weak) UILabel *shopName;
@@ -24,7 +24,7 @@
 
 @end
 
-@implementation IOOrderViewCell
+@implementation IOHomeViewCell
 
 #pragma mark - privacy
 

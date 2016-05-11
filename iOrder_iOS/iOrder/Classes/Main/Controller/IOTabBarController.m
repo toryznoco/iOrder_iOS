@@ -9,7 +9,7 @@
 #import "IOTabBarController.h"
 
 #import "RDVTabBarController.h"
-#import "IOOrderViewController.h"
+#import "IOHomeViewController.h"
 #import "IOOrderedViewController.h"
 #import "IOProfileViewController.h"
 #import "IONavigationController.h"
@@ -38,7 +38,7 @@
 
 - (void)setupViewControllers{
     //首页
-    UIViewController *order = [[IOOrderViewController alloc] init];
+    UIViewController *order = [[IOHomeViewController alloc] init];
     IONavigationController *orderNav = [[IONavigationController alloc] initWithRootViewController:order];
     orderNav.navigationDelegate = self;
     
@@ -93,7 +93,7 @@
     item.unselectedTitleAttributes = unselTitleAttr;
 }
 
-- (void)orderVcWillDisappear:(IOOrderViewController *)orderVc{
+- (void)orderVcWillDisappear:(IOHomeViewController *)orderVc{
     [self setHidesBottomBarWhenPushed:YES];
 }
 

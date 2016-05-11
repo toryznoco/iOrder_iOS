@@ -16,7 +16,7 @@
 		9A8CC3421CE0AF84005E19D9 /* YWJShopsResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC33B1CE0AF84005E19D9 /* YWJShopsResult.m */; };
 		9A8CC3431CE0AF84005E19D9 /* YWJShopsTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC33D1CE0AF84005E19D9 /* YWJShopsTool.m */; };
 		9A8CC36A1CE0AFC7005E19D9 /* IODishViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC3471CE0AFC7005E19D9 /* IODishViewController.m */; };
-		9A8CC36B1CE0AFC7005E19D9 /* IOOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC3491CE0AFC7005E19D9 /* IOOrderViewController.m */; };
+		9A8CC36B1CE0AFC7005E19D9 /* IOHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC3491CE0AFC7005E19D9 /* IOHomeViewController.m */; };
 		9A8CC36C1CE0AFC7005E19D9 /* IOShopViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC34B1CE0AFC7005E19D9 /* IOShopViewController.m */; };
 		9A8CC36D1CE0AFC7005E19D9 /* IODish.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC34E1CE0AFC7005E19D9 /* IODish.m */; };
 		9A8CC36E1CE0AFC7005E19D9 /* IODishInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC3501CE0AFC7005E19D9 /* IODishInfo.m */; };
@@ -26,17 +26,19 @@
 		9A8CC3731CE0AFC7005E19D9 /* IOOrderShopMenuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC35B1CE0AFC7005E19D9 /* IOOrderShopMenuCell.m */; };
 		9A8CC3741CE0AFC7005E19D9 /* IOOrderShopOptionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC35D1CE0AFC7005E19D9 /* IOOrderShopOptionCell.m */; };
 		9A8CC3751CE0AFC7005E19D9 /* IOOrderShopStarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC35F1CE0AFC7005E19D9 /* IOOrderShopStarView.m */; };
-		9A8CC3761CE0AFC7005E19D9 /* IOOrderViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC3611CE0AFC7005E19D9 /* IOOrderViewCell.m */; };
+		9A8CC3761CE0AFC7005E19D9 /* IOHomeViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC3611CE0AFC7005E19D9 /* IOHomeViewCell.m */; };
 		9A8CC3771CE0AFC7005E19D9 /* IOScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC3631CE0AFC7005E19D9 /* IOScrollView.m */; };
 		9A8CC3781CE0AFC7005E19D9 /* IOShoppingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC3651CE0AFC7005E19D9 /* IOShoppingView.m */; };
 		9A8CC3791CE0AFC7005E19D9 /* IOSpecialView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC3671CE0AFC7005E19D9 /* IOSpecialView.m */; };
 		9A8CC37A1CE0AFC7005E19D9 /* IOTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC3691CE0AFC7005E19D9 /* IOTitleView.m */; };
+		9A8CC3821CE306B4005E19D9 /* IOOrderViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC3811CE306B4005E19D9 /* IOOrderViewCell.m */; };
+		9A8CC3851CE3075E005E19D9 /* IOOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC3841CE3075E005E19D9 /* IOOrder.m */; };
 		CA6539561CBD40E6000972E2 /* IONewFeatureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA6539551CBD40E6000972E2 /* IONewFeatureViewController.m */; };
 		CA6539591CBD44CF000972E2 /* YWJNewFeatureScrollPage.m in Sources */ = {isa = PBXBuildFile; fileRef = CA6539581CBD44CF000972E2 /* YWJNewFeatureScrollPage.m */; };
-		CA9019911CE16B7A00AC5712 /* YWJDishesParam.m in Sources */ = {isa = PBXBuildFile; fileRef = CA90198B1CE16B7A00AC5712 /* YWJDishesParam.m */; settings = {ASSET_TAGS = (); }; };
-		CA9019921CE16B7A00AC5712 /* YWJDishesResult.m in Sources */ = {isa = PBXBuildFile; fileRef = CA90198E1CE16B7A00AC5712 /* YWJDishesResult.m */; settings = {ASSET_TAGS = (); }; };
-		CA9019931CE16B7A00AC5712 /* YWJDishesTool.m in Sources */ = {isa = PBXBuildFile; fileRef = CA9019901CE16B7A00AC5712 /* YWJDishesTool.m */; settings = {ASSET_TAGS = (); }; };
-		CA9019961CE16C1200AC5712 /* IODishes.m in Sources */ = {isa = PBXBuildFile; fileRef = CA9019951CE16C1200AC5712 /* IODishes.m */; settings = {ASSET_TAGS = (); }; };
+		CA9019911CE16B7A00AC5712 /* YWJDishesParam.m in Sources */ = {isa = PBXBuildFile; fileRef = CA90198B1CE16B7A00AC5712 /* YWJDishesParam.m */; };
+		CA9019921CE16B7A00AC5712 /* YWJDishesResult.m in Sources */ = {isa = PBXBuildFile; fileRef = CA90198E1CE16B7A00AC5712 /* YWJDishesResult.m */; };
+		CA9019931CE16B7A00AC5712 /* YWJDishesTool.m in Sources */ = {isa = PBXBuildFile; fileRef = CA9019901CE16B7A00AC5712 /* YWJDishesTool.m */; };
+		CA9019961CE16C1200AC5712 /* IODishes.m in Sources */ = {isa = PBXBuildFile; fileRef = CA9019951CE16C1200AC5712 /* IODishes.m */; };
 		CAE8F02C1CB940E2005618B0 /* iOrderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F02B1CB940E2005618B0 /* iOrderTests.m */; };
 		CAE8F0371CB940E2005618B0 /* iOrderUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F0361CB940E2005618B0 /* iOrderUITests.m */; };
 		CAE8F07B1CB94170005618B0 /* YWJBadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F04E1CB94170005618B0 /* YWJBadgeView.m */; };
@@ -86,8 +88,8 @@
 		9A8CC33D1CE0AF84005E19D9 /* YWJShopsTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWJShopsTool.m; sourceTree = "<group>"; };
 		9A8CC3461CE0AFC7005E19D9 /* IODishViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IODishViewController.h; sourceTree = "<group>"; };
 		9A8CC3471CE0AFC7005E19D9 /* IODishViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IODishViewController.m; sourceTree = "<group>"; };
-		9A8CC3481CE0AFC7005E19D9 /* IOOrderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOOrderViewController.h; sourceTree = "<group>"; };
-		9A8CC3491CE0AFC7005E19D9 /* IOOrderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOOrderViewController.m; sourceTree = "<group>"; };
+		9A8CC3481CE0AFC7005E19D9 /* IOHomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOHomeViewController.h; sourceTree = "<group>"; };
+		9A8CC3491CE0AFC7005E19D9 /* IOHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOHomeViewController.m; sourceTree = "<group>"; };
 		9A8CC34A1CE0AFC7005E19D9 /* IOShopViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOShopViewController.h; sourceTree = "<group>"; };
 		9A8CC34B1CE0AFC7005E19D9 /* IOShopViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOShopViewController.m; sourceTree = "<group>"; };
 		9A8CC34D1CE0AFC7005E19D9 /* IODish.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IODish.h; sourceTree = "<group>"; };
@@ -106,8 +108,8 @@
 		9A8CC35D1CE0AFC7005E19D9 /* IOOrderShopOptionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOOrderShopOptionCell.m; sourceTree = "<group>"; };
 		9A8CC35E1CE0AFC7005E19D9 /* IOOrderShopStarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOOrderShopStarView.h; sourceTree = "<group>"; };
 		9A8CC35F1CE0AFC7005E19D9 /* IOOrderShopStarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOOrderShopStarView.m; sourceTree = "<group>"; };
-		9A8CC3601CE0AFC7005E19D9 /* IOOrderViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOOrderViewCell.h; sourceTree = "<group>"; };
-		9A8CC3611CE0AFC7005E19D9 /* IOOrderViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOOrderViewCell.m; sourceTree = "<group>"; };
+		9A8CC3601CE0AFC7005E19D9 /* IOHomeViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOHomeViewCell.h; sourceTree = "<group>"; };
+		9A8CC3611CE0AFC7005E19D9 /* IOHomeViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOHomeViewCell.m; sourceTree = "<group>"; };
 		9A8CC3621CE0AFC7005E19D9 /* IOScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOScrollView.h; sourceTree = "<group>"; };
 		9A8CC3631CE0AFC7005E19D9 /* IOScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOScrollView.m; sourceTree = "<group>"; };
 		9A8CC3641CE0AFC7005E19D9 /* IOShoppingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOShoppingView.h; sourceTree = "<group>"; };
@@ -116,6 +118,10 @@
 		9A8CC3671CE0AFC7005E19D9 /* IOSpecialView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOSpecialView.m; sourceTree = "<group>"; };
 		9A8CC3681CE0AFC7005E19D9 /* IOTitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOTitleView.h; sourceTree = "<group>"; };
 		9A8CC3691CE0AFC7005E19D9 /* IOTitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOTitleView.m; sourceTree = "<group>"; };
+		9A8CC3801CE306B4005E19D9 /* IOOrderViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOOrderViewCell.h; sourceTree = "<group>"; };
+		9A8CC3811CE306B4005E19D9 /* IOOrderViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOOrderViewCell.m; sourceTree = "<group>"; };
+		9A8CC3831CE3075E005E19D9 /* IOOrder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOOrder.h; sourceTree = "<group>"; };
+		9A8CC3841CE3075E005E19D9 /* IOOrder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOOrder.m; sourceTree = "<group>"; };
 		AA08641E7F59BD859B41E36B /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA10A4961CC7B3B500131D56 /* Reveal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Reveal.framework; sourceTree = "<group>"; };
 		CA6539541CBD40E6000972E2 /* IONewFeatureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IONewFeatureViewController.h; sourceTree = "<group>"; };
@@ -290,8 +296,8 @@
 			children = (
 				9A8CC3461CE0AFC7005E19D9 /* IODishViewController.h */,
 				9A8CC3471CE0AFC7005E19D9 /* IODishViewController.m */,
-				9A8CC3481CE0AFC7005E19D9 /* IOOrderViewController.h */,
-				9A8CC3491CE0AFC7005E19D9 /* IOOrderViewController.m */,
+				9A8CC3481CE0AFC7005E19D9 /* IOHomeViewController.h */,
+				9A8CC3491CE0AFC7005E19D9 /* IOHomeViewController.m */,
 				9A8CC34A1CE0AFC7005E19D9 /* IOShopViewController.h */,
 				9A8CC34B1CE0AFC7005E19D9 /* IOShopViewController.m */,
 			);
@@ -326,8 +332,8 @@
 				9A8CC35D1CE0AFC7005E19D9 /* IOOrderShopOptionCell.m */,
 				9A8CC35E1CE0AFC7005E19D9 /* IOOrderShopStarView.h */,
 				9A8CC35F1CE0AFC7005E19D9 /* IOOrderShopStarView.m */,
-				9A8CC3601CE0AFC7005E19D9 /* IOOrderViewCell.h */,
-				9A8CC3611CE0AFC7005E19D9 /* IOOrderViewCell.m */,
+				9A8CC3601CE0AFC7005E19D9 /* IOHomeViewCell.h */,
+				9A8CC3611CE0AFC7005E19D9 /* IOHomeViewCell.m */,
 				9A8CC3621CE0AFC7005E19D9 /* IOScrollView.h */,
 				9A8CC3631CE0AFC7005E19D9 /* IOScrollView.m */,
 				9A8CC3641CE0AFC7005E19D9 /* IOShoppingView.h */,
@@ -336,6 +342,24 @@
 				9A8CC3671CE0AFC7005E19D9 /* IOSpecialView.m */,
 				9A8CC3681CE0AFC7005E19D9 /* IOTitleView.h */,
 				9A8CC3691CE0AFC7005E19D9 /* IOTitleView.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		9A8CC37E1CE30698005E19D9 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				9A8CC3831CE3075E005E19D9 /* IOOrder.h */,
+				9A8CC3841CE3075E005E19D9 /* IOOrder.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		9A8CC37F1CE306A0005E19D9 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				9A8CC3801CE306B4005E19D9 /* IOOrderViewCell.h */,
+				9A8CC3811CE306B4005E19D9 /* IOOrderViewCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -477,7 +501,7 @@
 				CADAA6BC1CBBC26100E601DC /* NewFeature */,
 				CAE8F0451CB94170005618B0 /* Main */,
 				9A8CC3441CE0AFC7005E19D9 /* Home */,
-				CAE8F0591CB94170005618B0 /* Ordered */,
+				CAE8F0591CB94170005618B0 /* Order */,
 				CAE8F0731CB94170005618B0 /* Profile */,
 				9A8CC32B1CE0AF84005E19D9 /* Tool */,
 				CAE8F05F1CB94170005618B0 /* Other */,
@@ -519,13 +543,14 @@
 			path = View;
 			sourceTree = "<group>";
 		};
-		CAE8F0591CB94170005618B0 /* Ordered */ = {
+		CAE8F0591CB94170005618B0 /* Order */ = {
 			isa = PBXGroup;
 			children = (
 				CAE8F05A1CB94170005618B0 /* Controller */,
-				CAE8F05D1CB94170005618B0 /* Model */,
-				CAE8F05E1CB94170005618B0 /* View */,
+				9A8CC37E1CE30698005E19D9 /* Model */,
+				9A8CC37F1CE306A0005E19D9 /* View */,
 			);
+			name = Order;
 			path = Ordered;
 			sourceTree = "<group>";
 		};
@@ -536,20 +561,6 @@
 				CAE8F08E1CB9459B005618B0 /* IOOrderedViewController.m */,
 			);
 			path = Controller;
-			sourceTree = "<group>";
-		};
-		CAE8F05D1CB94170005618B0 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
-		CAE8F05E1CB94170005618B0 /* View */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = View;
 			sourceTree = "<group>";
 		};
 		CAE8F05F1CB94170005618B0 /* Other */ = {
@@ -798,6 +809,7 @@
 				9A8CC3711CE0AFC7005E19D9 /* IOBadgeView.m in Sources */,
 				CA9019921CE16B7A00AC5712 /* YWJDishesResult.m in Sources */,
 				CA6539591CBD44CF000972E2 /* YWJNewFeatureScrollPage.m in Sources */,
+				9A8CC3821CE306B4005E19D9 /* IOOrderViewCell.m in Sources */,
 				9A8CC33E1CE0AF84005E19D9 /* YWJHttpTool.m in Sources */,
 				9A8CC3431CE0AF84005E19D9 /* YWJShopsTool.m in Sources */,
 				CAE8F0921CB9461C005618B0 /* IOProfileViewController.m in Sources */,
@@ -812,6 +824,7 @@
 				CAE8F0951CB946E8005618B0 /* IONavigationController.m in Sources */,
 				9A8CC36C1CE0AFC7005E19D9 /* IOShopViewController.m in Sources */,
 				CA9019961CE16C1200AC5712 /* IODishes.m in Sources */,
+				9A8CC3851CE3075E005E19D9 /* IOOrder.m in Sources */,
 				CAE8F07D1CB94170005618B0 /* YWJTabBarButton.m in Sources */,
 				9A8CC3791CE0AFC7005E19D9 /* IOSpecialView.m in Sources */,
 				9A8CC37A1CE0AFC7005E19D9 /* IOTitleView.m in Sources */,
@@ -820,10 +833,10 @@
 				CA9019931CE16B7A00AC5712 /* YWJDishesTool.m in Sources */,
 				9A8CC36A1CE0AFC7005E19D9 /* IODishViewController.m in Sources */,
 				9A8CC3731CE0AFC7005E19D9 /* IOOrderShopMenuCell.m in Sources */,
-				9A8CC3761CE0AFC7005E19D9 /* IOOrderViewCell.m in Sources */,
+				9A8CC3761CE0AFC7005E19D9 /* IOHomeViewCell.m in Sources */,
 				9A8CC3401CE0AF84005E19D9 /* YWJRootTool.m in Sources */,
 				CA6539561CBD40E6000972E2 /* IONewFeatureViewController.m in Sources */,
-				9A8CC36B1CE0AFC7005E19D9 /* IOOrderViewController.m in Sources */,
+				9A8CC36B1CE0AFC7005E19D9 /* IOHomeViewController.m in Sources */,
 				9A8CC3771CE0AFC7005E19D9 /* IOScrollView.m in Sources */,
 				CAE8F0AF1CB9680B005618B0 /* IOTabBarController.m in Sources */,
 			);
