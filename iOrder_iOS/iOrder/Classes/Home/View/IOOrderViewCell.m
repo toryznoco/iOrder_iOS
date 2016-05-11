@@ -10,6 +10,7 @@
 
 #import "IOOrderShopStarView.h"
 #import "IOShop.h"
+#import "UIImageView+WebCache.h"
 
 @interface IOOrderViewCell ()
 
@@ -117,8 +118,9 @@
 #pragma custom methods
 
 - (void)setupShopInfo{
-//    [_shopIcon setImage:[UIImage imageNamed:_shop.picture]];
-    [_shopIcon setImage:[UIImage imageNamed:@"barbecue_image"]];
+    NSString *pictureStr = [NSString stringWithFormat:@"%@%@", kPictureServerPath, _shop.picture];
+    NSURL *pictureURL = [NSURL URLWithString:pictureStr];
+    [_shopIcon sd_setImageWithURL:pictureURL placeholderImage:[UIImage imageNamed:@"timeline_image_placeholder"]];
     
     _shopName.text = _shop.name;
     _shopName.font = [UIFont systemFontOfSize:15];
@@ -128,7 +130,7 @@
     _shopIntro.textColor = [UIColor colorWithRed:180/255.0 green:180/255.0 blue:180/255.0 alpha:1];
     _shopIntro.font = [UIFont systemFontOfSize:13];
     
-    _shopDistance.text = [NSString stringWithFormat:@"%dkm", _shop.distance];
+    _shopDistance.text = [NSString stringWithFormat:@"%dkm", _shop.distance / 1000];
     _shopDistance.textColor = [UIColor colorWithRed:180/255.0 green:180/255.0 blue:180/255.0 alpha:1];
     _shopDistance.font = [UIFont systemFontOfSize:13];
     

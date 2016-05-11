@@ -10,4 +10,6 @@
 
 @interface IOShopViewController : UIViewController
 
+@property (nonatomic, assign) int shopId;
+
 @end

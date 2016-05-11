@@ -46,7 +46,7 @@
     
     //    初始化数组和加载数据
     [self dishInfos];
-    [self loadDishInfos];
+    [self loadDishInfosWithShopId:self.shopId];
     
     [self setupSelfView];
     
@@ -56,7 +56,7 @@
     
     [self setUpShoppingView];
     
-//    _isRelate = YES;
+    _isRelate = YES;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -198,8 +198,8 @@
     return _dishInfos;
 }
 
-- (void)loadDishInfos{
-    [YWJDishesTool newShopDishesWithShopId:1 Success:^(NSArray *shops) {
+- (void)loadDishInfosWithShopId:(int)shopId{
+    [YWJDishesTool newShopDishesWithShopId:shopId Success:^(NSArray *shops) {
         NSMutableArray *dishInfosArray = [NSMutableArray array];
         for (NSDictionary *dishInfoDic in shops) {
             IODishes *dishes = [IODishes mj_objectWithKeyValues:dishInfoDic];
@@ -268,7 +268,7 @@
         _shoppingView.shoppingCarBtn.enabled = YES;
         _shoppingView.totalPrice.textColor = [UIColor greenColor];
         if ([_shoppingView.totalPrice.text isEqualToString:@"购物车是空的"]) {
-            _shoppingView.totalPrice.text = @"0";
+            _shoppingView.totalPrice.text = @"0.00";
             _shoppingView.checkOutBtn.enabled = YES;
         }
         _shoppingView.badge.badgeValue = [NSString stringWithFormat:@"%lld", [_shoppingView.badge.badgeValue longLongValue] + 1];
@@ -276,7 +276,7 @@
     }else{
         _shoppingView.badge.badgeValue = [NSString stringWithFormat:@"%lld", [_shoppingView.badge.badgeValue longLongValue] - 1];
         _shoppingView.totalPrice.text = [NSString stringWithFormat:@"¥%.2f", ([[_shoppingView.totalPrice.text substringFromIndex:1] floatValue] - dishPrice)];
-        if ([_shoppingView.totalPrice.text isEqualToString:@"¥0"]) {
+        if ([_shoppingView.totalPrice.text isEqualToString:@"¥0.00"]) {
             _shoppingView.checkOutBtn.enabled = NO;
             _shoppingView.checkOutView.backgroundColor = [UIColor lightGrayColor];
             _shoppingView.shoppingCarBtn.enabled = NO;
