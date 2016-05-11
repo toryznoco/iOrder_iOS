@@ -62,7 +62,7 @@
 
 - (void)customizeTabBarForController:(RDVTabBarController *)tabBarController{
     NSArray *tabBarItemImages = @[@"tabbar_home", @"tabbar_order", @"tabbar_profile"];
-    NSArray *tabBarItemTitles = @[@"点餐", @"已点菜单", @"我的"];
+    NSArray *tabBarItemTitles = @[@"首页", @"订单", @"我的"];
     
     RDVTabBar *tabBar = [tabBarController tabBar];
     

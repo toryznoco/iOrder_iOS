@@ -42,7 +42,7 @@
     
     [self loadShopInfos];
     
-    self.title = @"Order";
+    self.title = @"首页";
     self.view.backgroundColor = [UIColor whiteColor];
     //    设置行高
     self.tableView.rowHeight = 70;
