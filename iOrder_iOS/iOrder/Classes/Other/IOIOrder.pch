@@ -24,6 +24,7 @@
 
 //------------ key ----------------
 #define kVersionKey @"version"
+#define kPictureServerPath @"http://normcore.net.cn/fileServ/picture/"
 
 #ifdef DEBUG // 调试
 

@@ -83,7 +83,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     IOShopViewController *shopVc = [[IOShopViewController alloc] init];
-    
+    shopVc.shopId = (int)(indexPath.row + 1);
     [self.navigationController pushViewController:shopVc animated:YES];
 }
 

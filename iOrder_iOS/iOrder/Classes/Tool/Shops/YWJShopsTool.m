@@ -20,7 +20,7 @@
     //创建参数模型
     YWJShopsParam *param = [[YWJShopsParam alloc] init];
     param.startId = 0;
-    param.amount = 4;
+    param.amount = 10;
     param.userLng = 30.59;
     param.userLat = 103.59;
     [YWJHttpTool GET:@"http://normcore.net.cn/iorder/server/shop!getNearestShops.action" parameters:param.mj_keyValues success:^(id responseObject) {

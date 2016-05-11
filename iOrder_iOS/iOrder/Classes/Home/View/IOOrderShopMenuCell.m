@@ -9,6 +9,7 @@
 #import "IOOrderShopMenuCell.h"
 
 #import "IODish.h"
+#import "UIImageView+WebCache.h"
 
 @interface IOOrderShopMenuCell ()
 
@@ -212,7 +213,9 @@
 }
 
 - (void)setupDish{
-    [_dishIcon setImage:[UIImage imageNamed:_dish.picture]];
+    NSString *pictureStr = [NSString stringWithFormat:@"%@%@", kPictureServerPath, _dish.picture];
+    NSURL *pictureURL = [NSURL URLWithString:pictureStr];
+    [_dishIcon sd_setImageWithURL:pictureURL placeholderImage:[UIImage imageNamed:@"timeline_image_placeholder"]];
     
     _dishName.text = _dish.name;
     
