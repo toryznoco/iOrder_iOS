@@ -23,9 +23,6 @@
 		9A8CC36F1CE0AFC7005E19D9 /* IOShop.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC3521CE0AFC7005E19D9 /* IOShop.m */; };
 		9A8CC3711CE0AFC7005E19D9 /* IOBadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC3571CE0AFC7005E19D9 /* IOBadgeView.m */; };
 		9A8CC3721CE0AFC7005E19D9 /* IOHomeHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC3591CE0AFC7005E19D9 /* IOHomeHeaderView.m */; };
-		9A8CC3731CE0AFC7005E19D9 /* IOOrderShopMenuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC35B1CE0AFC7005E19D9 /* IOOrderShopMenuCell.m */; };
-		9A8CC3741CE0AFC7005E19D9 /* IOOrderShopOptionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC35D1CE0AFC7005E19D9 /* IOOrderShopOptionCell.m */; };
-		9A8CC3751CE0AFC7005E19D9 /* IOOrderShopStarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC35F1CE0AFC7005E19D9 /* IOOrderShopStarView.m */; };
 		9A8CC3761CE0AFC7005E19D9 /* IOHomeViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC3611CE0AFC7005E19D9 /* IOHomeViewCell.m */; };
 		9A8CC3771CE0AFC7005E19D9 /* IOScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC3631CE0AFC7005E19D9 /* IOScrollView.m */; };
 		9A8CC3781CE0AFC7005E19D9 /* IOShoppingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC3651CE0AFC7005E19D9 /* IOShoppingView.m */; };
@@ -105,12 +102,6 @@
 		9A8CC3571CE0AFC7005E19D9 /* IOBadgeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOBadgeView.m; sourceTree = "<group>"; };
 		9A8CC3581CE0AFC7005E19D9 /* IOHomeHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOHomeHeaderView.h; sourceTree = "<group>"; };
 		9A8CC3591CE0AFC7005E19D9 /* IOHomeHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOHomeHeaderView.m; sourceTree = "<group>"; };
-		9A8CC35A1CE0AFC7005E19D9 /* IOOrderShopMenuCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOOrderShopMenuCell.h; sourceTree = "<group>"; };
-		9A8CC35B1CE0AFC7005E19D9 /* IOOrderShopMenuCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOOrderShopMenuCell.m; sourceTree = "<group>"; };
-		9A8CC35C1CE0AFC7005E19D9 /* IOOrderShopOptionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOOrderShopOptionCell.h; sourceTree = "<group>"; };
-		9A8CC35D1CE0AFC7005E19D9 /* IOOrderShopOptionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOOrderShopOptionCell.m; sourceTree = "<group>"; };
-		9A8CC35E1CE0AFC7005E19D9 /* IOOrderShopStarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOOrderShopStarView.h; sourceTree = "<group>"; };
-		9A8CC35F1CE0AFC7005E19D9 /* IOOrderShopStarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOOrderShopStarView.m; sourceTree = "<group>"; };
 		9A8CC3601CE0AFC7005E19D9 /* IOHomeViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOHomeViewCell.h; sourceTree = "<group>"; };
 		9A8CC3611CE0AFC7005E19D9 /* IOHomeViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOHomeViewCell.m; sourceTree = "<group>"; };
 		9A8CC3621CE0AFC7005E19D9 /* IOScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOScrollView.h; sourceTree = "<group>"; };
@@ -341,12 +332,6 @@
 				9A8CC3571CE0AFC7005E19D9 /* IOBadgeView.m */,
 				9A8CC3581CE0AFC7005E19D9 /* IOHomeHeaderView.h */,
 				9A8CC3591CE0AFC7005E19D9 /* IOHomeHeaderView.m */,
-				9A8CC35A1CE0AFC7005E19D9 /* IOOrderShopMenuCell.h */,
-				9A8CC35B1CE0AFC7005E19D9 /* IOOrderShopMenuCell.m */,
-				9A8CC35C1CE0AFC7005E19D9 /* IOOrderShopOptionCell.h */,
-				9A8CC35D1CE0AFC7005E19D9 /* IOOrderShopOptionCell.m */,
-				9A8CC35E1CE0AFC7005E19D9 /* IOOrderShopStarView.h */,
-				9A8CC35F1CE0AFC7005E19D9 /* IOOrderShopStarView.m */,
 				9A8CC3601CE0AFC7005E19D9 /* IOHomeViewCell.h */,
 				9A8CC3611CE0AFC7005E19D9 /* IOHomeViewCell.m */,
 				9A8CC3621CE0AFC7005E19D9 /* IOScrollView.h */,
@@ -820,7 +805,6 @@
 				9A8CC36F1CE0AFC7005E19D9 /* IOShop.m in Sources */,
 				9A8CC36E1CE0AFC7005E19D9 /* IODishInfo.m in Sources */,
 				9A8CC3411CE0AF84005E19D9 /* YWJShopsParam.m in Sources */,
-				9A8CC3751CE0AFC7005E19D9 /* IOOrderShopStarView.m in Sources */,
 				9A8CC3711CE0AFC7005E19D9 /* IOBadgeView.m in Sources */,
 				CA9019921CE16B7A00AC5712 /* YWJDishesResult.m in Sources */,
 				CA6539591CBD44CF000972E2 /* YWJNewFeatureScrollPage.m in Sources */,
@@ -830,7 +814,6 @@
 				CAE8F0921CB9461C005618B0 /* IOProfileViewController.m in Sources */,
 				CACD5CB31CE4119A00ADE187 /* IOHomeShopStarView.m in Sources */,
 				CAE8F08F1CB9459B005618B0 /* IOOrderedViewController.m in Sources */,
-				9A8CC3741CE0AFC7005E19D9 /* IOOrderShopOptionCell.m in Sources */,
 				CAE8F07C1CB94170005618B0 /* YWJTabBar.m in Sources */,
 				9A8CC3721CE0AFC7005E19D9 /* IOHomeHeaderView.m in Sources */,
 				CAE8F07B1CB94170005618B0 /* YWJBadgeView.m in Sources */,
@@ -850,7 +833,6 @@
 				CAE8F0801CB94170005618B0 /* AppDelegate.m in Sources */,
 				CA9019931CE16B7A00AC5712 /* YWJDishesTool.m in Sources */,
 				9A8CC36A1CE0AFC7005E19D9 /* IODishViewController.m in Sources */,
-				9A8CC3731CE0AFC7005E19D9 /* IOOrderShopMenuCell.m in Sources */,
 				9A8CC3761CE0AFC7005E19D9 /* IOHomeViewCell.m in Sources */,
 				9A8CC3401CE0AF84005E19D9 /* YWJRootTool.m in Sources */,
 				CA6539561CBD40E6000972E2 /* IONewFeatureViewController.m in Sources */,
