@@ -8,8 +8,8 @@
 
 #import "IOShopViewController.h"
 
-#import "IOOrderShopMenuCell.h"
-#import "IOOrderShopOptionCell.h"
+#import "IOHomeShopMenuCell.h"
+#import "IOHomeShopOptionCell.h"
 #import "IODishViewController.h"
 
 #import "IODishInfo.h"
@@ -23,7 +23,7 @@
 
 #define kScale 0.25
 
-@interface IOShopViewController ()<UITableViewDataSource, UITableViewDelegate, IOOrderShopMenuCellDelegate>
+@interface IOShopViewController ()<UITableViewDataSource, UITableViewDelegate, IOHomeShopMenuCellDelegate>
 
 @property (nonatomic, strong) NSArray *dataArray;
 @property (nonatomic, assign) BOOL isRelate;
@@ -87,19 +87,19 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell;
     if (tableView == self.optionTableView) {
-        cell = [IOOrderShopOptionCell cellWithTableView:tableView];
+        cell = [IOHomeShopOptionCell cellWithTableView:tableView];
         
         IODishes *dishInfo = _dishInfos[indexPath.row];
         
-        ((IOOrderShopOptionCell *)cell).category = dishInfo.catgName;
+        ((IOHomeShopOptionCell *)cell).category = dishInfo.catgName;
     }else{
-        cell = [IOOrderShopMenuCell cellWithTableView:tableView];
-        ((IOOrderShopMenuCell *)cell).delegate = self;
+        cell = [IOHomeShopMenuCell cellWithTableView:tableView];
+        ((IOHomeShopMenuCell *)cell).delegate = self;
         
         IODishes *dishInfo = _dishInfos[indexPath.section];
         IODish *dish = dishInfo.dishes[indexPath.row];
         
-        ((IOOrderShopMenuCell *)cell).dish = dish;
+        ((IOHomeShopMenuCell *)cell).dish = dish;
     }
     
     return cell;
@@ -166,8 +166,6 @@
             [self.optionTableView selectRowAtIndexPath:[NSIndexPath indexPathForItem:topCellSection inSection:0] animated:YES scrollPosition:UITableViewScrollPositionMiddle];
         }
     }
-#warning todo:
-//    [UITableView _contentOffsetForScrollingToRowAtIndexPath:atScrollPosition:]
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -262,7 +260,7 @@
 
 #pragma mark shop menu cell delegate
 
-- (void)orderShopMenuCell:(IOOrderShopMenuCell *)shopMenuCell dishPrice:(float)dishPrice clickedBtn:(UIButton *)btn{
+- (void)homeShopMenuCell:(IOHomeShopMenuCell *)shopMenuCell dishPrice:(float)dishPrice clickedBtn:(UIButton *)btn{
     if (btn.tag == 1) {
         _shoppingView.checkOutView.backgroundColor = [UIColor orangeColor];
         _shoppingView.shoppingCarBtn.enabled = YES;
