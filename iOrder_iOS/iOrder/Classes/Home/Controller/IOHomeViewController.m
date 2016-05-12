@@ -1,5 +1,5 @@
 //
-//  IOOrderViewController.m
+//  IOHomeViewController.m
 //  iOrder
 //
 //  Created by 易无解 on 4/9/16.
@@ -10,7 +10,7 @@
 
 #import "IOShopViewController.h"
 
-#import "IOOrderHeaderView.h"
+#import "IOHomeHeaderView.h"
 #import "IOHomeViewCell.h"
 
 #import "YWJShopsTool.h"
@@ -47,7 +47,7 @@
     //    设置行高
     self.tableView.rowHeight = 70;
     
-    self.tableView.tableHeaderView = [[IOOrderHeaderView alloc] init];
+    self.tableView.tableHeaderView = [[IOHomeHeaderView alloc] init];
 }
 
 - (void)didReceiveMemoryWarning {
