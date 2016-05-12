@@ -32,7 +32,9 @@
     self.title = @"订单";
     
     //    设置行高
-    self.tableView.rowHeight = 150;
+    self.tableView.rowHeight = 155;
+    [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+    self.tableView.tableFooterView = [[UIView alloc] init];
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;

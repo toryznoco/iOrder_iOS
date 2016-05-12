@@ -26,6 +26,18 @@
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    
+    // Called when the view is about to made visible. Default does nothing
+    [super viewWillAppear:animated];
+    
+    UINavigationBar *navigationBar = self.navigationController.navigationBar;
+    
+    //去除导航栏下方的横线 透明
+    [navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
+    [navigationBar setShadowImage:[UIImage new]];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
