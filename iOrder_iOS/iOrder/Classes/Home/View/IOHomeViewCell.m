@@ -1,5 +1,5 @@
 //
-//  IOOrderViewCell.m
+//  IOHomeViewCell.m
 //  iOrder
 //
 //  Created by 易无解 on 4/17/16.
@@ -8,7 +8,7 @@
 
 #import "IOHomeViewCell.h"
 
-#import "IOOrderShopStarView.h"
+#import "IOHomeShopStarView.h"
 #import "IOShop.h"
 #import "UIImageView+WebCache.h"
 
@@ -18,7 +18,7 @@
 @property (nonatomic, weak) UILabel *shopName;
 @property (nonatomic, weak) UILabel *shopIntro;
 @property (nonatomic, weak) UILabel *shopDistance;
-@property (nonatomic, weak) IOOrderShopStarView *shopStarView;
+@property (nonatomic, weak) IOHomeShopStarView *shopStarView;
 @property (nonatomic, weak) UILabel *shopPrice;
 @property (nonatomic, weak) UILabel *shopSaleCount;
 
@@ -167,7 +167,7 @@
     self.shopDistance = shopDistance;
     
 //    店铺评价
-    IOOrderShopStarView *shopStarView = [[IOOrderShopStarView alloc] init];
+    IOHomeShopStarView *shopStarView = [[IOHomeShopStarView alloc] init];
     [self addSubview:shopStarView];
     _shopStarView = shopStarView;
     
