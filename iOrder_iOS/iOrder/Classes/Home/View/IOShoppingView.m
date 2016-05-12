@@ -32,8 +32,8 @@
     shoppingCarBtn.frame = CGRectMake(25, 0, 44, 44);
     shoppingCarBtn.layer.cornerRadius = 17;
     shoppingCarBtn.clipsToBounds = YES;
-    [shoppingCarBtn setImage:[UIImage imageNamed:@"1"] forState:UIControlStateDisabled];
-    [shoppingCarBtn setImage:[UIImage imageNamed:@"barbecue_image"] forState:UIControlStateNormal];
+    [shoppingCarBtn setImage:[UIImage imageNamed:@"shopping_car"] forState:UIControlStateDisabled];
+    [shoppingCarBtn setImage:[UIImage imageNamed:@"shopping_car_heilighted"] forState:UIControlStateNormal];
     [self addSubview:shoppingCarBtn];
     _shoppingCarBtn = shoppingCarBtn;
     
