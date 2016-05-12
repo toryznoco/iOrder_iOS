@@ -9,6 +9,13 @@ public class DishesAction extends BaseAction {
 	private int userId;
 	private int dishesId;
 	private int amount;
+	private int couponId;
+	private int shopId;
+
+	public String order() {
+		getServMgr().getDishesService().addOrder(userId, shopId, couponId);
+		return NONE;
+	}
 
 	public String addToCart() {
 		getServMgr().getDishesService().addToCart(userId, dishesId, amount);
@@ -25,6 +32,14 @@ public class DishesAction extends BaseAction {
 
 	public void setDishesId(int dishesId) {
 		this.dishesId = dishesId;
+	}
+
+	public void setCouponId(int couponId) {
+		this.couponId = couponId;
+	}
+
+	public void setShopId(int shopId) {
+		this.shopId = shopId;
 	}
 
 }

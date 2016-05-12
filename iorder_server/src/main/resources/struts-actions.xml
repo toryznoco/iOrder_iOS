@@ -18,6 +18,10 @@
 				<param name="root">json</param>
 				<param name="excludeProperties">user.userPass</param>
 			</result>
+			
+			<result name="jsonResult" type="json">
+				<param name="root">json</param>
+			</result>
 		</action>
 		
 		<action name="dishes" class="cn.net.normcore.iorder.action.DishesAction">

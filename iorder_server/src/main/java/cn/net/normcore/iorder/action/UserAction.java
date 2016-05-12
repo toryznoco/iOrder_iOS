@@ -14,6 +14,12 @@ public class UserAction extends BaseAction {
 	private Map<String, Object> json = new HashMap<String, Object>();
 	private String userName;
 	private String userPass;
+	private int userId;
+
+	public String getOrders() {
+		json.put("orders", getServMgr().getUserService().getOrders(userId));
+		return "jsonResult";
+	}
 
 	/**
 	 * code：0用户名不存在 1登录成功 2密码错误
@@ -48,6 +54,10 @@ public class UserAction extends BaseAction {
 
 	public Map<String, Object> getJson() {
 		return json;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 
 }
