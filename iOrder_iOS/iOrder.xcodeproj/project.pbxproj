@@ -22,7 +22,7 @@
 		9A8CC36E1CE0AFC7005E19D9 /* IODishInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC3501CE0AFC7005E19D9 /* IODishInfo.m */; };
 		9A8CC36F1CE0AFC7005E19D9 /* IOShop.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC3521CE0AFC7005E19D9 /* IOShop.m */; };
 		9A8CC3711CE0AFC7005E19D9 /* IOBadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC3571CE0AFC7005E19D9 /* IOBadgeView.m */; };
-		9A8CC3721CE0AFC7005E19D9 /* IOOrderHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC3591CE0AFC7005E19D9 /* IOOrderHeaderView.m */; };
+		9A8CC3721CE0AFC7005E19D9 /* IOHomeHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC3591CE0AFC7005E19D9 /* IOHomeHeaderView.m */; };
 		9A8CC3731CE0AFC7005E19D9 /* IOOrderShopMenuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC35B1CE0AFC7005E19D9 /* IOOrderShopMenuCell.m */; };
 		9A8CC3741CE0AFC7005E19D9 /* IOOrderShopOptionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC35D1CE0AFC7005E19D9 /* IOOrderShopOptionCell.m */; };
 		9A8CC3751CE0AFC7005E19D9 /* IOOrderShopStarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC35F1CE0AFC7005E19D9 /* IOOrderShopStarView.m */; };
@@ -100,8 +100,8 @@
 		9A8CC3521CE0AFC7005E19D9 /* IOShop.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOShop.m; sourceTree = "<group>"; };
 		9A8CC3561CE0AFC7005E19D9 /* IOBadgeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOBadgeView.h; sourceTree = "<group>"; };
 		9A8CC3571CE0AFC7005E19D9 /* IOBadgeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOBadgeView.m; sourceTree = "<group>"; };
-		9A8CC3581CE0AFC7005E19D9 /* IOOrderHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOOrderHeaderView.h; sourceTree = "<group>"; };
-		9A8CC3591CE0AFC7005E19D9 /* IOOrderHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOOrderHeaderView.m; sourceTree = "<group>"; };
+		9A8CC3581CE0AFC7005E19D9 /* IOHomeHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOHomeHeaderView.h; sourceTree = "<group>"; };
+		9A8CC3591CE0AFC7005E19D9 /* IOHomeHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOHomeHeaderView.m; sourceTree = "<group>"; };
 		9A8CC35A1CE0AFC7005E19D9 /* IOOrderShopMenuCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOOrderShopMenuCell.h; sourceTree = "<group>"; };
 		9A8CC35B1CE0AFC7005E19D9 /* IOOrderShopMenuCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOOrderShopMenuCell.m; sourceTree = "<group>"; };
 		9A8CC35C1CE0AFC7005E19D9 /* IOOrderShopOptionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOOrderShopOptionCell.h; sourceTree = "<group>"; };
@@ -324,8 +324,8 @@
 			children = (
 				9A8CC3561CE0AFC7005E19D9 /* IOBadgeView.h */,
 				9A8CC3571CE0AFC7005E19D9 /* IOBadgeView.m */,
-				9A8CC3581CE0AFC7005E19D9 /* IOOrderHeaderView.h */,
-				9A8CC3591CE0AFC7005E19D9 /* IOOrderHeaderView.m */,
+				9A8CC3581CE0AFC7005E19D9 /* IOHomeHeaderView.h */,
+				9A8CC3591CE0AFC7005E19D9 /* IOHomeHeaderView.m */,
 				9A8CC35A1CE0AFC7005E19D9 /* IOOrderShopMenuCell.h */,
 				9A8CC35B1CE0AFC7005E19D9 /* IOOrderShopMenuCell.m */,
 				9A8CC35C1CE0AFC7005E19D9 /* IOOrderShopOptionCell.h */,
@@ -816,7 +816,7 @@
 				CAE8F08F1CB9459B005618B0 /* IOOrderedViewController.m in Sources */,
 				9A8CC3741CE0AFC7005E19D9 /* IOOrderShopOptionCell.m in Sources */,
 				CAE8F07C1CB94170005618B0 /* YWJTabBar.m in Sources */,
-				9A8CC3721CE0AFC7005E19D9 /* IOOrderHeaderView.m in Sources */,
+				9A8CC3721CE0AFC7005E19D9 /* IOHomeHeaderView.m in Sources */,
 				CAE8F07B1CB94170005618B0 /* YWJBadgeView.m in Sources */,
 				9A8CC33F1CE0AF84005E19D9 /* YWJVersionTool.m in Sources */,
 				9A8CC3421CE0AF84005E19D9 /* YWJShopsResult.m in Sources */,

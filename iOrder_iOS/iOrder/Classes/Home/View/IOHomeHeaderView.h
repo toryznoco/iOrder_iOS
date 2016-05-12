@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface IOOrderHeaderView : UIView
+@interface IOHomeHeaderView : UIView
 
 @end

@@ -6,13 +6,13 @@
 //  Copyright © 2016 易无解. All rights reserved.
 //
 
-#import "IOOrderHeaderView.h"
+#import "IOHomeHeaderView.h"
 
 #import "IOScrollView.h"
 #import "IOSpecialView.h"
 #import "IOTitleView.h"
 
-@interface IOOrderHeaderView ()
+@interface IOHomeHeaderView ()
 
 @property (nonatomic, weak) IOScrollView *scrollView;
 @property (nonatomic, weak) IOSpecialView *specialView;
@@ -20,7 +20,7 @@
 
 @end
 
-@implementation IOOrderHeaderView
+@implementation IOHomeHeaderView
 
 #pragma mark - privacy
 
