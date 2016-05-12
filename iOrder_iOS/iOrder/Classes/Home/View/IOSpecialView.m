@@ -64,16 +64,19 @@
 
 - (void)setupAllChildView{
     UIImageView *weekendView = [[UIImageView alloc] init];
+    weekendView.contentMode = UIViewContentModeCenter;
     [self addSubview:weekendView];
     weekendView.backgroundColor = [UIColor whiteColor];
     _weekendView = weekendView;
     
     UIImageView *dayView = [[UIImageView alloc] init];
+    dayView.contentMode = UIViewContentModeCenter;
     [self addSubview:dayView];
     dayView.backgroundColor = [UIColor whiteColor];
     _dayView = dayView;
     
     UIImageView *specialView = [[UIImageView alloc] init];
+    specialView.contentMode = UIViewContentModeCenter;
     [self addSubview:specialView];
     specialView.backgroundColor = [UIColor whiteColor];
     _specialView = specialView;
