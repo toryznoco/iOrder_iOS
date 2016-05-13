@@ -18,7 +18,6 @@
 		9A8CC36A1CE0AFC7005E19D9 /* IODishViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC3471CE0AFC7005E19D9 /* IODishViewController.m */; };
 		9A8CC36B1CE0AFC7005E19D9 /* IOHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC3491CE0AFC7005E19D9 /* IOHomeViewController.m */; };
 		9A8CC36C1CE0AFC7005E19D9 /* IOShopViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC34B1CE0AFC7005E19D9 /* IOShopViewController.m */; };
-		9A8CC36D1CE0AFC7005E19D9 /* IODish.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC34E1CE0AFC7005E19D9 /* IODish.m */; };
 		9A8CC36E1CE0AFC7005E19D9 /* IODishInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC3501CE0AFC7005E19D9 /* IODishInfo.m */; };
 		9A8CC36F1CE0AFC7005E19D9 /* IOShop.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC3521CE0AFC7005E19D9 /* IOShop.m */; };
 		9A8CC3761CE0AFC7005E19D9 /* IOHomeViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC3611CE0AFC7005E19D9 /* IOHomeViewCell.m */; };
@@ -31,7 +30,6 @@
 		CA9019911CE16B7A00AC5712 /* YWJDishesParam.m in Sources */ = {isa = PBXBuildFile; fileRef = CA90198B1CE16B7A00AC5712 /* YWJDishesParam.m */; };
 		CA9019921CE16B7A00AC5712 /* YWJDishesResult.m in Sources */ = {isa = PBXBuildFile; fileRef = CA90198E1CE16B7A00AC5712 /* YWJDishesResult.m */; };
 		CA9019931CE16B7A00AC5712 /* YWJDishesTool.m in Sources */ = {isa = PBXBuildFile; fileRef = CA9019901CE16B7A00AC5712 /* YWJDishesTool.m */; };
-		CA9019961CE16C1200AC5712 /* IODishes.m in Sources */ = {isa = PBXBuildFile; fileRef = CA9019951CE16C1200AC5712 /* IODishes.m */; };
 		CACD5CB11CE4119A00ADE187 /* IOHomeShopCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CACD5CAC1CE4119A00ADE187 /* IOHomeShopCell.m */; settings = {ASSET_TAGS = (); }; };
 		CAE8F02C1CB940E2005618B0 /* iOrderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F02B1CB940E2005618B0 /* iOrderTests.m */; };
 		CAE8F0371CB940E2005618B0 /* iOrderUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F0361CB940E2005618B0 /* iOrderUITests.m */; };
@@ -86,8 +84,6 @@
 		9A8CC3491CE0AFC7005E19D9 /* IOHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOHomeViewController.m; sourceTree = "<group>"; };
 		9A8CC34A1CE0AFC7005E19D9 /* IOShopViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOShopViewController.h; sourceTree = "<group>"; };
 		9A8CC34B1CE0AFC7005E19D9 /* IOShopViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOShopViewController.m; sourceTree = "<group>"; };
-		9A8CC34D1CE0AFC7005E19D9 /* IODish.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IODish.h; sourceTree = "<group>"; };
-		9A8CC34E1CE0AFC7005E19D9 /* IODish.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IODish.m; sourceTree = "<group>"; };
 		9A8CC34F1CE0AFC7005E19D9 /* IODishInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IODishInfo.h; sourceTree = "<group>"; };
 		9A8CC3501CE0AFC7005E19D9 /* IODishInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IODishInfo.m; sourceTree = "<group>"; };
 		9A8CC3511CE0AFC7005E19D9 /* IOShop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOShop.h; sourceTree = "<group>"; };
@@ -114,8 +110,6 @@
 		CA90198E1CE16B7A00AC5712 /* YWJDishesResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWJDishesResult.m; sourceTree = "<group>"; };
 		CA90198F1CE16B7A00AC5712 /* YWJDishesTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWJDishesTool.h; sourceTree = "<group>"; };
 		CA9019901CE16B7A00AC5712 /* YWJDishesTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWJDishesTool.m; sourceTree = "<group>"; };
-		CA9019941CE16C1200AC5712 /* IODishes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IODishes.h; sourceTree = "<group>"; };
-		CA9019951CE16C1200AC5712 /* IODishes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IODishes.m; sourceTree = "<group>"; };
 		CACD5CAB1CE4119A00ADE187 /* IOHomeShopCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOHomeShopCell.h; sourceTree = "<group>"; };
 		CACD5CAC1CE4119A00ADE187 /* IOHomeShopCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOHomeShopCell.m; sourceTree = "<group>"; };
 		CAE8F00E1CB940E2005618B0 /* iOrder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOrder.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -289,10 +283,6 @@
 		9A8CC34C1CE0AFC7005E19D9 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				9A8CC34D1CE0AFC7005E19D9 /* IODish.h */,
-				9A8CC34E1CE0AFC7005E19D9 /* IODish.m */,
-				CA9019941CE16C1200AC5712 /* IODishes.h */,
-				CA9019951CE16C1200AC5712 /* IODishes.m */,
 				9A8CC34F1CE0AFC7005E19D9 /* IODishInfo.h */,
 				9A8CC3501CE0AFC7005E19D9 /* IODishInfo.m */,
 				9A8CC3511CE0AFC7005E19D9 /* IOShop.h */,
@@ -787,10 +777,8 @@
 				CAE8F07B1CB94170005618B0 /* YWJBadgeView.m in Sources */,
 				9A8CC33F1CE0AF84005E19D9 /* YWJVersionTool.m in Sources */,
 				9A8CC3421CE0AF84005E19D9 /* YWJShopsResult.m in Sources */,
-				9A8CC36D1CE0AFC7005E19D9 /* IODish.m in Sources */,
 				CAE8F0951CB946E8005618B0 /* IONavigationController.m in Sources */,
 				9A8CC36C1CE0AFC7005E19D9 /* IOShopViewController.m in Sources */,
-				CA9019961CE16C1200AC5712 /* IODishes.m in Sources */,
 				9A8CC3851CE3075E005E19D9 /* IOOrder.m in Sources */,
 				CAE8F07D1CB94170005618B0 /* YWJTabBarButton.m in Sources */,
 				9A8CC3781CE0AFC7005E19D9 /* IOShoppingView.m in Sources */,

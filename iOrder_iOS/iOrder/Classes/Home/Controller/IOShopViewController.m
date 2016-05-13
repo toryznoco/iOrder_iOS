@@ -12,12 +12,9 @@
 #import "IODishViewController.h"
 
 #import "IODishInfo.h"
-#import "IODish.h"
 
 #import "IOShoppingView.h"
 
-#import "IODishes.h"
-#import "IODish.h"
 #import "YWJDishesTool.h"
 
 #define kScale 0.25

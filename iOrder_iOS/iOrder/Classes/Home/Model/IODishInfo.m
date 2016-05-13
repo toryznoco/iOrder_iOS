@@ -8,6 +8,20 @@
 
 #import "IODishInfo.h"
 
+
+#pragma mark - implementation IODishInfo
 @implementation IODishInfo
+
+@end
+
+
+#pragma mark - implementation IODish
+@implementation IODish
+
+@end
+
+
+#pragma mark - implementation IODishes
+@implementation IODishes
 
 @end
