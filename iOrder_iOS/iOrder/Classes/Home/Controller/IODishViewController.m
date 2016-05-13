@@ -8,21 +8,41 @@
 
 #import "IODishViewController.h"
 
+#import "IOShoppingView.h"
+
+#define kScale 0.25
+
 @interface IODishViewController ()
+
+@property (nonatomic, weak) IOShoppingView *shoppingView;
 
 @end
 
 @implementation IODishViewController
 
+#pragma mark - privacy
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     self.view.backgroundColor = [UIColor whiteColor];
+    
+    [self setupShoppingView];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - public
+
+#pragma mark - custom
+
+- (void)setupShoppingView{
+    IOShoppingView *shoppingView = [[IOShoppingView alloc] initWithFrame:CGRectMake(0, self.view.height - 54, self.view.width, 54)];
+    [self.view addSubview:shoppingView];
+    _shoppingView = shoppingView;
 }
 
 /*
