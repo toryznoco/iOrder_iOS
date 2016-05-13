@@ -224,7 +224,7 @@
 
 - (UITableView *)optionTableView{
     if (!_optionTableView) {
-        _optionTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.width * kScale, self.view.height)];
+        _optionTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.width * kScale, self.view.height - 45)];
         _optionTableView.backgroundColor = [UIColor whiteColor];
         [self.view addSubview:_optionTableView];
     }
@@ -233,7 +233,7 @@
 
 - (UITableView *)menuTableView{
     if (!_menuTableView) {
-        _menuTableView = [[UITableView alloc] initWithFrame:CGRectMake(self.view.width * kScale, 0, self.view.width * (1 - kScale), self.view.height)];
+        _menuTableView = [[UITableView alloc] initWithFrame:CGRectMake(self.view.width * kScale, 0, self.view.width * (1 - kScale), self.view.height - 45)];
         _menuTableView.backgroundColor = [UIColor whiteColor];
         [self.view addSubview:_menuTableView];
     }

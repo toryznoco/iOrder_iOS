@@ -16,12 +16,22 @@ public class ShopAction extends BaseAction {
 	private int amount;
 	private int shopId;
 
+	public String getShopDetail() {
+		json = getServMgr().getShopService().getShopDetail(shopId);
+		return "jsonResult";
+	}
+
+	public String getShopComments() {
+		json = getServMgr().getShopService().getShopComments(shopId);
+		return "jsonResult";
+	}
+
 	public String getShopDishesInfo() {
 		json.put("shopDishes",
 				getServMgr().getShopService().getShopDishes(shopId));
 		return "jsonResult";
 	}
-	
+
 	public String getNearestShops() {
 		json.put(
 				"shops",

@@ -61,4 +61,27 @@ public class ShopService extends BaseService {
 		return result;
 	}
 
+	public Map<String, Object> getShopComments(int shopId) {
+		// TODO Auto-generated method stub
+		String sqlGetShopScore = "SELECT score FROM shop WHERE id = ?";
+		String sqlGetComm = "SELECT comm_content AS commCont, comm_time AS commTime, score FROM order_item oi INNER JOIN `order` o ON oi.o_id = o.id WHERE oi.`status` = 4 AND o.s_id = ? AND score BETWEEN ? AND ?";
+
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("score",
+				jt.queryForObject(sqlGetShopScore, Integer.class, shopId));
+		map.put("goodComm", jt.queryForList(sqlGetComm, shopId, 3.5, 5));
+		map.put("normalComm", jt.queryForList(sqlGetComm, shopId, 2, 3.5));
+		map.put("badComm", jt.queryForList(sqlGetComm, shopId, 0, 2));
+		return map;
+	}
+
+	public Map<String, Object> getShopDetail(int shopId) {
+		// TODO Auto-generated method stub
+		String sqlGetShopDetail = "SELECT open_time AS openTime, close_time AS closeTime, address, phone, notice, pay_online AS payOnline FROM shop WHERE id = ?";
+		Map<String, Object> map = jt.queryForMap(sqlGetShopDetail, shopId);
+		map.put("openTime", map.get("openTime").toString());
+		map.put("closeTime", map.get("closeTime").toString());
+		return map;
+	}
+
 }
