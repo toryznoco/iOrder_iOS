@@ -8,8 +8,7 @@
 
 #import "IOShopViewController.h"
 
-#import "IOHomeShopMenuCell.h"
-#import "IOHomeShopOptionCell.h"
+#import "IOHomeShopCell.h"
 #import "IODishViewController.h"
 
 #import "IODishInfo.h"
