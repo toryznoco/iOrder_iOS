@@ -189,7 +189,7 @@
     //    预定按钮
     UIButton *orderBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     orderBtn.tag = 1;
-    [orderBtn setImage:[UIImage imageNamed:@"iOrder_home_orderBtn"] forState:UIControlStateNormal];
+    [orderBtn setImage:[UIImage imageNamed:@"add_button"] forState:UIControlStateNormal];
     [orderBtn addTarget:self action:@selector(orderBtnClicked:) forControlEvents:UIControlEventTouchDown];
     [self addSubview:orderBtn];
     _orderBtn = orderBtn;

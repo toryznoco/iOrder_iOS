@@ -35,8 +35,13 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated{
-//    self.navigationController.navigationBar.hidden = YES;
-    self.navigationController.navigationBar.backgroundColor = [UIColor clearColor];
+    [super viewWillAppear:animated];
+    
+    UINavigationBar *navigationBar = self.navigationController.navigationBar;
+    
+    //去除导航栏下方的横线 透明
+    [navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
+    [navigationBar setShadowImage:[UIImage new]];
 }
 
 - (void)didReceiveMemoryWarning {
