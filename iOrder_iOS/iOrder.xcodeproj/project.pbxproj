@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		0C39DD33B6D8ED391FA88ED5 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AA08641E7F59BD859B41E36B /* libPods.a */; };
 		9A8CC3261CDF779B005E19D9 /* IOTransmitters.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC3251CDF779B005E19D9 /* IOTransmitters.m */; };
-		9A8CC33E1CE0AF84005E19D9 /* YWJHttpTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC32E1CE0AF84005E19D9 /* YWJHttpTool.m */; };
+		9A8CC33E1CE0AF84005E19D9 /* IOHttpTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC32E1CE0AF84005E19D9 /* IOHttpTool.m */; };
 		9A8CC33F1CE0AF84005E19D9 /* YWJVersionTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC3311CE0AF84005E19D9 /* YWJVersionTool.m */; };
 		9A8CC3401CE0AF84005E19D9 /* YWJRootTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC3341CE0AF84005E19D9 /* YWJRootTool.m */; };
 		9A8CC3411CE0AF84005E19D9 /* YWJShopsParam.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC3381CE0AF84005E19D9 /* YWJShopsParam.m */; };
@@ -75,8 +75,8 @@
 /* Begin PBXFileReference section */
 		9A8CC3241CDF779B005E19D9 /* IOTransmitters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOTransmitters.h; sourceTree = "<group>"; };
 		9A8CC3251CDF779B005E19D9 /* IOTransmitters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOTransmitters.m; sourceTree = "<group>"; };
-		9A8CC32D1CE0AF84005E19D9 /* YWJHttpTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWJHttpTool.h; sourceTree = "<group>"; };
-		9A8CC32E1CE0AF84005E19D9 /* YWJHttpTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWJHttpTool.m; sourceTree = "<group>"; };
+		9A8CC32D1CE0AF84005E19D9 /* IOHttpTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOHttpTool.h; sourceTree = "<group>"; };
+		9A8CC32E1CE0AF84005E19D9 /* IOHttpTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOHttpTool.m; sourceTree = "<group>"; };
 		9A8CC3301CE0AF84005E19D9 /* YWJVersionTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWJVersionTool.h; sourceTree = "<group>"; };
 		9A8CC3311CE0AF84005E19D9 /* YWJVersionTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWJVersionTool.m; sourceTree = "<group>"; };
 		9A8CC3331CE0AF84005E19D9 /* YWJRootTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWJRootTool.h; sourceTree = "<group>"; };
@@ -231,8 +231,8 @@
 		9A8CC32C1CE0AF84005E19D9 /* Http */ = {
 			isa = PBXGroup;
 			children = (
-				9A8CC32D1CE0AF84005E19D9 /* YWJHttpTool.h */,
-				9A8CC32E1CE0AF84005E19D9 /* YWJHttpTool.m */,
+				9A8CC32D1CE0AF84005E19D9 /* IOHttpTool.h */,
+				9A8CC32E1CE0AF84005E19D9 /* IOHttpTool.m */,
 			);
 			path = Http;
 			sourceTree = "<group>";
@@ -814,7 +814,7 @@
 				CA9019921CE16B7A00AC5712 /* YWJDishesResult.m in Sources */,
 				CA6539591CBD44CF000972E2 /* YWJNewFeatureScrollPage.m in Sources */,
 				9A8CC3821CE306B4005E19D9 /* IOOrderViewCell.m in Sources */,
-				9A8CC33E1CE0AF84005E19D9 /* YWJHttpTool.m in Sources */,
+				9A8CC33E1CE0AF84005E19D9 /* IOHttpTool.m in Sources */,
 				9A8CC3431CE0AF84005E19D9 /* YWJShopsTool.m in Sources */,
 				CAE8F0921CB9461C005618B0 /* IOProfileViewController.m in Sources */,
 				CACD5CB31CE4119A00ADE187 /* IOHomeShopStarView.m in Sources */,

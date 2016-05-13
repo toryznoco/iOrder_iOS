@@ -27,7 +27,16 @@
     
     self.view.backgroundColor = [UIColor whiteColor];
     
+    UIImageView *igv = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"005"]];
+    igv.frame = CGRectMake(100, 20, 50, 150);
+    [self.view addSubview:igv];
+    
     [self setupShoppingView];
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+//    self.navigationController.navigationBar.hidden = YES;
+    self.navigationController.navigationBar.backgroundColor = [UIColor clearColor];
 }
 
 - (void)didReceiveMemoryWarning {

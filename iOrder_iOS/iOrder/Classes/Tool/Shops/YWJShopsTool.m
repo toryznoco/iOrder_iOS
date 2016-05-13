@@ -10,7 +10,7 @@
 
 #import "YWJShopsParam.h"
 #import "YWJShopsResult.h"
-#import "YWJHttpTool.h"
+#import "IOHttpTool.h"
 
 #import "MJExtension.h"
 
@@ -23,7 +23,7 @@
     param.amount = 10;
     param.userLng = 30.59;
     param.userLat = 103.59;
-    [YWJHttpTool GET:@"http://normcore.net.cn/iorder/server/shop!getNearestShops.action" parameters:param.mj_keyValues success:^(id responseObject) {
+    [IOHttpTool GET:@"http://normcore.net.cn/iorder/server/shop!getNearestShops.action" parameters:param.mj_keyValues success:^(id responseObject) {
         //字典转模型
         YWJShopsResult *result = [YWJShopsResult mj_objectWithKeyValues:responseObject];
         if (success) {
