@@ -10,7 +10,6 @@
 
 #import "IOShopViewController.h"
 
-#import "IOHomeHeaderView.h"
 #import "IOHomeViewCell.h"
 
 #import "YWJShopsTool.h"
