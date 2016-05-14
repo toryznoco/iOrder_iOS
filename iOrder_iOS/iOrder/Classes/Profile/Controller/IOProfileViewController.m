@@ -19,6 +19,8 @@
     
     self.title = @"我的";
     
+    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"ProfileCell"];
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -46,24 +48,39 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-#warning Incomplete implementation, return the number of sections
-    return 0;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-#warning Incomplete implementation, return the number of rows
-    return 0;
+    return 4;
 }
 
-/*
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
+    static NSString *reuseId= @"ProfileCell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseId forIndexPath:indexPath];
     
-    // Configure the cell...
+    switch (indexPath.row) {
+        case 0:
+            cell.textLabel.text = @"我的评价";
+            break;
+        case 1:
+            cell.textLabel.text = @"我的收藏";
+            break;
+        case 2:
+            cell.textLabel.text = @"帮助与反馈";
+            break;
+        case 3:
+            cell.textLabel.text = @"更多";
+            break;
+        default:
+            cell.textLabel.text = @"默认";
+            break;
+    }
     
     return cell;
 }
-*/
+
 
 /*
 // Override to support conditional editing of the table view.
