@@ -30,15 +30,16 @@
 		9A8CC37A1CE0AFC7005E19D9 /* IOTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC3691CE0AFC7005E19D9 /* IOTitleView.m */; };
 		9A8CC3821CE306B4005E19D9 /* IOOrderViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC3811CE306B4005E19D9 /* IOOrderViewCell.m */; };
 		9A8CC3851CE3075E005E19D9 /* IOOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC3841CE3075E005E19D9 /* IOOrder.m */; };
+		9A8CC38A1CE572C8005E19D9 /* IOProfileHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC3891CE572C8005E19D9 /* IOProfileHeaderView.m */; };
 		CA6539561CBD40E6000972E2 /* IONewFeatureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA6539551CBD40E6000972E2 /* IONewFeatureViewController.m */; };
 		CA6539591CBD44CF000972E2 /* YWJNewFeatureScrollPage.m in Sources */ = {isa = PBXBuildFile; fileRef = CA6539581CBD44CF000972E2 /* YWJNewFeatureScrollPage.m */; };
 		CA9019911CE16B7A00AC5712 /* YWJDishesParam.m in Sources */ = {isa = PBXBuildFile; fileRef = CA90198B1CE16B7A00AC5712 /* YWJDishesParam.m */; };
 		CA9019921CE16B7A00AC5712 /* YWJDishesResult.m in Sources */ = {isa = PBXBuildFile; fileRef = CA90198E1CE16B7A00AC5712 /* YWJDishesResult.m */; };
 		CA9019931CE16B7A00AC5712 /* YWJDishesTool.m in Sources */ = {isa = PBXBuildFile; fileRef = CA9019901CE16B7A00AC5712 /* YWJDishesTool.m */; };
 		CA9019961CE16C1200AC5712 /* IODishes.m in Sources */ = {isa = PBXBuildFile; fileRef = CA9019951CE16C1200AC5712 /* IODishes.m */; };
-		CACD5CB11CE4119A00ADE187 /* IOHomeShopMenuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CACD5CAC1CE4119A00ADE187 /* IOHomeShopMenuCell.m */; settings = {ASSET_TAGS = (); }; };
-		CACD5CB21CE4119A00ADE187 /* IOHomeShopOptionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CACD5CAE1CE4119A00ADE187 /* IOHomeShopOptionCell.m */; settings = {ASSET_TAGS = (); }; };
-		CACD5CB31CE4119A00ADE187 /* IOHomeShopStarView.m in Sources */ = {isa = PBXBuildFile; fileRef = CACD5CB01CE4119A00ADE187 /* IOHomeShopStarView.m */; settings = {ASSET_TAGS = (); }; };
+		CACD5CB11CE4119A00ADE187 /* IOHomeShopMenuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CACD5CAC1CE4119A00ADE187 /* IOHomeShopMenuCell.m */; };
+		CACD5CB21CE4119A00ADE187 /* IOHomeShopOptionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CACD5CAE1CE4119A00ADE187 /* IOHomeShopOptionCell.m */; };
+		CACD5CB31CE4119A00ADE187 /* IOHomeShopStarView.m in Sources */ = {isa = PBXBuildFile; fileRef = CACD5CB01CE4119A00ADE187 /* IOHomeShopStarView.m */; };
 		CAE8F02C1CB940E2005618B0 /* iOrderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F02B1CB940E2005618B0 /* iOrderTests.m */; };
 		CAE8F0371CB940E2005618B0 /* iOrderUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F0361CB940E2005618B0 /* iOrderUITests.m */; };
 		CAE8F07B1CB94170005618B0 /* YWJBadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F04E1CB94170005618B0 /* YWJBadgeView.m */; };
@@ -116,6 +117,8 @@
 		9A8CC3811CE306B4005E19D9 /* IOOrderViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOOrderViewCell.m; sourceTree = "<group>"; };
 		9A8CC3831CE3075E005E19D9 /* IOOrder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOOrder.h; sourceTree = "<group>"; };
 		9A8CC3841CE3075E005E19D9 /* IOOrder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOOrder.m; sourceTree = "<group>"; };
+		9A8CC3881CE572C8005E19D9 /* IOProfileHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOProfileHeaderView.h; sourceTree = "<group>"; };
+		9A8CC3891CE572C8005E19D9 /* IOProfileHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOProfileHeaderView.m; sourceTree = "<group>"; };
 		AA08641E7F59BD859B41E36B /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA10A4961CC7B3B500131D56 /* Reveal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Reveal.framework; sourceTree = "<group>"; };
 		CA6539541CBD40E6000972E2 /* IONewFeatureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IONewFeatureViewController.h; sourceTree = "<group>"; };
@@ -364,6 +367,22 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		9A8CC3861CE5729F005E19D9 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		9A8CC3871CE572AA005E19D9 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				9A8CC3881CE572C8005E19D9 /* IOProfileHeaderView.h */,
+				9A8CC3891CE572C8005E19D9 /* IOProfileHeaderView.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		AC53E7F2F1CB4D0E4F921365 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -588,8 +607,8 @@
 			isa = PBXGroup;
 			children = (
 				CAE8F0741CB94170005618B0 /* Controller */,
-				CAE8F0771CB94170005618B0 /* Model */,
-				CAE8F0781CB94170005618B0 /* View */,
+				9A8CC3861CE5729F005E19D9 /* Model */,
+				9A8CC3871CE572AA005E19D9 /* View */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -601,20 +620,6 @@
 				CAE8F0911CB9461C005618B0 /* IOProfileViewController.m */,
 			);
 			path = Controller;
-			sourceTree = "<group>";
-		};
-		CAE8F0771CB94170005618B0 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
-		CAE8F0781CB94170005618B0 /* View */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -825,6 +830,7 @@
 				CACD5CB21CE4119A00ADE187 /* IOHomeShopOptionCell.m in Sources */,
 				CA9019961CE16C1200AC5712 /* IODishes.m in Sources */,
 				9A8CC3851CE3075E005E19D9 /* IOOrder.m in Sources */,
+				9A8CC38A1CE572C8005E19D9 /* IOProfileHeaderView.m in Sources */,
 				CAE8F07D1CB94170005618B0 /* YWJTabBarButton.m in Sources */,
 				9A8CC3791CE0AFC7005E19D9 /* IOSpecialView.m in Sources */,
 				9A8CC37A1CE0AFC7005E19D9 /* IOTitleView.m in Sources */,
