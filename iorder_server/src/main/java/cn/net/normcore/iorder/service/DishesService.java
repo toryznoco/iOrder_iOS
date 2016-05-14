@@ -1,5 +1,8 @@
 package cn.net.normcore.iorder.service;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.dao.DataAccessException;
 
 public class DishesService extends BaseService {
@@ -26,6 +29,26 @@ public class DishesService extends BaseService {
 		String sqlUpdateItem = "UPDATE order_item SET o_id = (SELECT id FROM `order` WHERE u_id = ? AND `status` = 1 ORDER BY create_time DESC LIMIT 1), `status` = 2 WHERE `status` = 1 AND d_id IN (SELECT id FROM dishes WHERE s_id = ?)";
 		jt.update(sqlAddOrder, userId, shopId, couponId == 0 ? null : couponId);
 		jt.update(sqlUpdateItem, userId, shopId);
+	}
+
+	public Object getOrderPrice(int orderId) {
+		// TODO Auto-generated method stub
+		String sqlGetOrderPrice = "SELECT total_price AS orderPrice FROM `order` WHERE id = ?";
+		return jt.queryForObject(sqlGetOrderPrice, new Object[] { orderId },
+				Object.class);
+	}
+
+	public List<Map<String, Object>> getOrderItems(int orderId) {
+		// TODO Auto-generated method stub
+		String sqlGetOrderItems = "SELECT d.`name` AS dishesName, oi.amount AS dishesAmt, d.price * oi.amount AS itemPrice FROM `order` o INNER JOIN order_item oi ON o.id = oi.o_id INNER JOIN dishes d ON d.id = oi.d_id WHERE o.id = ?";
+		return jt.queryForList(sqlGetOrderItems, orderId);
+	}
+
+	private static final String SQL_UPDATE_ORDER_STATUS = "UPDATE `order` SET `status` = ? WHERE id = ?";
+
+	public void updateOrderPay(int orderId) {
+		// TODO Auto-generated method stub
+		jt.update(SQL_UPDATE_ORDER_STATUS, 2, orderId);
 	}
 
 }

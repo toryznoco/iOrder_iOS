@@ -7,6 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.ResultSetExtractor;
+
 import cn.net.normcore.iorder.common.DataExtracter;
 
 public class ShopService extends BaseService {
@@ -82,6 +85,28 @@ public class ShopService extends BaseService {
 		map.put("openTime", map.get("openTime").toString());
 		map.put("closeTime", map.get("closeTime").toString());
 		return map;
+	}
+
+	public List<Map<String, Object>> getPromotions() {
+		// TODO Auto-generated method stub
+		String sqlGetPromotions = "SELECT type, picture FROM promotion WHERE `status` = 1 ORDER BY time DESC";
+		return jt.query(sqlGetPromotions,
+				new ResultSetExtractor<List<Map<String, Object>>>() {
+
+					@Override
+					public List<Map<String, Object>> extractData(ResultSet rs)
+							throws SQLException, DataAccessException {
+						// TODO Auto-generated method stub
+						List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+						while (rs.next()) {
+							Map<String, Object> map = new HashMap<String, Object>();
+							map.put("type", rs.getInt("type"));
+							map.put("picture", rs.getString("picture"));
+							list.add(map);
+						}
+						return list;
+					}
+				});
 	}
 
 }

@@ -15,6 +15,11 @@ public class ShopAction extends BaseAction {
 	private int startId;
 	private int amount;
 	private int shopId;
+	
+	public String getPromotions() {
+		json.put("promotions", getServMgr().getShopService().getPromotions());
+		return "jsonResult";
+	}
 
 	public String getShopDetail() {
 		json = getServMgr().getShopService().getShopDetail(shopId);
