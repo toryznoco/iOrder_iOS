@@ -8,8 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+#import "SDCycleScrollView.h"
+
 @class IOShop;
 
+#pragma mark - interface IOHomeViewCell
 @interface IOHomeViewCell : UITableViewCell
 
 /**
@@ -23,5 +26,44 @@
  *  @return 自定义的cell
  */
 + (instancetype)cellWithTableView:(UITableView *)tableView;
+
+@end
+
+
+#pragma mark - interface IOHomeShopStarView
+@interface IOHomeShopStarView : UIView
+
+/**
+ *  店铺评价
+ */
+@property (nonatomic, assign) float startCount;
+
+@end
+
+
+#pragma mark - interface IOHomeHeaderView
+@interface IOHomeHeaderView : UIView
+
+@end
+
+
+#pragma mark - interface IOScrollView
+@interface IOScrollView : UIView
+
+@property (nonatomic, strong) NSArray *images;
+
+@end
+
+
+#pragma mark - interface IOSpecialView
+@interface IOSpecialView : UIView
+
+@property (nonatomic, strong) NSArray *datas;
+
+@end
+
+
+#pragma mark - interface IOTitleView
+@interface IOTitleView : UIView
 
 @end

@@ -1,16 +1,16 @@
 //
-//  YWJHttpTool.m
+//  IOHttpTool.m
 //  iOrder
 //
 //  Created by 易无解 on 5/9/16.
 //  Copyright © 2016 易无解. All rights reserved.
 //
 
-#import "YWJHttpTool.h"
+#import "IOHttpTool.h"
 
 #import "AFNetworking.h"
 
-@implementation YWJHttpTool
+@implementation IOHttpTool
 
 + (void)GET:(NSString *)URLString parameters:(id)parameters success:(void (^)(id))success failure:(void (^)(NSError *))failure{
     // 创建请求管理者

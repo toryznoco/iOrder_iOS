@@ -1,5 +1,5 @@
 //
-//  YWJHttpTool.h
+//  IOHttpTool.h
 //  iOrder
 //
 //  Created by 易无解 on 5/9/16.
@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface YWJHttpTool : NSObject
+@interface IOHttpTool : NSObject
 
 /**
  *  发送get请求

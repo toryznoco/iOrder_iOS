@@ -4,12 +4,22 @@
 //
 //  Created by 易无解 on 5/8/16.
 //  Copyright © 2016 易无解. All rights reserved.
-//
+//  首页购物栏
 
 #import <UIKit/UIKit.h>
 
-#import "IOBadgeView.h"
+#pragma mark - interface IOBadgeView
+@interface IOBadgeView : UIButton
 
+/**
+ *  badge的值
+ */
+@property (nonatomic, copy) NSString *badgeValue;
+
+@end
+
+
+#pragma mark - interface IOShoppingView
 @interface IOShoppingView : UIView
 
 @property (nonatomic, weak) UIButton *shoppingCarBtn;
@@ -19,3 +29,6 @@
 @property (nonatomic, weak) UIButton *checkOutBtn;
 
 @end
+
+
+

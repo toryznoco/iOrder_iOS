@@ -10,7 +10,7 @@
 
 #import "YWJDishesParam.h"
 #import "YWJDishesResult.h"
-#import "YWJHttpTool.h"
+#import "IOHttpTool.h"
 
 @implementation YWJDishesTool
 
@@ -18,7 +18,7 @@
     YWJDishesParam *param = [[YWJDishesParam alloc] init];
     param.shopId = shopId;
     
-    [YWJHttpTool GET:@"http://normcore.net.cn/iorder/server/shop!getShopDishesInfo.action" parameters:param.mj_keyValues success:^(id responseObject) {
+    [IOHttpTool GET:@"http://normcore.net.cn/iorder/server/shop!getShopDishesInfo.action" parameters:param.mj_keyValues success:^(id responseObject) {
         YWJDishesResult *result = [YWJDishesResult mj_objectWithKeyValues:responseObject];
         if (success) {
             success(result.shopDishes);

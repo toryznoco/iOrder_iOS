@@ -8,20 +8,17 @@
 
 #import "IOShopViewController.h"
 
-#import "IOHomeShopMenuCell.h"
-#import "IOHomeShopOptionCell.h"
 #import "IODishViewController.h"
+#import "IOHomeShopCell.h"
 
 #import "IODishInfo.h"
-#import "IODish.h"
-
 #import "IOShoppingView.h"
-
-#import "IODishes.h"
-#import "IODish.h"
 #import "YWJDishesTool.h"
+#import "UIBarButtonItem+IOBarButtonItem.h"
+#import "IOHomeShopHeaderView.h"
 
 #define kScale 0.25
+#define kHeaderHeight 150
 
 @interface IOShopViewController ()<UITableViewDataSource, UITableViewDelegate, IOHomeShopMenuCellDelegate>
 
@@ -48,6 +45,10 @@
     [self dishInfos];
     [self loadDishInfosWithShopId:self.shopId];
     
+    [self setupNavigationItem];
+    
+    [self setupShopHeaderView];
+    
     [self setupSelfView];
     
     [self optionTableView];
@@ -57,6 +58,16 @@
     [self setUpShoppingView];
     
     _isRelate = YES;
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    
+    UINavigationBar *navigationBar = self.navigationController.navigationBar;
+    
+    //去除导航栏下方的横线 透明
+    [navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
+    [navigationBar setShadowImage:[UIImage new]];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -189,6 +200,22 @@
 
 #pragma mark - custom methods
 
+- (void)setupShopHeaderView{
+    IOHomeShopHeaderView *shopHeaderView = [[IOHomeShopHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, kHeaderHeight)];
+    [self.view addSubview:shopHeaderView];
+}
+
+- (void)setupNavigationItem{
+    
+    UIBarButtonItem *collectBtn = [UIBarButtonItem initWithNormalImage:@"heart" target:self action:@selector(collectBtnClick) width:16 height:14];
+    UIBarButtonItem *signInBtn = [UIBarButtonItem initWithNormalImage:@"calender" target:self action:@selector(signInBtnClick) width:16 height:14];
+    UIBarButtonItem *signInLabel = [UIBarButtonItem initWithtitleColor:[UIColor orangeColor] target:self action:@selector(signInLabel) title:@"签到"];
+    self.navigationItem.rightBarButtonItems = @[collectBtn, signInBtn, signInLabel];
+    
+    UIBarButtonItem *backBtn = [UIBarButtonItem initWithNormalImage:@"arrow" target:self action:@selector(backBtnClick) width:12 height:21];
+    self.navigationItem.leftBarButtonItem = backBtn;
+}
+
 - (NSMutableArray *)dishInfos{
     if (!_dishInfos) {
         _dishInfos = [NSMutableArray array];
@@ -224,7 +251,7 @@
 
 - (UITableView *)optionTableView{
     if (!_optionTableView) {
-        _optionTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.width * kScale, self.view.height - 45)];
+        _optionTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, kHeaderHeight, self.view.width * kScale, self.view.height - 45 - kHeaderHeight)];
         _optionTableView.backgroundColor = [UIColor whiteColor];
         [self.view addSubview:_optionTableView];
     }
@@ -233,7 +260,7 @@
 
 - (UITableView *)menuTableView{
     if (!_menuTableView) {
-        _menuTableView = [[UITableView alloc] initWithFrame:CGRectMake(self.view.width * kScale, 0, self.view.width * (1 - kScale), self.view.height - 45)];
+        _menuTableView = [[UITableView alloc] initWithFrame:CGRectMake(self.view.width * kScale, kHeaderHeight, self.view.width * (1 - kScale), self.view.height - 45 - kHeaderHeight)];
         _menuTableView.backgroundColor = [UIColor whiteColor];
         [self.view addSubview:_menuTableView];
     }
@@ -251,11 +278,27 @@
 
 - (void)setupSelfView{
 //    布局就是从导航栏下面开始
-    self.edgesForExtendedLayout = UIRectEdgeNone;
-    CGRect viewBounds = self.view.bounds;
-    float navBarH = self.navigationController.navigationBar.height + 20;
-    viewBounds.size.height = YWJMainScreenBounds.size.height - navBarH;
-    self.view.bounds = viewBounds;
+//    self.edgesForExtendedLayout = UIRectEdgeNone;
+//    CGRect viewBounds = self.view.bounds;
+//    float navBarH = self.navigationController.navigationBar.height + 20;
+//    viewBounds.size.height = YWJMainScreenBounds.size.height - navBarH;
+//    self.view.bounds = viewBounds;
+}
+
+- (void)collectBtnClick{
+    YWJLog(@"collectBtn click");
+}
+
+- (void)signInBtnClick{
+    YWJLog(@"signInBtn click");
+}
+
+- (void)signInLabel{
+    
+}
+
+- (void)backBtnClick{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark shop menu cell delegate
