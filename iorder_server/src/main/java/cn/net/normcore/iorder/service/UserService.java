@@ -65,4 +65,29 @@ public class UserService extends BaseService {
 				});
 	}
 
+	public void addShopMark(int userId, int shopId) {
+		// TODO Auto-generated method stub
+		String sqlAddShopMark = "INSERT INTO mark_shop(u_id, s_id) VALUES(?, ?)";
+		jt.update(sqlAddShopMark, userId, shopId);
+	}
+
+	public void addDishesMark(int userId, int dishesId) {
+		// TODO Auto-generated method stub
+		String sqlAddShopMark = "INSERT INTO mark_dish(u_id, d_id) VALUES(?, ?)";
+		jt.update(sqlAddShopMark, userId, dishesId);
+	}
+
+	public void addSign(int userId, int shopId) {
+		// TODO Auto-generated method stub
+		String sqlSign = "INSERT INTO sign_in(u_id, s_id) VALUES(?, ?)";
+		jt.update(sqlSign, userId, shopId);
+	}
+
+	public List<Map<String, Object>> getSginRecord(int userId, int shopId,
+			int year, int month) {
+		// TODO Auto-generated method stub
+		String sqlGetSignRecord = "SELECT DAY(sign_time) AS `day` FROM sign_in WHERE u_id = ? AND s_id = ? AND YEAR(sign_time) = ? AND MONTH(sign_time) = ? ORDER BY sign_time";
+		return jt.queryForList(sqlGetSignRecord, userId, shopId, year, month);
+	}
+
 }

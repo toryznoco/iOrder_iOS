@@ -1,5 +1,6 @@
 package cn.net.normcore.iorder.action;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,6 +16,41 @@ public class UserAction extends BaseAction {
 	private String userName;
 	private String userPass;
 	private int userId;
+	private int shopId;
+	private int dishesId;
+	private int year, month;
+
+	public String getUserSignRecord() {
+		if (year == 0 || month == 0) {
+			Calendar calendar = Calendar.getInstance();
+			if (year == 0) {
+				year = calendar.get(Calendar.YEAR);
+			}
+			if (month == 0) {
+				month = calendar.get(Calendar.MONTH) + 1;
+			}
+		}
+		json.put(
+				"sginRecord",
+				getServMgr().getUserService().getSginRecord(userId, shopId,
+						year, month));
+		return "jsonResult";
+	}
+
+	public String signIn() {
+		getServMgr().getUserService().addSign(userId, shopId);
+		return NONE;
+	}
+
+	public String markDishes() {
+		getServMgr().getUserService().addDishesMark(userId, dishesId);
+		return NONE;
+	}
+
+	public String markShop() {
+		getServMgr().getUserService().addShopMark(userId, shopId);
+		return NONE;
+	}
 
 	public String getOrders() {
 		json.put("orders", getServMgr().getUserService().getOrders(userId));
@@ -58,6 +94,22 @@ public class UserAction extends BaseAction {
 
 	public void setUserId(int userId) {
 		this.userId = userId;
+	}
+
+	public void setShopId(int shopId) {
+		this.shopId = shopId;
+	}
+
+	public void setDishesId(int dishesId) {
+		this.dishesId = dishesId;
+	}
+
+	public void setYear(int year) {
+		this.year = year;
+	}
+
+	public void setMonth(int month) {
+		this.month = month;
 	}
 
 }
