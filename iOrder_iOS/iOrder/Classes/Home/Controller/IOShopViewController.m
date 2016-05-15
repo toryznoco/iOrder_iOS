@@ -61,9 +61,8 @@
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    
     UINavigationBar *navigationBar = self.navigationController.navigationBar;
-    
+
     //去除导航栏下方的横线 透明
     [navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
     [navigationBar setShadowImage:[UIImage new]];
@@ -72,8 +71,8 @@
 - (void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
     
-//    UINavigationBar *navigationBar = self.navigationController.navigationBar;
-//    [navigationBar setBackgroundColor:[UIColor whiteColor]];
+    UINavigationBar *navigationBar = self.navigationController.navigationBar;
+    [navigationBar setBackgroundImage:[UIImage imageNamed:@"timeline_image_placeholder"] forBarMetrics:UIBarMetricsDefault];
 }
 
 - (void)didReceiveMemoryWarning {
