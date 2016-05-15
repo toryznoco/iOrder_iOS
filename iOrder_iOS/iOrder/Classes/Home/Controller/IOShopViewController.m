@@ -15,7 +15,7 @@
 #import "IOShoppingView.h"
 #import "YWJDishesTool.h"
 #import "UIBarButtonItem+IOBarButtonItem.h"
-#import "IOHomeShopHeaderView.h"
+#import "IOHomeShopView.h"
 
 #define kScale 0.25
 #define kHeaderHeight 176

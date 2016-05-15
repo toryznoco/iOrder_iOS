@@ -6,7 +6,7 @@
 //  Copyright © 2016 易无解. All rights reserved.
 //
 
-#import "IOHomeShopHeaderView.h"
+#import "IOHomeShopView.h"
 
 #pragma mark - implementation IOHomeShopHeaderView
 @implementation IOHomeShopHeaderView
@@ -14,7 +14,6 @@
 #pragma mark - privacy
 - (instancetype)initWithFrame:(CGRect)frame{
     if (self = [super initWithFrame:frame]) {
-//        self.backgroundColor = [UIColor greenColor];
         self.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"005"]];
         
         [self setupChildViewWithFrame:frame];
@@ -35,14 +34,101 @@
 
 
 #pragma mark - implementation IOHomeShopInfoView
+
+@interface IOHomeShopInfoView ()
+
+@property (nonatomic, weak) UIImageView *shopIcon;
+@property (nonatomic, weak) UILabel *shopTitle;
+@property (nonatomic, weak) UILabel *waitingTime;
+@property (nonatomic, weak) UIImageView *hintImage;
+@property (nonatomic, weak) UILabel *hintInfo;
+@property (nonatomic, weak) UIImageView *rearArrow;
+
+@end
+
 @implementation IOHomeShopInfoView
 
 #pragma mark - privacy
 - (instancetype)initWithFrame:(CGRect)frame{
     if (self = [super initWithFrame:frame]) {
-        self.backgroundColor = [UIColor redColor];
+        self.backgroundColor = [UIColor whiteColor];
+        [self setupChildViewWithFrame:frame];
     }
     return self;
+}
+
+- (void)layoutSubviews{
+    [super layoutSubviews];
+    
+    CGFloat shopIconW = 62;
+    CGFloat shopIconH = shopIconW;
+    CGFloat shopIconX = 14;
+    CGFloat shopIconY = 0;
+    _shopIcon.frame = CGRectMake(shopIconX, shopIconY, shopIconW, shopIconH);
+    
+    CGFloat shopTitleW = 308;
+    CGFloat shopTitleH = 20;
+    CGFloat shopTitleX = CGRectGetMaxX(_shopIcon.frame) + 15;
+    CGFloat shopTitleY = shopIconY;
+    _shopTitle.frame = CGRectMake(shopTitleX, shopTitleY, shopTitleW, shopTitleH);
+    
+    CGFloat waitingTimeW = 100;
+    CGFloat waitingTimeH = 15;
+    CGFloat waitingTimeX = shopTitleX;
+    CGFloat waitingTimeY = CGRectGetMaxY(_shopTitle.frame) + 2;
+    _waitingTime.frame = CGRectMake(waitingTimeX, waitingTimeY, waitingTimeW, waitingTimeH);
+    
+    CGFloat hintImageW = 32;
+    CGFloat hintImageH = 28;
+    CGFloat hintImageX = waitingTimeX;
+    CGFloat hintImageY = CGRectGetMaxY(_waitingTime.frame) + 2;
+    _hintImage.frame = CGRectMake(hintImageX, hintImageY, hintImageW, hintImageH);
+    
+    CGFloat hintInfoW = 236;
+    CGFloat hintInfoH = 20;
+    CGFloat hintInfoX = CGRectGetMaxX(_hintImage.frame) + 7;
+    CGFloat hintInfoY = hintImageY + 4;
+    _hintInfo.frame = CGRectMake(hintInfoX, hintInfoY, hintInfoW, hintInfoH);
+    
+    CGFloat rearArrowW = 12;
+    CGFloat rearArrowH = 17;
+    CGFloat rearArrowX = self.width - rearArrowW - 15;
+    CGFloat rearArrowY = hintInfoY;
+    _rearArrow.frame = CGRectMake(rearArrowX, rearArrowY, rearArrowW, rearArrowH);
+}
+
+#pragma mark - custom methods
+
+- (void)setupChildViewWithFrame:(CGRect)frame{
+    UIImageView *shopIcon = [[UIImageView alloc] init];
+    [shopIcon setImage:[UIImage imageNamed:@"bargain_price_image"]];
+    _shopIcon = shopIcon;
+    [self addSubview:shopIcon];
+    
+    UILabel *shopTitle = [[UILabel alloc] init];
+    shopTitle.text = @"你妹的";
+    _shopTitle = shopTitle;
+    [self addSubview:shopTitle];
+    
+    UILabel *waitingTime = [[UILabel alloc] init];
+    waitingTime.text = @"15分钟";
+    waitingTime.font = [UIFont systemFontOfSize:15];
+    _waitingTime = waitingTime;
+    [self addSubview:waitingTime];
+    
+    UIImageView *hintImage = [[UIImageView alloc] init];
+    [hintImage setImage:[UIImage imageNamed:@"new_feature_share_true"]];
+    _hintImage = hintImage;
+    [self addSubview:hintImage];
+    
+    UILabel *hintInfo = [[UILabel alloc] init];
+    hintInfo.text = @"哈哈哈";
+    _hintInfo = hintInfo;
+    [self addSubview:hintInfo];
+    
+    UIImageView *rearArrow = [[UIImageView alloc] init];
+    _rearArrow = rearArrow;
+    [self addSubview:rearArrow];
 }
 
 @end
@@ -91,7 +177,9 @@
     UIView *optionView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, optionViewH, frame.size.height)];
     [self addSubview:optionView];
     [optionView addSubview:[self optionBtnWithRect:CGRectMake(0, 0, optionView.frame.size.width, optionView.frame.size.height) tag:1 title:@"点菜"]];
-    [optionView addSubview:[self selectedViewWithRect:CGRectMake(0, 36, optionView.frame.size.width, 4) tag:1]];
+    UIView *selectedTag = [self selectedViewWithRect:CGRectMake(0, 36, optionView.frame.size.width, 4) tag:1];
+    selectedTag.hidden = NO;
+    [optionView addSubview:selectedTag];
     
     UIView *optionView1 = [[UIView alloc] initWithFrame:CGRectMake(optionViewH, 0, optionViewH, frame.size.height)];
     [self addSubview:optionView1];
@@ -118,12 +206,20 @@
 - (UIView *)selectedViewWithRect:(CGRect)frame tag:(NSInteger)tag{
     UIView *selectedTag = [[UIView alloc] initWithFrame:CGRectMake(frame.origin.x, frame.origin.y, frame.size.width, frame.size.height)];
     [_seletedTags addObject:selectedTag];
+    selectedTag.tag = tag;
     selectedTag.hidden = YES;
     selectedTag.backgroundColor = [UIColor orangeColor];
     return selectedTag;
 }
 
 - (void)optionBtnClick:(UIButton *)btn{
+    for (UIView *selected in _seletedTags) {
+        if (btn.tag == selected.tag) {
+            selected.hidden = NO;
+        }else{
+            selected.hidden = YES;
+        }
+    }
     YWJLog(@"click %ld", btn.tag);
 }
 

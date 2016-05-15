@@ -28,7 +28,7 @@
 		CA6539561CBD40E6000972E2 /* IONewFeatureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA6539551CBD40E6000972E2 /* IONewFeatureViewController.m */; };
 		CA6539591CBD44CF000972E2 /* YWJNewFeatureScrollPage.m in Sources */ = {isa = PBXBuildFile; fileRef = CA6539581CBD44CF000972E2 /* YWJNewFeatureScrollPage.m */; };
 		CA7069CB1CE5F564007C5F3F /* UIBarButtonItem+IOBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = CA7069CA1CE5F564007C5F3F /* UIBarButtonItem+IOBarButtonItem.m */; settings = {ASSET_TAGS = (); }; };
-		CA7069CE1CE6037B007C5F3F /* IOHomeShopHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = CA7069CD1CE6037B007C5F3F /* IOHomeShopHeaderView.m */; settings = {ASSET_TAGS = (); }; };
+		CA7069CE1CE6037B007C5F3F /* IOHomeShopView.m in Sources */ = {isa = PBXBuildFile; fileRef = CA7069CD1CE6037B007C5F3F /* IOHomeShopView.m */; settings = {ASSET_TAGS = (); }; };
 		CA8D2C6D1CE56E44006E3D2A /* IOShoppingViewInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = CA8D2C6C1CE56E44006E3D2A /* IOShoppingViewInfo.m */; settings = {ASSET_TAGS = (); }; };
 		CA9019911CE16B7A00AC5712 /* YWJDishesParam.m in Sources */ = {isa = PBXBuildFile; fileRef = CA90198B1CE16B7A00AC5712 /* YWJDishesParam.m */; };
 		CA9019921CE16B7A00AC5712 /* YWJDishesResult.m in Sources */ = {isa = PBXBuildFile; fileRef = CA90198E1CE16B7A00AC5712 /* YWJDishesResult.m */; };
@@ -109,8 +109,8 @@
 		CA6539581CBD44CF000972E2 /* YWJNewFeatureScrollPage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWJNewFeatureScrollPage.m; sourceTree = "<group>"; };
 		CA7069C91CE5F564007C5F3F /* UIBarButtonItem+IOBarButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBarButtonItem+IOBarButtonItem.h"; sourceTree = "<group>"; };
 		CA7069CA1CE5F564007C5F3F /* UIBarButtonItem+IOBarButtonItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBarButtonItem+IOBarButtonItem.m"; sourceTree = "<group>"; };
-		CA7069CC1CE6037B007C5F3F /* IOHomeShopHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOHomeShopHeaderView.h; sourceTree = "<group>"; };
-		CA7069CD1CE6037B007C5F3F /* IOHomeShopHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOHomeShopHeaderView.m; sourceTree = "<group>"; };
+		CA7069CC1CE6037B007C5F3F /* IOHomeShopView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOHomeShopView.h; sourceTree = "<group>"; };
+		CA7069CD1CE6037B007C5F3F /* IOHomeShopView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOHomeShopView.m; sourceTree = "<group>"; };
 		CA8D2C6B1CE56E44006E3D2A /* IOShoppingViewInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOShoppingViewInfo.h; sourceTree = "<group>"; };
 		CA8D2C6C1CE56E44006E3D2A /* IOShoppingViewInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOShoppingViewInfo.m; sourceTree = "<group>"; };
 		CA90198A1CE16B7A00AC5712 /* YWJDishesParam.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWJDishesParam.h; sourceTree = "<group>"; };
@@ -309,8 +309,8 @@
 				CACD5CAC1CE4119A00ADE187 /* IOHomeShopCell.m */,
 				9A8CC3601CE0AFC7005E19D9 /* IOHomeViewCell.h */,
 				9A8CC3611CE0AFC7005E19D9 /* IOHomeViewCell.m */,
-				CA7069CC1CE6037B007C5F3F /* IOHomeShopHeaderView.h */,
-				CA7069CD1CE6037B007C5F3F /* IOHomeShopHeaderView.m */,
+				CA7069CC1CE6037B007C5F3F /* IOHomeShopView.h */,
+				CA7069CD1CE6037B007C5F3F /* IOHomeShopView.m */,
 				9A8CC3641CE0AFC7005E19D9 /* IOShoppingView.h */,
 				9A8CC3651CE0AFC7005E19D9 /* IOShoppingView.m */,
 			);
@@ -786,7 +786,7 @@
 				9A8CC33E1CE0AF84005E19D9 /* IOHttpTool.m in Sources */,
 				9A8CC3431CE0AF84005E19D9 /* YWJShopsTool.m in Sources */,
 				CAE8F0921CB9461C005618B0 /* IOProfileViewController.m in Sources */,
-				CA7069CE1CE6037B007C5F3F /* IOHomeShopHeaderView.m in Sources */,
+				CA7069CE1CE6037B007C5F3F /* IOHomeShopView.m in Sources */,
 				CAE8F08F1CB9459B005618B0 /* IOOrderedViewController.m in Sources */,
 				CAE8F07C1CB94170005618B0 /* YWJTabBar.m in Sources */,
 				CA8D2C6D1CE56E44006E3D2A /* IOShoppingViewInfo.m in Sources */,

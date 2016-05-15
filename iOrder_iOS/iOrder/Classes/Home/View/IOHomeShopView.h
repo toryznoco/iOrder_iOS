@@ -1,5 +1,5 @@
 //
-//  IOHomeShopHeaderView.h
+//  IOHomeShopView.h
 //  iOrder
 //
 //  Created by 易无解 on 5/13/16.
