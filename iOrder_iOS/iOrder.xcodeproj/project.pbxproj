@@ -33,9 +33,7 @@
 		CA9019911CE16B7A00AC5712 /* YWJDishesParam.m in Sources */ = {isa = PBXBuildFile; fileRef = CA90198B1CE16B7A00AC5712 /* YWJDishesParam.m */; };
 		CA9019921CE16B7A00AC5712 /* YWJDishesResult.m in Sources */ = {isa = PBXBuildFile; fileRef = CA90198E1CE16B7A00AC5712 /* YWJDishesResult.m */; };
 		CA9019931CE16B7A00AC5712 /* YWJDishesTool.m in Sources */ = {isa = PBXBuildFile; fileRef = CA9019901CE16B7A00AC5712 /* YWJDishesTool.m */; };
-
-        CACD5CB11CE4119A00ADE187 /* IOHomeShopCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CACD5CAC1CE4119A00ADE187 /* IOHomeShopCell.m */; settings = {ASSET_TAGS = (); }; };
-
+		CACD5CB11CE4119A00ADE187 /* IOHomeShopCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CACD5CAC1CE4119A00ADE187 /* IOHomeShopCell.m */; settings = {ASSET_TAGS = (); }; };
 		CAE8F02C1CB940E2005618B0 /* iOrderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F02B1CB940E2005618B0 /* iOrderTests.m */; };
 		CAE8F0371CB940E2005618B0 /* iOrderUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F0361CB940E2005618B0 /* iOrderUITests.m */; };
 		CAE8F07B1CB94170005618B0 /* YWJBadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F04E1CB94170005618B0 /* YWJBadgeView.m */; };
@@ -310,9 +308,9 @@
 				CACD5CAB1CE4119A00ADE187 /* IOHomeShopCell.h */,
 				CACD5CAC1CE4119A00ADE187 /* IOHomeShopCell.m */,
 				9A8CC3601CE0AFC7005E19D9 /* IOHomeViewCell.h */,
+				9A8CC3611CE0AFC7005E19D9 /* IOHomeViewCell.m */,
 				CA7069CC1CE6037B007C5F3F /* IOHomeShopHeaderView.h */,
 				CA7069CD1CE6037B007C5F3F /* IOHomeShopHeaderView.m */,
-				9A8CC3611CE0AFC7005E19D9 /* IOHomeViewCell.m */,
 				9A8CC3641CE0AFC7005E19D9 /* IOShoppingView.h */,
 				9A8CC3651CE0AFC7005E19D9 /* IOShoppingView.m */,
 			);

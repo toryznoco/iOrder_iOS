@@ -18,13 +18,14 @@
 #import "IOHomeShopHeaderView.h"
 
 #define kScale 0.25
-#define kHeaderHeight 150
+#define kHeaderHeight 156
 
 @interface IOShopViewController ()<UITableViewDataSource, UITableViewDelegate, IOHomeShopMenuCellDelegate>
 
 @property (nonatomic, strong) NSArray *dataArray;
 @property (nonatomic, assign) BOOL isRelate;
 
+@property (nonatomic, weak) UIView *tableView;
 @property (nonatomic, strong) UITableView *optionTableView;
 @property (nonatomic, strong) UITableView *menuTableView;
 
@@ -51,9 +52,7 @@
     
     [self setupSelfView];
     
-    [self optionTableView];
-    
-    [self menuTableView];
+    [self setupTableView];
     
     [self setUpShoppingView];
     
@@ -67,7 +66,7 @@
     
     //去除导航栏下方的横线 透明
     [navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
-//    [navigationBar setShadowImage:[UIImage new]];
+    [navigationBar setShadowImage:[UIImage new]];
 }
 
 - (void)viewWillDisappear:(BOOL)animated{
@@ -207,6 +206,16 @@
 
 #pragma mark - custom methods
 
+- (void)setupTableView{
+    UIView *tableView = [[UIView alloc] initWithFrame:CGRectMake(0, 156, self.view.width, self.view.height - 156 - 44)];
+    _tableView = tableView;
+    [self.view addSubview:tableView];
+    
+    [self optionTableView];
+    
+    [self menuTableView];
+}
+
 - (void)setupShopHeaderView{
     IOHomeShopHeaderView *shopHeaderView = [[IOHomeShopHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, kHeaderHeight)];
     [self.view addSubview:shopHeaderView];
@@ -258,18 +267,18 @@
 
 - (UITableView *)optionTableView{
     if (!_optionTableView) {
-        _optionTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, kHeaderHeight, self.view.width * kScale, self.view.height - 45 - kHeaderHeight)];
+        _optionTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.width * kScale, self.tableView.height)];
         _optionTableView.backgroundColor = [UIColor whiteColor];
-        [self.view addSubview:_optionTableView];
+        [self.tableView addSubview:_optionTableView];
     }
     return _optionTableView;
 }
 
 - (UITableView *)menuTableView{
     if (!_menuTableView) {
-        _menuTableView = [[UITableView alloc] initWithFrame:CGRectMake(self.view.width * kScale, kHeaderHeight, self.view.width * (1 - kScale), self.view.height - 45 - kHeaderHeight)];
+        _menuTableView = [[UITableView alloc] initWithFrame:CGRectMake(self.view.width * kScale, 0, self.view.width * (1 - kScale), self.tableView.height)];
         _menuTableView.backgroundColor = [UIColor whiteColor];
-        [self.view addSubview:_menuTableView];
+        [self.tableView addSubview:_menuTableView];
     }
     return _menuTableView;
 }
