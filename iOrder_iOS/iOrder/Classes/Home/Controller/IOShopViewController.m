@@ -18,7 +18,7 @@
 #import "IOHomeShopHeaderView.h"
 
 #define kScale 0.25
-#define kHeaderHeight 156
+#define kHeaderHeight 176
 
 @interface IOShopViewController ()<UITableViewDataSource, UITableViewDelegate, IOHomeShopMenuCellDelegate>
 
@@ -72,8 +72,8 @@
 - (void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
     
-    UINavigationBar *navigationBar = self.navigationController.navigationBar;
-    [navigationBar setBackgroundColor:[UIColor whiteColor]];
+//    UINavigationBar *navigationBar = self.navigationController.navigationBar;
+//    [navigationBar setBackgroundColor:[UIColor whiteColor]];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -207,7 +207,7 @@
 #pragma mark - custom methods
 
 - (void)setupTableView{
-    UIView *tableView = [[UIView alloc] initWithFrame:CGRectMake(0, 156, self.view.width, self.view.height - 156 - 44)];
+    UIView *tableView = [[UIView alloc] initWithFrame:CGRectMake(0, kHeaderHeight, self.view.width, self.view.height - kHeaderHeight - 44)];
     _tableView = tableView;
     [self.view addSubview:tableView];
     

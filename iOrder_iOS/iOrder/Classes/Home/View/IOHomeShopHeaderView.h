@@ -12,3 +12,15 @@
 @interface IOHomeShopHeaderView : UIView
 
 @end
+
+
+#pragma mark - interface IOHomeShopInfoView
+@interface IOHomeShopInfoView : UIView
+
+@end
+
+
+#pragma mark - interface IOHomeShopInfoView
+@interface IOHomeShopOptionView : UIView
+
+@end
