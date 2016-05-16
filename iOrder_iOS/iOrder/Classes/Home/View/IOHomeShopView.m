@@ -38,6 +38,7 @@
 #pragma mark - custom methods
 - (void)setupChildViewWithFrame:(CGRect)frame{
     IOHomeShopInfoView *infoView = [[IOHomeShopInfoView alloc] initWithFrame:CGRectMake(0, 64, frame.size.width, 72)];
+    _shopInfoView = infoView;
     [self addSubview:infoView];
     
     IOHomeShopOptionView *optionView = [[IOHomeShopOptionView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(infoView.frame), frame.size.width, 40)];
@@ -136,6 +137,8 @@
 
 - (void)setupChildViewWithFrame:(CGRect)frame{
     UIImageView *shopIcon = [[UIImageView alloc] init];
+    shopIcon.layer.cornerRadius = 31;
+    shopIcon.layer.masksToBounds = YES;
     _shopIcon = shopIcon;
     [self addSubview:shopIcon];
     
