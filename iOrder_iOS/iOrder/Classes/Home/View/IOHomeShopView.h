@@ -9,13 +9,19 @@
 #import <UIKit/UIKit.h>
 
 #pragma mark - interface IOHomeShopHeaderView
+@class IOShop;
+
 @interface IOHomeShopHeaderView : UIView
+
+@property (nonatomic, strong) IOShop *shopInfo;
 
 @end
 
 
 #pragma mark - interface IOHomeShopInfoView
 @interface IOHomeShopInfoView : UIView
+
+@property (nonatomic, strong) IOShop *shopInfo;
 
 @end
 
