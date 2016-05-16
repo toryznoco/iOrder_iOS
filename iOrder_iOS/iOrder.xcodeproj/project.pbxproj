@@ -21,7 +21,7 @@
 		9A8CC36E1CE0AFC7005E19D9 /* IODishInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC3501CE0AFC7005E19D9 /* IODishInfo.m */; };
 		9A8CC36F1CE0AFC7005E19D9 /* IOShop.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC3521CE0AFC7005E19D9 /* IOShop.m */; };
 		9A8CC3761CE0AFC7005E19D9 /* IOHomeViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC3611CE0AFC7005E19D9 /* IOHomeViewCell.m */; };
-		9A8CC3781CE0AFC7005E19D9 /* IOShoppingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC3651CE0AFC7005E19D9 /* IOShoppingView.m */; };
+		9A8CC3781CE0AFC7005E19D9 /* IOShoppingCartView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC3651CE0AFC7005E19D9 /* IOShoppingCartView.m */; };
 		9A8CC3821CE306B4005E19D9 /* IOOrderViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC3811CE306B4005E19D9 /* IOOrderViewCell.m */; };
 		9A8CC3851CE3075E005E19D9 /* IOOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC3841CE3075E005E19D9 /* IOOrder.m */; };
 		9A8CC38A1CE572C8005E19D9 /* IOProfileHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC3891CE572C8005E19D9 /* IOProfileHeaderView.m */; };
@@ -93,8 +93,8 @@
 		9A8CC3521CE0AFC7005E19D9 /* IOShop.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOShop.m; sourceTree = "<group>"; };
 		9A8CC3601CE0AFC7005E19D9 /* IOHomeViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOHomeViewCell.h; sourceTree = "<group>"; };
 		9A8CC3611CE0AFC7005E19D9 /* IOHomeViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOHomeViewCell.m; sourceTree = "<group>"; };
-		9A8CC3641CE0AFC7005E19D9 /* IOShoppingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOShoppingView.h; sourceTree = "<group>"; };
-		9A8CC3651CE0AFC7005E19D9 /* IOShoppingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOShoppingView.m; sourceTree = "<group>"; };
+		9A8CC3641CE0AFC7005E19D9 /* IOShoppingCartView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOShoppingCartView.h; sourceTree = "<group>"; };
+		9A8CC3651CE0AFC7005E19D9 /* IOShoppingCartView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOShoppingCartView.m; sourceTree = "<group>"; };
 		9A8CC3801CE306B4005E19D9 /* IOOrderViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOOrderViewCell.h; sourceTree = "<group>"; };
 		9A8CC3811CE306B4005E19D9 /* IOOrderViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOOrderViewCell.m; sourceTree = "<group>"; };
 		9A8CC3831CE3075E005E19D9 /* IOOrder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOOrder.h; sourceTree = "<group>"; };
@@ -311,8 +311,8 @@
 				9A8CC3611CE0AFC7005E19D9 /* IOHomeViewCell.m */,
 				CA7069CC1CE6037B007C5F3F /* IOHomeShopView.h */,
 				CA7069CD1CE6037B007C5F3F /* IOHomeShopView.m */,
-				9A8CC3641CE0AFC7005E19D9 /* IOShoppingView.h */,
-				9A8CC3651CE0AFC7005E19D9 /* IOShoppingView.m */,
+				9A8CC3641CE0AFC7005E19D9 /* IOShoppingCartView.h */,
+				9A8CC3651CE0AFC7005E19D9 /* IOShoppingCartView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -798,7 +798,7 @@
 				9A8CC3851CE3075E005E19D9 /* IOOrder.m in Sources */,
 				9A8CC38A1CE572C8005E19D9 /* IOProfileHeaderView.m in Sources */,
 				CAE8F07D1CB94170005618B0 /* YWJTabBarButton.m in Sources */,
-				9A8CC3781CE0AFC7005E19D9 /* IOShoppingView.m in Sources */,
+				9A8CC3781CE0AFC7005E19D9 /* IOShoppingCartView.m in Sources */,
 				CACD5CB11CE4119A00ADE187 /* IOHomeShopCell.m in Sources */,
 				CAE8F0801CB94170005618B0 /* AppDelegate.m in Sources */,
 				CA9019931CE16B7A00AC5712 /* YWJDishesTool.m in Sources */,

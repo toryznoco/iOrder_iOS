@@ -13,7 +13,7 @@
 
 #import "IOShop.h"
 #import "IODishInfo.h"
-#import "IOShoppingView.h"
+#import "IOShoppingCartView.h"
 #import "YWJDishesTool.h"
 #import "UIBarButtonItem+IOBarButtonItem.h"
 #import "IOHomeShopView.h"
