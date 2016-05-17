@@ -66,15 +66,15 @@
 
     //去除导航栏下方的横线 透明
     [navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
-//    [navigationBar setShadowImage:[UIImage new]];
+    [navigationBar setShadowImage:[UIImage new]];
 }
 
 - (void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
     
     UINavigationBar *navigationBar = self.navigationController.navigationBar;
-    [navigationBar setBackgroundImage:[UIImage imageNamed:@"timeline_image_placeholder"] forBarMetrics:UIBarMetricsDefault];
-    [navigationBar setShadowImage:[UIImage imageNamed:@"devision_line"]];
+    [navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationBGI_2"] forBarMetrics:UIBarMetricsDefault];
+    [navigationBar setShadowImage:[UIImage imageNamed:@"navigationBGI_1"]];
 }
 
 - (void)didReceiveMemoryWarning {
