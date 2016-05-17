@@ -304,7 +304,8 @@
     YWJLog(@"collectBtn click");
 }
 
-- (void)signInBtnClick{
+- (void)signInBtnClick {
+    
     YWJLog(@"signInBtn click");
 }
 

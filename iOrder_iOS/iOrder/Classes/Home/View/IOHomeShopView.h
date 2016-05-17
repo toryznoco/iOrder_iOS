@@ -20,7 +20,7 @@
 @end
 
 
-#pragma mark - interface IOHomeShopInfoView
+#pragma mark - interface IOHomeShopOptionView
 @interface IOHomeShopOptionView : UIView
 
 @end
