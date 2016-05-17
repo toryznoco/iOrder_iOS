@@ -46,7 +46,7 @@
 
 #pragma mark - privacy
 
-- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         [self setupAllChildView];
         self.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -55,7 +55,7 @@
     return self;
 }
 
-- (void)layoutSubviews{
+- (void)layoutSubviews {
     [super layoutSubviews];
     
     CGFloat nameX = kIOOrderViewCellMargin;
@@ -115,7 +115,7 @@
 
 #pragma mark - public
 
-+ (instancetype)cellWithTableView:(UITableView *)tableView{
++ (instancetype)cellWithTableView:(UITableView *)tableView {
     static NSString *reuseId = @"OrderCell";
     id cell = [tableView dequeueReusableCellWithIdentifier:reuseId];
     if (!cell) {
@@ -124,7 +124,7 @@
     return cell;
 }
 
-- (void)setOrder:(IOOrder *)order{
+- (void)setOrder:(IOOrder *)order {
     _order = order;
     
     [self setupOrderInfo];
@@ -132,7 +132,7 @@
 
 #pragma custom methods
 
-- (void)setupOrderInfo{
+- (void)setupOrderInfo {
     _shopName.text = _order.shopName;
     _shopName.font = [UIFont systemFontOfSize:15];
     [_shopName sizeToFit];

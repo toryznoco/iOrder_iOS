@@ -14,7 +14,7 @@
 
 @implementation YWJDishesTool
 
-+ (void)newShopDishesWithShopId:(int)shopId Success:(void (^)(NSArray *))success failure:(void (^)(NSError *))failure{
++ (void)newShopDishesWithShopId:(int)shopId Success:(void (^)(NSArray *))success failure:(void (^)(NSError *))failure {
     YWJDishesParam *param = [[YWJDishesParam alloc] init];
     param.shopId = shopId;
     

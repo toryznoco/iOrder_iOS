@@ -13,7 +13,7 @@
 @implementation IOTransmitters
 
 #pragma mark - public
-+ (IOTransmitters *)sharedTransmitters{
++ (IOTransmitters *)sharedTransmitters {
     static dispatch_once_t once;
     static id sharedInstance;
     
@@ -33,7 +33,7 @@
     return result;
 }
 
-- (BOOL)isExist:(NSString *)uuid{
+- (BOOL)isExist:(NSString *)uuid {
     NSMutableArray *mutableResult = [[self transmitters] mutableCopy];
     for (NSDictionary *trans in mutableResult) {
         if ([trans[@"uuid"] isEqualToString:uuid]) {
@@ -44,7 +44,7 @@
 }
 
 #pragma mark - private
-- (void)setupData{
+- (void)setupData {
     NSArray *data =@[
                      @{
                          @"name":@"AprilBeacon_7DEB",

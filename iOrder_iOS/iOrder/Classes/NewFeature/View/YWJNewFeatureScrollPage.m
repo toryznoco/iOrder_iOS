@@ -20,7 +20,7 @@
 
 #pragma mark - privacy
 
-- (instancetype)initWithFrame:(CGRect)frame{
+- (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
         self.contentOffset = CGPointZero;
         self.contentSize = CGSizeMake(kImageCount * self.frame.size.width, self.frame.size.height);
@@ -30,7 +30,7 @@
     return self;
 }
 
-- (void)layoutSubviews{
+- (void)layoutSubviews {
     CGFloat imageVW = self.width;
     CGFloat imageVH = self.height;
     CGFloat imageVX = 0;
@@ -45,7 +45,7 @@
 
 #pragma mark - Custom methods
 
-- (void)addChildView{
+- (void)addChildView {
     for (int i = 0; i < kImageCount; i++) {
         NSString *imageName = [NSString stringWithFormat:@"new_feature_%d", i + 1];
         UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:imageName]];

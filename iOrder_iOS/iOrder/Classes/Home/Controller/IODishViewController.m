@@ -21,7 +21,6 @@
 @implementation IODishViewController
 
 #pragma mark - privacy
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -34,7 +33,7 @@
     [self setupShoppingView];
 }
 
-- (void)viewWillAppear:(BOOL)animated{
+- (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
     UINavigationBar *navigationBar = self.navigationController.navigationBar;
@@ -53,7 +52,7 @@
 
 #pragma mark - custom
 
-- (void)setupShoppingView{
+- (void)setupShoppingView {
     IOShoppingView *shoppingView = [[IOShoppingView alloc] initWithFrame:CGRectMake(0, self.view.height - 54, self.view.width, 54)];
     [self.view addSubview:shoppingView];
     _shoppingView = shoppingView;
