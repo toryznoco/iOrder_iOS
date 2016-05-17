@@ -8,7 +8,7 @@
 
 #import "IODishViewController.h"
 
-#import "IOShoppingView.h"
+#import "IOShoppingCartView.h"
 
 #define kScale 0.25
 

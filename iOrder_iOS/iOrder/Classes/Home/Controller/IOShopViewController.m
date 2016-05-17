@@ -11,8 +11,9 @@
 #import "IODishViewController.h"
 #import "IOHomeShopCell.h"
 
+#import "IOShop.h"
 #import "IODishInfo.h"
-#import "IOShoppingView.h"
+#import "IOShoppingCartView.h"
 #import "YWJDishesTool.h"
 #import "UIBarButtonItem+IOBarButtonItem.h"
 #import "IOHomeShopView.h"
@@ -65,7 +66,7 @@
 
     //去除导航栏下方的横线 透明
     [navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
-    [navigationBar setShadowImage:[UIImage new]];
+//    [navigationBar setShadowImage:[UIImage new]];
 }
 
 - (void)viewWillDisappear:(BOOL)animated{
@@ -73,6 +74,7 @@
     
     UINavigationBar *navigationBar = self.navigationController.navigationBar;
     [navigationBar setBackgroundImage:[UIImage imageNamed:@"timeline_image_placeholder"] forBarMetrics:UIBarMetricsDefault];
+    [navigationBar setShadowImage:[UIImage imageNamed:@"devision_line"]];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -217,6 +219,7 @@
 
 - (void)setupShopHeaderView{
     IOHomeShopHeaderView *shopHeaderView = [[IOHomeShopHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, kHeaderHeight)];
+    shopHeaderView.shopInfo = self.shopInfo;
     [self.view addSubview:shopHeaderView];
 }
 

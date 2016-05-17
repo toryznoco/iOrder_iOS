@@ -8,8 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+@class IOShop;
+
 @interface IOShopViewController : UIViewController
 
 @property (nonatomic, assign) int shopId;
+
+@property (nonatomic, strong) IOShop *shopInfo;
 
 @end

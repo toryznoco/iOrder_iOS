@@ -9,6 +9,13 @@
 #import "IOHomeShopView.h"
 
 #pragma mark - implementation IOHomeShopHeaderView
+#import "IOShop.h"
+
+@interface IOHomeShopHeaderView ()
+
+@property (nonatomic, weak) IOHomeShopInfoView *shopInfoView;
+@end
+
 @implementation IOHomeShopHeaderView
 
 #pragma mark - privacy
@@ -21,9 +28,17 @@
     return self;
 }
 
+#pragma mark - public
+
+- (void)setShopInfo:(IOShop *)shopInfo{
+    _shopInfo = shopInfo;
+    _shopInfoView.shopInfo = shopInfo;
+}
+
 #pragma mark - custom methods
 - (void)setupChildViewWithFrame:(CGRect)frame{
     IOHomeShopInfoView *infoView = [[IOHomeShopInfoView alloc] initWithFrame:CGRectMake(0, 64, frame.size.width, 72)];
+    _shopInfoView = infoView;
     [self addSubview:infoView];
     
     IOHomeShopOptionView *optionView = [[IOHomeShopOptionView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(infoView.frame), frame.size.width, 40)];
@@ -34,6 +49,8 @@
 
 
 #pragma mark - implementation IOHomeShopInfoView
+#import "IOShop.h"
+#import "UIImageView+WebCache.h"
 
 @interface IOHomeShopInfoView ()
 
@@ -97,16 +114,35 @@
     _rearArrow.frame = CGRectMake(rearArrowX, rearArrowY, rearArrowW, rearArrowH);
 }
 
+#pragma mark - public
+
+- (void)setShopInfo:(IOShop *)shopInfo{
+    
+    YWJLog(@" haha %@", shopInfo.name);
+    _shopInfo = shopInfo;
+    [self setupShopInfo];
+}
+
 #pragma mark - custom methods
+
+- (void)setupShopInfo{
+    NSString *pictureStr = [NSString stringWithFormat:@"%@%@", kPictureServerPath, _shopInfo.picture];
+    NSURL *pictureURL = [NSURL URLWithString:pictureStr];
+    [_shopIcon sd_setImageWithURL:pictureURL placeholderImage:[UIImage imageNamed:@"timeline_image_placeholder"]];
+    
+    _shopTitle.text = _shopInfo.name;
+    
+    _hintInfo.text = _shopInfo.cheap;
+}
 
 - (void)setupChildViewWithFrame:(CGRect)frame{
     UIImageView *shopIcon = [[UIImageView alloc] init];
-    [shopIcon setImage:[UIImage imageNamed:@"bargain_price_image"]];
+    shopIcon.layer.cornerRadius = 31;
+    shopIcon.layer.masksToBounds = YES;
     _shopIcon = shopIcon;
     [self addSubview:shopIcon];
     
     UILabel *shopTitle = [[UILabel alloc] init];
-    shopTitle.text = @"你妹的";
     _shopTitle = shopTitle;
     [self addSubview:shopTitle];
     
@@ -117,16 +153,16 @@
     [self addSubview:waitingTime];
     
     UIImageView *hintImage = [[UIImageView alloc] init];
-    [hintImage setImage:[UIImage imageNamed:@"new_feature_share_true"]];
+    [hintImage setImage:[UIImage imageNamed:@"trumpet"]];
     _hintImage = hintImage;
     [self addSubview:hintImage];
     
     UILabel *hintInfo = [[UILabel alloc] init];
-    hintInfo.text = @"哈哈哈";
     _hintInfo = hintInfo;
     [self addSubview:hintInfo];
     
     UIImageView *rearArrow = [[UIImageView alloc] init];
+    [rearArrow setImage:[UIImage imageNamed:@"home_shop_arrow"]];
     _rearArrow = rearArrow;
     [self addSubview:rearArrow];
 }
