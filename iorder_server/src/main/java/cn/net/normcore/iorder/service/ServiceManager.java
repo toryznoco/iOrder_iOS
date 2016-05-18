@@ -4,6 +4,7 @@ public class ServiceManager {
 	private ShopService shopService;
 	private UserService userService;
 	private DishesService dishesService;
+	private OrderService orderService;
 
 	public ShopService getShopService() {
 		return shopService;
@@ -27,5 +28,13 @@ public class ServiceManager {
 
 	public void setDishesService(DishesService dishesService) {
 		this.dishesService = dishesService;
+	}
+
+	public OrderService getOrderService() {
+		return orderService;
+	}
+
+	public void setOrderService(OrderService orderService) {
+		this.orderService = orderService;
 	}
 }
