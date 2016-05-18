@@ -40,7 +40,7 @@
     return self;
 }
 
-- (void)layoutSubviews{
+- (void)layoutSubviews {
     [super layoutSubviews];
     
     CGFloat iconW = 46;
