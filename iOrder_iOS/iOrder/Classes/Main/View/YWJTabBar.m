@@ -25,7 +25,7 @@
 
 #pragma mark - load View
 
-- (NSMutableArray *)buttons{
+- (NSMutableArray *)buttons {
     if (!_buttons) {
         _buttons = [NSMutableArray array];
     }
@@ -34,7 +34,7 @@
 
 #pragma mark - self
 
-- (void)setItems:(NSArray *)items{
+- (void)setItems:(NSArray *)items {
     _items = items;
     
     // 遍历模型数组，创建对应tabBarButton
@@ -58,7 +58,7 @@
     }
 }
 
-- (void)layoutSubviews{
+- (void)layoutSubviews {
     [super layoutSubviews];
     
     CGFloat tabBarW = self.width;
@@ -79,7 +79,7 @@
 
 
 #pragma mark - click event
-- (void)btnClick:(UIButton *)button{
+- (void)btnClick:(UIButton *)button {
     _selectedBtn.selected = NO;
     button.selected = YES;
     _selectedBtn = button;

@@ -1,19 +1,19 @@
 //
-//  IOHomeShopCell.m
+//  IOShopCell.m
 //  iOrder
 //
 //  Created by 易无解 on 5/3/16.
 //  Copyright © 2016 易无解. All rights reserved.
 //
 
-#import "IOHomeShopCell.h"
+#import "IOShopCell.h"
 
 #import "IODishInfo.h"
 #import "UIImageView+WebCache.h"
 
 
-#pragma mark - implementation IOHomeShopMenuCell
-@interface IOHomeShopMenuCell ()
+#pragma mark - implementation IOShopMenuCell
+@interface IOShopMenuCell ()
 
 @property (nonatomic, weak) UIImageView *dishIcon;
 @property (nonatomic, weak) UILabel *dishName;
@@ -28,11 +28,11 @@
 
 @end
 
-@implementation IOHomeShopMenuCell
+@implementation IOShopMenuCell
 
 #pragma mark - privacy
 
-- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         [self setupAllChildView];
     }
@@ -122,7 +122,7 @@
 
 #pragma mark - public
 
-+ (instancetype)cellWithTableView:(UITableView *)tableView{
++ (instancetype)cellWithTableView:(UITableView *)tableView {
     static NSString *reuseId = @"menuCell";
     id cell = [tableView dequeueReusableCellWithIdentifier:reuseId];
     if (!cell) {
@@ -132,7 +132,7 @@
     return cell;
 }
 
-- (void)setDish:(IODish *)dish{
+- (void)setDish:(IODish *)dish {
     _dish = dish;
     
     [self setupDish];
@@ -140,7 +140,7 @@
 
 #pragma mark - custom methods
 
-- (void)setupAllChildView{
+- (void)setupAllChildView {
     //    菜品图片
     UIImageView *dishIcon = [[UIImageView alloc] init];
     [self addSubview:dishIcon];
@@ -214,7 +214,7 @@
     _unOrderBtn = unOrderBtn;
 }
 
-- (void)setupDish{
+- (void)setupDish {
     NSString *pictureStr = [NSString stringWithFormat:@"%@%@", kPictureServerPath, _dish.picture];
     NSURL *pictureURL = [NSURL URLWithString:pictureStr];
     [_dishIcon sd_setImageWithURL:pictureURL placeholderImage:[UIImage imageNamed:@"timeline_image_placeholder"]];
@@ -229,7 +229,7 @@
     _dishPrice.font = [UIFont systemFontOfSize:15];
 }
 
-- (void)orderBtnClicked:(UIButton *)btn{
+- (void)orderBtnClicked:(UIButton *)btn {
     if (btn.tag == 1) {
         _dishCount.text = [NSString stringWithFormat:@"%lld", [_dishCount.text longLongValue] + 1];
         if ([_dishCount.text longLongValue] - 1 == 0) {
@@ -237,7 +237,7 @@
             _unOrderBtn.hidden = NO;
             _unOrderBtn.enabled = YES;
         }
-    }else{
+    } else {
         _dishCount.text = [NSString stringWithFormat:@"%lld", [_dishCount.text longLongValue] - 1];
         if ([_dishCount.text longLongValue] + 1 == 1) {
             _dishCount.hidden = YES;
@@ -246,20 +246,20 @@
         }
     }
     
-    if ([_delegate respondsToSelector:@selector(homeShopMenuCell:dishPrice:clickedBtn:)]) {
-        [_delegate homeShopMenuCell:self dishPrice:_dish.price clickedBtn:btn];
+    if ([_delegate respondsToSelector:@selector(shopMenuCell:dishPrice:clickedBtn:)]) {
+        [_delegate shopMenuCell:self dishPrice:_dish.price clickedBtn:btn];
     }
 }
 
 @end
 
 
-#pragma mark - implementation IOHomeShopOptionCell
-@implementation IOHomeShopOptionCell
+#pragma mark - implementation IOShopOptionCell
+@implementation IOShopOptionCell
 
 #pragma mark - privacy
 
-- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         [self setupAllChidView];
     }
@@ -268,7 +268,7 @@
 
 #pragma mark - public
 
-+ (instancetype)cellWithTableView:(UITableView *)tableView{
++ (instancetype)cellWithTableView:(UITableView *)tableView {
     static NSString *reuseId = @"optionCell";
     id cell = [tableView dequeueReusableCellWithIdentifier:reuseId];
     if (!cell) {
@@ -278,7 +278,7 @@
     return cell;
 }
 
-- (void)setCategory:(NSString *)category{
+- (void)setCategory:(NSString *)category {
     _category = category;
     
     self.textLabel.text = category;
@@ -299,7 +299,7 @@
 
 #pragma mark - custom methods
 
-- (void)setupAllChidView{
+- (void)setupAllChidView {
     UIView *selectedBgView = [[UIView alloc] initWithFrame:self.frame];
     selectedBgView.backgroundColor = YWJRGBColor(217, 217, 217, 0.5);
     self.selectedBackgroundView = selectedBgView;

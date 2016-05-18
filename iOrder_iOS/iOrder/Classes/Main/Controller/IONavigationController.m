@@ -16,7 +16,7 @@
 
 #pragma mark - YWJNavigationController
 
-+ (void)initialize{
++ (void)initialize {
     // 获取当前类下面的UIBarButtonItem
     UIBarButtonItem *item = [UIBarButtonItem appearanceWhenContainedInInstancesOfClasses:@[[self class]]];
     
@@ -40,7 +40,7 @@
 //
 
 //#pragma mark - Navigation Controller
-- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated{
+- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
     //    获取主窗口的rootViewController, 即tabBarController
     UITabBarController *tabBarC = (UITabBarController *)YWJKeyWindow.rootViewController;
     
@@ -55,7 +55,7 @@
         if ([_navigationDelegate respondsToSelector:@selector(navigationControllerWillDisappear:isHidden:)]) {
             [_navigationDelegate navigationControllerWillDisappear:self isHidden:YES];
         }
-    }else{
+    } else {
         if ([_navigationDelegate respondsToSelector:@selector(navigationControllerWillDisappear:isHidden:)]) {
             [_navigationDelegate navigationControllerWillDisappear:self isHidden:NO];
         }

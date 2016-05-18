@@ -9,24 +9,24 @@
 #import "IOShopViewController.h"
 
 #import "IODishViewController.h"
-#import "IOHomeShopCell.h"
+#import "IOShopCell.h"
 
 #import "IOShop.h"
 #import "IODishInfo.h"
 #import "IOShoppingCartView.h"
 #import "YWJDishesTool.h"
 #import "UIBarButtonItem+IOBarButtonItem.h"
-#import "IOHomeShopView.h"
+#import "IOShopHeaderView.h"
 
 #define kScale 0.25
 #define kHeaderHeight 176
 
-@interface IOShopViewController ()<UITableViewDataSource, UITableViewDelegate, IOHomeShopMenuCellDelegate>
+@interface IOShopViewController ()<UITableViewDataSource, UITableViewDelegate, IOShopMenuCellDelegate>
 
 @property (nonatomic, strong) NSArray *dataArray;
 @property (nonatomic, assign) BOOL isRelate;
 
-@property (nonatomic, weak) UIView *tableView;
+@property (nonatomic, weak) UIView *doubleTableView;
 @property (nonatomic, strong) UITableView *optionTableView;
 @property (nonatomic, strong) UITableView *menuTableView;
 
@@ -60,21 +60,21 @@
     _isRelate = YES;
 }
 
-- (void)viewWillAppear:(BOOL)animated{
+- (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     UINavigationBar *navigationBar = self.navigationController.navigationBar;
 
     //去除导航栏下方的横线 透明
     [navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
-//    [navigationBar setShadowImage:[UIImage new]];
+    [navigationBar setShadowImage:[UIImage new]];
 }
 
-- (void)viewWillDisappear:(BOOL)animated{
+- (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     
     UINavigationBar *navigationBar = self.navigationController.navigationBar;
-    [navigationBar setBackgroundImage:[UIImage imageNamed:@"timeline_image_placeholder"] forBarMetrics:UIBarMetricsDefault];
-    [navigationBar setShadowImage:[UIImage imageNamed:@"devision_line"]];
+    [navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationBGI_2"] forBarMetrics:UIBarMetricsDefault];
+    [navigationBar setShadowImage:[UIImage imageNamed:@"navigationBGI_1"]];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -105,19 +105,19 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell;
     if (tableView == self.optionTableView) {
-        cell = [IOHomeShopOptionCell cellWithTableView:tableView];
+        cell = [IOShopOptionCell cellWithTableView:tableView];
         
         IODishes *dishInfo = _dishInfos[indexPath.row];
         
-        ((IOHomeShopOptionCell *)cell).category = dishInfo.catgName;
+        ((IOShopOptionCell *)cell).category = dishInfo.catgName;
     }else{
-        cell = [IOHomeShopMenuCell cellWithTableView:tableView];
-        ((IOHomeShopMenuCell *)cell).delegate = self;
+        cell = [IOShopMenuCell cellWithTableView:tableView];
+        ((IOShopMenuCell *)cell).delegate = self;
         
         IODishes *dishInfo = _dishInfos[indexPath.section];
         IODish *dish = dishInfo.dishes[indexPath.row];
         
-        ((IOHomeShopMenuCell *)cell).dish = dish;
+        ((IOShopMenuCell *)cell).dish = dish;
     }
     
     return cell;
@@ -125,7 +125,7 @@
 
 #pragma mark - Table View Delegate
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (tableView == self.optionTableView) {
         return 51;
     }else{
@@ -133,7 +133,7 @@
     }
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     if (tableView == self.optionTableView) {
         return 0;
     }else{
@@ -141,7 +141,7 @@
     }
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
     if (tableView == self.optionTableView) {
         return 0;
     }else{
@@ -149,7 +149,7 @@
     }
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     if (tableView == self.menuTableView) {
         UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.width, 22)];
         view.backgroundColor = YWJRGBColor(217, 217, 217, 0.7);
@@ -167,7 +167,7 @@
     }
 }
 
-- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section{
+- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section {
     if (_isRelate) {
 //      获得一个UITableView的可见部分的第一个cell， 然后算出它属于哪个组
         NSInteger topCellSection = [[[tableView indexPathsForVisibleRows] firstObject] section];
@@ -177,7 +177,7 @@
     }
 }
 
-- (void)tableView:(UITableView *)tableView didEndDisplayingFooterView:(UIView *)view forSection:(NSInteger)section{
+- (void)tableView:(UITableView *)tableView didEndDisplayingFooterView:(UIView *)view forSection:(NSInteger)section {
     if (_isRelate) {
         NSInteger topCellSection = [[[tableView indexPathsForVisibleRows] firstObject] section];
         if (tableView == self.menuTableView) {
@@ -186,7 +186,7 @@
     }
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (tableView == self.optionTableView) {
         _isRelate = NO;
         [self.optionTableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionMiddle];
@@ -201,29 +201,29 @@
 
 #pragma mark - UIScrollViewDelegate
 
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
     _isRelate = YES;
 }
 
 #pragma mark - custom methods
 
-- (void)setupTableView{
-    UIView *tableView = [[UIView alloc] initWithFrame:CGRectMake(0, kHeaderHeight, self.view.width, self.view.height - kHeaderHeight - 44)];
-    _tableView = tableView;
-    [self.view addSubview:tableView];
+- (void)setupTableView {
+    UIView *doubleTableView = [[UIView alloc] initWithFrame:CGRectMake(0, kHeaderHeight, self.view.width, self.view.height - kHeaderHeight - 44)];
+    _doubleTableView = doubleTableView;
+    [self.view addSubview:doubleTableView];
     
     [self optionTableView];
     
     [self menuTableView];
 }
 
-- (void)setupShopHeaderView{
-    IOHomeShopHeaderView *shopHeaderView = [[IOHomeShopHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, kHeaderHeight)];
+- (void)setupShopHeaderView {
+    IOShopHeaderView *shopHeaderView = [[IOShopHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, kHeaderHeight)];
     shopHeaderView.shopInfo = self.shopInfo;
     [self.view addSubview:shopHeaderView];
 }
 
-- (void)setupNavigationItem{
+- (void)setupNavigationItem {
     
     UIBarButtonItem *collectBtn = [UIBarButtonItem initWithNormalImage:@"heart" target:self action:@selector(collectBtnClick) width:16 height:14];
     UIBarButtonItem *signInBtn = [UIBarButtonItem initWithNormalImage:@"calender" target:self action:@selector(signInBtnClick) width:16 height:14];
@@ -234,14 +234,14 @@
     self.navigationItem.leftBarButtonItem = backBtn;
 }
 
-- (NSMutableArray *)dishInfos{
+- (NSMutableArray *)dishInfos {
     if (!_dishInfos) {
         _dishInfos = [NSMutableArray array];
     }
     return _dishInfos;
 }
 
-- (void)loadDishInfosWithShopId:(int)shopId{
+- (void)loadDishInfosWithShopId:(int)shopId {
     [YWJDishesTool newShopDishesWithShopId:shopId Success:^(NSArray *shops) {
         NSMutableArray *dishInfosArray = [NSMutableArray array];
         for (NSDictionary *dishInfoDic in shops) {
@@ -267,20 +267,20 @@
     }];
 }
 
-- (UITableView *)optionTableView{
+- (UITableView *)optionTableView {
     if (!_optionTableView) {
-        _optionTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.width * kScale, self.tableView.height)];
+        _optionTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.width * kScale, self.doubleTableView.height)];
         _optionTableView.backgroundColor = [UIColor whiteColor];
-        [self.tableView addSubview:_optionTableView];
+        [self.doubleTableView addSubview:_optionTableView];
     }
     return _optionTableView;
 }
 
-- (UITableView *)menuTableView{
+- (UITableView *)menuTableView {
     if (!_menuTableView) {
-        _menuTableView = [[UITableView alloc] initWithFrame:CGRectMake(self.view.width * kScale, 0, self.view.width * (1 - kScale), self.tableView.height)];
+        _menuTableView = [[UITableView alloc] initWithFrame:CGRectMake(self.view.width * kScale, 0, self.view.width * (1 - kScale), self.doubleTableView.height)];
         _menuTableView.backgroundColor = [UIColor whiteColor];
-        [self.tableView addSubview:_menuTableView];
+        [self.doubleTableView addSubview:_menuTableView];
     }
     return _menuTableView;
 }
@@ -288,13 +288,13 @@
 /**
  *  购物栏的View
  */
-- (void)setUpShoppingView{
+- (void)setUpShoppingView {
     IOShoppingView *shoppingView = [[IOShoppingView alloc] initWithFrame:CGRectMake(0, self.view.height - 54, self.view.width, 54)];
     [self.view addSubview:shoppingView];
     _shoppingView = shoppingView;
 }
 
-- (void)setupSelfView{
+- (void)setupSelfView {
 //    布局就是从导航栏下面开始
 //    self.edgesForExtendedLayout = UIRectEdgeNone;
 //    CGRect viewBounds = self.view.bounds;
@@ -303,7 +303,7 @@
 //    self.view.bounds = viewBounds;
 }
 
-- (void)collectBtnClick{
+- (void)collectBtnClick {
     YWJLog(@"collectBtn click");
 }
 
@@ -312,17 +312,17 @@
     YWJLog(@"signInBtn click");
 }
 
-- (void)signInLabel{
+- (void)signInLabel {
     
 }
 
-- (void)backBtnClick{
+- (void)backBtnClick {
     [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark shop menu cell delegate
 
-- (void)homeShopMenuCell:(IOHomeShopMenuCell *)shopMenuCell dishPrice:(float)dishPrice clickedBtn:(UIButton *)btn{
+- (void)shopMenuCell:(IOShopMenuCell *)shopMenuCell dishPrice:(float)dishPrice clickedBtn:(UIButton *)btn {
     if (btn.tag == 1) {
         _shoppingView.checkOutView.backgroundColor = [UIColor orangeColor];
         _shoppingView.shoppingCarBtn.enabled = YES;
@@ -333,7 +333,7 @@
         }
         _shoppingView.badge.badgeValue = [NSString stringWithFormat:@"%lld", [_shoppingView.badge.badgeValue longLongValue] + 1];
         _shoppingView.totalPrice.text = [NSString stringWithFormat:@"¥%.2f", ([[_shoppingView.totalPrice.text substringFromIndex:1] floatValue] + dishPrice)];
-    }else{
+    } else {
         _shoppingView.badge.badgeValue = [NSString stringWithFormat:@"%lld", [_shoppingView.badge.badgeValue longLongValue] - 1];
         _shoppingView.totalPrice.text = [NSString stringWithFormat:@"¥%.2f", ([[_shoppingView.totalPrice.text substringFromIndex:1] floatValue] - dishPrice)];
         if ([_shoppingView.totalPrice.text isEqualToString:@"¥0.00"]) {

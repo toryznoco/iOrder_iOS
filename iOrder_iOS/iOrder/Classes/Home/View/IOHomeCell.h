@@ -1,5 +1,5 @@
 //
-//  IOHomeViewCell.h
+//  IOHomeCell.h
 //  iOrder
 //
 //  Created by 易无解 on 4/17/16.
@@ -13,7 +13,7 @@
 @class IOShop;
 
 #pragma mark - interface IOHomeViewCell
-@interface IOHomeViewCell : UITableViewCell
+@interface IOHomeCell : UITableViewCell
 
 /**
  *  店家数据
@@ -37,33 +37,5 @@
  *  店铺评价
  */
 @property (nonatomic, assign) float startCount;
-
-@end
-
-
-#pragma mark - interface IOHomeHeaderView
-@interface IOHomeHeaderView : UIView
-
-@end
-
-
-#pragma mark - interface IOScrollView
-@interface IOScrollView : UIView
-
-@property (nonatomic, strong) NSArray *images;
-
-@end
-
-
-#pragma mark - interface IOSpecialView
-@interface IOSpecialView : UIView
-
-@property (nonatomic, strong) NSArray *datas;
-
-@end
-
-
-#pragma mark - interface IOTitleView
-@interface IOTitleView : UIView
 
 @end

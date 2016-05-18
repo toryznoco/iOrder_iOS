@@ -30,6 +30,12 @@
 			</result>
 		</action>
 
+		<action name="order" class="cn.net.normcore.iorder.action.OrderAction">
+			<result name="jsonResult" type="json">
+				<param name="root">json</param>
+			</result>
+		</action>
+
 	</package>
 
 </struts>
