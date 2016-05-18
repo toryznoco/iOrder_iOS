@@ -10,7 +10,8 @@
 
 #import "IOShopViewController.h"
 
-#import "IOHomeViewCell.h"
+#import "IOHomeCell.h"
+#import "IOHomeHeaderView.h"
 
 #import "YWJShopsTool.h"
 #import "IOShop.h"
@@ -27,7 +28,7 @@
 
 #pragma mark - privacy
 
-- (NSMutableArray *)shops{
+- (NSMutableArray *)shops {
     if (!_shops) {
         _shops = [NSMutableArray array];
     }
@@ -54,7 +55,7 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)dealloc{
+- (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -70,7 +71,7 @@
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    IOHomeViewCell *cell = [IOHomeViewCell cellWithTableView:tableView];
+    IOHomeCell *cell = [IOHomeCell cellWithTableView:tableView];
     
     IOShop *info = self.shops[indexPath.row];
     cell.shop = info;
@@ -80,7 +81,7 @@
 
 #pragma mark - UITableViewDelegate
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     IOShopViewController *shopVc = [[IOShopViewController alloc] init];
     int shopId = (int)(indexPath.row);
     shopVc.shopInfo = self.shops[shopId];
@@ -91,7 +92,7 @@
 
 #pragma mark - custom method
 
-- (void)loadShopInfos{
+- (void)loadShopInfos {
     [YWJShopsTool newShopsSuccess:^(NSArray *shops) {
         [_shops addObjectsFromArray:shops];
         

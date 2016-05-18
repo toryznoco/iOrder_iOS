@@ -23,7 +23,7 @@
 @implementation IOTabBarController
 
 #pragma mark - privacy
-- (instancetype)init{
+- (instancetype)init {
     if (self = [super init]) {
 //        设置所有的子控制器
         [self setupViewControllers];
@@ -36,7 +36,7 @@
 
 #pragma mark - Custom Methods
 
-- (void)setupViewControllers{
+- (void)setupViewControllers {
     //首页
     UIViewController *order = [[IOHomeViewController alloc] init];
     IONavigationController *orderNav = [[IONavigationController alloc] initWithRootViewController:order];
@@ -60,7 +60,7 @@
     [self customizeTabBarForController:self];
 }
 
-- (void)customizeTabBarForController:(RDVTabBarController *)tabBarController{
+- (void)customizeTabBarForController:(RDVTabBarController *)tabBarController {
     NSArray *tabBarItemImages = @[@"tabbar_home", @"tabbar_order", @"tabbar_profile"];
     NSArray *tabBarItemTitles = @[@"首页", @"订单", @"我的"];
     
@@ -81,7 +81,7 @@
     }
 }
 
-- (void)setupTabBarTitleAttri{
+- (void)setupTabBarTitleAttri {
     RDVTabBarItem *item = [RDVTabBarItem appearanceWhenContainedInInstancesOfClasses:@[[super class]]];
     NSMutableDictionary *selTitleAttr = [NSMutableDictionary dictionary];
     selTitleAttr[NSForegroundColorAttributeName] = [UIColor orangeColor];
@@ -93,11 +93,11 @@
     item.unselectedTitleAttributes = unselTitleAttr;
 }
 
-- (void)orderVcWillDisappear:(IOHomeViewController *)orderVc{
+- (void)orderVcWillDisappear:(IOHomeViewController *)orderVc {
     [self setHidesBottomBarWhenPushed:YES];
 }
 
-- (void)customizeInterface{
+- (void)customizeInterface {
 #warning comprehension later
     UINavigationBar *navigationBarAppearance = [UINavigationBar appearance];
     
@@ -131,7 +131,7 @@
 
 #pragma mark - navigationcontroller delegate
 
-- (void)navigationControllerWillDisappear:(IONavigationController *)navigationVc isHidden:(BOOL)hidden{
+- (void)navigationControllerWillDisappear:(IONavigationController *)navigationVc isHidden:(BOOL)hidden {
     [self setTabBarHidden:hidden animated:YES];
 }
 

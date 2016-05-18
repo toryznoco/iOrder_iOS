@@ -13,7 +13,7 @@
 @implementation YWJShopsResult
 
 //模型转字典
-+ (NSDictionary *)mj_objectClassInArray{
++ (NSDictionary *)mj_objectClassInArray {
     return @{@"shops":[IOShop class]};
 }
 

@@ -12,7 +12,7 @@
 
 @implementation YWJBadgeView
 
-- (instancetype)initWithFrame:(CGRect)frame{
+- (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
         self.userInteractionEnabled = NO;
         
@@ -26,14 +26,14 @@
     return self;
 }
 
-- (void)setBadgeValue:(NSString *)badgeValue{
+- (void)setBadgeValue:(NSString *)badgeValue {
     _badgeValue = badgeValue;
     
     // 判断badgeValue是否有内容
     if (badgeValue.length == 0 || [badgeValue isEqualToString:@"0"]) {
         self.hidden = YES;
         return;
-    }else{
+    } else {
         self.hidden = NO;
     }
     
@@ -45,7 +45,7 @@
         [self setImage:[UIImage imageNamed:@"new_dot"] forState:UIControlStateNormal];
         [self setTitle:nil forState:UIControlStateNormal];
         [self setBackgroundImage:nil forState:UIControlStateNormal];
-    }else{
+    } else {
         [self setBackgroundImage:[UIImage imageNamed:@"main_badge"] forState:UIControlStateNormal];
         [self setTitle:badgeValue forState:UIControlStateNormal];
         [self setImage:nil forState:UIControlStateNormal];

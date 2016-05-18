@@ -10,7 +10,7 @@
 
 @implementation UIBarButtonItem (IOBarButtonItem)
 
-+ (UIBarButtonItem *)initWithNormalImage:(NSString *)image target:(id)target action:(SEL)action width:(CGFloat)width height:(CGFloat)height{
++ (UIBarButtonItem *)initWithNormalImage:(NSString *)image target:(id)target action:(SEL)action width:(CGFloat)width height:(CGFloat)height {
     UIImage *normalImage = [UIImage imageNamed:image];
     
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -21,7 +21,7 @@
     return [[UIBarButtonItem alloc] initWithCustomView:btn];
 }
 
-+ (UIBarButtonItem *)initWithtitleColor:(UIColor *)titleColor target:(id)target action:(SEL)action title:(NSString *)title{
++ (UIBarButtonItem *)initWithtitleColor:(UIColor *)titleColor target:(id)target action:(SEL)action title:(NSString *)title {
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
     btn.frame = CGRectMake(0, 0, 40, 40);
     [btn setTitle:title forState:UIControlStateNormal];

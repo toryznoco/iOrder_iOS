@@ -16,7 +16,7 @@
 @implementation YWJRootTool
 
 #pragma mark - self
-+ (void)chooseRootViewController:(UIWindow *)window{
++ (void)chooseRootViewController:(UIWindow *)window {
 //    NSString *currentVersion = [NSBundle mainBundle].infoDictionary[@"CFBundleVersion"];
 //    
 //    NSString *lastVersion = [YWJVersionTool currentVersion];

@@ -10,12 +10,12 @@
 
 @implementation YWJVersionTool
 
-+ (void)saveVersion:(NSString *)version{
++ (void)saveVersion:(NSString *)version {
     [YWJUserDefaults setObject:version forKey:kVersionKey];
     [YWJUserDefaults synchronize];
 }
 
-+ (NSString *)currentVersion{
++ (NSString *)currentVersion {
     return [YWJUserDefaults objectForKey:kVersionKey];
 }
 

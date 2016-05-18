@@ -19,7 +19,7 @@
 
 @implementation IOOrderedViewController
 
-- (NSMutableArray *)orders{
+- (NSMutableArray *)orders {
     if (!_orders) {
         _orders = [NSMutableArray array];
     }

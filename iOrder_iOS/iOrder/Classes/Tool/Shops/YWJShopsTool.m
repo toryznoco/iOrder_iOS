@@ -16,7 +16,7 @@
 
 @implementation YWJShopsTool
 
-+ (void)newShopsSuccess:(void (^)(NSArray *))success failure:(void (^)(NSError *))failure{
++ (void)newShopsSuccess:(void (^)(NSArray *))success failure:(void (^)(NSError *))failure {
     //创建参数模型
     YWJShopsParam *param = [[YWJShopsParam alloc] init];
     param.startId = 0;

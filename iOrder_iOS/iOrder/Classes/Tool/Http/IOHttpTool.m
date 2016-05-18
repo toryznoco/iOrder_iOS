@@ -12,7 +12,7 @@
 
 @implementation IOHttpTool
 
-+ (void)GET:(NSString *)URLString parameters:(id)parameters success:(void (^)(id))success failure:(void (^)(NSError *))failure{
++ (void)GET:(NSString *)URLString parameters:(id)parameters success:(void (^)(id))success failure:(void (^)(NSError *))failure {
     // 创建请求管理者
     AFHTTPSessionManager *mgr = [AFHTTPSessionManager manager];
     

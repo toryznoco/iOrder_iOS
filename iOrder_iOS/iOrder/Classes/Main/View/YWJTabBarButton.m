@@ -20,7 +20,7 @@
 
 @implementation YWJTabBarButton
 
-- (YWJBadgeView *)badgeView{
+- (YWJBadgeView *)badgeView {
     if (!_badgeView) {
         YWJBadgeView *btn = [YWJBadgeView buttonWithType:UIButtonTypeCustom];
         
@@ -31,7 +31,7 @@
     return _badgeView;
 }
 
-- (instancetype)initWithFrame:(CGRect)frame{
+- (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
         // 设置字体颜色
         [self setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
@@ -48,7 +48,7 @@
 }
 
 // 传递UITabBarItem给tabBarButton,给tabBarButton内容赋值
-- (void)setItem:(UITabBarItem *)item{
+- (void)setItem:(UITabBarItem *)item {
     _item = item;
     
     [self observeValueForKeyPath:nil ofObject:nil change:nil context:nil];
@@ -60,7 +60,7 @@
 }
 
 // 只要监听的属性一有新值，就会调用
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context{
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context {
     [self setTitle:_item.title forState:UIControlStateNormal];
     [self setImage:_item.image forState:UIControlStateNormal];
     [self setImage:_item.image forState:UIControlStateSelected];
@@ -69,7 +69,7 @@
     self.badgeView.badgeValue = _item.badgeValue;
 }
 
-- (void)layoutSubviews{
+- (void)layoutSubviews {
     [super layoutSubviews];
     
 //    1.imageView
@@ -92,7 +92,7 @@
 }
 
 // 重写setHighlighted，取消高亮做的事情
-- (void)setHighlighted:(BOOL)highlighted{
+- (void)setHighlighted:(BOOL)highlighted {
 }
 
 @end
