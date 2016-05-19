@@ -23,6 +23,10 @@
     // Do any additional setup after loading the view.
     
     [self initHeaderView];
+    
+    //  检测摇一摇
+    [[UIApplication sharedApplication] setApplicationSupportsShakeToEdit:YES];
+    [self becomeFirstResponder];
 }
 
 - (void)initHeaderView {
@@ -34,6 +38,34 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+//然后去实现那几个方法就可以了
+
+- (void) motionBegan:(UIEventSubtype)motion withEvent:(UIEvent *)event {
+    
+    //  检测到摇动
+    NSLog(@"摇了");
+    
+}
+
+
+
+- (void) motionCancelled:(UIEventSubtype)motion withEvent:(UIEvent *)event {
+    //  摇动取消
+    NSLog(@"摇动取消");
+}
+
+
+
+- (void) motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
+    //  摇动结束
+    if (event.subtype == UIEventSubtypeMotionShake) {
+        NSLog(@"摇完了");
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"签到成功^_^" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
+        [alert show];
+    }
+    
 }
 
 /*
