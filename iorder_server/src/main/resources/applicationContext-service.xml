@@ -24,4 +24,10 @@
 		</property>
 	</bean>
 
+	<bean id="orderService" parent="baseTxService">
+		<property name="target">
+			<bean class="cn.net.normcore.iorder.service.OrderService"></bean>
+		</property>
+	</bean>
+
 </beans>
