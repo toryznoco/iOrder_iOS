@@ -65,7 +65,7 @@
     _shopName.frame = CGRectMake(nameX, nameY, nameW, nameH);
     [_shopName sizeToFit];
     
-    CGFloat stateX = kIOScreenWidth-kIOOrderViewCellMargin-kIOOrderViewCellStateWidth;
+    CGFloat stateX = IOScreenWidth-kIOOrderViewCellMargin-kIOOrderViewCellStateWidth;
     CGFloat stateY = nameY;
     CGFloat stateW = kIOOrderViewCellStateWidth;
     CGFloat stateH = kIOOrderViewCellStateHeight;
@@ -74,7 +74,7 @@
     
     CGFloat line1X = 0;
     CGFloat line1Y = CGRectGetMaxY(_shopName.frame)+kIOOrderViewCellMargin;
-    CGFloat line1W = kIOScreenWidth;
+    CGFloat line1W = IOScreenWidth;
     CGFloat line1H = 1;
     _horizontalLine1.frame = CGRectMake(line1X, line1Y, line1W, line1H);
     
@@ -98,7 +98,7 @@
     
     CGFloat line2X = 0;
     CGFloat line2Y = CGRectGetMaxY(_shopIcon.frame)+kIOOrderViewCellMargin;
-    CGFloat line2W = kIOScreenWidth;
+    CGFloat line2W = IOScreenWidth;
     CGFloat line2H = 1;
     _horizontalLine2.frame = CGRectMake(line2X, line2Y, line2W, line2H);
 }
