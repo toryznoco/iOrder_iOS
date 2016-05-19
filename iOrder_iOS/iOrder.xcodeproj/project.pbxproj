@@ -27,6 +27,7 @@
 		9A8CC38A1CE572C8005E19D9 /* IOProfileHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC3891CE572C8005E19D9 /* IOProfileHeaderView.m */; };
 		CA218FDC1CEB3B0C00627FBD /* IOHomeHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = CA218FDB1CEB3B0C00627FBD /* IOHomeHeaderView.m */; settings = {ASSET_TAGS = (); }; };
 		CA218FDF1CEB433F00627FBD /* IOShopOptionView.m in Sources */ = {isa = PBXBuildFile; fileRef = CA218FDE1CEB433F00627FBD /* IOShopOptionView.m */; settings = {ASSET_TAGS = (); }; };
+		CA218FE21CEB5C5E00627FBD /* YWJDoubleTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = CA218FE11CEB5C5E00627FBD /* YWJDoubleTableView.m */; settings = {ASSET_TAGS = (); }; };
 		CA6539561CBD40E6000972E2 /* IONewFeatureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA6539551CBD40E6000972E2 /* IONewFeatureViewController.m */; };
 		CA6539591CBD44CF000972E2 /* YWJNewFeatureScrollPage.m in Sources */ = {isa = PBXBuildFile; fileRef = CA6539581CBD44CF000972E2 /* YWJNewFeatureScrollPage.m */; };
 		CA7069CB1CE5F564007C5F3F /* UIBarButtonItem+IOBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = CA7069CA1CE5F564007C5F3F /* UIBarButtonItem+IOBarButtonItem.m */; settings = {ASSET_TAGS = (); }; };
@@ -109,6 +110,8 @@
 		CA218FDB1CEB3B0C00627FBD /* IOHomeHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOHomeHeaderView.m; sourceTree = "<group>"; };
 		CA218FDD1CEB433F00627FBD /* IOShopOptionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOShopOptionView.h; sourceTree = "<group>"; };
 		CA218FDE1CEB433F00627FBD /* IOShopOptionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOShopOptionView.m; sourceTree = "<group>"; };
+		CA218FE01CEB5C5E00627FBD /* YWJDoubleTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWJDoubleTableView.h; sourceTree = "<group>"; };
+		CA218FE11CEB5C5E00627FBD /* YWJDoubleTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWJDoubleTableView.m; sourceTree = "<group>"; };
 		CA6539541CBD40E6000972E2 /* IONewFeatureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IONewFeatureViewController.h; sourceTree = "<group>"; };
 		CA6539551CBD40E6000972E2 /* IONewFeatureViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IONewFeatureViewController.m; sourceTree = "<group>"; };
 		CA6539571CBD44CF000972E2 /* YWJNewFeatureScrollPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWJNewFeatureScrollPage.h; sourceTree = "<group>"; };
@@ -321,6 +324,8 @@
 				CA7069CD1CE6037B007C5F3F /* IOShopHeaderView.m */,
 				CA218FDD1CEB433F00627FBD /* IOShopOptionView.h */,
 				CA218FDE1CEB433F00627FBD /* IOShopOptionView.m */,
+				CA218FE01CEB5C5E00627FBD /* YWJDoubleTableView.h */,
+				CA218FE11CEB5C5E00627FBD /* YWJDoubleTableView.m */,
 				9A8CC3641CE0AFC7005E19D9 /* IOShoppingCartView.h */,
 				9A8CC3651CE0AFC7005E19D9 /* IOShoppingCartView.m */,
 			);
@@ -794,6 +799,7 @@
 				9A8CC3411CE0AF84005E19D9 /* YWJShopsParam.m in Sources */,
 				CA9019921CE16B7A00AC5712 /* YWJDishesResult.m in Sources */,
 				CA6539591CBD44CF000972E2 /* YWJNewFeatureScrollPage.m in Sources */,
+				CA218FE21CEB5C5E00627FBD /* YWJDoubleTableView.m in Sources */,
 				9A8CC3821CE306B4005E19D9 /* IOOrderViewCell.m in Sources */,
 				9A8CC33E1CE0AF84005E19D9 /* IOHttpTool.m in Sources */,
 				9A8CC3431CE0AF84005E19D9 /* YWJShopsTool.m in Sources */,

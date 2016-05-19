@@ -20,7 +20,7 @@
 
 
 #pragma mark - interface IOShoppingView
-@interface IOShoppingView : UIView
+@interface IOShoppingCartView : UIView
 
 @property (nonatomic, weak) UIButton *shoppingCarBtn;
 @property (nonatomic, weak) UIView *checkOutView;

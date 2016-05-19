@@ -14,7 +14,7 @@
 
 @interface IODishViewController ()
 
-@property (nonatomic, weak) IOShoppingView *shoppingView;
+@property (nonatomic, weak) IOShoppingCartView *shoppingCartView;
 
 @end
 
@@ -30,7 +30,7 @@
     igv.frame = CGRectMake(100, 20, 50, 150);
     [self.view addSubview:igv];
     
-    [self setupShoppingView];
+    [self setupShoppingCartView];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -52,10 +52,10 @@
 
 #pragma mark - custom
 
-- (void)setupShoppingView {
-    IOShoppingView *shoppingView = [[IOShoppingView alloc] initWithFrame:CGRectMake(0, self.view.height - 54, self.view.width, 54)];
-    [self.view addSubview:shoppingView];
-    _shoppingView = shoppingView;
+- (void)setupShoppingCartView {
+    IOShoppingCartView *shoppingCartView = [[IOShoppingCartView alloc] initWithFrame:CGRectMake(0, self.view.height - 54, self.view.width, 54)];
+    [self.view addSubview:shoppingCartView];
+    _shoppingCartView = shoppingCartView;
 }
 
 /*
