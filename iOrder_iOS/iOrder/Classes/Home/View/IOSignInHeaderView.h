@@ -8,6 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+//  尺寸
+#define kIOPromptTopMargin 8
+#define kIOIconWidth 250
+#define kIOPromptHeight 20
+
 @interface IOSignInHeaderView : UIView
 
 @end

@@ -7,10 +7,11 @@
 //
 
 #import "IOSingInViewController.h"
+#import "IOSignInHeaderView.h"
 
 @interface IOSingInViewController ()
 
-@property (nonatomic, weak) UIView *singInHeaderView;
+@property (nonatomic, weak) UIView *signInHeaderView;
 @property (nonatomic, weak) UIView *calendarView;
 
 @end
@@ -20,6 +21,14 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    [self initHeaderView];
+}
+
+- (void)initHeaderView {
+    IOSignInHeaderView *signInHeaderView = [[IOSignInHeaderView alloc] initWithFrame:CGRectMake(0, 0, IOScreenWidth, 342)];
+    [self.view addSubview:signInHeaderView];
+    _signInHeaderView = signInHeaderView;
 }
 
 - (void)didReceiveMemoryWarning {

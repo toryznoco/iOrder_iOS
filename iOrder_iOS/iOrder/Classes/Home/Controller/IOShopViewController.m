@@ -7,8 +7,9 @@
 //
 
 #import "IOShopViewController.h"
-
 #import "IODishViewController.h"
+#import "IOSingInViewController.h"
+
 #import "IOShopCell.h"
 
 #import "IOShop.h"
@@ -161,7 +162,8 @@
 }
 
 - (void)signInBtnClick {
-    
+    IOSingInViewController *signInVc = [[IOSingInViewController alloc] init];
+    [self.navigationController pushViewController:signInVc animated:YES];
     YWJLog(@"signInBtn click");
 }
 
