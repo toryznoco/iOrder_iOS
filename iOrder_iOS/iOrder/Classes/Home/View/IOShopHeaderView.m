@@ -41,9 +41,6 @@
     IOShopInfoView *infoView = [[IOShopInfoView alloc] initWithFrame:CGRectMake(0, 64, frame.size.width, 72)];
     _shopInfoView = infoView;
     [self addSubview:infoView];
-    
-    IOShopOptionView *optionView = [[IOShopOptionView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(infoView.frame), frame.size.width, 40)];
-    [self addSubview:optionView];
 }
 
 @end

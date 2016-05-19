@@ -61,8 +61,8 @@
 @end
 
 
-#pragma mark - implementation IOShoppingView
-@implementation IOShoppingView
+#pragma mark - implementation IOShoppingCartView
+@implementation IOShoppingCartView
 
 #pragma mark - privacy
 

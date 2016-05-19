@@ -12,8 +12,8 @@
 #import "UIImageView+WebCache.h"
 
 
-#pragma mark - implementation IOShopMenuCell
-@interface IOShopMenuCell ()
+#pragma mark - implementation IOShopRightCell
+@interface IOShopRightCell ()
 
 @property (nonatomic, weak) UIImageView *dishIcon;
 @property (nonatomic, weak) UILabel *dishName;
@@ -28,7 +28,7 @@
 
 @end
 
-@implementation IOShopMenuCell
+@implementation IOShopRightCell
 
 #pragma mark - privacy
 
@@ -246,16 +246,16 @@
         }
     }
     
-    if ([_delegate respondsToSelector:@selector(shopMenuCell:dishPrice:clickedBtn:)]) {
-        [_delegate shopMenuCell:self dishPrice:_dish.price clickedBtn:btn];
+    if ([_delegate respondsToSelector:@selector(shopRightCell:dishPrice:clickedBtn:)]) {
+        [_delegate shopRightCell:self dishPrice:_dish.price clickedBtn:btn];
     }
 }
 
 @end
 
 
-#pragma mark - implementation IOShopOptionCell
-@implementation IOShopOptionCell
+#pragma mark - implementation IOShopLeftCell
+@implementation IOShopLeftCell
 
 #pragma mark - privacy
 
@@ -304,7 +304,7 @@
     selectedBgView.backgroundColor = YWJRGBColor(217, 217, 217, 0.5);
     self.selectedBackgroundView = selectedBgView;
     
-    UIView *liner = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 5, 51)];
+    UIView *liner = [[UIView alloc] initWithFrame:CGRectMake(0, 5, 5, 41)];
     liner.backgroundColor = [UIColor orangeColor];
     [selectedBgView addSubview:liner];
 }

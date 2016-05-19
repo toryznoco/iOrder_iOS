@@ -24,12 +24,9 @@
 
 #pragma mark - privacy
 
-- (instancetype)init {
-    if (self = [super init]) {
+- (instancetype)initWithFrame:(CGRect)frame {
+    if (self = [super initWithFrame:frame]) {
         self.backgroundColor = [UIColor colorWithRed:241/255.0 green:241/255.0 blue:241/255.0 alpha:1];
-        //        设置headerView的大小
-        self.width = YWJKeyWindow.bounds.size.width;
-        self.height = 305;
         
         [self setupAllChildView];
     }
