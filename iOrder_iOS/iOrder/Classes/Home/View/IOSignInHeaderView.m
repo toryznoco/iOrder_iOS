@@ -21,12 +21,13 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        [self setupChildViewWithFrame:frame];
+        [self setupAllChildView];
     }
     return self;
 }
 
 - (void)setupAllChildView {
+    UIImageView *iconView = [[UIImageView alloc] init];
     
 }
 

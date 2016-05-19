@@ -25,16 +25,12 @@
 		9A8CC3821CE306B4005E19D9 /* IOOrderViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC3811CE306B4005E19D9 /* IOOrderViewCell.m */; };
 		9A8CC3851CE3075E005E19D9 /* IOOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC3841CE3075E005E19D9 /* IOOrder.m */; };
 		9A8CC38A1CE572C8005E19D9 /* IOProfileHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC3891CE572C8005E19D9 /* IOProfileHeaderView.m */; };
-<<<<<<< HEAD
 		9AFEED761CEC3ECE0009528C /* IOSingInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AFEED751CEC3ECE0009528C /* IOSingInViewController.m */; };
 		9AFEED791CEC6DF70009528C /* IOSignInHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AFEED781CEC6DF70009528C /* IOSignInHeaderView.m */; };
-		CA218FDC1CEB3B0C00627FBD /* IOHomeHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = CA218FDB1CEB3B0C00627FBD /* IOHomeHeaderView.m */; };
-		CA218FDF1CEB433F00627FBD /* IOShopOptionView.m in Sources */ = {isa = PBXBuildFile; fileRef = CA218FDE1CEB433F00627FBD /* IOShopOptionView.m */; };
-=======
+
 		CA218FDC1CEB3B0C00627FBD /* IOHomeHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = CA218FDB1CEB3B0C00627FBD /* IOHomeHeaderView.m */; settings = {ASSET_TAGS = (); }; };
 		CA218FDF1CEB433F00627FBD /* IOShopOptionView.m in Sources */ = {isa = PBXBuildFile; fileRef = CA218FDE1CEB433F00627FBD /* IOShopOptionView.m */; settings = {ASSET_TAGS = (); }; };
 		CA218FE21CEB5C5E00627FBD /* YWJDoubleTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = CA218FE11CEB5C5E00627FBD /* YWJDoubleTableView.m */; settings = {ASSET_TAGS = (); }; };
->>>>>>> master
 		CA6539561CBD40E6000972E2 /* IONewFeatureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA6539551CBD40E6000972E2 /* IONewFeatureViewController.m */; };
 		CA6539591CBD44CF000972E2 /* YWJNewFeatureScrollPage.m in Sources */ = {isa = PBXBuildFile; fileRef = CA6539581CBD44CF000972E2 /* YWJNewFeatureScrollPage.m */; };
 		CA7069CB1CE5F564007C5F3F /* UIBarButtonItem+IOBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = CA7069CA1CE5F564007C5F3F /* UIBarButtonItem+IOBarButtonItem.m */; };
