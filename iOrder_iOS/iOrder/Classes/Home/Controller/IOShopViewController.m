@@ -29,7 +29,7 @@
 @property (nonatomic, strong) NSMutableArray *dishInfos;
 
 @property (nonatomic, weak) IOShopHeaderView *shopHeaderView;
-@property (nonatomic, weak) IOShopOptionView *optionView;
+@property (nonatomic, weak) IOShopOptionView *shopOptionView;
 @property (nonatomic, weak) YWJDoubleTableView *doubleTableView;
 @property (nonatomic, weak) IOShoppingCartView *shoppingCartView;
 
@@ -103,9 +103,9 @@
 }
 
 - (void)setupOptionView {
-    IOShopOptionView *optionView = [[IOShopOptionView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(_shopHeaderView.frame), self.view.width, 40)];
-    _optionView = optionView;
-    [self.view addSubview:optionView];
+    IOShopOptionView *shopOptionView = [[IOShopOptionView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(_shopHeaderView.frame), self.view.width, 40)];
+    _shopOptionView = shopOptionView;
+    [self.view addSubview:shopOptionView];
 }
 
 - (void)setupNavigationItem {

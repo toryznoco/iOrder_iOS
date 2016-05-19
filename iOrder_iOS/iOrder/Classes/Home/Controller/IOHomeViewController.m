@@ -21,7 +21,7 @@
 @interface IOHomeViewController ()<UITableViewDelegate>
 
 @property (nonatomic, strong) NSMutableArray *shops;
-@property (nonatomic, weak) IOHomeHeaderView *tableHeaderView;
+@property (nonatomic, weak) IOHomeHeaderView *homeHeaderView;
 
 @end
 
@@ -48,8 +48,9 @@
     //    设置行高
     self.tableView.rowHeight = 70;
     
-    IOHomeHeaderView *tableHeaderView = [[IOHomeHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 305)];
-    self.tableView.tableHeaderView = tableHeaderView;
+    IOHomeHeaderView *homeHeaderView = [[IOHomeHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 305)];
+    _homeHeaderView = homeHeaderView;
+    self.tableView.tableHeaderView = homeHeaderView;
 }
 
 - (void)didReceiveMemoryWarning {
