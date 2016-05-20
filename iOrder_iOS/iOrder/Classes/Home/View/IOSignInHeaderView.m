@@ -21,23 +21,33 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        [self setupAllChildView];
+        [self initAllChildView];
     }
     return self;
 }
 
-- (void)setupAllChildView {
+- (void)initAllChildView {
     UIImageView *iconView = [[UIImageView alloc] init];
     [self addSubview:iconView];
     _iconView = iconView;
-    _iconView.image = [UIImage imageNamed:@"SignIn"];
+    [self setupIconView];
     
     UILabel *promptLabel = [[UILabel alloc] init];
     [self addSubview:promptLabel];
     _promptLabel = promptLabel;
+    [self setupPromptLabel];
+}
+
+- (void)setupIconView {
+    _iconView.image = [UIImage imageNamed:@"SignIn"];
+    _iconView.contentMode = UIViewContentModeScaleToFill;
+}
+
+- (void)setupPromptLabel {
     _promptLabel.text = @"摇一摇签到~";
     _promptLabel.textAlignment = NSTextAlignmentCenter;
 }
+
 - (void)layoutSubviews {
     [super layoutSubviews];
     
@@ -50,7 +60,7 @@
     CGFloat promptX = iconX;
     CGFloat promptY = CGRectGetMaxY(_iconView.frame)+kIOPromptTopMargin;
     CGFloat promptW = iconW;
-    CGFloat promptH = kIOPromptHeight;
+    CGFloat promptH = self.frame.size.height-kIOPromptTopMargin-iconH;
     _promptLabel.frame = CGRectMake(promptX, promptY, promptW, promptH);
 }
 

@@ -15,6 +15,7 @@ PODS:
   - AFNetworking/UIKit (3.1.0):
     - AFNetworking/NSURLSession
   - AprilSDK (2.0.5)
+  - FSCalendar (2.1.1)
   - MJExtension (3.0.10)
   - MJRefresh (3.1.0)
   - RDVTabBarController (1.1.9)
@@ -28,6 +29,7 @@ PODS:
 DEPENDENCIES:
   - AFNetworking
   - AprilSDK
+  - FSCalendar
   - MJExtension
   - MJRefresh
   - RDVTabBarController
@@ -37,6 +39,7 @@ DEPENDENCIES:
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
   AprilSDK: b6d2b35b7012955618e022772c0d2b202b25f277
+  FSCalendar: 04dc531f06fbde8a8e5b7394e9d4edebd45a591f
   MJExtension: d86aacb740c87519d20e3cca55b6fa4be6cc7548
   MJRefresh: 743e6404967d1c2c688472ea3ecfde247d872db4
   RDVTabBarController: 67794f7a7a37f8e32f046f85ac67d06ab92d624a

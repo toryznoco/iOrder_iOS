@@ -23,6 +23,7 @@
     // Do any additional setup after loading the view.
     
     [self initHeaderView];
+    [self initCalendarView];
     
     //  检测摇一摇
     [[UIApplication sharedApplication] setApplicationSupportsShakeToEdit:YES];
@@ -35,30 +36,27 @@
     _signInHeaderView = signInHeaderView;
 }
 
+- (void)initCalendarView {
+    
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
-//然后去实现那几个方法就可以了
-
-- (void) motionBegan:(UIEventSubtype)motion withEvent:(UIEvent *)event {
-    
+#pragma mark - 摇一摇方法
+- (void)motionBegan:(UIEventSubtype)motion withEvent:(UIEvent *)event {
     //  检测到摇动
     NSLog(@"摇了");
-    
 }
 
-
-
-- (void) motionCancelled:(UIEventSubtype)motion withEvent:(UIEvent *)event {
+- (void)motionCancelled:(UIEventSubtype)motion withEvent:(UIEvent *)event {
     //  摇动取消
     NSLog(@"摇动取消");
 }
 
-
-
-- (void) motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
+- (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
     //  摇动结束
     if (event.subtype == UIEventSubtypeMotionShake) {
         NSLog(@"摇完了");
@@ -67,15 +65,5 @@
     }
     
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end
