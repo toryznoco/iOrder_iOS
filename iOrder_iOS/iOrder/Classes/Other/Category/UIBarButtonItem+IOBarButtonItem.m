@@ -23,7 +23,8 @@
 
 + (UIBarButtonItem *)initWithtitleColor:(UIColor *)titleColor target:(id)target action:(SEL)action title:(NSString *)title {
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
-    btn.frame = CGRectMake(0, 0, 40, 40);
+    btn.frame = CGRectMake(0, 0, 28, 20);
+    btn.font = [UIFont systemFontOfSize:13];
     [btn setTitle:title forState:UIControlStateNormal];
     [btn setTitleColor:titleColor forState:UIControlStateNormal];
     [btn addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];

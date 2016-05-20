@@ -42,7 +42,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    [self.navigationController setNavigationBarHidden:NO animated:NO];
     //    初始化数组和加载数据
     [self dishInfos];
     [self loadDishInfosWithShopId:self.shopId];

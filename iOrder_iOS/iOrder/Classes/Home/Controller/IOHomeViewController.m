@@ -8,7 +8,9 @@
 
 #import "IOHomeViewController.h"
 
+#import "UIBarButtonItem+IOBarButtonItem.h"
 #import "IOShopViewController.h"
+#import "IOHomeNavigationView.h"
 
 #import "IOHomeCell.h"
 #import "IOHomeHeaderView.h"
@@ -18,7 +20,7 @@
 
 #import "MJRefresh.h"
 
-@interface IOHomeViewController ()<UITableViewDelegate>
+@interface IOHomeViewController ()<UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong) NSMutableArray *shops;
 @property (nonatomic, weak) IOHomeHeaderView *homeHeaderView;
@@ -39,6 +41,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    [self setupNavigationView];
+    
     _shops = [self shops];
     
     [self loadShopInfos];
@@ -51,6 +55,13 @@
     IOHomeHeaderView *homeHeaderView = [[IOHomeHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 305)];
     _homeHeaderView = homeHeaderView;
     self.tableView.tableHeaderView = homeHeaderView;
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+//    [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
+//    [self.navigationController.navigationBar setShadowImage:[UIImage new]];
+//    [self.navigationController.navigationBar setBackgroundColor:[UIColor orangeColor]];
+//    self.navigationController.navigationBar.tintColor = [UIColor orangeColor];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -95,6 +106,36 @@
 
 #pragma mark - custom method
 
+- (void)setupNavigationView {
+    [self.navigationController.navigationBar setBarTintColor:[UIColor orangeColor]];
+    UIBarButtonItem *locatingBtn = [UIBarButtonItem initWithNormalImage:@"address_icon" target:self action:@selector(locatingBtnClick:) width:15 height:20];
+    UIBarButtonItem *locatingLabel = [UIBarButtonItem initWithtitleColor:[UIColor whiteColor] target:self action:@selector(locatingBtnClick:) title:@"定位"];
+    self.navigationItem.rightBarButtonItems = @[locatingBtn, locatingLabel];
+    
+    UIView *locationView = [[UIView alloc] init];
+    locationView.frame = CGRectMake(0, 0, 54, 18);
+    UILabel *locationName = [[UILabel alloc] init];
+    locationName.font = [UIFont systemFontOfSize:13];
+    locationName.text = @"温江区";
+    locationName.textColor = [UIColor whiteColor];
+    [locationName sizeToFit];
+    [locationView addSubview:locationName];
+    UIImageView *arrowImageView = [[UIImageView alloc] initWithFrame:CGRectMake(locationView.width - 10, 8, 12, 8)];
+    [arrowImageView setImage:[UIImage imageNamed:@"arrows_icon"]];
+    [locationView addSubview:arrowImageView];
+    UIBarButtonItem *locationBarItem = [[UIBarButtonItem alloc] initWithCustomView:locationView];
+    self.navigationItem.leftBarButtonItem = locationBarItem;
+    
+    UIView *searchView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 241, 28)];
+    searchView.backgroundColor = [UIColor whiteColor];
+    searchView.layer.cornerRadius = 14;
+    searchView.layer.masksToBounds = YES;
+    
+    UIImageView *searchImg = [[UIImageView alloc] init];
+    
+    self.navigationItem.titleView = searchView;
+}
+
 - (void)loadShopInfos {
     [YWJShopsTool newShopsSuccess:^(NSArray *shops) {
         [_shops addObjectsFromArray:shops];
@@ -103,6 +144,10 @@
     } failure:^(NSError *error) {
         YWJLog(@"%@", error);
     }];
+}
+
+- (void)locatingBtnClick:(UIButton *)btn {
+    
 }
 
 @end
