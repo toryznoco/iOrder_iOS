@@ -10,7 +10,6 @@
 
 #import "UIBarButtonItem+IOBarButtonItem.h"
 #import "IOShopViewController.h"
-#import "IOHomeNavigationView.h"
 
 #import "IOHomeCell.h"
 #import "IOHomeHeaderView.h"
