@@ -40,7 +40,7 @@
 
 - (void)setupIconView {
     _iconView.image = [UIImage imageNamed:@"SignIn"];
-    _iconView.contentMode = UIViewContentModeScaleToFill;
+    _iconView.contentMode = UIViewContentModeScaleAspectFit;
 }
 
 - (void)setupPromptLabel {
@@ -60,7 +60,7 @@
     CGFloat promptX = iconX;
     CGFloat promptY = CGRectGetMaxY(_iconView.frame)+kIOPromptTopMargin;
     CGFloat promptW = iconW;
-    CGFloat promptH = self.frame.size.height-kIOPromptTopMargin-iconH;
+    CGFloat promptH = (self.frame.size.height-iconH-64-kIOPromptTopMargin);
     _promptLabel.frame = CGRectMake(promptX, promptY, promptW, promptH);
 }
 
