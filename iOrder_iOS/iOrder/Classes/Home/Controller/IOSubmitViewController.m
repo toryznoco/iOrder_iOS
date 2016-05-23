@@ -8,14 +8,22 @@
 
 #import "IOSubmitViewController.h"
 
+#import "UIBarButtonItem+IOBarButtonItem.h"
+
 @interface IOSubmitViewController ()
 
 @end
 
 @implementation IOSubmitViewController
 
+#pragma mark - privacy
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    self.view.backgroundColor = [UIColor whiteColor];
+    
+    [self setupNavigationItem];
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -41,9 +49,26 @@
     return 0;
 }
 
+#pragma mark - custom methods
+
+- (void)setupNavigationItem {
+    self.title = @"提交订单";
+    UIColor *titleColor = [UIColor whiteColor];
+    NSMutableDictionary *titleAttr = [NSMutableDictionary dictionary];
+    titleAttr[NSForegroundColorAttributeName] = titleColor;
+    self.navigationController.navigationBar.titleTextAttributes = titleAttr;
+    UIBarButtonItem *backBtn = [UIBarButtonItem initWithNormalImage:@"arrow" target:self action:@selector(backBtnClick) width:12 height:21];
+    self.navigationItem.leftBarButtonItem = backBtn;
+}
+
+- (void)backBtnClick {
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+
 /*
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier: forIndexPath:indexPath];
     
     // Configure the cell...
     
