@@ -9,6 +9,7 @@
 #import "IOShopViewController.h"
 #import "IODishViewController.h"
 #import "IOSingInViewController.h"
+#import "IOSubmitViewController.h"
 
 #import "IOShopCell.h"
 
@@ -24,7 +25,7 @@
 #define kScale 0.25
 #define kHeaderHeight 136
 
-@interface IOShopViewController ()<YWJDoubleTableViewDelegate>
+@interface IOShopViewController ()<YWJDoubleTableViewDelegate, IOShoppingCartViewDelegate>
 
 @property (nonatomic, strong) NSArray *dataArray;
 @property (nonatomic, strong) NSMutableArray *dishInfos;
@@ -42,7 +43,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self.navigationController setNavigationBarHidden:NO animated:NO];
+    
+    self.view.backgroundColor = [UIColor whiteColor];
+    
     //    初始化数组和加载数据
     [self dishInfos];
     [self loadDishInfosWithShopId:self.shopId];
@@ -111,8 +114,8 @@
 
 - (void)setupNavigationItem {
     
-    UIBarButtonItem *collectBtn = [UIBarButtonItem initWithNormalImage:@"heart" target:self action:@selector(collectBtnClick) width:16 height:14];
-    UIBarButtonItem *signInBtn = [UIBarButtonItem initWithNormalImage:@"calender" target:self action:@selector(signInBtnClick) width:16 height:14];
+    UIBarButtonItem *collectBtn = [UIBarButtonItem initWithNormalImage:@"heart" target:self action:@selector(collectBtnClick) width:22 height:20];
+    UIBarButtonItem *signInBtn = [UIBarButtonItem initWithNormalImage:@"calendar" target:self action:@selector(signInBtnClick) width:18 height:22];
     UIBarButtonItem *signInLabel = [UIBarButtonItem initWithtitleColor:[UIColor orangeColor] target:self action:@selector(signInLabel) title:@"签到"];
     self.navigationItem.rightBarButtonItems = @[collectBtn, signInBtn, signInLabel];
     
@@ -153,6 +156,7 @@
  */
 - (void)setUpShoppingCartView {
     IOShoppingCartView *shoppingCartView = [[IOShoppingCartView alloc] initWithFrame:CGRectMake(0, self.view.height - 54, self.view.width, 54)];
+    shoppingCartView.delegate = self;
     _shoppingCartView = shoppingCartView;
     [self.view addSubview:shoppingCartView];
 }
@@ -201,6 +205,10 @@
     }
 }
 
-
+#pragma mark - IOShoppingCartViewDelegate
+- (void)shoppingCartView:(IOShoppingCartView *)shoppingCartView checkOutBtnClick:(UIButton *)btn{
+    IOSubmitViewController *submitVc = [[IOSubmitViewController alloc] init];
+    [self.navigationController pushViewController:submitVc animated:YES];
+}
 
 @end

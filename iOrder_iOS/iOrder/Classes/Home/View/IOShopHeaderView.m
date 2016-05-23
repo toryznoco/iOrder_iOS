@@ -22,7 +22,7 @@
 #pragma mark - privacy
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
-        self.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"005"]];
+        self.backgroundColor = kIOThemeColors;
         
         [self setupChildViewWithFrame:frame];
     }
@@ -140,10 +140,12 @@
     [self addSubview:shopIcon];
     
     UILabel *shopTitle = [[UILabel alloc] init];
+    shopTitle.textColor = [UIColor whiteColor];
     _shopTitle = shopTitle;
     [self addSubview:shopTitle];
     
     UILabel *waitingTime = [[UILabel alloc] init];
+    waitingTime.textColor = [UIColor whiteColor];
     waitingTime.text = @"15分钟";
     waitingTime.font = [UIFont systemFontOfSize:15];
     _waitingTime = waitingTime;
@@ -155,6 +157,7 @@
     [self addSubview:hintImage];
     
     UILabel *hintInfo = [[UILabel alloc] init];
+    hintInfo.textColor = [UIColor whiteColor];
     _hintInfo = hintInfo;
     [self addSubview:hintInfo];
     

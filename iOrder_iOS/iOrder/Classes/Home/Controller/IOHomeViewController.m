@@ -56,13 +56,6 @@
     self.tableView.tableHeaderView = homeHeaderView;
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-//    [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
-//    [self.navigationController.navigationBar setShadowImage:[UIImage new]];
-//    [self.navigationController.navigationBar setBackgroundColor:[UIColor orangeColor]];
-//    self.navigationController.navigationBar.tintColor = [UIColor orangeColor];
-}
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -106,7 +99,7 @@
 #pragma mark - custom method
 
 - (void)setupNavigationView {
-    [self.navigationController.navigationBar setBarTintColor:[UIColor orangeColor]];
+    [self.navigationController.navigationBar setBarTintColor:kIOThemeColors];
     UIBarButtonItem *locatingBtn = [UIBarButtonItem initWithNormalImage:@"address_icon" target:self action:@selector(locatingBtnClick:) width:15 height:20];
     UIBarButtonItem *locatingLabel = [UIBarButtonItem initWithtitleColor:[UIColor whiteColor] target:self action:@selector(locatingBtnClick:) title:@"定位"];
     self.navigationItem.rightBarButtonItems = @[locatingBtn, locatingLabel];
@@ -115,7 +108,7 @@
     locationView.frame = CGRectMake(0, 0, 54, 18);
     UILabel *locationName = [[UILabel alloc] init];
     locationName.font = [UIFont systemFontOfSize:13];
-    locationName.text = @"温江区";
+    locationName.text = @"都江堰";
     locationName.textColor = [UIColor whiteColor];
     [locationName sizeToFit];
     [locationView addSubview:locationName];
@@ -125,12 +118,25 @@
     UIBarButtonItem *locationBarItem = [[UIBarButtonItem alloc] initWithCustomView:locationView];
     self.navigationItem.leftBarButtonItem = locationBarItem;
     
-    UIView *searchView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 241, 28)];
+    CGFloat searchViewW = 2 * (self.view.width - CGRectGetMaxX(locationView.frame) - 20);
+    YWJLog(@"%f", searchViewW);
+    UIView *searchView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, searchViewW, 28)];
     searchView.backgroundColor = [UIColor whiteColor];
     searchView.layer.cornerRadius = 14;
     searchView.layer.masksToBounds = YES;
     
-    UIImageView *searchImg = [[UIImageView alloc] init];
+    UIImageView *searchImg = [[UIImageView alloc] initWithFrame:CGRectMake(7, 7, 15, 15)];
+    [searchImg setImage:[UIImage imageNamed:@"select-icon"]];
+    [searchView addSubview:searchImg];
+    
+    CGFloat textW = searchView.width - 7 - searchImg.width - 10;
+    CGFloat textH = 15;
+    CGFloat textX = CGRectGetMaxX(searchImg.frame) + 10;
+    CGFloat textY = searchImg.y + 2;
+    UITextField *searchTextField = [[UITextField alloc] initWithFrame:CGRectMake(textX, textY, textW, textH)];
+    searchTextField.placeholder = @"输入商家、品类";
+    searchTextField.font = [UIFont systemFontOfSize:13];
+    [searchView addSubview:searchTextField];
     
     self.navigationItem.titleView = searchView;
 }
