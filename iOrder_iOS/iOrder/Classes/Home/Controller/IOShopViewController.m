@@ -116,7 +116,7 @@
     
     UIBarButtonItem *collectBtn = [UIBarButtonItem initWithNormalImage:@"heart" target:self action:@selector(collectBtnClick) width:22 height:20];
     UIBarButtonItem *signInBtn = [UIBarButtonItem initWithNormalImage:@"calendar" target:self action:@selector(signInBtnClick) width:18 height:22];
-    UIBarButtonItem *signInLabel = [UIBarButtonItem initWithtitleColor:[UIColor orangeColor] target:self action:@selector(signInLabel) title:@"签到"];
+    UIBarButtonItem *signInLabel = [UIBarButtonItem initWithtitleColor:[UIColor whiteColor] target:self action:@selector(signInLabel) title:@"签到"];
     self.navigationItem.rightBarButtonItems = @[collectBtn, signInBtn, signInLabel];
     
     UIBarButtonItem *backBtn = [UIBarButtonItem initWithNormalImage:@"arrow" target:self action:@selector(backBtnClick) width:12 height:21];
