@@ -44,7 +44,7 @@
 #warning 以后不需要此行代码，此处便于调试
     [YWJVersionTool saveVersion:@"0.1"];
     
-    self.window = [[UIWindow alloc] initWithFrame:YWJMainScreenBounds];
+    self.window = [[UIWindow alloc] initWithFrame:CGRectMake(0, 0, IOScreenWidth, IOScreenHeight)];
     [self.window makeKeyAndVisible];
     
     [YWJRootTool chooseRootViewController:self.window];

@@ -39,6 +39,7 @@
 		CA9019921CE16B7A00AC5712 /* YWJDishesResult.m in Sources */ = {isa = PBXBuildFile; fileRef = CA90198E1CE16B7A00AC5712 /* YWJDishesResult.m */; };
 		CA9019931CE16B7A00AC5712 /* YWJDishesTool.m in Sources */ = {isa = PBXBuildFile; fileRef = CA9019901CE16B7A00AC5712 /* YWJDishesTool.m */; };
 		CACD5CB11CE4119A00ADE187 /* IOShopCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CACD5CAC1CE4119A00ADE187 /* IOShopCell.m */; };
+		CAD0836B1CF32A9500D487EF /* IOSubmitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CAD0836A1CF32A9500D487EF /* IOSubmitViewController.m */; settings = {ASSET_TAGS = (); }; };
 		CAE8F02C1CB940E2005618B0 /* iOrderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F02B1CB940E2005618B0 /* iOrderTests.m */; };
 		CAE8F0371CB940E2005618B0 /* iOrderUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F0361CB940E2005618B0 /* iOrderUITests.m */; };
 		CAE8F07B1CB94170005618B0 /* YWJBadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F04E1CB94170005618B0 /* YWJBadgeView.m */; };
@@ -136,6 +137,8 @@
 		CA9019901CE16B7A00AC5712 /* YWJDishesTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWJDishesTool.m; sourceTree = "<group>"; };
 		CACD5CAB1CE4119A00ADE187 /* IOShopCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOShopCell.h; sourceTree = "<group>"; };
 		CACD5CAC1CE4119A00ADE187 /* IOShopCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOShopCell.m; sourceTree = "<group>"; };
+		CAD083691CF32A9500D487EF /* IOSubmitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOSubmitViewController.h; sourceTree = "<group>"; };
+		CAD0836A1CF32A9500D487EF /* IOSubmitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOSubmitViewController.m; sourceTree = "<group>"; };
 		CAE8F00E1CB940E2005618B0 /* iOrder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOrder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CAE8F0221CB940E2005618B0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CAE8F0271CB940E2005618B0 /* iOrderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iOrderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -302,6 +305,8 @@
 				9A8CC34B1CE0AFC7005E19D9 /* IOShopViewController.m */,
 				9AFEED741CEC3ECE0009528C /* IOSingInViewController.h */,
 				9AFEED751CEC3ECE0009528C /* IOSingInViewController.m */,
+				CAD083691CF32A9500D487EF /* IOSubmitViewController.h */,
+				CAD0836A1CF32A9500D487EF /* IOSubmitViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -816,6 +821,7 @@
 				CAE8F0921CB9461C005618B0 /* IOProfileViewController.m in Sources */,
 				CA7069CE1CE6037B007C5F3F /* IOShopHeaderView.m in Sources */,
 				CAE8F08F1CB9459B005618B0 /* IOOrderedViewController.m in Sources */,
+				CAD0836B1CF32A9500D487EF /* IOSubmitViewController.m in Sources */,
 				CAE8F07C1CB94170005618B0 /* YWJTabBar.m in Sources */,
 				CA8D2C6D1CE56E44006E3D2A /* IOShoppingViewInfo.m in Sources */,
 				CAE8F07B1CB94170005618B0 /* YWJBadgeView.m in Sources */,

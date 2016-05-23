@@ -22,7 +22,7 @@
 #pragma mark - privacy
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
-        self.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"005"]];
+        self.backgroundColor = kIOThemeColors;
         
         [self setupChildViewWithFrame:frame];
     }
