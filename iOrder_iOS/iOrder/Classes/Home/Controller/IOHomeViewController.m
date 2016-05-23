@@ -19,7 +19,7 @@
 
 #import "MJRefresh.h"
 
-@interface IOHomeViewController ()<UITableViewDataSource, UITableViewDelegate>
+@interface IOHomeViewController ()<UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate>
 
 @property (nonatomic, strong) NSMutableArray *shops;
 @property (nonatomic, weak) IOHomeHeaderView *homeHeaderView;
@@ -94,6 +94,12 @@
     
     shopVc.shopId = shopId + 1;
     [self.navigationController pushViewController:shopVc animated:YES];
+}
+
+#pragma mark - UIScrollViewDelegate
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+    [self.view endEditing:YES];
 }
 
 #pragma mark - custom method
