@@ -17,6 +17,7 @@
 #import "UIView+YWJFrame.h"
 
 //  尺寸
+#define kIONavigationBarHeight 64
 #define IOScreenWidth [UIScreen mainScreen].bounds.size.width
 #define IOScreenHeight [UIScreen mainScreen].bounds.size.height
 
