@@ -19,6 +19,7 @@
     
     self.title = @"我的";
     
+    self.tableView.tableFooterView = [[UIView alloc] init];
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"ProfileCell"];
     
     // Uncomment the following line to preserve selection between presentations.
