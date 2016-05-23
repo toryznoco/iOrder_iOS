@@ -25,11 +25,12 @@
 		9A8CC3821CE306B4005E19D9 /* IOOrderViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC3811CE306B4005E19D9 /* IOOrderViewCell.m */; };
 		9A8CC3851CE3075E005E19D9 /* IOOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC3841CE3075E005E19D9 /* IOOrder.m */; };
 		9A8CC38A1CE572C8005E19D9 /* IOProfileHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC3891CE572C8005E19D9 /* IOProfileHeaderView.m */; };
+		9AC55EE01CF2FCAE00A84A8B /* IOSignInFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AC55EDF1CF2FCAE00A84A8B /* IOSignInFooterView.m */; };
 		9AFEED761CEC3ECE0009528C /* IOSingInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AFEED751CEC3ECE0009528C /* IOSingInViewController.m */; };
 		9AFEED791CEC6DF70009528C /* IOSignInHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AFEED781CEC6DF70009528C /* IOSignInHeaderView.m */; };
-		CA218FDC1CEB3B0C00627FBD /* IOHomeHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = CA218FDB1CEB3B0C00627FBD /* IOHomeHeaderView.m */; settings = {ASSET_TAGS = (); }; };
-		CA218FDF1CEB433F00627FBD /* IOShopOptionView.m in Sources */ = {isa = PBXBuildFile; fileRef = CA218FDE1CEB433F00627FBD /* IOShopOptionView.m */; settings = {ASSET_TAGS = (); }; };
-		CA218FE21CEB5C5E00627FBD /* YWJDoubleTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = CA218FE11CEB5C5E00627FBD /* YWJDoubleTableView.m */; settings = {ASSET_TAGS = (); }; };
+		CA218FDC1CEB3B0C00627FBD /* IOHomeHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = CA218FDB1CEB3B0C00627FBD /* IOHomeHeaderView.m */; };
+		CA218FDF1CEB433F00627FBD /* IOShopOptionView.m in Sources */ = {isa = PBXBuildFile; fileRef = CA218FDE1CEB433F00627FBD /* IOShopOptionView.m */; };
+		CA218FE21CEB5C5E00627FBD /* YWJDoubleTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = CA218FE11CEB5C5E00627FBD /* YWJDoubleTableView.m */; };
 		CA6539561CBD40E6000972E2 /* IONewFeatureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA6539551CBD40E6000972E2 /* IONewFeatureViewController.m */; };
 		CA6539591CBD44CF000972E2 /* YWJNewFeatureScrollPage.m in Sources */ = {isa = PBXBuildFile; fileRef = CA6539581CBD44CF000972E2 /* YWJNewFeatureScrollPage.m */; };
 		CA7069CB1CE5F564007C5F3F /* UIBarButtonItem+IOBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = CA7069CA1CE5F564007C5F3F /* UIBarButtonItem+IOBarButtonItem.m */; };
@@ -107,6 +108,8 @@
 		9A8CC3841CE3075E005E19D9 /* IOOrder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOOrder.m; sourceTree = "<group>"; };
 		9A8CC3881CE572C8005E19D9 /* IOProfileHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOProfileHeaderView.h; sourceTree = "<group>"; };
 		9A8CC3891CE572C8005E19D9 /* IOProfileHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOProfileHeaderView.m; sourceTree = "<group>"; };
+		9AC55EDE1CF2FCAE00A84A8B /* IOSignInFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOSignInFooterView.h; sourceTree = "<group>"; };
+		9AC55EDF1CF2FCAE00A84A8B /* IOSignInFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOSignInFooterView.m; sourceTree = "<group>"; };
 		9AFEED741CEC3ECE0009528C /* IOSingInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOSingInViewController.h; sourceTree = "<group>"; };
 		9AFEED751CEC3ECE0009528C /* IOSingInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOSingInViewController.m; sourceTree = "<group>"; };
 		9AFEED771CEC6DF70009528C /* IOSignInHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOSignInHeaderView.h; sourceTree = "<group>"; };
@@ -343,6 +346,8 @@
 				9A8CC3651CE0AFC7005E19D9 /* IOShoppingCartView.m */,
 				9AFEED771CEC6DF70009528C /* IOSignInHeaderView.h */,
 				9AFEED781CEC6DF70009528C /* IOSignInHeaderView.m */,
+				9AC55EDE1CF2FCAE00A84A8B /* IOSignInFooterView.h */,
+				9AC55EDF1CF2FCAE00A84A8B /* IOSignInFooterView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -841,6 +846,7 @@
 				CA7069CB1CE5F564007C5F3F /* UIBarButtonItem+IOBarButtonItem.m in Sources */,
 				9A8CC36A1CE0AFC7005E19D9 /* IODishViewController.m in Sources */,
 				9A8CC3761CE0AFC7005E19D9 /* IOHomeCell.m in Sources */,
+				9AC55EE01CF2FCAE00A84A8B /* IOSignInFooterView.m in Sources */,
 				9A8CC3401CE0AF84005E19D9 /* YWJRootTool.m in Sources */,
 				CA6539561CBD40E6000972E2 /* IONewFeatureViewController.m in Sources */,
 				9A8CC36B1CE0AFC7005E19D9 /* IOHomeViewController.m in Sources */,
