@@ -11,6 +11,8 @@
 #import "FSCalendar.h"
 #import "IOSignInFooterView.h"
 
+extern BOOL isInRegion;
+
 //  尺寸
 #define kIOTopMargin 10
 #define kIOFooterViewHeight 60
@@ -21,7 +23,7 @@
 @interface IOSingInViewController () <FSCalendarDelegate, FSCalendarDataSource>
 
 @property (nonatomic, weak) UIView *signInHeaderView;
-@property (nonatomic, weak) UIView *calendarView;
+@property (nonatomic, weak) FSCalendar *calendarView;
 @property (nonatomic, weak) UIView *signInFooterView;
 
 @end
@@ -54,10 +56,10 @@
     calendarView.dataSource = self;
     calendarView.delegate = self;
     calendarView.allowsMultipleSelection = YES;
+    
     calendarView.appearance.titleTodayColor = [UIColor redColor];
     calendarView.appearance.todayColor = nil;
     calendarView.appearance.selectionColor = [UIColor greenColor];
-    
     calendarView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:calendarView];
     self.calendarView = calendarView;
@@ -76,15 +78,37 @@
 
 #pragma mark - FSCalendarDelegate
 
+#pragma mark - FSCalendarDelegateAppearance
+
+#pragma mark - FSCalendarDataSource
 
 #pragma mark - 摇一摇方法
 - (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
     //  摇动结束
     if (event.subtype == UIEventSubtypeMotionShake) {
-        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"签到成功^_^" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
+        NSString *message = nil;
+        //  判断是否在区域
+        if (isInRegion) { //  在区域
+            //  判断是否已经被选中
+            for (NSDate *date in self.calendarView.selectedDates) {
+                if (date == self.calendarView.today) {
+                    message = @"今天已经签过到了，明天继续加油噢！^_^";
+                    break;
+                }
+            }
+            //  没有在已选中找到，就签到
+            if (message == nil) {
+                message = @"签到成功！^_^";
+                [self.calendarView selectDate:self.calendarView.today];
+            }
+        } else {    //  不在区域
+            message = @"当前未处在签到区域。";
+        }
+        
+        //  显示提示
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:message delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
         [alert show];
     }
-    
 }
 
 @end

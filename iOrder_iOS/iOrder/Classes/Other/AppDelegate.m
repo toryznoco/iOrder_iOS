@@ -17,6 +17,8 @@
 
 #import "AFNetworking.h"
 
+BOOL isInRegion;
+
 @interface AppDelegate ()
 
 @property (nonatomic) UIBackgroundTaskIdentifier taskId;
@@ -97,15 +99,17 @@
 
 #pragma mark - beacon manager delegate
 - (void)beaconManager:(ABBeaconManager *)manager didEnterRegion:(ABBeaconRegion *)region {
+    isInRegion = YES;
     UILocalNotification *notification = [[UILocalNotification alloc] init];
-    notification.alertBody = @"欢迎进入点餐区域";
+    notification.alertBody = @"欢迎进入点餐区域！";
     notification.soundName = UILocalNotificationDefaultSoundName;
     [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
 }
 
 - (void)beaconManager:(ABBeaconManager *)manager didExitRegion:(ABBeaconRegion *)region {
+    isInRegion = NO;
     UILocalNotification *notification = [[UILocalNotification alloc] init];
-    notification.alertBody = @"谢谢惠顾，欢迎下次再来";
+    notification.alertBody = @"谢谢光临，欢迎下次再来！";
     notification.soundName = UILocalNotificationDefaultSoundName;
     [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
 }

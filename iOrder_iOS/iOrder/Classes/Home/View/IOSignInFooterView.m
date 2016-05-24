@@ -51,7 +51,7 @@
 - (void)setupTitleLabel {
     _titleLabel.text = @"活动规则";
     _titleLabel.textAlignment = NSTextAlignmentCenter;
-    _titleLabel.font = [UIFont systemFontOfSize:15];
+    _titleLabel.font = [UIFont systemFontOfSize:13];
     _titleLabel.textColor = [UIColor colorWithRed:150.0/255.0 green:150.0/255.0 blue:150.0/255.0 alpha:1.0];
 }
 
