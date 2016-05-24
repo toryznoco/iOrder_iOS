@@ -37,26 +37,22 @@
 #pragma mark - Custom Methods
 
 - (void)setupViewControllers {
-    //首页
-    UIViewController *order = [[IOHomeViewController alloc] init];
+    //  首页
+    UIViewController *home = [[IOHomeViewController alloc] init];
+    IONavigationController *homeNav = [[IONavigationController alloc] initWithRootViewController:home];
+    homeNav.navigationDelegate = self;
+    
+    //  订单
+    UIViewController *order = [[IOOrderedViewController alloc] init];
     IONavigationController *orderNav = [[IONavigationController alloc] initWithRootViewController:order];
     orderNav.navigationDelegate = self;
     
-    //订单
-    UIViewController *ordered = [[IOOrderedViewController alloc] init];
-    IONavigationController *orderedNav = [[IONavigationController alloc] initWithRootViewController:ordered];
-    orderedNav.navigationDelegate = self;
-    
-    //我的
+    //  我的
     UIViewController *profile = [[IOProfileViewController alloc] init];
     IONavigationController *profileNav = [[IONavigationController alloc] initWithRootViewController:profile];
     profileNav.navigationDelegate = self;
     
-    //iBeacon
-//    UIViewController *iBeacon = [[IOIBeaconViewController alloc] init];
-//    UIViewController *iBeaconNav = [[IONavigationController alloc] initWithRootViewController:iBeacon];
-    
-    [self setViewControllers:@[orderNav, orderedNav, profileNav]];
+    [self setViewControllers:@[homeNav, orderNav, profileNav]];
     [self customizeTabBarForController:self];
 }
 

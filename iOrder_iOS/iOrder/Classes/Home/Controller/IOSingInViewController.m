@@ -55,14 +55,20 @@ extern BOOL isInRegion;
     FSCalendar *calendarView = [[FSCalendar alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(_signInHeaderView.frame)+kIOTopMargin, IOScreenWidth, (IOScreenHeight-kIONavigationBarHeight-kIOFooterViewHeight-kIOTopMargin)*0.5)];
     calendarView.dataSource = self;
     calendarView.delegate = self;
+    
     calendarView.allowsMultipleSelection = YES;
     
+    //  设置外观
     calendarView.appearance.titleTodayColor = [UIColor redColor];
     calendarView.appearance.todayColor = nil;
     calendarView.appearance.selectionColor = [UIColor greenColor];
     calendarView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:calendarView];
     self.calendarView = calendarView;
+    
+    //  设置选中日
+    NSDate *yesterday = [self.calendarView yesterdayOfDate:self.calendarView.today];
+    [self.calendarView selectDate:yesterday];
 }
 
 - (void)initFooterView {
@@ -77,6 +83,9 @@ extern BOOL isInRegion;
 }
 
 #pragma mark - FSCalendarDelegate
+- (BOOL)calendar:(FSCalendar *)calendar shouldSelectDate:(NSDate *)date {
+    return NO;
+}
 
 #pragma mark - FSCalendarDelegateAppearance
 
