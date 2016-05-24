@@ -97,9 +97,8 @@
 }
 
 #pragma mark - UIScrollViewDelegate
-
+//  收起键盘
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
-    NSLog(@"退出键盘");
     [self.navigationItem.titleView endEditing:YES];
 }
 
@@ -126,7 +125,7 @@
     self.navigationItem.leftBarButtonItem = locationBarItem;
     
     CGFloat searchViewW = 2 * (self.view.width - CGRectGetMaxX(locationView.frame) - 20);
-    YWJLog(@"%f", searchViewW);
+    
     UIView *searchView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, searchViewW, 28)];
     searchView.backgroundColor = [UIColor whiteColor];
     searchView.layer.cornerRadius = 14;

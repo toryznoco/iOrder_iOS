@@ -22,7 +22,6 @@
 #import "YWJDoubleTableView.h"
 #import "IOShopOptionView.h"
 
-#define kScale 0.25
 #define kHeaderHeight 136
 
 @interface IOShopViewController ()<YWJDoubleTableViewDelegate, IOShoppingCartViewDelegate>
@@ -170,7 +169,6 @@
 - (void)signInBtnClick {
     IOSingInViewController *signInVc = [[IOSingInViewController alloc] init];
     [self.navigationController pushViewController:signInVc animated:YES];
-    YWJLog(@"signInBtn click");
 }
 
 - (void)signInLabel {

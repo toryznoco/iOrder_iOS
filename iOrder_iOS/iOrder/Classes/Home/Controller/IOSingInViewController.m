@@ -11,6 +11,8 @@
 #import "FSCalendar.h"
 #import "IOSignInFooterView.h"
 
+#import <AudioToolbox/AudioToolbox.h>
+
 extern BOOL isInRegion;
 
 //  尺寸
@@ -55,14 +57,20 @@ extern BOOL isInRegion;
     FSCalendar *calendarView = [[FSCalendar alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(_signInHeaderView.frame)+kIOTopMargin, IOScreenWidth, (IOScreenHeight-kIONavigationBarHeight-kIOFooterViewHeight-kIOTopMargin)*0.5)];
     calendarView.dataSource = self;
     calendarView.delegate = self;
+    
     calendarView.allowsMultipleSelection = YES;
     
+    //  设置外观
     calendarView.appearance.titleTodayColor = [UIColor redColor];
     calendarView.appearance.todayColor = nil;
     calendarView.appearance.selectionColor = [UIColor greenColor];
     calendarView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:calendarView];
     self.calendarView = calendarView;
+    
+    //  设置选中日
+    NSDate *yesterday = [self.calendarView yesterdayOfDate:self.calendarView.today];
+    [self.calendarView selectDate:yesterday];
 }
 
 - (void)initFooterView {
@@ -77,14 +85,16 @@ extern BOOL isInRegion;
 }
 
 #pragma mark - FSCalendarDelegate
-
-#pragma mark - FSCalendarDelegateAppearance
-
-#pragma mark - FSCalendarDataSource
+- (BOOL)calendar:(FSCalendar *)calendar shouldSelectDate:(NSDate *)date {
+    return NO;
+}
 
 #pragma mark - 摇一摇方法
+//  摇动结束
 - (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
-    //  摇动结束
+    //  震动效果
+    AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+    
     if (event.subtype == UIEventSubtypeMotionShake) {
         NSString *message = nil;
         //  判断是否在区域

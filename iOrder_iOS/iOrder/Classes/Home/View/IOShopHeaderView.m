@@ -114,8 +114,6 @@
 #pragma mark - public
 
 - (void)setShopInfo:(IOShop *)shopInfo {
-    
-    YWJLog(@" haha %@", shopInfo.name);
     _shopInfo = shopInfo;
     [self setupShopInfo];
 }

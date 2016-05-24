@@ -132,7 +132,7 @@
 }
 
 - (void)cycleScrollView:(SDCycleScrollView *)cycleScrollView didScrollToIndex:(NSInteger)index {
-    YWJLog(@"滑动到第几张图片");
+//    YWJLog(@"滑动到第几张图片");
 }
 
 @end
