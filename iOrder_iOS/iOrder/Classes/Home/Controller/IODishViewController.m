@@ -27,7 +27,7 @@
     self.view.backgroundColor = [UIColor whiteColor];
     
     UIImageView *igv = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"005"]];
-    igv.frame = CGRectMake(100, 20, 50, 150);
+    igv.frame = CGRectMake(100, 0, 50, 150);
     [self.view addSubview:igv];
     
     [self setupShoppingCartView];

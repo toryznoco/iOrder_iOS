@@ -8,19 +8,29 @@
 
 #import "IOProfileViewController.h"
 
-@interface IOProfileViewController ()
+#import "IOProfileHeaderView.h"
+#import "IOUserInfo.h"
+
+@interface IOProfileViewController ()<UITableViewDataSource, UITableViewDelegate>
+
+//@property (nonatomic, weak) UITableView *tableView;
+@property (nonatomic, weak) IOProfileHeaderView *profileHeaderView;
 
 @end
 
 @implementation IOProfileViewController
 
+#pragma mark - privacy
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = @"我的";
+    [self setupTableHeaderView];
+    
+//    [self setupTableView];
     
     self.tableView.tableFooterView = [[UIView alloc] init];
-    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"ProfileCell"];
+//    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"ProfileCell"];
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -59,7 +69,12 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *reuseId= @"ProfileCell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseId forIndexPath:indexPath];
+//    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseId forIndexPath:indexPath];
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseId];
+    if (!cell) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseId];
+    }
     
     switch (indexPath.row) {
         case 0:
@@ -80,6 +95,33 @@
     }
     
     return cell;
+}
+
+
+#pragma mark - custom methods
+
+//- (void)setupTableView {
+//    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height)];
+//    [self.view addSubview:tableView];
+//    tableView.dataSource = self;
+//    tableView.delegate = self;
+//    _tableView = tableView;
+//}
+
+- (void)setupTableHeaderView {
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
+    self.navigationController.interactivePopGestureRecognizer.delegate = nil;
+    IOProfileHeaderView *profileHeaderView = [[IOProfileHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 255)];
+    _profileHeaderView = profileHeaderView;
+    self.tableView.tableHeaderView = profileHeaderView;
+    
+    IOUserInfo *userInfo = [[IOUserInfo alloc] init];
+    userInfo.userIcon = @"weekend_bargain_image";
+    userInfo.userName = @"子望";
+    userInfo.wallet = 10;
+    userInfo.redPacket = 20;
+    userInfo.voucher = 30;
+    profileHeaderView.userInfo = userInfo;
 }
 
 
