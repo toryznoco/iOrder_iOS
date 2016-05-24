@@ -99,7 +99,8 @@
 #pragma mark - UIScrollViewDelegate
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
-    [self.view endEditing:YES];
+    NSLog(@"退出键盘");
+    [self.navigationItem.titleView endEditing:YES];
 }
 
 #pragma mark - custom method
@@ -156,11 +157,6 @@
         YWJLog(@"%@", error);
     }];
 }
-
-- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
-    [self.view endEditing:YES];
-}
-
 
 - (void)locatingBtnClick:(UIButton *)btn {
     
