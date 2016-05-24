@@ -11,6 +11,8 @@
 #import "FSCalendar.h"
 #import "IOSignInFooterView.h"
 
+#import <AudioToolbox/AudioToolbox.h>
+
 extern BOOL isInRegion;
 
 //  尺寸
@@ -87,13 +89,12 @@ extern BOOL isInRegion;
     return NO;
 }
 
-#pragma mark - FSCalendarDelegateAppearance
-
-#pragma mark - FSCalendarDataSource
-
 #pragma mark - 摇一摇方法
+//  摇动结束
 - (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
-    //  摇动结束
+    //  震动效果
+    AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+    
     if (event.subtype == UIEventSubtypeMotionShake) {
         NSString *message = nil;
         //  判断是否在区域
