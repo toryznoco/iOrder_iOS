@@ -11,9 +11,8 @@
 #import "IOProfileHeaderView.h"
 #import "IOUserInfo.h"
 
-@interface IOProfileViewController ()<UITableViewDataSource, UITableViewDelegate>
+@interface IOProfileViewController ()
 
-//@property (nonatomic, weak) UITableView *tableView;
 @property (nonatomic, weak) IOProfileHeaderView *profileHeaderView;
 
 @end
@@ -25,12 +24,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.edgesForExtendedLayout = UIRectEdgeNone;
+    
+    
     [self setupTableHeaderView];
     
-//    [self setupTableView];
-    
     self.tableView.tableFooterView = [[UIView alloc] init];
-//    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"ProfileCell"];
+    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"ProfileCell"];
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -69,12 +69,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *reuseId= @"ProfileCell";
-//    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseId forIndexPath:indexPath];
-    
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseId];
-    if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseId];
-    }
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseId forIndexPath:indexPath];
     
     switch (indexPath.row) {
         case 0:
@@ -99,14 +94,6 @@
 
 
 #pragma mark - custom methods
-
-//- (void)setupTableView {
-//    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height)];
-//    [self.view addSubview:tableView];
-//    tableView.dataSource = self;
-//    tableView.delegate = self;
-//    _tableView = tableView;
-//}
 
 - (void)setupTableHeaderView {
     [self.navigationController setNavigationBarHidden:YES animated:YES];
