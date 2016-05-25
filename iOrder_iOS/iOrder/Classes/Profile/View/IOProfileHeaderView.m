@@ -79,7 +79,7 @@
 - (void)layoutSubviews {
     [super layoutSubviews];
     
-    CGFloat firstAssetW = self.width / 3 - 2;
+    CGFloat firstAssetW = (self.width - 2) / 3.0;
     CGFloat firstAssetH = self.height;
     CGFloat firstAssetX = 0;
     CGFloat firstAssetY = 0;
@@ -121,7 +121,7 @@
     _secondAsset = secondAsset;
     secondAsset.unit = @"张";
     secondAsset.iconName = @"red_packet";
-    secondAsset.assetName = @"美团红包";
+    secondAsset.assetName = @"iOrder红包";
     
     IOAssetView *thirdAsset = [[IOAssetView alloc] init];
     [self addSubview:thirdAsset];
@@ -238,14 +238,14 @@
     
     CGFloat assetIconW = 20;
     CGFloat assetIconH = 17;
-    CGFloat assetIconX = 15;
+    CGFloat assetIconX = 25;
     CGFloat assetIconY = 40;
     _assetIcon.frame = CGRectMake(assetIconX, assetIconY, assetIconW, assetIconH);
     
     CGFloat assetNameLabelW = 85;
     CGFloat assetNameLabelH = 20;
     CGFloat assetNameLabelX = CGRectGetMaxX(_assetIcon.frame) + 5;
-    CGFloat assetNameLabelY = 40;
+    CGFloat assetNameLabelY = 39;
     _assetNameLabel.frame = CGRectMake(assetNameLabelX, assetNameLabelY, assetNameLabelW, assetNameLabelH);
 }
 
@@ -294,6 +294,7 @@
     _assetIcon = assetIcon;
     
     UILabel *assetNameLabel = [[UILabel alloc] init];
+    assetNameLabel.font = [UIFont systemFontOfSize:13];
     assetNameLabel.textAlignment = NSTextAlignmentLeft;
     [self addSubview:assetNameLabel];
     _assetNameLabel = assetNameLabel;

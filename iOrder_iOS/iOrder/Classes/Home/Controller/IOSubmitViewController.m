@@ -2,7 +2,7 @@
 //  IOSubmitViewController.m
 //  iOrder
 //
-//  Created by 易无解 on 5/23/16.
+//  Created by 易无解 on 5/25/16.
 //  Copyright © 2016 易无解. All rights reserved.
 //
 
@@ -24,17 +24,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.view.backgroundColor = [UIColor lightGrayColor];
+    self.view.backgroundColor = YWJRGBColor(231, 231, 231, 1);
+    self.tableView.tableFooterView = [[UIView alloc] init];
     
     [self setupNavigationItem];
     
     [self setupSubmitOrderView];
-    
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -53,21 +48,23 @@
 #warning Incomplete implementation, return the number of rows
     return 0;
 }
-/*
- - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
- UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier: forIndexPath:indexPath];
- 
- // Configure the cell...
- 
- return cell;
- }
- */
+
+//- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+//    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier: forIndexPath:indexPath];
+//    
+//    // Configure the cell...
+//    
+//    return cell;
+//}
+
 #pragma mark - custom methods
 
 - (void)setupSubmitOrderView {
-    IOSubmitOrderView *submitOrderView = [[IOSubmitOrderView alloc] initWithFrame:CGRectMake(0, self.view.height - 44, self.view.width, 44)];
+    IOSubmitOrderView *submitOrderView = [[IOSubmitOrderView alloc] initWithFrame:CGRectMake(0, self.view.height - 44 - 64, self.view.width, 44)];
     [self.view addSubview:submitOrderView];
     _submitOrderView = submitOrderView;
+    
+    [self.view bringSubviewToFront:_submitOrderView];
     
     submitOrderView.price = _totalPrice;
 }
