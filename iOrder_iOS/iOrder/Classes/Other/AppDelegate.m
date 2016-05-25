@@ -32,8 +32,13 @@ BOOL isInRegion;
 #pragma mark - self
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    //  创建beacon管理者
+    self.beaconManager = [[ABBeaconManager alloc] init];
+    //  设置beacon的代理
+    self.beaconManager.delegate = self;
+    
     if ([UIApplication instancesRespondToSelector:@selector(registerUserNotificationSettings:)]) {
-//        注册通知
+        //  注册通知
         [application registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert|UIUserNotificationTypeBadge|UIUserNotificationTypeSound categories:nil]];
     }
     
@@ -74,16 +79,20 @@ BOOL isInRegion;
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     
-    //  创建beacon管理者
-    self.beaconManager = [[ABBeaconManager alloc] init];
-    //  设置beacon的代理
-    self.beaconManager.delegate = self;
-    //  开始检测
-    [self startMonitoring];
+    application.applicationIconBadgeNumber = 0;
+    if (isInRegion == NO) {
+        //  开始检测
+        [self startMonitoring];
+    }
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:notification.alertBody delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
+    [alert show];
 }
 
 - (void)startMonitoring {
@@ -105,14 +114,18 @@ BOOL isInRegion;
     notification.alertBody = @"欢迎进入点餐区域！";
     notification.soundName = UILocalNotificationDefaultSoundName;
     [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
+    //  设置应用程序右上角的提醒个数
+    [UIApplication sharedApplication].applicationIconBadgeNumber++;
 }
 
 - (void)beaconManager:(ABBeaconManager *)manager didExitRegion:(ABBeaconRegion *)region {
     isInRegion = NO;
     UILocalNotification *notification = [[UILocalNotification alloc] init];
-    notification.alertBody = @"谢谢光临，欢迎下次再来！";
+    notification.alertBody = @"您已退出点餐区域，欢迎下次再来！";
     notification.soundName = UILocalNotificationDefaultSoundName;
     [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
+    //  设置应用程序右上角的提醒个数
+    [UIApplication sharedApplication].applicationIconBadgeNumber++;
 }
 
 @end
