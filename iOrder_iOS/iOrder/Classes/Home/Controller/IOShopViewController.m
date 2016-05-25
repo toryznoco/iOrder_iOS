@@ -191,11 +191,11 @@
                     _shoppingCartView.checkOutBtn.enabled = YES;
                 }
                 _shoppingCartView.badge.badgeValue = [NSString stringWithFormat:@"%lld", [_shoppingCartView.badge.badgeValue longLongValue] + 1];
-                _shoppingCartView.totalPrice.text = [NSString stringWithFormat:@"¥%.2f", ([[_shoppingCartView.totalPrice.text substringFromIndex:1] floatValue] + dishPrice)];
+                _shoppingCartView.totalPrice.text = [NSString stringWithFormat:@"¥ %.2f", ([[_shoppingCartView.totalPrice.text substringFromIndex:1] floatValue] + dishPrice)];
     } else {
                 _shoppingCartView.badge.badgeValue = [NSString stringWithFormat:@"%lld", [_shoppingCartView.badge.badgeValue longLongValue] - 1];
-                _shoppingCartView.totalPrice.text = [NSString stringWithFormat:@"¥%.2f", ([[_shoppingCartView.totalPrice.text substringFromIndex:1] floatValue] - dishPrice)];
-                if ([_shoppingCartView.totalPrice.text isEqualToString:@"¥0.00"]) {
+                _shoppingCartView.totalPrice.text = [NSString stringWithFormat:@"¥ %.2f", ([[_shoppingCartView.totalPrice.text substringFromIndex:1] floatValue] - dishPrice)];
+                if ([_shoppingCartView.totalPrice.text isEqualToString:@"¥ 0.00"]) {
                     _shoppingCartView.checkOutBtn.enabled = NO;
                     _shoppingCartView.checkOutView.backgroundColor = [UIColor lightGrayColor];
                     _shoppingCartView.shoppingCarBtn.enabled = NO;
@@ -208,6 +208,7 @@
 #pragma mark - IOShoppingCartViewDelegate
 - (void)shoppingCartView:(IOShoppingCartView *)shoppingCartView checkOutBtnClick:(UIButton *)btn{
     IOSubmitViewController *submitVc = [[IOSubmitViewController alloc] init];
+    submitVc.totalPrice = shoppingCartView.totalPrice.text;
     [self.navigationController pushViewController:submitVc animated:YES];
 }
 

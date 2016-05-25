@@ -55,6 +55,7 @@
 		CAE8F0921CB9461C005618B0 /* IOProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F0911CB9461C005618B0 /* IOProfileViewController.m */; };
 		CAE8F0951CB946E8005618B0 /* IONavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F0941CB946E8005618B0 /* IONavigationController.m */; };
 		CAE8F0AF1CB9680B005618B0 /* IOTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F0AE1CB9680B005618B0 /* IOTabBarController.m */; };
+		CAF4BFA71CF54E9F001E88F7 /* IOSubmitOrderView.m in Sources */ = {isa = PBXBuildFile; fileRef = CAF4BFA61CF54E9F001E88F7 /* IOSubmitOrderView.m */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -174,6 +175,8 @@
 		CAE8F0971CB947D7005618B0 /* IOIOrder.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IOIOrder.pch; sourceTree = "<group>"; };
 		CAE8F0AD1CB9680B005618B0 /* IOTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOTabBarController.h; sourceTree = "<group>"; };
 		CAE8F0AE1CB9680B005618B0 /* IOTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOTabBarController.m; sourceTree = "<group>"; };
+		CAF4BFA51CF54E9F001E88F7 /* IOSubmitOrderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOSubmitOrderView.h; sourceTree = "<group>"; };
+		CAF4BFA61CF54E9F001E88F7 /* IOSubmitOrderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOSubmitOrderView.m; sourceTree = "<group>"; };
 		CD440F0C591F9F0ECB765D3A /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		CD94856A0BB8EB254EBFD826 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -351,6 +354,8 @@
 				9AFEED781CEC6DF70009528C /* IOSignInHeaderView.m */,
 				9AC55EDE1CF2FCAE00A84A8B /* IOSignInFooterView.h */,
 				9AC55EDF1CF2FCAE00A84A8B /* IOSignInFooterView.m */,
+				CAF4BFA51CF54E9F001E88F7 /* IOSubmitOrderView.h */,
+				CAF4BFA61CF54E9F001E88F7 /* IOSubmitOrderView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -825,6 +830,7 @@
 				9A8CC3411CE0AF84005E19D9 /* YWJShopsParam.m in Sources */,
 				CA9019921CE16B7A00AC5712 /* YWJDishesResult.m in Sources */,
 				CA6539591CBD44CF000972E2 /* YWJNewFeatureScrollPage.m in Sources */,
+				CAF4BFA71CF54E9F001E88F7 /* IOSubmitOrderView.m in Sources */,
 				CA218FE21CEB5C5E00627FBD /* YWJDoubleTableView.m in Sources */,
 				9A8CC3821CE306B4005E19D9 /* IOOrderViewCell.m in Sources */,
 				9A8CC33E1CE0AF84005E19D9 /* IOHttpTool.m in Sources */,

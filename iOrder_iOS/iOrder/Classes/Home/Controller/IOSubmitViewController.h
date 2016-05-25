@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface IOSubmitViewController : UITableViewController
+@interface IOSubmitViewController : UIViewController
+
+@property (nonatomic, copy) NSString *totalPrice;
 
 @end
