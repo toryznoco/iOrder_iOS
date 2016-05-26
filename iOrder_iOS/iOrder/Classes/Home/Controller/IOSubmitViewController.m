@@ -174,7 +174,13 @@
 
 - (void)submitOrderView:(IOSubmitOrderView *)submitOrderView submitClicked:(UIButton *)btn {
     YWJLog(@"hahah");
-    [self.navigationController popViewControllerAnimated:YES];
+//    UIAlertController *alertViewVc = [UIAlertController alertControllerWithTitle:@"hahah" message:@"ddkkdkdkkdkdk" preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"确认支付" message:@"hahah" delegate:self cancelButtonTitle:@"是" otherButtonTitles:@"否", nil];
+    
+    alertView.frame = CGRectMake(0, 0, 100, 100);
+    [self.view addSubview:alertView];
+//    [self.navigationController popViewControllerAnimated:YES];
 }
 
 @end

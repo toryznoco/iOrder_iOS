@@ -91,7 +91,7 @@
     CGFloat priceSuY = CGRectGetMaxY(_dishPrice.frame) - priceSuH;
     _dishPriceSuffix.frame = CGRectMake(priceSuX, priceSuY, priceSuW, priceSuH);
     
-    CGFloat orderBtnW = 30;//25
+    CGFloat orderBtnW = 27;//25
     CGFloat orderBtnH = orderBtnW;
     CGFloat orderBtnX = self.width - orderBtnW - 8;
     CGFloat orderBtnY = 32;
@@ -103,7 +103,7 @@
     CGFloat dishCountY = orderBtnY + 7;
     _dishCount.frame  = CGRectMake(dishCountX, dishCountY, dishCountW, dishCountH);
     
-    CGFloat unOrderBtnW = 30;
+    CGFloat unOrderBtnW = 27;
     CGFloat unOrderBtnH = orderBtnH;
     CGFloat unOrderBtnX = dishCountX - unOrderBtnW - 2;
     CGFloat unOrderBtnY = orderBtnY;
