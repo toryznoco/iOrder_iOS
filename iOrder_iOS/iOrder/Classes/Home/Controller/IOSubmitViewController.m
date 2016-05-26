@@ -14,7 +14,7 @@
 
 #import "IOShop.h"
 
-@interface IOSubmitViewController ()<UITableViewDataSource, UITableViewDelegate, IOSubmitOrderViewDelegate>
+@interface IOSubmitViewController ()<UITableViewDataSource, UITableViewDelegate, IOSubmitOrderViewDelegate, UIAlertViewDelegate>
 
 @property (nonatomic, weak) UITableView *tableView;
 @property (nonatomic, weak) IOSubmitOrderView *submitOrderView;
@@ -173,14 +173,22 @@
 #pragma mark - IOSubmitOrderViewDelegate
 
 - (void)submitOrderView:(IOSubmitOrderView *)submitOrderView submitClicked:(UIButton *)btn {
-    YWJLog(@"hahah");
-//    UIAlertController *alertViewVc = [UIAlertController alertControllerWithTitle:@"hahah" message:@"ddkkdkdkkdkdk" preferredStyle:UIAlertControllerStyleActionSheet];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"确认支付" message:nil delegate:self cancelButtonTitle:@"否" otherButtonTitles:@"是", nil];
     
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"确认支付" message:@"hahah" delegate:self cancelButtonTitle:@"是" otherButtonTitles:@"否", nil];
-    
-    alertView.frame = CGRectMake(0, 0, 100, 100);
-    [self.view addSubview:alertView];
+    [alertView show];
 //    [self.navigationController popViewControllerAnimated:YES];
+}
+
+#pragma mark - UIAlertViewDelegate
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 1) {
+        YWJLog(@"hah");
+    }
+}
+
+- (void)alertView:(UIAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex {
+    YWJLog(@"5");
 }
 
 @end
