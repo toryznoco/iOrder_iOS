@@ -89,7 +89,7 @@
             case 0:
                 cell = [[IOSubmitCell2 alloc] init];
                 ((IOSubmitCell2 *)cell).iconName = @"submit_send";
-                ((IOSubmitCell2 *)cell).title = @"立集体的空间反馈";
+                ((IOSubmitCell2 *)cell).title = _shopInfo.name;
                 ((IOSubmitCell2 *)cell).detail = @"由 商家 配送";
                 break;
                 
