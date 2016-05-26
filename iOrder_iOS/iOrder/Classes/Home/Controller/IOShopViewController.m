@@ -208,6 +208,7 @@
 #pragma mark - IOShoppingCartViewDelegate
 - (void)shoppingCartView:(IOShoppingCartView *)shoppingCartView checkOutBtnClick:(UIButton *)btn{
     IOSubmitViewController *submitVc = [[IOSubmitViewController alloc] init];
+    submitVc.shopInfo = self.shopInfo;
     submitVc.totalPrice = shoppingCartView.totalPrice.text;
     [self.navigationController pushViewController:submitVc animated:YES];
 }
