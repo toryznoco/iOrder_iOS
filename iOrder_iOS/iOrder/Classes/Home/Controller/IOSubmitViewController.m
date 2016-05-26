@@ -14,7 +14,7 @@
 
 #import "IOShop.h"
 
-@interface IOSubmitViewController ()<UITableViewDataSource, UITableViewDelegate>
+@interface IOSubmitViewController ()<UITableViewDataSource, UITableViewDelegate, IOSubmitOrderViewDelegate>
 
 @property (nonatomic, weak) UITableView *tableView;
 @property (nonatomic, weak) IOSubmitOrderView *submitOrderView;
@@ -64,7 +64,7 @@
     if (indexPath.section == 0) {
         switch (indexPath.row) {
             case 0:
-                cell = [[IOSubmitCell alloc] initWithFrame:CGRectMake(0, 0, 414, 43.667)];
+                cell = [[IOSubmitCell alloc] init];
                 ((IOSubmitCell *)cell).title = @"支付方式";
                 ((IOSubmitCell *)cell).detail = @"在线支付";
                 break;
@@ -96,13 +96,13 @@
             case 1:
                 cell = [[IOSubmitCell3 alloc] init];
                 ((IOSubmitCell3 *)cell).title = @"配送费";
-                ((IOSubmitCell3 *)cell).detail = @"¥ 18";
+                ((IOSubmitCell3 *)cell).detail = @"¥ 0";
                 break;
                 
             case 2:
                 cell = [[IOSubmitCell3 alloc] init];
-                ((IOSubmitCell3 *)cell).title = @"总计 ¥ 18";
-                ((IOSubmitCell3 *)cell).detail = @"实付 ¥ 18";
+                ((IOSubmitCell3 *)cell).title = [NSString stringWithFormat:@"总计 %.2f", [[_totalPrice substringFromIndex:2] floatValue]];
+                ((IOSubmitCell3 *)cell).detail = [NSString stringWithFormat:@"实付 %.2f", [[_totalPrice substringFromIndex:2] floatValue]];
                 break;
                 
             default:
@@ -137,6 +137,7 @@
 
 - (void)setupSubmitOrderView {
     IOSubmitOrderView *submitOrderView = [[IOSubmitOrderView alloc] initWithFrame:CGRectMake(0, self.view.height - 44, self.view.width, 44)];
+    submitOrderView.delegate = self;
     [self.view addSubview:submitOrderView];
     _submitOrderView = submitOrderView;
     
@@ -144,8 +145,9 @@
 }
 
 - (void)setupTableView {
-    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 44 - 240)];
+    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 44)];
     tableView.tableFooterView = [[UIView alloc] init];
+    tableView.backgroundColor = YWJRGBColor(245, 245, 245, 1);
     tableView.scrollEnabled = NO;
     tableView.dataSource = self;
     tableView.delegate = self;
@@ -164,6 +166,14 @@
 }
 
 - (void)backBtnClick {
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+
+#pragma mark - IOSubmitOrderViewDelegate
+
+- (void)submitOrderView:(IOSubmitOrderView *)submitOrderView submitClicked:(UIButton *)btn {
+    YWJLog(@"hahah");
     [self.navigationController popViewControllerAnimated:YES];
 }
 

@@ -10,6 +10,8 @@
 
 #define kScale 0.25
 
+#pragma mark - implementation IOSubmitOrderView
+
 @interface IOSubmitOrderView ()
 
 @property (nonatomic, weak) UILabel *totalPrice;
@@ -70,7 +72,9 @@
 }
 
 - (void)submitBtnclicked:(UIButton *)btn {
-    YWJLog(@"click sumit");
+    if ([_delegate respondsToSelector:@selector(submitOrderView:submitClicked:)]) {
+        [_delegate submitOrderView:self submitClicked:btn];
+    }
 }
 
 @end
