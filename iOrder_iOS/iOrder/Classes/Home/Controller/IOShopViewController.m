@@ -43,25 +43,19 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.view.backgroundColor = [UIColor whiteColor];
-    
-    //    初始化数组和加载数据
-    [self dishInfos];
-    [self loadDishInfosWithShopId:self.shopId];
-    
-    [self setupNavigationItem];
-    
-    [self setupShopHeaderView];
-    
-    [self setupOptionView];
-    
-    [self setupDoubleTableView];
-    
-    [self setUpShoppingCartView];
+    [self refreshView];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
+    if (_dishInfos.count != 0) {
+        YWJLog(@"%ld", _dishInfos.count);
+        [_dishInfos removeAllObjects];
+        [self refreshView];
+        YWJLog(@"%ld", _dishInfos.count);
+    }
+    
     UINavigationBar *navigationBar = self.navigationController.navigationBar;
 
     //去除导航栏下方的横线 透明
@@ -86,10 +80,32 @@
 
 - (void)doubleTableView:(UIView *)doubleTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     IODishViewController *dishVc = [[IODishViewController alloc] init];
+    
+    IODishes *dishes = _dishInfos[indexPath.section];
+    dishVc.dishInfo = dishes.dishes[indexPath.row];
+    
     [self.navigationController pushViewController:dishVc animated:YES];
 }
 
 #pragma mark - custom methods
+
+- (void)refreshView {
+    self.view.backgroundColor = [UIColor whiteColor];
+    
+    //    初始化数组和加载数据
+    [self dishInfos];
+    [self loadDishInfosWithShopId:self.shopId];
+    
+    [self setupNavigationItem];
+    
+    [self setupShopHeaderView];
+    
+    [self setupOptionView];
+    
+    [self setupDoubleTableView];
+    
+    [self setUpShoppingCartView];
+}
 
 - (void)setupDoubleTableView {
     YWJDoubleTableView *doubleTableView = [[YWJDoubleTableView alloc] initWithFrame:CGRectMake(0, kHeaderHeight + 40, self.view.width, self.view.height - kHeaderHeight - 44 - 40)];

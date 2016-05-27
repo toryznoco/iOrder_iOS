@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+@class IODish;
+
 @interface IODishViewController : UIViewController
+
+@property (nonatomic, strong) IODish *dishInfo;
 
 @end
