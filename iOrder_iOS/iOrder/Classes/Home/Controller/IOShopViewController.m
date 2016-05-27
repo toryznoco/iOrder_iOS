@@ -24,7 +24,7 @@
 
 #define kHeaderHeight 136
 
-@interface IOShopViewController ()<YWJDoubleTableViewDelegate, IOShoppingCartViewDelegate>
+@interface IOShopViewController ()<YWJDoubleTableViewDelegate, IOShoppingCartViewDelegate, IOSubmitViewControllerDelegate>
 
 @property (nonatomic, strong) NSArray *dataArray;
 @property (nonatomic, strong) NSMutableArray *dishInfos;
@@ -48,13 +48,6 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
-    if (_dishInfos.count != 0) {
-        YWJLog(@"%ld", _dishInfos.count);
-        [_dishInfos removeAllObjects];
-        [self refreshView];
-        YWJLog(@"%ld", _dishInfos.count);
-    }
     
     UINavigationBar *navigationBar = self.navigationController.navigationBar;
 
@@ -225,8 +218,22 @@
 - (void)shoppingCartView:(IOShoppingCartView *)shoppingCartView checkOutBtnClick:(UIButton *)btn{
     IOSubmitViewController *submitVc = [[IOSubmitViewController alloc] init];
     submitVc.shopInfo = self.shopInfo;
+    submitVc.delegate = self;
     submitVc.totalPrice = shoppingCartView.totalPrice.text;
     [self.navigationController pushViewController:submitVc animated:YES];
+}
+
+#pragma mark - IOSubmitViewControllerDelegate
+
+- (void)submitViewController:(IOSubmitViewController *)submitVc isPaySuccessful:(BOOL)suc{
+    if (suc == YES) {
+        if (_dishInfos.count != 0) {
+            YWJLog(@"%ld", _dishInfos.count);
+            [_dishInfos removeAllObjects];
+            [self refreshView];
+            YWJLog(@"%ld", _dishInfos.count);
+        }
+    }
 }
 
 @end

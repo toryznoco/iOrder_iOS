@@ -200,6 +200,9 @@
                 
                 [hud1 hide:YES afterDelay:1.f];
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    if ([_delegate respondsToSelector:@selector(submitViewController:isPaySuccessful:)]) {
+                        [_delegate submitViewController:self isPaySuccessful:YES];
+                    }
                     [self.navigationController popViewControllerAnimated:YES];
                 });
             });
