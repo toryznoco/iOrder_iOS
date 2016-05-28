@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		0C39DD33B6D8ED391FA88ED5 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AA08641E7F59BD859B41E36B /* libPods.a */; };
+		9A4C58441CF9805000AD1330 /* IOOrdersTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A4C58431CF9805000AD1330 /* IOOrdersTool.m */; };
+		9A4C58491CF989D900AD1330 /* IOOrderResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A4C58481CF989D900AD1330 /* IOOrderResult.m */; };
 		9A8CC3261CDF779B005E19D9 /* IOTransmitters.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC3251CDF779B005E19D9 /* IOTransmitters.m */; };
 		9A8CC33E1CE0AF84005E19D9 /* IOHttpTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC32E1CE0AF84005E19D9 /* IOHttpTool.m */; };
 		9A8CC33F1CE0AF84005E19D9 /* YWJVersionTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC3311CE0AF84005E19D9 /* YWJVersionTool.m */; };
@@ -31,7 +33,7 @@
 		CA218FDC1CEB3B0C00627FBD /* IOHomeHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = CA218FDB1CEB3B0C00627FBD /* IOHomeHeaderView.m */; };
 		CA218FDF1CEB433F00627FBD /* IOShopOptionView.m in Sources */ = {isa = PBXBuildFile; fileRef = CA218FDE1CEB433F00627FBD /* IOShopOptionView.m */; };
 		CA218FE21CEB5C5E00627FBD /* YWJDoubleTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = CA218FE11CEB5C5E00627FBD /* YWJDoubleTableView.m */; };
-		CA5CD0541CF4486300324C92 /* IOUserInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = CA5CD0531CF4486300324C92 /* IOUserInfo.m */; settings = {ASSET_TAGS = (); }; };
+		CA5CD0541CF4486300324C92 /* IOUserInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = CA5CD0531CF4486300324C92 /* IOUserInfo.m */; };
 		CA6539561CBD40E6000972E2 /* IONewFeatureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA6539551CBD40E6000972E2 /* IONewFeatureViewController.m */; };
 		CA6539591CBD44CF000972E2 /* YWJNewFeatureScrollPage.m in Sources */ = {isa = PBXBuildFile; fileRef = CA6539581CBD44CF000972E2 /* YWJNewFeatureScrollPage.m */; };
 		CA7069CB1CE5F564007C5F3F /* UIBarButtonItem+IOBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = CA7069CA1CE5F564007C5F3F /* UIBarButtonItem+IOBarButtonItem.m */; };
@@ -40,7 +42,7 @@
 		CA9019911CE16B7A00AC5712 /* YWJDishesParam.m in Sources */ = {isa = PBXBuildFile; fileRef = CA90198B1CE16B7A00AC5712 /* YWJDishesParam.m */; };
 		CA9019921CE16B7A00AC5712 /* YWJDishesResult.m in Sources */ = {isa = PBXBuildFile; fileRef = CA90198E1CE16B7A00AC5712 /* YWJDishesResult.m */; };
 		CA9019931CE16B7A00AC5712 /* YWJDishesTool.m in Sources */ = {isa = PBXBuildFile; fileRef = CA9019901CE16B7A00AC5712 /* YWJDishesTool.m */; };
-		CAAC90B31CF67DDF00BB1AB9 /* IOSubmitCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CAAC90B21CF67DDF00BB1AB9 /* IOSubmitCell.m */; settings = {ASSET_TAGS = (); }; };
+		CAAC90B31CF67DDF00BB1AB9 /* IOSubmitCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CAAC90B21CF67DDF00BB1AB9 /* IOSubmitCell.m */; };
 		CACD5CB11CE4119A00ADE187 /* IOShopCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CACD5CAC1CE4119A00ADE187 /* IOShopCell.m */; };
 		CAE8F02C1CB940E2005618B0 /* iOrderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F02B1CB940E2005618B0 /* iOrderTests.m */; };
 		CAE8F0371CB940E2005618B0 /* iOrderUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F0361CB940E2005618B0 /* iOrderUITests.m */; };
@@ -55,9 +57,9 @@
 		CAE8F0921CB9461C005618B0 /* IOProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F0911CB9461C005618B0 /* IOProfileViewController.m */; };
 		CAE8F0951CB946E8005618B0 /* IONavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F0941CB946E8005618B0 /* IONavigationController.m */; };
 		CAE8F0AF1CB9680B005618B0 /* IOTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F0AE1CB9680B005618B0 /* IOTabBarController.m */; };
-		CAF4BFA71CF54E9F001E88F7 /* IOSubmitOrderView.m in Sources */ = {isa = PBXBuildFile; fileRef = CAF4BFA61CF54E9F001E88F7 /* IOSubmitOrderView.m */; settings = {ASSET_TAGS = (); }; };
-		CAF4BFAF1CF5B973001E88F7 /* IOSubmitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CAF4BFAD1CF5B973001E88F7 /* IOSubmitViewController.m */; settings = {ASSET_TAGS = (); }; };
-		CAF4BFB31CF5C5CD001E88F7 /* IOProfileCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CAF4BFB21CF5C5CD001E88F7 /* IOProfileCell.m */; settings = {ASSET_TAGS = (); }; };
+		CAF4BFA71CF54E9F001E88F7 /* IOSubmitOrderView.m in Sources */ = {isa = PBXBuildFile; fileRef = CAF4BFA61CF54E9F001E88F7 /* IOSubmitOrderView.m */; };
+		CAF4BFAF1CF5B973001E88F7 /* IOSubmitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CAF4BFAD1CF5B973001E88F7 /* IOSubmitViewController.m */; };
+		CAF4BFB31CF5C5CD001E88F7 /* IOProfileCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CAF4BFB21CF5C5CD001E88F7 /* IOProfileCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -78,6 +80,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9A4C58421CF9805000AD1330 /* IOOrdersTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOOrdersTool.h; sourceTree = "<group>"; };
+		9A4C58431CF9805000AD1330 /* IOOrdersTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOOrdersTool.m; sourceTree = "<group>"; };
+		9A4C58471CF989D900AD1330 /* IOOrderResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOOrderResult.h; sourceTree = "<group>"; };
+		9A4C58481CF989D900AD1330 /* IOOrderResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOOrderResult.m; sourceTree = "<group>"; };
 		9A8CC3241CDF779B005E19D9 /* IOTransmitters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOTransmitters.h; sourceTree = "<group>"; };
 		9A8CC3251CDF779B005E19D9 /* IOTransmitters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOTransmitters.m; sourceTree = "<group>"; };
 		9A8CC32D1CE0AF84005E19D9 /* IOHttpTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOHttpTool.h; sourceTree = "<group>"; };
@@ -222,6 +228,33 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		9A4C58411CF9802C00AD1330 /* Orders */ = {
+			isa = PBXGroup;
+			children = (
+				9A4C58451CF9873C00AD1330 /* Param */,
+				9A4C58461CF989C100AD1330 /* Result */,
+				9A4C58421CF9805000AD1330 /* IOOrdersTool.h */,
+				9A4C58431CF9805000AD1330 /* IOOrdersTool.m */,
+			);
+			path = Orders;
+			sourceTree = "<group>";
+		};
+		9A4C58451CF9873C00AD1330 /* Param */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Param;
+			sourceTree = "<group>";
+		};
+		9A4C58461CF989C100AD1330 /* Result */ = {
+			isa = PBXGroup;
+			children = (
+				9A4C58471CF989D900AD1330 /* IOOrderResult.h */,
+				9A4C58481CF989D900AD1330 /* IOOrderResult.m */,
+			);
+			path = Result;
+			sourceTree = "<group>";
+		};
 		9A8CC3231CDF7788005E19D9 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -239,6 +272,7 @@
 				9A8CC32F1CE0AF84005E19D9 /* Preference */,
 				9A8CC3321CE0AF84005E19D9 /* Root */,
 				9A8CC3351CE0AF84005E19D9 /* Shops */,
+				9A4C58411CF9802C00AD1330 /* Orders */,
 			);
 			path = Tool;
 			sourceTree = "<group>";
@@ -840,6 +874,7 @@
 				9A8CC3411CE0AF84005E19D9 /* YWJShopsParam.m in Sources */,
 				CA9019921CE16B7A00AC5712 /* YWJDishesResult.m in Sources */,
 				CA6539591CBD44CF000972E2 /* YWJNewFeatureScrollPage.m in Sources */,
+				9A4C58491CF989D900AD1330 /* IOOrderResult.m in Sources */,
 				CAF4BFA71CF54E9F001E88F7 /* IOSubmitOrderView.m in Sources */,
 				CA218FE21CEB5C5E00627FBD /* YWJDoubleTableView.m in Sources */,
 				9A8CC3821CE306B4005E19D9 /* IOOrderViewCell.m in Sources */,
@@ -858,6 +893,7 @@
 				CAE8F0951CB946E8005618B0 /* IONavigationController.m in Sources */,
 				9A8CC36C1CE0AFC7005E19D9 /* IOShopViewController.m in Sources */,
 				9A8CC3851CE3075E005E19D9 /* IOOrder.m in Sources */,
+				9A4C58441CF9805000AD1330 /* IOOrdersTool.m in Sources */,
 				9A8CC38A1CE572C8005E19D9 /* IOProfileHeaderView.m in Sources */,
 				9AFEED791CEC6DF70009528C /* IOSignInHeaderView.m in Sources */,
 				CAAC90B31CF67DDF00BB1AB9 /* IOSubmitCell.m in Sources */,

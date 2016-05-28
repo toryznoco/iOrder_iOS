@@ -129,8 +129,6 @@
     
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain target:self action:nil];
     self.navigationItem.backBarButtonItem = backItem;
-//    UIBarButtonItem *backItem = [UIBarButtonItem initWithNormalImage:@"arrow" target:self action:@selector(backBtnClick) width:12 height:21];
-//    self.navigationItem.leftBarButtonItem = backItem;
 }
 
 - (NSMutableArray *)dishInfos {

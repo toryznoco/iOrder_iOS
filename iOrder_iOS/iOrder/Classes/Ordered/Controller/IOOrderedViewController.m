@@ -11,6 +11,9 @@
 #import "IOOrder.h"
 #import "IOOrderViewCell.h"
 
+#import "MJRefresh.h"
+#import "IOOrdersTool.h"
+
 @interface IOOrderedViewController ()
 
 @property (nonatomic, strong) NSMutableArray *orders;
@@ -39,11 +42,33 @@
     [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     self.tableView.tableFooterView = [[UIView alloc] init];
     
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-     self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    //  请求最新订单数据
+    //  添加下拉刷新控件
+    self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewOrders)];
+    [self.tableView.mj_header beginRefreshing];
+}
+
+//  {:json字典 [:json数组
+#pragma mark - 请求最新订单
+- (void)loadNewOrders
+{
+    [IOOrdersTool newOrdersSuccess:^(NSArray *orders){
+        //  请求成功的block
+        //  结束下拉刷新
+        [self.tableView.mj_header endRefreshing];
+        
+        self.orders = orders;
+        
+        NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, orders.count)];
+        //  把最新的订单插入到最前面
+        [self.orders insertObjects:orders atIndexes:indexSet];
+        
+        //  刷新表格
+        [self.tableView reloadData];
+        
+    } failure:^(NSError *error) {
+        //
+    }];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -58,19 +83,18 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 1;
+    return self.orders.count;
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    //  创建cell
     IOOrderViewCell *cell = [IOOrderViewCell cellWithTableView:tableView];
     cell.backgroundColor = [UIColor whiteColor];
-    
-    IOOrder *order = [[IOOrder alloc] init];
-    order.shopName = @"心森西餐厅";
-    order.orderState = @"待配餐";
-    order.orderPayment = 66.66;
-    order.time = @"05-05 21:45";
+    //  获取模型
+    IOOrder *order = self.orders[indexPath.row];
+
+    //  传递模型
     cell.order = order;
     
     return cell;

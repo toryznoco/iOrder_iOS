@@ -39,6 +39,10 @@
  *  分割线2
  */
 @property (nonatomic, weak) UIView *horizontalLine2;
+/**
+ *  按钮
+ */
+@property (nonatomic, weak) UIButton *button;
 
 @end
 
@@ -137,7 +141,7 @@
     _shopName.font = [UIFont systemFontOfSize:15];
     [_shopName sizeToFit];
     
-    _orderState.text = _order.orderState;
+    _orderState.text = _order.status;
     _orderState.font = [UIFont systemFontOfSize:15];
     _orderState.textColor = [UIColor colorWithRed:180/255.0 green:180/255.0 blue:180/255.0 alpha:1];
     [_orderState sizeToFit];
@@ -148,7 +152,7 @@
     NSURL *pictureURL = [NSURL URLWithString:pictureStr];
     [_shopIcon sd_setImageWithURL:pictureURL placeholderImage:[UIImage imageNamed:@"timeline_image_placeholder"]];
     
-    _payment.text = [NSString stringWithFormat:@"¥%.2f", _order.orderPayment];
+    _payment.text = [NSString stringWithFormat:@"¥%.2f", _order.price];
     _payment.font = [UIFont systemFontOfSize:15];
     [_payment sizeToFit];
     
