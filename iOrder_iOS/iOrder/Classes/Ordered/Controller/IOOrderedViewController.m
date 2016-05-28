@@ -31,6 +31,9 @@
     
     self.title = @"订单";
     
+    //  背景颜色
+    self.view.backgroundColor = kIOBackgroundColor;
+    
     //    设置行高
     self.tableView.rowHeight = 155;
     [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
@@ -61,6 +64,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     IOOrderViewCell *cell = [IOOrderViewCell cellWithTableView:tableView];
+    cell.backgroundColor = [UIColor whiteColor];
     
     IOOrder *order = [[IOOrder alloc] init];
     order.shopName = @"心森西餐厅";

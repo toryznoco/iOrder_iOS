@@ -19,9 +19,6 @@ extern BOOL isInRegion;
 #define kIOTopMargin 10
 #define kIOFooterViewHeight 60
 
-//  颜色
-#define kIOBackgroundColor [UIColor colorWithRed:243.0/255.0 green:243.0/255.0 blue:243.0/255.0 alpha:1.0]
-
 @interface IOSingInViewController () <FSCalendarDelegate, FSCalendarDataSource>
 
 @property (nonatomic, weak) UIView *signInHeaderView;
