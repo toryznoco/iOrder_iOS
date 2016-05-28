@@ -42,9 +42,13 @@
     
     [self setupNavigationView];
     
-    _shops = [self shops];
+    self.tableView.header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        _shops = [self shops];
+        
+        [self loadShopInfos];
+    }];
+    [self.tableView.header beginRefreshing];
     
-    [self loadShopInfos];
     
     self.title = @"首页";
     self.view.backgroundColor = [UIColor whiteColor];
@@ -149,9 +153,12 @@
 
 - (void)loadShopInfos {
     [YWJShopsTool newShopsSuccess:^(NSArray *shops) {
-        [_shops addObjectsFromArray:shops];
+        if (_shops.count < shops.count) {
+            [_shops addObjectsFromArray:shops];
+        }
         
         [self.tableView reloadData];
+        [self.tableView.header endRefreshing];
     } failure:^(NSError *error) {
         YWJLog(@"%@", error);
     }];
