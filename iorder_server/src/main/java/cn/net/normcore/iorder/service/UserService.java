@@ -41,7 +41,7 @@ public class UserService extends BaseService {
 
 	public List<Map<String, Object>> getOrders(int userId) {
 		// TODO Auto-generated method stub
-		String sqlGetUserOrders = "SELECT s.id AS shopId, o.`status` AS `status`, `name` AS shopName, SUM(oi.amount) AS dishesAmt, o.total_price AS price, create_time AS time FROM `order` o INNER JOIN shop s ON s_id = s.id INNER JOIN order_item oi ON o.id = o_id WHERE o.u_id = ? GROUP BY o.id";
+		String sqlGetUserOrders = "SELECT s.id AS shopId, o.`status` AS `status`, `name` AS shopName, s.picture AS shopPic, SUM(oi.amount) AS dishesAmt, o.total_price AS price, create_time AS time FROM `order` o INNER JOIN shop s ON s_id = s.id INNER JOIN order_item oi ON o.id = o_id WHERE o.u_id = ? GROUP BY o.id";
 		return jt.query(sqlGetUserOrders, new Object[] { userId },
 				new ResultSetExtractor<List<Map<String, Object>>>() {
 
@@ -55,6 +55,7 @@ public class UserService extends BaseService {
 							map.put("shopId", rs.getString("shopId"));
 							map.put("status", rs.getInt("status"));
 							map.put("shopName", rs.getString("shopName"));
+							map.put("shopPic", rs.getString("shopPic"));
 							map.put("dishesAmt", rs.getInt("dishesAmt"));
 							map.put("price", rs.getObject("price"));
 							map.put("time", rs.getTimestamp("time"));
