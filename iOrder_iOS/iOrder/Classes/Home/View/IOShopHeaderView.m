@@ -22,7 +22,7 @@
 #pragma mark - privacy
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
-        self.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"005"]];
+        self.backgroundColor = kIOThemeColors;
         
         [self setupChildViewWithFrame:frame];
     }
@@ -41,9 +41,6 @@
     IOShopInfoView *infoView = [[IOShopInfoView alloc] initWithFrame:CGRectMake(0, 64, frame.size.width, 72)];
     _shopInfoView = infoView;
     [self addSubview:infoView];
-    
-    IOShopOptionView *optionView = [[IOShopOptionView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(infoView.frame), frame.size.width, 40)];
-    [self addSubview:optionView];
 }
 
 @end
@@ -117,8 +114,6 @@
 #pragma mark - public
 
 - (void)setShopInfo:(IOShop *)shopInfo {
-    
-    YWJLog(@" haha %@", shopInfo.name);
     _shopInfo = shopInfo;
     [self setupShopInfo];
 }
@@ -143,10 +138,12 @@
     [self addSubview:shopIcon];
     
     UILabel *shopTitle = [[UILabel alloc] init];
+    shopTitle.textColor = [UIColor whiteColor];
     _shopTitle = shopTitle;
     [self addSubview:shopTitle];
     
     UILabel *waitingTime = [[UILabel alloc] init];
+    waitingTime.textColor = [UIColor whiteColor];
     waitingTime.text = @"15分钟";
     waitingTime.font = [UIFont systemFontOfSize:15];
     _waitingTime = waitingTime;
@@ -158,6 +155,7 @@
     [self addSubview:hintImage];
     
     UILabel *hintInfo = [[UILabel alloc] init];
+    hintInfo.textColor = [UIColor whiteColor];
     _hintInfo = hintInfo;
     [self addSubview:hintInfo];
     

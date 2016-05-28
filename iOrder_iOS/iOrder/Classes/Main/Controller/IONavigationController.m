@@ -21,12 +21,14 @@
     UIBarButtonItem *item = [UIBarButtonItem appearanceWhenContainedInInstancesOfClasses:@[[self class]]];
     
     NSMutableDictionary *titleAttr = [NSMutableDictionary dictionary];
-    titleAttr[NSForegroundColorAttributeName] = [UIColor orangeColor];
+    titleAttr[NSForegroundColorAttributeName] = [UIColor whiteColor];
     [item setTitleTextAttributes:titleAttr forState:UIControlStateNormal];
 }
 //
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    self.navigationBar.tintColor = [UIColor whiteColor];
     
     //    设置代理
     self.delegate = self;

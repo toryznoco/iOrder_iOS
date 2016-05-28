@@ -12,8 +12,8 @@
 #import "UIImageView+WebCache.h"
 
 
-#pragma mark - implementation IOShopMenuCell
-@interface IOShopMenuCell ()
+#pragma mark - implementation IOShopRightCell
+@interface IOShopRightCell ()
 
 @property (nonatomic, weak) UIImageView *dishIcon;
 @property (nonatomic, weak) UILabel *dishName;
@@ -28,7 +28,7 @@
 
 @end
 
-@implementation IOShopMenuCell
+@implementation IOShopRightCell
 
 #pragma mark - privacy
 
@@ -91,19 +91,19 @@
     CGFloat priceSuY = CGRectGetMaxY(_dishPrice.frame) - priceSuH;
     _dishPriceSuffix.frame = CGRectMake(priceSuX, priceSuY, priceSuW, priceSuH);
     
-    CGFloat orderBtnW = 25;
+    CGFloat orderBtnW = 27;//25
     CGFloat orderBtnH = orderBtnW;
     CGFloat orderBtnX = self.width - orderBtnW - 8;
-    CGFloat orderBtnY = 40;
+    CGFloat orderBtnY = 32;
     _orderBtn.frame = CGRectMake(orderBtnX, orderBtnY, orderBtnW, orderBtnH);
     
     CGFloat dishCountW = 25;
     CGFloat dishCountH = 15;
     CGFloat dishCountX = orderBtnX - dishCountW - 2;
-    CGFloat dishCountY = orderBtnY + 4;
+    CGFloat dishCountY = orderBtnY + 7;
     _dishCount.frame  = CGRectMake(dishCountX, dishCountY, dishCountW, dishCountH);
     
-    CGFloat unOrderBtnW = 25;
+    CGFloat unOrderBtnW = 27;
     CGFloat unOrderBtnH = orderBtnH;
     CGFloat unOrderBtnX = dishCountX - unOrderBtnW - 2;
     CGFloat unOrderBtnY = orderBtnY;
@@ -174,7 +174,7 @@
     
     //    菜品价格
     UILabel *dishPrice = [[UILabel alloc] init];
-    dishPrice.textColor = [UIColor redColor];
+    dishPrice.textColor = kIOThemeColors;
     dishPrice.font = [UIFont systemFontOfSize:15];
     [self addSubview:dishPrice];
     _dishPrice = dishPrice;
@@ -189,7 +189,7 @@
     //    预定按钮
     UIButton *orderBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     orderBtn.tag = 1;
-    [orderBtn setImage:[UIImage imageNamed:@"add_button"] forState:UIControlStateNormal];
+    [orderBtn setBackgroundImage:[UIImage imageNamed:@"add_button"] forState:UIControlStateNormal];
     [orderBtn addTarget:self action:@selector(orderBtnClicked:) forControlEvents:UIControlEventTouchDown];
     [self addSubview:orderBtn];
     _orderBtn = orderBtn;
@@ -208,7 +208,7 @@
     unOrderBtn.hidden = YES;
     unOrderBtn.enabled = NO;
     unOrderBtn.tag = 2;
-    [unOrderBtn setImage:[UIImage imageNamed:@"reduce_button"] forState:UIControlStateNormal];
+    [unOrderBtn setBackgroundImage:[UIImage imageNamed:@"reduce_button"] forState:UIControlStateNormal];
     [unOrderBtn addTarget:self action:@selector(orderBtnClicked:) forControlEvents:UIControlEventTouchDown];
     [self addSubview:unOrderBtn];
     _unOrderBtn = unOrderBtn;
@@ -246,16 +246,16 @@
         }
     }
     
-    if ([_delegate respondsToSelector:@selector(shopMenuCell:dishPrice:clickedBtn:)]) {
-        [_delegate shopMenuCell:self dishPrice:_dish.price clickedBtn:btn];
+    if ([_delegate respondsToSelector:@selector(shopRightCell:dishPrice:clickedBtn:)]) {
+        [_delegate shopRightCell:self dishPrice:_dish.price clickedBtn:btn];
     }
 }
 
 @end
 
 
-#pragma mark - implementation IOShopOptionCell
-@implementation IOShopOptionCell
+#pragma mark - implementation IOShopLeftCell
+@implementation IOShopLeftCell
 
 #pragma mark - privacy
 
@@ -304,7 +304,7 @@
     selectedBgView.backgroundColor = YWJRGBColor(217, 217, 217, 0.5);
     self.selectedBackgroundView = selectedBgView;
     
-    UIView *liner = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 5, 51)];
+    UIView *liner = [[UIView alloc] initWithFrame:CGRectMake(0, 5, 5, 41)];
     liner.backgroundColor = [UIColor orangeColor];
     [selectedBgView addSubview:liner];
 }

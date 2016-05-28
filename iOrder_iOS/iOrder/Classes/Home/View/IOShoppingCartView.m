@@ -61,8 +61,8 @@
 @end
 
 
-#pragma mark - implementation IOShoppingView
-@implementation IOShoppingView
+#pragma mark - implementation IOShoppingCartView
+@implementation IOShoppingCartView
 
 #pragma mark - privacy
 
@@ -117,15 +117,18 @@
     CGPoint center = CGPointMake(checkOutView.width * 0.5, checkOutView.height * 0.5);
     [checkOutBtn sizeToFit];
     checkOutBtn.center = center;
-    [checkOutBtn addTarget:self action:@selector(clickedCheckOut) forControlEvents:UIControlEventTouchUpInside];
+    [checkOutBtn addTarget:self action:@selector(clickedCheckOut:) forControlEvents:UIControlEventTouchUpInside];
 }
 
 #pragma mark - public
 
 #pragma mark - custom method
 
-- (void)clickedCheckOut {
+- (void)clickedCheckOut:(UIButton *)btn {
     YWJLog(@"点击 结账按钮");
+    if ([self.delegate respondsToSelector:@selector(shoppingCartView:checkOutBtnClick:)]) {
+        [self.delegate shoppingCartView:self checkOutBtnClick:btn];
+    }
 }
 
 @end

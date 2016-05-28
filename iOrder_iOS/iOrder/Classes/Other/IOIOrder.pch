@@ -17,12 +17,15 @@
 #import "UIView+YWJFrame.h"
 
 //  尺寸
-#define kIOScreenWidth [UIScreen mainScreen].bounds.size.width
-#define kIOScreenHeight [UIScreen mainScreen].bounds.size.height
+#define kIONavigationBarHeight 64
+#define IOScreenWidth [UIScreen mainScreen].bounds.size.width
+#define IOScreenHeight [UIScreen mainScreen].bounds.size.height
+
+// 颜色
+#define kIOThemeColors [UIColor orangeColor]
 
 //------------ tool ---------------
 #define YWJUserDefaults [NSUserDefaults standardUserDefaults]
-#define YWJMainScreenBounds [UIScreen mainScreen].bounds
 #define YWJKeyWindow [UIApplication sharedApplication].keyWindow
 #define YWJRGBColor(r, g, b, a) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:a]
 

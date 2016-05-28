@@ -20,15 +20,20 @@
 
 
 #pragma mark - interface IOShoppingView
-@interface IOShoppingView : UIView
+@class IOShoppingCartView;
+@protocol IOShoppingCartViewDelegate <NSObject>
+
+- (void)shoppingCartView:(IOShoppingCartView *)shoppingCartView checkOutBtnClick:(UIButton *)btn;
+
+@end
+
+@interface IOShoppingCartView : UIView
 
 @property (nonatomic, weak) UIButton *shoppingCarBtn;
 @property (nonatomic, weak) UIView *checkOutView;
 @property (nonatomic, weak) UILabel *totalPrice;
 @property (nonatomic, weak) IOBadgeView *badge;
 @property (nonatomic, weak) UIButton *checkOutBtn;
+@property (nonatomic, weak) id<IOShoppingCartViewDelegate> delegate;
 
 @end
-
-
-

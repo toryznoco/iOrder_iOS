@@ -71,7 +71,7 @@
     CGFloat starViewW = _shopStarView.width;
     CGFloat starViewH = _shopStarView.height;
     CGFloat starViewX = nameX;
-    CGFloat starViewY = self.height - starViewH - 5;
+    CGFloat starViewY = self.height - starViewH - 8;
     _shopStarView.frame = CGRectMake(starViewX, starViewY, starViewW, starViewH);
     
     [_shopPrice sizeToFit];
@@ -225,8 +225,8 @@
 - (void)setupAllChildView {
     CGFloat starX = 0;
     CGFloat starY = 0;
-    CGFloat starW = 16;
-    CGFloat starH = 16;
+    CGFloat starW = 13;
+    CGFloat starH = starW;
     for (NSInteger i = 0; i < 5; i++) {
         starX = i * starW;
         UIImageView *star = [[UIImageView alloc] init];

@@ -8,29 +8,29 @@
 
 #import <UIKit/UIKit.h>
 
-@class IODish, IOShopMenuCell;
+@class IODish, IOShopRightCell;
 
 
 #pragma mark - interface IOShopMenuCell
-@protocol IOShopMenuCellDelegate <NSObject>
+@protocol IOShopRightCellDelegate <NSObject>
 
-- (void)shopMenuCell:(IOShopMenuCell *)shopMenuCell dishPrice:(float)dishPrice clickedBtn:(UIButton *)btn;
+- (void)shopRightCell:(IOShopRightCell *)shopRightCell dishPrice:(float)dishPrice clickedBtn:(UIButton *)btn;
 
 @end
 
-@interface IOShopMenuCell : UITableViewCell
+@interface IOShopRightCell : UITableViewCell
 
 + (instancetype)cellWithTableView:(UITableView *)tableView;
 
 @property (nonatomic, strong) IODish *dish;
 
-@property (nonatomic, weak) id<IOShopMenuCellDelegate> delegate;
+@property (nonatomic, weak) id<IOShopRightCellDelegate> delegate;
 
 @end
 
 
 #pragma mark - interface IOShopOptionCell
-@interface IOShopOptionCell : UITableViewCell
+@interface IOShopLeftCell : UITableViewCell
 
 + (instancetype)cellWithTableView:(UITableView *)tableView;
 
