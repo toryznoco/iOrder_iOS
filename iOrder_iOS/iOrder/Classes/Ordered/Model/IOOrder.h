@@ -13,9 +13,9 @@ typedef NS_ENUM(NSUInteger, IOOrderState){
     IOOrderStateCancel = 0, ///<订单取消
     IOOrderStateSubmited,   ///<待支付
     IOOrderStatePaid,       ///<待接单
-                            ///<待配餐 IOOrderStateCooking
+    IOOrderStateCooking,    ///<待配餐
     IOOrderStateCooked,     ///<待取餐
-                            ///<待评价 IOOrderStateDone
+    IOOrderStateDone,       ///<待评价
     IOOrderStateCompleted,  ///<订单完成
 };
 

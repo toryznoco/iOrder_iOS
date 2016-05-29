@@ -247,8 +247,14 @@
         case IOOrderStatePaid:
             status = @"待接单";
             break;
+        case IOOrderStateCooking:
+            status = @"待配餐";
+            break;
         case IOOrderStateCooked:
             status = @"待取餐";
+            break;
+        case IOOrderStateDone:
+            status = @"待评价";
             break;
         case IOOrderStateCompleted:
             status = @"订单完成";
