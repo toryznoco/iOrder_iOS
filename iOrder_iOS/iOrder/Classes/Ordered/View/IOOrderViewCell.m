@@ -14,11 +14,11 @@
 /**
  *  店铺名称
  */
-@property (nonatomic, weak) UILabel *shopName;
+@property (nonatomic, weak) UILabel *shopNameLabel;
 /**
  *  订单状态
  */
-@property (nonatomic, weak) UILabel *orderState;
+@property (nonatomic, weak) UILabel *orderStateLabel;
 /**
  *  分割线1
  */
@@ -27,14 +27,22 @@
  *  店铺icon
  */
 @property (nonatomic, weak) UIImageView *shopIcon;
+
+/**
+ *  菜品数量
+ */
+@property (nonatomic, weak) UILabel *dishAmtLabel;
+
 /**
  *  实付款
  */
-@property (nonatomic, weak) UILabel *payment;
+@property (nonatomic, weak) UILabel *paymentLabel;
+
 /**
  *  时间
  */
-@property (nonatomic, weak) UILabel *time;
+@property (nonatomic, weak) UILabel *timeLabel;
+
 /**
  *  分割线2
  */
