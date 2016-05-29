@@ -44,7 +44,7 @@ public class DishesService extends BaseService {
 		return jt.queryForList(sqlGetOrderItems, orderId);
 	}
 
-	private static final String SQL_UPDATE_ORDER_STATUS = "UPDATE `order` SET `status` = ? WHERE id = ?";
+	private static final String SQL_UPDATE_ORDER_STATUS = "UPDATE `order` SET `status` = ?, pay_time = NOW() WHERE id = ?";
 
 	public void updateOrderPay(int orderId) {
 		// TODO Auto-generated method stub
