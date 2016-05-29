@@ -23,7 +23,7 @@ typedef NS_ENUM(NSUInteger, IOOrderState){
 /**
  *  餐厅ID
  */
-@property (nonatomic, assign) int *shopId;
+@property (nonatomic, assign) NSString *shopId;
 
 /**
  *  餐厅名字
