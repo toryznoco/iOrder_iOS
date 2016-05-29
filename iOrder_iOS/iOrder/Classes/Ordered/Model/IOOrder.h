@@ -8,6 +8,17 @@
 
 #import <Foundation/Foundation.h>
 
+/// 订单状态
+typedef NS_ENUM(NSUInteger, IOOrderState){
+    IOOrderStateCancel = 0, ///<订单取消
+    IOOrderStateSubmited,   ///<待支付
+    IOOrderStatePaid,       ///<待接单
+                            ///<待配餐 IOOrderStateCooking
+    IOOrderStateCooked,     ///<待取餐
+                            ///<待评价 IOOrderStateDone
+    IOOrderStateCompleted,  ///<订单完成
+};
+
 @interface IOOrder : NSObject
 /**
  *  餐厅ID
@@ -20,19 +31,19 @@
 @property (nonatomic, copy) NSString *shopName;
 
 /**
- *  菜品数量
- */
-@property (nonatomic, assign) int dishesAmt;
-
-/**
  *  订单状态
  */
-@property (nonatomic, copy) NSString *status;
+@property (nonatomic, assign) IOOrderState status;
 
 /**
  *  店铺图片url，不包含图片服务器根地址，需自行拼接
  */
-@property (nonatomic, copy) NSString *shopIcon;
+@property (nonatomic, copy) NSString *shopPic;
+
+/**
+ *  菜品数量
+ */
+@property (nonatomic, assign) int dishesAmt;
 
 /**
  *  订单金额

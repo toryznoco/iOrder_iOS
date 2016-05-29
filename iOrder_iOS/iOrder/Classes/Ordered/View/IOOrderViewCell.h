@@ -8,20 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-
-//  尺寸
-#define kIOOrderViewCellMargin 10
-#define kIOOrderViewCellNameWidth 300
-#define kkIOOrderViewCellNameHeight 15
-#define kIOOrderViewCellStateWidth 50
-#define kIOOrderViewCellStateHeight 15
-#define kIOOrderViewCellIconWidth 80
-#define kIOOrderViewCellIconHeight 60
-#define kIOOrderViewCellPaymentWidth 300
-#define kIOOrderViewCellPaymentHeight 25
-#define kIOOrderViewCellTimeWidth 300
-#define kIOOrderViewCellTimeHeight 25
-
 @class IOOrder;
 @interface IOOrderViewCell : UITableViewCell
 
