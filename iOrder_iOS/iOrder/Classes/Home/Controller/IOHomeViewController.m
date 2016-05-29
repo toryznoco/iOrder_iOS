@@ -42,12 +42,12 @@
     
     [self setupNavigationView];
     
-    self.tableView.header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+    self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         _shops = [self shops];
         
         [self loadShopInfos];
     }];
-    [self.tableView.header beginRefreshing];
+    [self.tableView.mj_header beginRefreshing];
     
     
     self.title = @"首页";
@@ -158,7 +158,7 @@
         }
         
         [self.tableView reloadData];
-        [self.tableView.header endRefreshing];
+        [self.tableView.mj_header endRefreshing];
     } failure:^(NSError *error) {
         YWJLog(@"%@", error);
     }];

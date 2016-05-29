@@ -57,8 +57,6 @@
         //  结束下拉刷新
         [self.tableView.mj_header endRefreshing];
         
-        self.orders = orders;
-        
         NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, orders.count)];
         //  把最新的订单插入到最前面
         [self.orders insertObjects:orders atIndexes:indexSet];
