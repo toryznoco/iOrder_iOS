@@ -9,13 +9,19 @@
 #import "IOOrdersTool.h"
 #import "IOHttpTool.h"
 #import "IOOrderResult.h"
+#import "IOOrdersParam.h"
 
 #import "MJExtension.h"
 
 @implementation IOOrdersTool
 
 + (void)newOrdersSuccess:(void(^)(NSArray *orders))success failure:(void(^)(NSError *error))failure {
-    [IOHttpTool GET:@"http://normcore.net.cn/iorder/server/user!getOrders.action?userId=1" parameters:nil success:^(id responseObject) {
+    
+    //创建参数模型
+    IOOrdersParam *param = [[IOOrdersParam alloc] init];
+    param.userId = 1;
+    
+    [IOHttpTool GET:@"http://normcore.net.cn/iorder/server/user!getOrders.action" parameters:param.mj_keyValues success:^(id responseObject) {
         //字典转模型
         IOOrderResult *result = [IOOrderResult mj_objectWithKeyValues:responseObject];
         if (success) {
