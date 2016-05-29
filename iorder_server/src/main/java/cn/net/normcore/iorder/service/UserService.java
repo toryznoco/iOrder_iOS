@@ -53,7 +53,7 @@ public class UserService extends BaseService {
 						while (rs.next()) {
 							Map<String, Object> map = new HashMap<String, Object>();
 							map.put("ID", rs.getInt("id"));
-							map.put("shopId", rs.getString("shopId"));
+							map.put("shopId", rs.getInt("shopId"));
 							map.put("status", rs.getInt("status"));
 							map.put("shopName", rs.getString("shopName"));
 							map.put("shopPic", rs.getString("shopPic"));

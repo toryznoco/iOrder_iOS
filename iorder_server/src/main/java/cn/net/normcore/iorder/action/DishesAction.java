@@ -34,6 +34,11 @@ public class DishesAction extends BaseAction {
 		getServMgr().getDishesService().addOrder(userId, shopId, couponId);
 		return NONE;
 	}
+	
+	public String removeFromCart() {
+		getServMgr().getDishesService().removeFromCart(userId, dishesId, amount);
+		return NONE;
+	}
 
 	public String addToCart() {
 		getServMgr().getDishesService().addToCart(userId, dishesId, amount);
