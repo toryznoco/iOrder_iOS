@@ -51,4 +51,13 @@ public class DishesService extends BaseService {
 		jt.update(SQL_UPDATE_ORDER_STATUS, 2, orderId);
 	}
 
+	private static final String SQL_REMOVE_FROM_CART = "UPDATE order_item SET amount = amount - ? WHERE u_id = ? AND d_id = ? AND `status` = 1";
+	private static final String SQL_DELETE_ORDER_ITEM = "DELETE FROM order_item WHERE u_id = ? AND d_id = ? AND amount = 0";
+
+	public void removeFromCart(int userId, int dishesId, int amount) {
+		// TODO Auto-generated method stub
+		jt.update(SQL_REMOVE_FROM_CART, amount, userId, dishesId);
+		jt.update(SQL_DELETE_ORDER_ITEM, userId, dishesId);
+	}
+
 }
