@@ -23,6 +23,7 @@
 
 // 颜色
 #define kIOThemeColors [UIColor orangeColor]
+#define kIOBackgroundColor [UIColor colorWithRed:243.0/255.0 green:243.0/255.0 blue:243.0/255.0 alpha:1.0]
 
 //------------ tool ---------------
 #define YWJUserDefaults [NSUserDefaults standardUserDefaults]
