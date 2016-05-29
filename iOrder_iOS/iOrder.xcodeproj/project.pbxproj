@@ -33,6 +33,8 @@
 		CA218FDC1CEB3B0C00627FBD /* IOHomeHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = CA218FDB1CEB3B0C00627FBD /* IOHomeHeaderView.m */; };
 		CA218FDF1CEB433F00627FBD /* IOShopOptionView.m in Sources */ = {isa = PBXBuildFile; fileRef = CA218FDE1CEB433F00627FBD /* IOShopOptionView.m */; };
 		CA218FE21CEB5C5E00627FBD /* YWJDoubleTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = CA218FE11CEB5C5E00627FBD /* YWJDoubleTableView.m */; };
+		CA280A1E1CFB1C8500644670 /* YWJShoppingCartParam.m in Sources */ = {isa = PBXBuildFile; fileRef = CA280A1D1CFB1C8500644670 /* YWJShoppingCartParam.m */; settings = {ASSET_TAGS = (); }; };
+		CA280A211CFB1D5C00644670 /* YWJShoppingCartTool.m in Sources */ = {isa = PBXBuildFile; fileRef = CA280A201CFB1D5C00644670 /* YWJShoppingCartTool.m */; settings = {ASSET_TAGS = (); }; };
 		CA5CD0541CF4486300324C92 /* IOUserInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = CA5CD0531CF4486300324C92 /* IOUserInfo.m */; };
 		CA6539561CBD40E6000972E2 /* IONewFeatureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA6539551CBD40E6000972E2 /* IONewFeatureViewController.m */; };
 		CA6539591CBD44CF000972E2 /* YWJNewFeatureScrollPage.m in Sources */ = {isa = PBXBuildFile; fileRef = CA6539581CBD44CF000972E2 /* YWJNewFeatureScrollPage.m */; };
@@ -132,6 +134,10 @@
 		CA218FDE1CEB433F00627FBD /* IOShopOptionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOShopOptionView.m; sourceTree = "<group>"; };
 		CA218FE01CEB5C5E00627FBD /* YWJDoubleTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWJDoubleTableView.h; sourceTree = "<group>"; };
 		CA218FE11CEB5C5E00627FBD /* YWJDoubleTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWJDoubleTableView.m; sourceTree = "<group>"; };
+		CA280A1C1CFB1C8500644670 /* YWJShoppingCartParam.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWJShoppingCartParam.h; sourceTree = "<group>"; };
+		CA280A1D1CFB1C8500644670 /* YWJShoppingCartParam.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWJShoppingCartParam.m; sourceTree = "<group>"; };
+		CA280A1F1CFB1D5C00644670 /* YWJShoppingCartTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWJShoppingCartTool.h; sourceTree = "<group>"; };
+		CA280A201CFB1D5C00644670 /* YWJShoppingCartTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWJShoppingCartTool.m; sourceTree = "<group>"; };
 		CA5CD0521CF4486300324C92 /* IOUserInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOUserInfo.h; sourceTree = "<group>"; };
 		CA5CD0531CF4486300324C92 /* IOUserInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOUserInfo.m; sourceTree = "<group>"; };
 		CA6539541CBD40E6000972E2 /* IONewFeatureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IONewFeatureViewController.h; sourceTree = "<group>"; };
@@ -267,6 +273,7 @@
 		9A8CC32B1CE0AF84005E19D9 /* Tool */ = {
 			isa = PBXGroup;
 			children = (
+				CA280A1A1CFB1C4700644670 /* ShoppingCarts */,
 				CA9019881CE16B7A00AC5712 /* Dishes */,
 				9A8CC32C1CE0AF84005E19D9 /* Http */,
 				9A8CC32F1CE0AF84005E19D9 /* Preference */,
@@ -447,6 +454,25 @@
 				AA08641E7F59BD859B41E36B /* libPods.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CA280A1A1CFB1C4700644670 /* ShoppingCarts */ = {
+			isa = PBXGroup;
+			children = (
+				CA280A1B1CFB1C4700644670 /* Param */,
+				CA280A1F1CFB1D5C00644670 /* YWJShoppingCartTool.h */,
+				CA280A201CFB1D5C00644670 /* YWJShoppingCartTool.m */,
+			);
+			path = ShoppingCarts;
+			sourceTree = "<group>";
+		};
+		CA280A1B1CFB1C4700644670 /* Param */ = {
+			isa = PBXGroup;
+			children = (
+				CA280A1C1CFB1C8500644670 /* YWJShoppingCartParam.h */,
+				CA280A1D1CFB1C8500644670 /* YWJShoppingCartParam.m */,
+			);
+			path = Param;
 			sourceTree = "<group>";
 		};
 		CA9019881CE16B7A00AC5712 /* Dishes */ = {
@@ -872,6 +898,7 @@
 				9A8CC36F1CE0AFC7005E19D9 /* IOShop.m in Sources */,
 				9A8CC36E1CE0AFC7005E19D9 /* IODishInfo.m in Sources */,
 				9A8CC3411CE0AF84005E19D9 /* YWJShopsParam.m in Sources */,
+				CA280A211CFB1D5C00644670 /* YWJShoppingCartTool.m in Sources */,
 				CA9019921CE16B7A00AC5712 /* YWJDishesResult.m in Sources */,
 				CA6539591CBD44CF000972E2 /* YWJNewFeatureScrollPage.m in Sources */,
 				9A4C58491CF989D900AD1330 /* IOOrderResult.m in Sources */,
@@ -880,6 +907,7 @@
 				9A8CC3821CE306B4005E19D9 /* IOOrderViewCell.m in Sources */,
 				9A8CC33E1CE0AF84005E19D9 /* IOHttpTool.m in Sources */,
 				9A8CC3431CE0AF84005E19D9 /* YWJShopsTool.m in Sources */,
+				CA280A1E1CFB1C8500644670 /* YWJShoppingCartParam.m in Sources */,
 				CAF4BFB31CF5C5CD001E88F7 /* IOProfileCell.m in Sources */,
 				CAE8F0921CB9461C005618B0 /* IOProfileViewController.m in Sources */,
 				CA7069CE1CE6037B007C5F3F /* IOShopHeaderView.m in Sources */,
