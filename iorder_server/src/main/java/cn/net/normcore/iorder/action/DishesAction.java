@@ -17,11 +17,6 @@ public class DishesAction extends BaseAction {
 	private int shopId;
 	private int orderId;
 
-	public String pay() {
-		getServMgr().getDishesService().updateOrderPay(orderId);
-		return NONE;
-	}
-
 	public String getOrderDetail() {
 		json.put("orderItems",
 				getServMgr().getDishesService().getOrderItems(orderId));
@@ -31,12 +26,16 @@ public class DishesAction extends BaseAction {
 	}
 
 	public String order() {
-		getServMgr().getDishesService().addOrder(userId, shopId, couponId);
-		return NONE;
+		json.put(
+				"orderId",
+				getServMgr().getDishesService().addOrder(userId, shopId,
+						couponId));
+		return "jsonResult";
 	}
-	
+
 	public String removeFromCart() {
-		getServMgr().getDishesService().removeFromCart(userId, dishesId, amount);
+		getServMgr().getDishesService()
+				.removeFromCart(userId, dishesId, amount);
 		return NONE;
 	}
 
