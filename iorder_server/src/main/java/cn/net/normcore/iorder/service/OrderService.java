@@ -22,4 +22,33 @@ public class OrderService extends BaseService {
 		return list;
 	}
 
+	private static final String SQL_PAY_WITH_COUPON = "UPDATE `order` o SET o.`status` = 2, o.pay_time = NOW(), o.pay_price = o.total_price - (SELECT c.money FROM coupon c WHERE c.id = o.coup_id) WHERE o.id = ?";
+	private static final String SQL_PAY_WITHOUT_COUPON = "UPDATE `order` o SET o.`status` = 2, o.pay_time = NOW(), o.pay_price = o.total_price WHERE o.id = ?";
+	private static final String SQL_GET_ORDER_COUPON = "SELECT coup_id FROM `order` WHERE id = ?";
+
+	public void pay(int orderId) {
+		// TODO Auto-generated method stub
+		if (jt.queryForObject(SQL_GET_ORDER_COUPON, new Object[] { orderId },
+				Integer.class) == null) {
+			jt.update(SQL_PAY_WITHOUT_COUPON, orderId);
+		} else {
+			jt.update(SQL_PAY_WITH_COUPON, orderId);
+		}
+	}
+
+	private static final String SQL_GET_CART = "SELECT d.`name` AS dishesName, d.price * oi.amount AS itemPrice, oi.amount FROM order_item oi INNER JOIN dishes d ON oi.d_id = d.id WHERE oi.u_id = ? AND d.s_id = ? AND `status` = 1";
+
+	public List<Map<String, Object>> getCart(int userId, int shopId) {
+		// TODO Auto-generated method stub
+		return jt.queryForList(SQL_GET_CART, userId, shopId);
+	}
+
+	private static final String SQL_GET_CART_TOTAL_PRI = "SELECT SUM(d.price * oi.amount) AS totalPri FROM order_item oi INNER JOIN dishes d ON oi.d_id = d.id WHERE oi.u_id = ? AND d.s_id = ? AND `status` = 1";
+
+	public Object getCartTotalPri(int userId, int shopId) {
+		// TODO Auto-generated method stub
+		return jt.queryForObject(SQL_GET_CART_TOTAL_PRI, new Object[] { userId,
+				shopId }, Object.class);
+	}
+
 }
