@@ -14,7 +14,7 @@
 
 @implementation YWJShoppingCartTool
 
-+ (void)addDishToShoppingCartWithUserId:(NSInteger)userId dishesId:(NSInteger)dishesId amount:(NSInteger)amount success:(void (^)())success failure:(void (^)(NSError *))failure{
++ (void)addDishToShoppingCartWithUserId:(NSInteger)userId dishesId:(NSInteger)dishesId amount:(NSInteger)amount success:(void (^)())success failure:(void (^)(NSError *))failure {
     YWJShoppingCartParam *param = [[YWJShoppingCartParam alloc] init];
     param.userId = userId;
     param.dishesId = dishesId;
@@ -32,7 +32,7 @@
     }];
 }
 
-+ (void)removeDishFromShoppingCartWithUserId:(NSInteger)userId dishesId:(NSInteger)dishesId amount:(NSInteger)amount success:(void (^)())success failure:(void (^)(NSError *))failure{
++ (void)removeDishFromShoppingCartWithUserId:(NSInteger)userId dishesId:(NSInteger)dishesId amount:(NSInteger)amount success:(void (^)())success failure:(void (^)(NSError *))failure {
     YWJShoppingCartParam *param = [[YWJShoppingCartParam alloc] init];
     param.userId = userId;
     param.dishesId = dishesId;

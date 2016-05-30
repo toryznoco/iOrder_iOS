@@ -45,6 +45,8 @@
 		CA9019911CE16B7A00AC5712 /* YWJDishesParam.m in Sources */ = {isa = PBXBuildFile; fileRef = CA90198B1CE16B7A00AC5712 /* YWJDishesParam.m */; };
 		CA9019921CE16B7A00AC5712 /* YWJDishesResult.m in Sources */ = {isa = PBXBuildFile; fileRef = CA90198E1CE16B7A00AC5712 /* YWJDishesResult.m */; };
 		CA9019931CE16B7A00AC5712 /* YWJDishesTool.m in Sources */ = {isa = PBXBuildFile; fileRef = CA9019901CE16B7A00AC5712 /* YWJDishesTool.m */; };
+		CA9F01321CFC4C19007408D5 /* YWJSubmitOrderParam.m in Sources */ = {isa = PBXBuildFile; fileRef = CA9F01311CFC4C19007408D5 /* YWJSubmitOrderParam.m */; settings = {ASSET_TAGS = (); }; };
+		CA9F01351CFC4C7E007408D5 /* YWJSubmitOrderTool.m in Sources */ = {isa = PBXBuildFile; fileRef = CA9F01341CFC4C7E007408D5 /* YWJSubmitOrderTool.m */; settings = {ASSET_TAGS = (); }; };
 		CAAC90B31CF67DDF00BB1AB9 /* IOSubmitCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CAAC90B21CF67DDF00BB1AB9 /* IOSubmitCell.m */; };
 		CACD5CB11CE4119A00ADE187 /* IOShopCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CACD5CAC1CE4119A00ADE187 /* IOShopCell.m */; };
 		CAE8F02C1CB940E2005618B0 /* iOrderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F02B1CB940E2005618B0 /* iOrderTests.m */; };
@@ -159,6 +161,10 @@
 		CA90198E1CE16B7A00AC5712 /* YWJDishesResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWJDishesResult.m; sourceTree = "<group>"; };
 		CA90198F1CE16B7A00AC5712 /* YWJDishesTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWJDishesTool.h; sourceTree = "<group>"; };
 		CA9019901CE16B7A00AC5712 /* YWJDishesTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWJDishesTool.m; sourceTree = "<group>"; };
+		CA9F01301CFC4C19007408D5 /* YWJSubmitOrderParam.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWJSubmitOrderParam.h; sourceTree = "<group>"; };
+		CA9F01311CFC4C19007408D5 /* YWJSubmitOrderParam.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWJSubmitOrderParam.m; sourceTree = "<group>"; };
+		CA9F01331CFC4C7E007408D5 /* YWJSubmitOrderTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWJSubmitOrderTool.h; sourceTree = "<group>"; };
+		CA9F01341CFC4C7E007408D5 /* YWJSubmitOrderTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWJSubmitOrderTool.m; sourceTree = "<group>"; };
 		CAAC90B11CF67DDF00BB1AB9 /* IOSubmitCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOSubmitCell.h; sourceTree = "<group>"; };
 		CAAC90B21CF67DDF00BB1AB9 /* IOSubmitCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOSubmitCell.m; sourceTree = "<group>"; };
 		CACD5CAB1CE4119A00ADE187 /* IOShopCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOShopCell.h; sourceTree = "<group>"; };
@@ -278,6 +284,7 @@
 		9A8CC32B1CE0AF84005E19D9 /* Tool */ = {
 			isa = PBXGroup;
 			children = (
+				CA9F012E1CFC4BF1007408D5 /* SubmitOrder */,
 				CA280A1A1CFB1C4700644670 /* ShoppingCarts */,
 				CA9019881CE16B7A00AC5712 /* Dishes */,
 				9A8CC32C1CE0AF84005E19D9 /* Http */,
@@ -507,6 +514,25 @@
 				CA90198E1CE16B7A00AC5712 /* YWJDishesResult.m */,
 			);
 			path = Result;
+			sourceTree = "<group>";
+		};
+		CA9F012E1CFC4BF1007408D5 /* SubmitOrder */ = {
+			isa = PBXGroup;
+			children = (
+				CA9F012F1CFC4BF1007408D5 /* SubmitOrderParam */,
+				CA9F01331CFC4C7E007408D5 /* YWJSubmitOrderTool.h */,
+				CA9F01341CFC4C7E007408D5 /* YWJSubmitOrderTool.m */,
+			);
+			path = SubmitOrder;
+			sourceTree = "<group>";
+		};
+		CA9F012F1CFC4BF1007408D5 /* SubmitOrderParam */ = {
+			isa = PBXGroup;
+			children = (
+				CA9F01301CFC4C19007408D5 /* YWJSubmitOrderParam.h */,
+				CA9F01311CFC4C19007408D5 /* YWJSubmitOrderParam.m */,
+			);
+			path = SubmitOrderParam;
 			sourceTree = "<group>";
 		};
 		CADAA6BC1CBBC26100E601DC /* NewFeature */ = {
@@ -926,9 +952,11 @@
 				9A8CC3421CE0AF84005E19D9 /* YWJShopsResult.m in Sources */,
 				CAE8F0951CB946E8005618B0 /* IONavigationController.m in Sources */,
 				9A8CC36C1CE0AFC7005E19D9 /* IOShopViewController.m in Sources */,
+				CA9F01351CFC4C7E007408D5 /* YWJSubmitOrderTool.m in Sources */,
 				9A8CC3851CE3075E005E19D9 /* IOOrder.m in Sources */,
 				9A4C58441CF9805000AD1330 /* IOOrdersTool.m in Sources */,
 				9A8CC38A1CE572C8005E19D9 /* IOProfileHeaderView.m in Sources */,
+				CA9F01321CFC4C19007408D5 /* YWJSubmitOrderParam.m in Sources */,
 				9AFEED791CEC6DF70009528C /* IOSignInHeaderView.m in Sources */,
 				CAAC90B31CF67DDF00BB1AB9 /* IOSubmitCell.m in Sources */,
 				CAE8F07D1CB94170005618B0 /* YWJTabBarButton.m in Sources */,

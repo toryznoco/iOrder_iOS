@@ -30,7 +30,7 @@
     }];
 }
 
-+ (void)POST:(NSString *)URLString parameters:(id)parameters success:(void (^)(id))success failure:(void (^)(NSError *))failure{
++ (void)POST:(NSString *)URLString parameters:(id)parameters success:(void (^)(id))success failure:(void (^)(NSError *))failure {
     AFSecurityPolicy *securityPolicy = [[AFSecurityPolicy alloc] init];
     [securityPolicy setAllowInvalidCertificates:YES];
     

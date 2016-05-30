@@ -13,6 +13,7 @@
 #import "IOSubmitOrderView.h"
 #import "IOSubmitCell.h"
 
+#import "YWJSubmitOrderTool.h"
 #import "IOShop.h"
 
 @interface IOSubmitViewController ()<UITableViewDataSource, UITableViewDelegate, IOSubmitOrderViewDelegate, UIAlertViewDelegate>
@@ -203,6 +204,11 @@
                     if ([_delegate respondsToSelector:@selector(submitViewController:isPaySuccessful:)]) {
                         [_delegate submitViewController:self isPaySuccessful:YES];
                     }
+                    [YWJSubmitOrderTool submitOrderWithUserId:1 shopId:_shopInfo.shopId couponId:0 success:^{
+                        YWJLog(@"提交成功");
+                    } failure:^(NSError *error) {
+                        YWJLog(@"%@", error);
+                    }];
                     [self.navigationController popViewControllerAnimated:YES];
                 });
             });
