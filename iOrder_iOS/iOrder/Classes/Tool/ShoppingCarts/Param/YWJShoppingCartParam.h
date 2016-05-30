@@ -11,7 +11,7 @@
 @interface YWJShoppingCartParam : NSObject
 
 @property (nonatomic, assign) NSInteger userId;
-@property (nonatomic, assign) NSInteger dishsId;
+@property (nonatomic, assign) NSInteger dishesId;
 @property (nonatomic, assign) NSInteger amount;
 
 @end

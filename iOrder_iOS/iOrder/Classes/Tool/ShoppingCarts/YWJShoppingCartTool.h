@@ -12,4 +12,6 @@
 
 + (void)addDishToShoppingCartWithUserId:(NSInteger)userId dishesId:(NSInteger)dishesId amount:(NSInteger)amount success:(void(^)())success failure:(void(^)(NSError *error))failure;
 
++ (void)removeDishFromShoppingCartWithUserId:(NSInteger)userId dishesId:(NSInteger)dishesId amount:(NSInteger)amount success:(void(^)())success failure:(void(^)(NSError *error))failure;
+
 @end
