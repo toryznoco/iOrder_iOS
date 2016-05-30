@@ -183,7 +183,6 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 1) {
-        YWJLog(@"hah");
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         hud.labelText = NSLocalizedString(@"支付中...", @"HUD preparing title");
         
@@ -214,10 +213,6 @@
             });
         });
     }
-}
-
-- (void)alertView:(UIAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex {
-    YWJLog(@"5");
 }
 
 @end

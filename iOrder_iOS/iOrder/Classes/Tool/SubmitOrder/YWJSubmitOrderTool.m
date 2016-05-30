@@ -20,7 +20,7 @@
     param.shopId = shopId;
     param.couponId = couponId;
     
-    [IOHttpTool POST:@"http://normcore.net.cn/iorder/server/dishes!order.action?" parameters:param.mj_keyValues success:^(id responseObject) {
+    [IOHttpTool POST:@"http://normcore.net.cn/iorder/server/dishes!order.action" parameters:param.mj_keyValues success:^(id responseObject) {
         if (success) {
             success();
         }

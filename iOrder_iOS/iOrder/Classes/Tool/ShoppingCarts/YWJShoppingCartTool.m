@@ -19,9 +19,8 @@
     param.userId = userId;
     param.dishesId = dishesId;
     param.amount = amount;
-    YWJLog(@"%ld %ld %ld", param.userId, param.dishesId, param.amount);
     
-    [IOHttpTool POST:@"http://normcore.net.cn/iorder/server/dishes!addToCart.action?" parameters:param.mj_keyValues success:^(id responseObject) {
+    [IOHttpTool POST:@"http://normcore.net.cn/iorder/server/dishes!addToCart.action" parameters:param.mj_keyValues success:^(id responseObject) {
         if (success) {
             success();
         }
@@ -38,7 +37,7 @@
     param.dishesId = dishesId;
     param.amount = amount;
     
-    [IOHttpTool POST:@"http://normcore.net.cn/iorder/server/dishes!removeFromCart.action?" parameters:param success:^(id responseObject) {
+    [IOHttpTool POST:@"http://normcore.net.cn/iorder/server/dishes!removeFromCart.action" parameters:param.mj_keyValues success:^(id responseObject) {
         if (success) {
             success();
         }

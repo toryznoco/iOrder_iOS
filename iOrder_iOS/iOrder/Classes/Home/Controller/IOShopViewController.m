@@ -226,10 +226,8 @@
 - (void)submitViewController:(IOSubmitViewController *)submitVc isPaySuccessful:(BOOL)suc{
     if (suc == YES) {
         if (_dishInfos.count != 0) {
-            YWJLog(@"%ld", _dishInfos.count);
             [_dishInfos removeAllObjects];
             [self refreshView];
-            YWJLog(@"%ld", _dishInfos.count);
         }
     }
 }

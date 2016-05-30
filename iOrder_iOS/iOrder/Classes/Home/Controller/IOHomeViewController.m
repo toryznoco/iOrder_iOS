@@ -95,8 +95,9 @@
     IOShopViewController *shopVc = [[IOShopViewController alloc] init];
     int shopId = (int)(indexPath.row);
     shopVc.shopInfo = self.shops[shopId];
+    IOShop *shop = self.shops[shopId];
+    shopVc.shopId = shop.shopId;
     
-    shopVc.shopId = shopId + 1;
     [self.navigationController pushViewController:shopVc animated:YES];
 }
 

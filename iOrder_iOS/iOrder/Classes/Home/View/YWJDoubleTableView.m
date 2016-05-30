@@ -187,8 +187,6 @@
 #pragma mark shop right cell delegate
 
 - (void)shopRightCell:(IOShopRightCell *)shopRightCell dishPrice:(float)dishPrice clickedBtn:(UIButton *)btn {
-    YWJLog(@"tag == %ld", btn.tag);
-    YWJLog(@"点击加号按钮");
     if (btn.tag == 1) {
         [YWJShoppingCartTool addDishToShoppingCartWithUserId:1 dishesId:shopRightCell.dish.dishesId amount:1 success:^{
             YWJLog(@"成功");
@@ -196,6 +194,7 @@
             YWJLog(@"%@", error);
         }];
     } else {
+        
         [YWJShoppingCartTool removeDishFromShoppingCartWithUserId:1 dishesId:shopRightCell.dish.dishesId amount:1 success:^{
             YWJLog(@"移除");
         } failure:^(NSError *error) {
