@@ -125,7 +125,6 @@
 #pragma mark - custom method
 
 - (void)clickedCheckOut:(UIButton *)btn {
-    YWJLog(@"点击 结账按钮");
     if ([self.delegate respondsToSelector:@selector(shoppingCartView:checkOutBtnClick:)]) {
         [self.delegate shoppingCartView:self checkOutBtnClick:btn];
     }

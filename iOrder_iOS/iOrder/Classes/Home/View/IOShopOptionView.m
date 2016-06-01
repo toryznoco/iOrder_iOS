@@ -94,7 +94,6 @@
             selected.hidden = YES;
         }
     }
-    YWJLog(@"click %ld", btn.tag);
 }
 
 @end

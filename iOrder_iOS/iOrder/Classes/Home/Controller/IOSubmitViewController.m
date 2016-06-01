@@ -13,6 +13,7 @@
 #import "IOSubmitOrderView.h"
 #import "IOSubmitCell.h"
 
+#import "YWJSubmitOrderTool.h"
 #import "IOShop.h"
 
 @interface IOSubmitViewController ()<UITableViewDataSource, UITableViewDelegate, IOSubmitOrderViewDelegate, UIAlertViewDelegate>
@@ -182,7 +183,6 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 1) {
-        YWJLog(@"hah");
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         hud.labelText = NSLocalizedString(@"支付中...", @"HUD preparing title");
         
@@ -203,15 +203,16 @@
                     if ([_delegate respondsToSelector:@selector(submitViewController:isPaySuccessful:)]) {
                         [_delegate submitViewController:self isPaySuccessful:YES];
                     }
+                    [YWJSubmitOrderTool submitOrderWithUserId:1 shopId:_shopInfo.shopId couponId:0 success:^{
+                        YWJLog(@"提交成功");
+                    } failure:^(NSError *error) {
+                        YWJLog(@"%@", error);
+                    }];
                     [self.navigationController popViewControllerAnimated:YES];
                 });
             });
         });
     }
-}
-
-- (void)alertView:(UIAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex {
-    YWJLog(@"5");
 }
 
 @end

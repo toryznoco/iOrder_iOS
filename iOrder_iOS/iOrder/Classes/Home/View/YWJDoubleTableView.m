@@ -10,6 +10,7 @@
 
 #import "IOShopCell.h"
 #import "IODishInfo.h"
+#import "YWJShoppingCartTool.h"
 
 #define kScale 0.25
 
@@ -186,6 +187,21 @@
 #pragma mark shop right cell delegate
 
 - (void)shopRightCell:(IOShopRightCell *)shopRightCell dishPrice:(float)dishPrice clickedBtn:(UIButton *)btn {
+    if (btn.tag == 1) {
+        [YWJShoppingCartTool addDishToShoppingCartWithUserId:1 dishesId:shopRightCell.dish.dishesId amount:1 success:^{
+            YWJLog(@"成功");
+        } failure:^(NSError *error) {
+            YWJLog(@"%@", error);
+        }];
+    } else {
+        
+        [YWJShoppingCartTool removeDishFromShoppingCartWithUserId:1 dishesId:shopRightCell.dish.dishesId amount:1 success:^{
+            YWJLog(@"移除");
+        } failure:^(NSError *error) {
+            YWJLog(@"%@", error);
+        }];
+    }
+    
     if ([self.delegate respondsToSelector:@selector(doubleTableView:dishPrice:clickedBtn:)]) {
         [self.delegate doubleTableView:self dishPrice:dishPrice clickedBtn:btn];
     }

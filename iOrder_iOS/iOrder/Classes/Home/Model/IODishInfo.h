@@ -31,6 +31,11 @@
 @interface IODish : NSObject<MJKeyValue>
 
 /**
+ *  菜品ID，唯一标识,
+ */
+@property (nonatomic, assign) NSInteger dishesId;
+
+/**
  *  菜品图片url，不包含图片服务器根地址，需自行拼接
  */
 @property (nonatomic, copy) NSString *picture;
