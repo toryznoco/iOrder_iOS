@@ -18,6 +18,7 @@
 #import "IOShoppingCartView.h"
 #import "IOShoppingCartInfo.h"
 #import "YWJShoppingCartTool.h"
+#import "YWJShoppingCartInfoResult.h"
 #import "YWJDishesTool.h"
 #import "UIBarButtonItem+IOBarButtonItem.h"
 #import "IOShopHeaderView.h"
@@ -30,7 +31,7 @@
 
 @property (nonatomic, strong) NSArray *dataArray;
 @property (nonatomic, strong) NSMutableArray *dishInfos;
-@property (nonatomic, strong) NSMutableArray *shoppingCartInfos;
+@property (nonatomic, strong) IOShoppingCartInfo *shoppingCartInfo;
 
 @property (nonatomic, weak) IOShopHeaderView *shopHeaderView;
 @property (nonatomic, weak) IOShopOptionView *shopOptionView;
@@ -90,7 +91,6 @@
     
     //    初始化数组和加载数据
     [self dishInfos];
-    [self shoppingCartInfos];
     [self loadDishInfosWithShopId:self.shopId];
     [self loadShoppingCartInfosWithUserId:1 shopId:_shopId];
     
@@ -143,13 +143,6 @@
     return _dishInfos;
 }
 
-- (NSMutableArray *)shoppingCartInfos {
-    if (!_shoppingCartInfos) {
-        _shoppingCartInfos = [NSMutableArray array];
-    }
-    return _shoppingCartInfos;
-}
-
 - (void)loadDishInfosWithShopId:(int)shopId {
     [YWJDishesTool newShopDishesWithShopId:shopId Success:^(NSArray *shops) {
         NSMutableArray *dishInfosArray = [NSMutableArray array];
@@ -174,6 +167,19 @@
 - (void)loadShoppingCartInfosWithUserId:(NSInteger)userId shopId:(NSInteger)shopId {
     [YWJShoppingCartTool newShoppingCartInfosWithUserId:userId shopId:shopId Success:^(YWJShoppingCartInfoResult *shoppingCartInfos) {
         YWJLog(@"%@", shoppingCartInfos);
+        YWJLog(@"%f %ld", shoppingCartInfos.totalPri, shoppingCartInfos.itmes.count);
+        IOShoppingCartInfo *shoppingCartInfo = [[IOShoppingCartInfo alloc] init];
+        shoppingCartInfo.totalPri = shoppingCartInfos.totalPri;
+        
+        NSMutableArray *itemsArray = [NSMutableArray array];
+        for (NSDictionary *dic in shoppingCartInfos.itmes) {
+            IOShoppingCartDishesInfo *dishesInfo = [IOShoppingCartDishesInfo mj_objectWithKeyValues:dic];
+            [itemsArray addObject:dishesInfo];
+        }
+        
+        shoppingCartInfo.itmes = itemsArray;
+        _shoppingCartInfo = shoppingCartInfo;
+        _shoppingCartView.totalPri = _shoppingCartInfo.totalPri;
     } failure:^(NSError *error) {
         YWJLog(@"%@", error);
     }];

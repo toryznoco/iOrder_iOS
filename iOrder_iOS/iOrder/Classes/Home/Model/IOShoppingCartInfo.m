@@ -11,3 +11,10 @@
 @implementation IOShoppingCartInfo
 
 @end
+
+
+
+@implementation IOShoppingCartDishesInfo
+
+@end
+

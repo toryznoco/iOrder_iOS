@@ -122,6 +122,17 @@
 
 #pragma mark - public
 
+- (void)setTotalPri:(CGFloat)totalPri {
+    _totalPri = totalPri;
+    
+    _checkOutView.backgroundColor = [UIColor orangeColor];
+    _shoppingCarBtn.enabled = YES;
+    _totalPrice.textColor = [UIColor greenColor];
+    _checkOutBtn.enabled = YES;
+    _badge.badgeValue = [NSString stringWithFormat:@"%lld", [_badge.badgeValue longLongValue] + 1];
+    _totalPrice.text = [NSString stringWithFormat:@"¥ %.2f", totalPri];
+}
+
 #pragma mark - custom method
 
 - (void)clickedCheckOut:(UIButton *)btn {

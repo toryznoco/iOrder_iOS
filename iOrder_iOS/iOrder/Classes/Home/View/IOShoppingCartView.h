@@ -36,4 +36,6 @@
 @property (nonatomic, weak) UIButton *checkOutBtn;
 @property (nonatomic, weak) id<IOShoppingCartViewDelegate> delegate;
 
+@property (nonatomic, assign) CGFloat totalPri;
+
 @end
