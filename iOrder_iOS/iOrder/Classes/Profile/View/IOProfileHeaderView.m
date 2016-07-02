@@ -9,6 +9,7 @@
 #import "IOProfileHeaderView.h"
 
 #import "IOUserInfo.h"
+#import "Masonry.h"
 
 #pragma mark - implementation IOProfileHeaderView
 @interface IOProfileHeaderView ()
@@ -156,19 +157,6 @@
 - (void)layoutSubviews {
     [super layoutSubviews];
     
-    CGFloat userIconW = 69;
-    CGFloat userIconH = userIconW;
-    CGFloat userIconX = self.width * 0.5;
-    CGFloat userIconY = self.height * 0.4;
-    _userIcon.frame = CGRectMake(0, 0, userIconW, userIconH);
-    _userIcon.center = CGPointMake(userIconX, userIconY);
-    
-    CGFloat userNameW = self.width;
-    CGFloat userNameH = 25;
-    CGFloat userNameX = self.width * 0.5;
-    CGFloat userNameY = CGRectGetMaxY(_userIcon.frame) + 15;
-    _userName.frame = CGRectMake(0, 0, userNameW, userNameH);
-    _userName.center = CGPointMake(userNameX, userNameY);
 }
 
 #pragma mark - public
@@ -185,7 +173,7 @@
 
 - (void)setupAllChildView {
     UIImageView *userIcon = [[UIImageView alloc] init];
-    userIcon.layer.cornerRadius = 34.5;
+    userIcon.layer.cornerRadius = self.height/6;
     userIcon.layer.masksToBounds = YES;
     [self addSubview:userIcon];
     _userIcon = userIcon;
@@ -194,6 +182,29 @@
     userName.textAlignment = NSTextAlignmentCenter;
     [self addSubview:userName];
     _userName = userName;
+}
+
+#pragma mark - Masonry
+
++ (BOOL)requiresConstraintBasedLayout {
+    return YES;
+}
+
+- (void)updateConstraints {
+    
+    [self.userIcon mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.center.mas_equalTo(CGPointMake(0, -self.height/9));
+        make.size.mas_equalTo(CGSizeMake(self.height/3, self.height/3));
+    }];
+    
+    [self.userName mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.userIcon.mas_bottom).offset(10);
+        make.left.equalTo(self);
+        make.right.equalTo(self);
+        make.height.equalTo(@17);
+    }];
+    
+    [super updateConstraints];
 }
 
 @end
