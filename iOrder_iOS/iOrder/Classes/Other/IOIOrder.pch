@@ -15,6 +15,7 @@
 #ifdef __OBJC__
 
 #import "UIView+YWJFrame.h"
+#import "Masonry.h"
 
 //  尺寸
 #define kIONavigationBarHeight 64

@@ -9,7 +9,6 @@
 #import "IOProfileHeaderView.h"
 
 #import "IOUserInfo.h"
-#import "Masonry.h"
 
 #pragma mark - implementation IOProfileHeaderView
 @interface IOProfileHeaderView ()
@@ -80,23 +79,6 @@
 - (void)layoutSubviews {
     [super layoutSubviews];
     
-    CGFloat firstAssetW = (self.width - 2) / 3.0;
-    CGFloat firstAssetH = self.height;
-    CGFloat firstAssetX = 0;
-    CGFloat firstAssetY = 0;
-    _firstAsset.frame = CGRectMake(firstAssetX, firstAssetY, firstAssetW, firstAssetH);
-    
-    CGFloat secondAssetW = firstAssetW;
-    CGFloat secondAssetH = firstAssetH;
-    CGFloat secondAssetX = CGRectGetMaxX(_firstAsset.frame) + 1;
-    CGFloat secondAssetY = firstAssetY;
-    _secondAsset.frame = CGRectMake(secondAssetX, secondAssetY, secondAssetW, secondAssetH);
-    
-    CGFloat thirdAssetW = firstAssetW;
-    CGFloat thirdAssetH = firstAssetH;
-    CGFloat thirdAssetX = CGRectGetMaxX(_secondAsset.frame) + 1;
-    CGFloat thirdAssetY = firstAssetY;
-    _thirdAsset.frame = CGRectMake(thirdAssetX, thirdAssetY, thirdAssetW, thirdAssetH);
 }
 
 - (void)setUserInfo:(IOUserInfo *)userInfo {
@@ -130,6 +112,46 @@
     thirdAsset.unit = @"张";
     thirdAsset.iconName = @"voucher";
     thirdAsset.assetName = @"商家代金券";
+}
+
+#pragma mark - Masonry
+
++ (BOOL)requiresConstraintBasedLayout {
+    return YES;
+}
+
+- (void)updateConstraints {
+    UIView *superView = self;
+    NSInteger padding = 1;
+    
+    [self.firstAsset mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(superView.mas_top);
+        make.left.equalTo(superView.mas_left);
+        make.bottom.equalTo(superView.mas_bottom);
+        make.right.equalTo(_secondAsset.mas_left).offset(-padding);
+        
+        make.width.equalTo(@[_secondAsset, _thirdAsset]);
+    }];
+    
+    [self.secondAsset mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(superView.mas_top);
+        make.left.equalTo(_firstAsset.mas_right).offset(padding);
+        make.bottom.equalTo(superView.mas_bottom);
+        make.right.equalTo(_thirdAsset.mas_left).offset(-padding);
+        
+        make.width.equalTo(@[_firstAsset, _thirdAsset]);
+    }];
+    
+    [self.thirdAsset mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(superView.mas_top);
+        make.left.equalTo(_secondAsset.mas_right).offset(padding);
+        make.bottom.equalTo(superView.mas_bottom);
+        make.right.equalTo(superView.mas_right);
+        
+        make.width.equalTo(@[_firstAsset, _secondAsset]);
+    }];
+    
+    [super updateConstraints];
 }
 
 @end
@@ -191,16 +213,17 @@
 }
 
 - (void)updateConstraints {
+    UIView *superView = self;
     
     [self.userIcon mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.center.mas_equalTo(CGPointMake(0, -self.height/9));
-        make.size.mas_equalTo(CGSizeMake(self.height/3, self.height/3));
+        make.center.mas_equalTo(CGPointMake(0, -superView.height/9));
+        make.size.mas_equalTo(CGSizeMake(superView.height/3, superView.height/3));
     }];
     
     [self.userName mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.userIcon.mas_bottom).offset(10);
-        make.left.equalTo(self);
-        make.right.equalTo(self);
+        make.top.equalTo(_userIcon.mas_bottom).offset(10);
+        make.left.equalTo(superView.mas_left);
+        make.right.equalTo(superView.mas_right);
         make.height.equalTo(@17);
     }];
     
@@ -219,12 +242,16 @@
 @property (nonatomic, weak) UIImageView *assetIcon;
 @property (nonatomic, weak) UILabel *assetNameLabel;
 
+@property (nonatomic, strong) NSArray *upLabels;
+@property (nonatomic, strong) NSArray *downLabels;
+
 @end
 
 @implementation IOAssetView
 
 #pragma mark - privacy
 - (instancetype)initWithFrame:(CGRect)frame {
+    NSLog(@"%f %f", frame.size.width, frame.size.height);
     if (self = [super initWithFrame:frame]) {
         self.backgroundColor = [UIColor whiteColor];
         [self setupAllChildView];
@@ -234,30 +261,17 @@
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-    
-    CGFloat countLabelW = self.width *0.5;
-    CGFloat countLabelH = 20;
-    CGFloat countLabelX = 0;
-    CGFloat countLabelY = 12;
-    _countLabel.frame = CGRectMake(countLabelX, countLabelY, countLabelW, countLabelH);
-    
-    CGFloat unitLabelW = 15;
-    CGFloat unitLabelH = 15;
-    CGFloat unitLabelX = CGRectGetMaxX(_countLabel.frame) + 5;
-    CGFloat unitLabelY = countLabelY + 5;
-    _unitLabel.frame = CGRectMake(unitLabelX, unitLabelY, unitLabelW, unitLabelH);
-    
-    CGFloat assetIconW = 20;
-    CGFloat assetIconH = 17;
-    CGFloat assetIconX = 25;
-    CGFloat assetIconY = 40;
-    _assetIcon.frame = CGRectMake(assetIconX, assetIconY, assetIconW, assetIconH);
-    
-    CGFloat assetNameLabelW = 85;
-    CGFloat assetNameLabelH = 20;
-    CGFloat assetNameLabelX = CGRectGetMaxX(_assetIcon.frame) + 5;
-    CGFloat assetNameLabelY = 39;
-    _assetNameLabel.frame = CGRectMake(assetNameLabelX, assetNameLabelY, assetNameLabelW, assetNameLabelH);
+//    CGFloat assetIconW = 20;
+//    CGFloat assetIconH = 17;
+//    CGFloat assetIconX = 25;
+//    CGFloat assetIconY = 40;
+//    _assetIcon.frame = CGRectMake(assetIconX, assetIconY, assetIconW, assetIconH);
+//    
+//    CGFloat assetNameLabelW = 85;
+//    CGFloat assetNameLabelH = 20;
+//    CGFloat assetNameLabelX = CGRectGetMaxX(_assetIcon.frame) + 5;
+//    CGFloat assetNameLabelY = 39;
+//    _assetNameLabel.frame = CGRectMake(assetNameLabelX, assetNameLabelY, assetNameLabelW, assetNameLabelH);
 }
 
 #pragma mark - public
@@ -300,6 +314,8 @@
     [self addSubview:unitLabel];
     _unitLabel = unitLabel;
     
+    self.upLabels = @[countLabel, unitLabel];
+    
     UIImageView *assetIcon = [[UIImageView alloc] init];
     [self addSubview:assetIcon];
     _assetIcon = assetIcon;
@@ -309,6 +325,59 @@
     assetNameLabel.textAlignment = NSTextAlignmentLeft;
     [self addSubview:assetNameLabel];
     _assetNameLabel = assetNameLabel;
+    
+    self.downLabels = @[assetIcon, assetNameLabel];
+}
+
+#pragma mark - Masonry
+
++ (BOOL)requiresConstraintBasedLayout {
+    return YES;
+}
+
+- (void)updateConstraints {
+    [self.countLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.mas_left);
+        make.right.equalTo(self.unitLabel.mas_left).offset(-5);
+        
+        make.height.mas_equalTo(17);
+        make.width.equalTo(self.unitLabel.mas_width);
+    }];
+    
+    [self.unitLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.countLabel.mas_right).offset(5);
+        make.right.equalTo(self.mas_right);
+        
+        make.height.mas_equalTo(13);
+        make.width.equalTo(self.countLabel.mas_width);
+    }];
+    
+    [self.upLabels mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.baseline.equalTo(self.mas_centerY).offset(-5);
+    }];
+    
+    [self.assetIcon mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self);
+//        make.right.equalTo(self.assetNameLabel.mas_left).offset(-5);
+        
+        make.width.mas_equalTo(20);
+        make.height.mas_equalTo(17);
+    }];
+    
+    [self.assetNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.equalTo(self.assetIcon.mas_right).offset(5);
+        make.right.equalTo(self);
+        
+        make.width.mas_equalTo(85);
+        make.height.mas_equalTo(20);
+    }];
+    
+    [self.downLabels mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.baseline.equalTo(self.mas_centerY).offset(25);
+//        make.
+    }];
+    
+    [super updateConstraints];
 }
 
 @end

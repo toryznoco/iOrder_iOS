@@ -12,8 +12,6 @@
 #import "IOUserInfo.h"
 #import "IOProfileCell.h"
 
-#import "Masonry.h"
-
 @interface IOProfileViewController ()
 
 @property (nonatomic, weak) IOProfileHeaderView *profileHeaderView;
