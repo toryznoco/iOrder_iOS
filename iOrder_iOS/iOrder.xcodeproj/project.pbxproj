@@ -36,6 +36,7 @@
 		CA218FE21CEB5C5E00627FBD /* YWJDoubleTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = CA218FE11CEB5C5E00627FBD /* YWJDoubleTableView.m */; };
 		CA280A1E1CFB1C8500644670 /* YWJShoppingCartParam.m in Sources */ = {isa = PBXBuildFile; fileRef = CA280A1D1CFB1C8500644670 /* YWJShoppingCartParam.m */; settings = {ASSET_TAGS = (); }; };
 		CA280A211CFB1D5C00644670 /* YWJShoppingCartTool.m in Sources */ = {isa = PBXBuildFile; fileRef = CA280A201CFB1D5C00644670 /* YWJShoppingCartTool.m */; settings = {ASSET_TAGS = (); }; };
+		CA41C87A1D2BF0C90092921E /* UIView+Masonry_YWJ.m in Sources */ = {isa = PBXBuildFile; fileRef = CA41C8791D2BF0C90092921E /* UIView+Masonry_YWJ.m */; settings = {ASSET_TAGS = (); }; };
 		CA5CD0541CF4486300324C92 /* IOUserInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = CA5CD0531CF4486300324C92 /* IOUserInfo.m */; };
 		CA6539561CBD40E6000972E2 /* IONewFeatureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA6539551CBD40E6000972E2 /* IONewFeatureViewController.m */; };
 		CA6539591CBD44CF000972E2 /* YWJNewFeatureScrollPage.m in Sources */ = {isa = PBXBuildFile; fileRef = CA6539581CBD44CF000972E2 /* YWJNewFeatureScrollPage.m */; };
@@ -146,6 +147,8 @@
 		CA280A1D1CFB1C8500644670 /* YWJShoppingCartParam.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWJShoppingCartParam.m; sourceTree = "<group>"; };
 		CA280A1F1CFB1D5C00644670 /* YWJShoppingCartTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWJShoppingCartTool.h; sourceTree = "<group>"; };
 		CA280A201CFB1D5C00644670 /* YWJShoppingCartTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWJShoppingCartTool.m; sourceTree = "<group>"; };
+		CA41C8781D2BF0C90092921E /* UIView+Masonry_YWJ.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Masonry_YWJ.h"; sourceTree = "<group>"; };
+		CA41C8791D2BF0C90092921E /* UIView+Masonry_YWJ.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Masonry_YWJ.m"; sourceTree = "<group>"; };
 		CA5CD0521CF4486300324C92 /* IOUserInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOUserInfo.h; sourceTree = "<group>"; };
 		CA5CD0531CF4486300324C92 /* IOUserInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOUserInfo.m; sourceTree = "<group>"; };
 		CA6539541CBD40E6000972E2 /* IONewFeatureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IONewFeatureViewController.h; sourceTree = "<group>"; };
@@ -738,6 +741,8 @@
 				CAE8F0641CB94170005618B0 /* UIView+YWJFrame.m */,
 				CA7069C91CE5F564007C5F3F /* UIBarButtonItem+IOBarButtonItem.h */,
 				CA7069CA1CE5F564007C5F3F /* UIBarButtonItem+IOBarButtonItem.m */,
+				CA41C8781D2BF0C90092921E /* UIView+Masonry_YWJ.h */,
+				CA41C8791D2BF0C90092921E /* UIView+Masonry_YWJ.m */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -947,6 +952,7 @@
 				CA218FDF1CEB433F00627FBD /* IOShopOptionView.m in Sources */,
 				CA218FDC1CEB3B0C00627FBD /* IOHomeHeaderView.m in Sources */,
 				CAE8F0831CB94170005618B0 /* main.m in Sources */,
+				CA41C87A1D2BF0C90092921E /* UIView+Masonry_YWJ.m in Sources */,
 				9A8CC3261CDF779B005E19D9 /* IOTransmitters.m in Sources */,
 				CAB149DC1CFF10AE00561B31 /* YWJShoppingCartInfoParam.m in Sources */,
 				CAE8F0811CB94170005618B0 /* UIView+YWJFrame.m in Sources */,

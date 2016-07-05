@@ -9,6 +9,7 @@
 #import "IOProfileHeaderView.h"
 
 #import "IOUserInfo.h"
+#import "UIView+Masonry_YWJ.h"
 
 #pragma mark - implementation IOProfileHeaderView
 @interface IOProfileHeaderView ()
@@ -251,7 +252,6 @@
 
 #pragma mark - privacy
 - (instancetype)initWithFrame:(CGRect)frame {
-    NSLog(@"%f %f", frame.size.width, frame.size.height);
     if (self = [super initWithFrame:frame]) {
         self.backgroundColor = [UIColor whiteColor];
         [self setupAllChildView];
@@ -261,17 +261,6 @@
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-//    CGFloat assetIconW = 20;
-//    CGFloat assetIconH = 17;
-//    CGFloat assetIconX = 25;
-//    CGFloat assetIconY = 40;
-//    _assetIcon.frame = CGRectMake(assetIconX, assetIconY, assetIconW, assetIconH);
-//    
-//    CGFloat assetNameLabelW = 85;
-//    CGFloat assetNameLabelH = 20;
-//    CGFloat assetNameLabelX = CGRectGetMaxX(_assetIcon.frame) + 5;
-//    CGFloat assetNameLabelY = 39;
-//    _assetNameLabel.frame = CGRectMake(assetNameLabelX, assetNameLabelY, assetNameLabelW, assetNameLabelH);
 }
 
 #pragma mark - public
@@ -322,7 +311,7 @@
     
     UILabel *assetNameLabel = [[UILabel alloc] init];
     assetNameLabel.font = [UIFont systemFontOfSize:13];
-    assetNameLabel.textAlignment = NSTextAlignmentLeft;
+    assetNameLabel.textAlignment = NSTextAlignmentCenter;
     [self addSubview:assetNameLabel];
     _assetNameLabel = assetNameLabel;
     
@@ -343,7 +332,7 @@
         make.height.mas_equalTo(17);
         make.width.equalTo(self.unitLabel.mas_width);
     }];
-    
+
     [self.unitLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.countLabel.mas_right).offset(5);
         make.right.equalTo(self.mas_right);
@@ -351,30 +340,22 @@
         make.height.mas_equalTo(13);
         make.width.equalTo(self.countLabel.mas_width);
     }];
-    
+
     [self.upLabels mas_updateConstraints:^(MASConstraintMaker *make) {
         make.baseline.equalTo(self.mas_centerY).offset(-5);
     }];
-    
     [self.assetIcon mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self);
-//        make.right.equalTo(self.assetNameLabel.mas_left).offset(-5);
-        
-        make.width.mas_equalTo(20);
-        make.height.mas_equalTo(17);
+        make.size.mas_equalTo(CGSizeMake(20, 17));
+    }];
+
+    [self.assetNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.size.mas_equalTo(CGSizeMake(70, 20));
     }];
     
-    [self.assetNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.left.equalTo(self.assetIcon.mas_right).offset(5);
-        make.right.equalTo(self);
-        
-        make.width.mas_equalTo(85);
-        make.height.mas_equalTo(20);
-    }];
+    [self distributeSpacingHorizontallyWith:self.downLabels];
     
     [self.downLabels mas_updateConstraints:^(MASConstraintMaker *make) {
         make.baseline.equalTo(self.mas_centerY).offset(25);
-//        make.
     }];
     
     [super updateConstraints];
