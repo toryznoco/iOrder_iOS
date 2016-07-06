@@ -253,6 +253,7 @@
 #pragma mark - privacy
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
+        [self setTranslatesAutoresizingMaskIntoConstraints:NO];
         self.backgroundColor = [UIColor whiteColor];
         [self setupAllChildView];
     }
@@ -293,6 +294,7 @@
 
 - (void)setupAllChildView {
     UILabel *countLabel = [[UILabel alloc] init];
+    
     countLabel.textAlignment = NSTextAlignmentRight;
     [self addSubview:countLabel];
     _countLabel = countLabel;
@@ -319,7 +321,6 @@
 }
 
 #pragma mark - Masonry
-
 + (BOOL)requiresConstraintBasedLayout {
     return YES;
 }
