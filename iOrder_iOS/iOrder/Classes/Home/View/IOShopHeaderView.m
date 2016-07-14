@@ -7,7 +7,6 @@
 //
 
 #import "IOShopHeaderView.h"
-#import "IOShopOptionView.h"
 
 #pragma mark - implementation IOShopHeaderView
 #import "IOShop.h"

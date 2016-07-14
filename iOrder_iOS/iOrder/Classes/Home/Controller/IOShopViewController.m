@@ -23,7 +23,7 @@
 #import "UIBarButtonItem+IOBarButtonItem.h"
 #import "IOShopHeaderView.h"
 #import "YWJDoubleTableView.h"
-#import "IOShopOptionView.h"
+#import "IOSegmentScrollView.h"
 
 #define kHeaderHeight 136
 
@@ -34,7 +34,6 @@
 @property (nonatomic, strong) IOShoppingCartInfo *shoppingCartInfo;
 
 @property (nonatomic, weak) IOShopHeaderView *shopHeaderView;
-@property (nonatomic, weak) IOShopOptionView *shopOptionView;
 @property (nonatomic, weak) YWJDoubleTableView *doubleTableView;
 @property (nonatomic, weak) IOShoppingCartView *shoppingCartView;
 
@@ -98,18 +97,31 @@
     
     [self setupShopHeaderView];
     
-    [self setupOptionView];
-    
-    [self setupDoubleTableView];
+    [self setupSegmentScrollView];
     
     [self setUpShoppingCartView];
 }
 
-- (void)setupDoubleTableView {
+- (void)setupSegmentScrollView {
+//    self.automaticallyAdjustsScrollViewInsets = NO;
+    
+    NSMutableArray *subViewArray = [NSMutableArray array];
     YWJDoubleTableView *doubleTableView = [[YWJDoubleTableView alloc] initWithFrame:CGRectMake(0, kHeaderHeight + 40, self.view.width, self.view.height - kHeaderHeight - 44 - 40)];
     doubleTableView.delegate = self;
     _doubleTableView = doubleTableView;
-    [self.view addSubview:doubleTableView];
+    [subViewArray addObject:doubleTableView];
+    for (NSInteger i = 0; i < 2; i++) {
+        UIView *view = [[UIView alloc] init];
+        if (i == 0) {
+            view.backgroundColor = [UIColor yellowColor];
+        } else if (i == 1) {
+            view.backgroundColor = [UIColor greenColor];
+        }
+        [subViewArray addObject:view];
+    }
+    
+    IOSegmentScrollView *scrollView = [[IOSegmentScrollView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(_shopHeaderView.frame), self.view.width, self.view.height - CGRectGetMaxY(_shopHeaderView.frame) - 54) titleArray:@[@"点菜", @"评价", @"商家"] contentViewArray:subViewArray];
+    [self.view addSubview:scrollView];
 }
 
 - (void)setupShopHeaderView {
@@ -117,12 +129,6 @@
     _shopHeaderView = shopHeaderView;
     shopHeaderView.shopInfo = self.shopInfo;
     [self.view addSubview:shopHeaderView];
-}
-
-- (void)setupOptionView {
-    IOShopOptionView *shopOptionView = [[IOShopOptionView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(_shopHeaderView.frame), self.view.width, 40)];
-    _shopOptionView = shopOptionView;
-    [self.view addSubview:shopOptionView];
 }
 
 - (void)setupNavigationItem {
