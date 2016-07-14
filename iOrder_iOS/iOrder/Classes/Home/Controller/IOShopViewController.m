@@ -120,7 +120,7 @@
         [subViewArray addObject:view];
     }
     
-    IOSegmentScrollView *scrollView = [[IOSegmentScrollView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(_shopHeaderView.frame), self.view.width, self.view.height - CGRectGetMaxY(_shopHeaderView.frame) - 54) titleArray:@[@"点菜", @"评价", @"商家"] contentViewArray:subViewArray];
+    IOSegmentScrollView *scrollView = [[IOSegmentScrollView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(_shopHeaderView.frame), self.view.width, self.view.height - CGRectGetMaxY(_shopHeaderView.frame) - 44) titleArray:@[@"点菜", @"评价", @"商家"] contentViewArray:subViewArray];
     [self.view addSubview:scrollView];
 }
 
