@@ -123,6 +123,10 @@
 #pragma mark - public
 
 - (void)setTotalPri:(CGFloat)totalPri {
+    if (totalPri == 0.00) {
+        return;
+    }
+    
     _totalPri = totalPri;
     
     _checkOutView.backgroundColor = [UIColor orangeColor];

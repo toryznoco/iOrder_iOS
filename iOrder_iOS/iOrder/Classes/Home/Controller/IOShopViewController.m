@@ -166,8 +166,6 @@
 
 - (void)loadShoppingCartInfosWithUserId:(NSInteger)userId shopId:(NSInteger)shopId {
     [YWJShoppingCartTool newShoppingCartInfosWithUserId:userId shopId:shopId Success:^(YWJShoppingCartInfoResult *shoppingCartInfos) {
-        YWJLog(@"%@", shoppingCartInfos);
-        YWJLog(@"%f %ld", shoppingCartInfos.totalPri, shoppingCartInfos.itmes.count);
         IOShoppingCartInfo *shoppingCartInfo = [[IOShoppingCartInfo alloc] init];
         shoppingCartInfo.totalPri = shoppingCartInfos.totalPri;
         
@@ -253,6 +251,8 @@
     if (suc == YES) {
         if (_dishInfos.count != 0) {
             [_dishInfos removeAllObjects];
+            [_shoppingCartInfo.itmes removeAllObjects];
+            _shoppingCartInfo.totalPri = 0;
             [self refreshView];
         }
     }

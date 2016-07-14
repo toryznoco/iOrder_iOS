@@ -55,8 +55,6 @@
     param.userId = userId;
     param.shopId = shopId;
     
-    YWJLog(@"%ld %ld", param.userId, param.shopId);
-    
     [IOHttpTool GET:@"http://normcore.net.cn/iorder/server/order!getCart.action" parameters:param.mj_keyValues success:^(id responseObject) {
         YWJShoppingCartInfoResult *result = [YWJShoppingCartInfoResult mj_objectWithKeyValues:responseObject];
         if (success) {
