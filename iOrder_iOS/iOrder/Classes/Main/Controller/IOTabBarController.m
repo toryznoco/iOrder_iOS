@@ -90,9 +90,9 @@
     item.unselectedTitleAttributes = unselTitleAttr;
 }
 
-- (void)orderVcWillDisappear:(IOHomeViewController *)orderVc {
-    [self setHidesBottomBarWhenPushed:YES];
-}
+//- (void)orderVcWillDisappear:(IOHomeViewController *)orderVc {
+//    [self setHidesBottomBarWhenPushed:YES];
+//}
 
 - (void)customizeInterface {
 #warning comprehension later
