@@ -79,7 +79,7 @@
 
 - (void)setupTabBarTitleAttri {
     RDVTabBarItem *item = [RDVTabBarItem appearanceWhenContainedInInstancesOfClasses:@[[super class]]];
-    item.backgroundColor = [UIColor whiteColor];
+    item.backgroundColor = YWJRGBColor(244, 244, 244, 1);
     NSMutableDictionary *selTitleAttr = [NSMutableDictionary dictionary];
     selTitleAttr[NSForegroundColorAttributeName] = [UIColor orangeColor];
     selTitleAttr[NSFontAttributeName] = [UIFont systemFontOfSize:11];
@@ -90,9 +90,9 @@
     item.unselectedTitleAttributes = unselTitleAttr;
 }
 
-- (void)orderVcWillDisappear:(IOHomeViewController *)orderVc {
-    [self setHidesBottomBarWhenPushed:YES];
-}
+//- (void)orderVcWillDisappear:(IOHomeViewController *)orderVc {
+//    [self setHidesBottomBarWhenPushed:YES];
+//}
 
 - (void)customizeInterface {
 #warning comprehension later

@@ -8,9 +8,8 @@
 
 #import "YWJRootTool.h"
 
-#import "IOTabBarController.h"
 #import "IONewFeatureViewController.h"
-
+#import "IOLoginViewController.h"
 #import "YWJVersionTool.h"
 
 @implementation YWJRootTool
@@ -22,7 +21,10 @@
 //    NSString *lastVersion = [YWJVersionTool currentVersion];
 //    
 //    if ([currentVersion isEqualToString:lastVersion]) {
-        window.rootViewController = [[IOTabBarController alloc] init];
+    IOLoginViewController *loginVc = [[IOLoginViewController alloc] init];
+    UINavigationController *loginNav = [[UINavigationController alloc] initWithRootViewController:loginVc];
+    window.rootViewController = loginNav;
+//        window.rootViewController = [[IOTabBarController alloc] init];
 //    }else{
 //        window.rootViewController = [[IONewFeatureViewController alloc] init];
 //        [YWJVersionTool saveVersion:currentVersion];
