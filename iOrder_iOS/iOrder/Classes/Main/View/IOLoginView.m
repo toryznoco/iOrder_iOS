@@ -8,6 +8,10 @@
 
 #import "IOLoginView.h"
 
+#import "YWJLoginTool.h"
+#import "YWJLoginParam.h"
+#import "YWJLoginResult.h"
+
 #pragma mark - implementation IOLoginView
 
 @interface IOLoginView ()
@@ -112,6 +116,15 @@
 }
 
 - (void)loginBtnDidPressed:(UIButton *)btn {
+    YWJLoginParam *param = [[YWJLoginParam alloc] init];
+    param.userName = self.userName.text;
+    param.userPass = self.password.text;
+    [YWJLoginTool loginWithLoginParam:param success:^(YWJLoginResult *loginResult) {
+        NSLog(@"%ld", loginResult.code);
+    } failure:^(NSError *error) {
+        NSLog(@"%@", error);
+    }];
+    
     if ([self.delegate respondsToSelector:@selector(loginView:loginBtnDidPressed:)]) {
         [self.delegate loginView:self loginBtnDidPressed:btn];
     }
