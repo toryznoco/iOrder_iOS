@@ -66,6 +66,10 @@
 		CAE8F0921CB9461C005618B0 /* IOProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F0911CB9461C005618B0 /* IOProfileViewController.m */; };
 		CAE8F0951CB946E8005618B0 /* IONavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F0941CB946E8005618B0 /* IONavigationController.m */; };
 		CAE8F0AF1CB9680B005618B0 /* IOTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F0AE1CB9680B005618B0 /* IOTabBarController.m */; };
+		CAF439E81D63E289009D687A /* IOLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CAF439E71D63E289009D687A /* IOLoginViewController.m */; settings = {ASSET_TAGS = (); }; };
+		CAF439EB1D63E29A009D687A /* IORegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CAF439EA1D63E29A009D687A /* IORegisterViewController.m */; settings = {ASSET_TAGS = (); }; };
+		CAF439EE1D63E2CE009D687A /* IOLoginView.m in Sources */ = {isa = PBXBuildFile; fileRef = CAF439ED1D63E2CE009D687A /* IOLoginView.m */; settings = {ASSET_TAGS = (); }; };
+		CAF439F11D63E2DA009D687A /* IORegisterView.m in Sources */ = {isa = PBXBuildFile; fileRef = CAF439F01D63E2DA009D687A /* IORegisterView.m */; settings = {ASSET_TAGS = (); }; };
 		CAF4BFA71CF54E9F001E88F7 /* IOSubmitOrderView.m in Sources */ = {isa = PBXBuildFile; fileRef = CAF4BFA61CF54E9F001E88F7 /* IOSubmitOrderView.m */; };
 		CAF4BFAF1CF5B973001E88F7 /* IOSubmitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CAF4BFAD1CF5B973001E88F7 /* IOSubmitViewController.m */; };
 		CAF4BFB31CF5C5CD001E88F7 /* IOProfileCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CAF4BFB21CF5C5CD001E88F7 /* IOProfileCell.m */; };
@@ -210,6 +214,14 @@
 		CAE8F0971CB947D7005618B0 /* IOIOrder.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IOIOrder.pch; sourceTree = "<group>"; };
 		CAE8F0AD1CB9680B005618B0 /* IOTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOTabBarController.h; sourceTree = "<group>"; };
 		CAE8F0AE1CB9680B005618B0 /* IOTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOTabBarController.m; sourceTree = "<group>"; };
+		CAF439E61D63E289009D687A /* IOLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOLoginViewController.h; sourceTree = "<group>"; };
+		CAF439E71D63E289009D687A /* IOLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOLoginViewController.m; sourceTree = "<group>"; };
+		CAF439E91D63E29A009D687A /* IORegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IORegisterViewController.h; sourceTree = "<group>"; };
+		CAF439EA1D63E29A009D687A /* IORegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IORegisterViewController.m; sourceTree = "<group>"; };
+		CAF439EC1D63E2CE009D687A /* IOLoginView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOLoginView.h; sourceTree = "<group>"; };
+		CAF439ED1D63E2CE009D687A /* IOLoginView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOLoginView.m; sourceTree = "<group>"; };
+		CAF439EF1D63E2DA009D687A /* IORegisterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IORegisterView.h; sourceTree = "<group>"; };
+		CAF439F01D63E2DA009D687A /* IORegisterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IORegisterView.m; sourceTree = "<group>"; };
 		CAF4BFA51CF54E9F001E88F7 /* IOSubmitOrderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOSubmitOrderView.h; sourceTree = "<group>"; };
 		CAF4BFA61CF54E9F001E88F7 /* IOSubmitOrderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOSubmitOrderView.m; sourceTree = "<group>"; };
 		CAF4BFAC1CF5B973001E88F7 /* IOSubmitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOSubmitViewController.h; sourceTree = "<group>"; };
@@ -685,6 +697,10 @@
 				CAE8F0941CB946E8005618B0 /* IONavigationController.m */,
 				CAE8F0AD1CB9680B005618B0 /* IOTabBarController.h */,
 				CAE8F0AE1CB9680B005618B0 /* IOTabBarController.m */,
+				CAF439E61D63E289009D687A /* IOLoginViewController.h */,
+				CAF439E71D63E289009D687A /* IOLoginViewController.m */,
+				CAF439E91D63E29A009D687A /* IORegisterViewController.h */,
+				CAF439EA1D63E29A009D687A /* IORegisterViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -698,6 +714,10 @@
 				CAE8F0501CB94170005618B0 /* YWJTabBar.m */,
 				CAE8F0511CB94170005618B0 /* YWJTabBarButton.h */,
 				CAE8F0521CB94170005618B0 /* YWJTabBarButton.m */,
+				CAF439EC1D63E2CE009D687A /* IOLoginView.h */,
+				CAF439ED1D63E2CE009D687A /* IOLoginView.m */,
+				CAF439EF1D63E2DA009D687A /* IORegisterView.h */,
+				CAF439F01D63E2DA009D687A /* IORegisterView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -948,9 +968,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				9A4C584C1CFB130B00AD1330 /* IOOrdersParam.m in Sources */,
+				CAF439F11D63E2DA009D687A /* IORegisterView.m in Sources */,
 				CA9019911CE16B7A00AC5712 /* YWJDishesParam.m in Sources */,
+				CAF439E81D63E289009D687A /* IOLoginViewController.m in Sources */,
 				CA218FDC1CEB3B0C00627FBD /* IOHomeHeaderView.m in Sources */,
 				CAE8F0831CB94170005618B0 /* main.m in Sources */,
+				CAF439EB1D63E29A009D687A /* IORegisterViewController.m in Sources */,
 				CA41C87A1D2BF0C90092921E /* UIView+Masonry_YWJ.m in Sources */,
 				9A8CC3261CDF779B005E19D9 /* IOTransmitters.m in Sources */,
 				CAB149DC1CFF10AE00561B31 /* YWJShoppingCartInfoParam.m in Sources */,
@@ -986,6 +1009,7 @@
 				9A8CC3851CE3075E005E19D9 /* IOOrder.m in Sources */,
 				9A4C58441CF9805000AD1330 /* IOOrdersTool.m in Sources */,
 				9A8CC38A1CE572C8005E19D9 /* IOProfileHeaderView.m in Sources */,
+				CAF439EE1D63E2CE009D687A /* IOLoginView.m in Sources */,
 				CA9F01321CFC4C19007408D5 /* YWJSubmitOrderParam.m in Sources */,
 				9AFEED791CEC6DF70009528C /* IOSignInHeaderView.m in Sources */,
 				CAAC90B31CF67DDF00BB1AB9 /* IOSubmitCell.m in Sources */,
