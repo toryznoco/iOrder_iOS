@@ -12,6 +12,6 @@
 
 @property (nonatomic, assign) NSInteger userLevel;
 @property (nonatomic, copy) NSString *userName;
-@property (nonatomic, assign) NSInteger *userId;
+@property (nonatomic, assign) NSInteger userId;
 
 @end

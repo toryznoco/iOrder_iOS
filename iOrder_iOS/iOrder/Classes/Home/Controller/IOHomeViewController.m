@@ -18,6 +18,7 @@
 #import "IOShop.h"
 
 #import "MJRefresh.h"
+#import "MBProgressHUD.h"
 
 @interface IOHomeViewController ()<UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate>
 
@@ -35,6 +36,19 @@
         _shops = [NSMutableArray array];
     }
     return _shops;
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:animated];
+    hud.mode = MBProgressHUDModeCustomView;
+    
+    UIImage *image = [[UIImage imageNamed:@"Checkmark"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    hud.customView = [[UIImageView alloc] initWithImage:image];
+    hud.square = YES;
+    hud.labelText = NSLocalizedString(@"Login Successed", @"HUD done title");
+    [hud hide:YES afterDelay:1.0];
 }
 
 - (void)viewDidLoad {
