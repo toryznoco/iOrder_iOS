@@ -8,6 +8,11 @@
 
 #import "IOLoginView.h"
 
+#import "YWJLoginTool.h"
+#import "YWJLoginParam.h"
+#import "YWJLoginResult.h"
+#import "MBProgressHUD.h"
+
 #pragma mark - implementation IOLoginView
 
 @interface IOLoginView ()
@@ -112,9 +117,34 @@
 }
 
 - (void)loginBtnDidPressed:(UIButton *)btn {
-    if ([self.delegate respondsToSelector:@selector(loginView:loginBtnDidPressed:)]) {
-        [self.delegate loginView:self loginBtnDidPressed:btn];
-    }
+    YWJLoginParam *param = [[YWJLoginParam alloc] init];
+    param.userName = self.userName.text;
+    param.userPass = self.password.text;
+    
+    [YWJLoginTool loginWithLoginParam:param success:^(YWJLoginResult *loginResult) {
+        if (loginResult.code == 1) {
+            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.superview animated:YES];
+            
+            dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
+                [self doSomeWork];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [hud hide:YES afterDelay:2.];
+                    if ([self.delegate respondsToSelector:@selector(loginView:loginBtnDidPressed:)]) {
+                        [self.delegate loginView:self loginBtnDidPressed:btn];
+                    }
+                });
+            });
+        } else {
+            
+        }
+    } failure:^(NSError *error) {
+        NSLog(@"%@", error);
+    }];
+    
+}
+
+- (void)doSomeWork {
+    sleep(2.);
 }
 
 - (void)registerBtnDidPressed:(UIButton *)btn {
