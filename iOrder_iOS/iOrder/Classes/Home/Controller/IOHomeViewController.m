@@ -44,7 +44,7 @@
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:animated];
     hud.mode = MBProgressHUDModeCustomView;
     
-    UIImage *image = [[UIImage imageNamed:@"Checkmark"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    UIImage *image = [[UIImage imageNamed:@"success"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     hud.customView = [[UIImageView alloc] initWithImage:image];
     hud.square = YES;
     hud.labelText = NSLocalizedString(@"Login Successed", @"HUD done title");
