@@ -8,6 +8,7 @@
 
 #import "YWJRootTool.h"
 
+#import "YWJRootNavigationViewController.h"
 #import "IONewFeatureViewController.h"
 #import "IOLoginViewController.h"
 #import "YWJVersionTool.h"
@@ -22,7 +23,7 @@
 //    
 //    if ([currentVersion isEqualToString:lastVersion]) {
     IOLoginViewController *loginVc = [[IOLoginViewController alloc] init];
-    UINavigationController *loginNav = [[UINavigationController alloc] initWithRootViewController:loginVc];
+    YWJRootNavigationViewController *loginNav = [[YWJRootNavigationViewController alloc] initWithRootViewController:loginVc];
     window.rootViewController = loginNav;
 //        window.rootViewController = [[IOTabBarController alloc] init];
 //    }else{

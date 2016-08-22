@@ -22,6 +22,11 @@
     [super viewWillAppear:animated];
     
     [self.navigationController setNavigationBarHidden:NO];
+    UINavigationBar *navigationBar = self.navigationController.navigationBar;
+    
+//    去除导航栏下方的横线 透明
+    [navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
+    [navigationBar setShadowImage:[UIImage new]];
 }
 
 - (void)viewDidLoad {

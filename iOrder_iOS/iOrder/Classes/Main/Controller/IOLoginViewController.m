@@ -46,7 +46,14 @@
 - (void)refreshView {//刷新控制器的View
     self.view.backgroundColor = [UIColor whiteColor];
     
+    [self setupNavigationView];
+    
     [self setupAllChildView];
+}
+
+- (void)setupNavigationView {
+    UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain target:self action:nil];
+    self.navigationItem.backBarButtonItem = backItem;
 }
 
 - (void)setupAllChildView {//添加所有的子视图

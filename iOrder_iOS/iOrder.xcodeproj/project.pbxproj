@@ -57,6 +57,7 @@
 		CAC8FCA21D655F5200B455D7 /* YWJLoginResult.m in Sources */ = {isa = PBXBuildFile; fileRef = CAC8FCA11D655F5200B455D7 /* YWJLoginResult.m */; settings = {ASSET_TAGS = (); }; };
 		CAC8FCA51D65601A00B455D7 /* IOUser.m in Sources */ = {isa = PBXBuildFile; fileRef = CAC8FCA41D65601A00B455D7 /* IOUser.m */; settings = {ASSET_TAGS = (); }; };
 		CACD5CB11CE4119A00ADE187 /* IOShopCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CACD5CAC1CE4119A00ADE187 /* IOShopCell.m */; };
+		CAE310211D6AA1B4005287DC /* YWJRootNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE310201D6AA1B4005287DC /* YWJRootNavigationViewController.m */; settings = {ASSET_TAGS = (); }; };
 		CAE8F02C1CB940E2005618B0 /* iOrderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F02B1CB940E2005618B0 /* iOrderTests.m */; };
 		CAE8F0371CB940E2005618B0 /* iOrderUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F0361CB940E2005618B0 /* iOrderUITests.m */; };
 		CAE8F07B1CB94170005618B0 /* YWJBadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F04E1CB94170005618B0 /* YWJBadgeView.m */; };
@@ -197,6 +198,8 @@
 		CAC8FCA41D65601A00B455D7 /* IOUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOUser.m; sourceTree = "<group>"; };
 		CACD5CAB1CE4119A00ADE187 /* IOShopCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOShopCell.h; sourceTree = "<group>"; };
 		CACD5CAC1CE4119A00ADE187 /* IOShopCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOShopCell.m; sourceTree = "<group>"; };
+		CAE3101F1D6AA1B4005287DC /* YWJRootNavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWJRootNavigationViewController.h; sourceTree = "<group>"; };
+		CAE310201D6AA1B4005287DC /* YWJRootNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWJRootNavigationViewController.m; sourceTree = "<group>"; };
 		CAE8F00E1CB940E2005618B0 /* iOrder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOrder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CAE8F0221CB940E2005618B0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CAE8F0271CB940E2005618B0 /* iOrderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iOrderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -356,6 +359,7 @@
 		9A8CC3321CE0AF84005E19D9 /* Root */ = {
 			isa = PBXGroup;
 			children = (
+				CAE3101E1D6AA185005287DC /* Controller */,
 				9A8CC3331CE0AF84005E19D9 /* YWJRootTool.h */,
 				9A8CC3341CE0AF84005E19D9 /* YWJRootTool.m */,
 			);
@@ -650,6 +654,15 @@
 				CA6539581CBD44CF000972E2 /* YWJNewFeatureScrollPage.m */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		CAE3101E1D6AA185005287DC /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				CAE3101F1D6AA1B4005287DC /* YWJRootNavigationViewController.h */,
+				CAE310201D6AA1B4005287DC /* YWJRootNavigationViewController.m */,
+			);
+			path = Controller;
 			sourceTree = "<group>";
 		};
 		CAE8F0051CB940E2005618B0 = {
@@ -1035,6 +1048,7 @@
 				CAF4BFA71CF54E9F001E88F7 /* IOSubmitOrderView.m in Sources */,
 				CAC8FCA21D655F5200B455D7 /* YWJLoginResult.m in Sources */,
 				CA218FE21CEB5C5E00627FBD /* YWJDoubleTableView.m in Sources */,
+				CAE310211D6AA1B4005287DC /* YWJRootNavigationViewController.m in Sources */,
 				9A8CC3821CE306B4005E19D9 /* IOOrderViewCell.m in Sources */,
 				9A8CC33E1CE0AF84005E19D9 /* IOHttpTool.m in Sources */,
 				9A8CC3431CE0AF84005E19D9 /* YWJShopsTool.m in Sources */,
