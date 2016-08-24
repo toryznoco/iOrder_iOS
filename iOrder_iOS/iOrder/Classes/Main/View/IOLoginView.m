@@ -139,7 +139,6 @@
                     hud.labelText = NSLocalizedString(@"Login Failed", @"HUD done title");
                     [hud hide:YES afterDelay:1.f];
                 }
-                
             });
         });
     } failure:^(NSError *error) {

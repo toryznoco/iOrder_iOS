@@ -31,6 +31,14 @@
 
 #pragma mark - privacy
 
+- (instancetype)init {
+    if (self = [super init]) {
+        [self setupProgressView];
+    }
+    
+    return self;
+}
+
 - (NSMutableArray *)shops {
     if (!_shops) {
         _shops = [NSMutableArray array];
@@ -41,14 +49,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:animated];
-    hud.mode = MBProgressHUDModeCustomView;
-    
-    UIImage *image = [[UIImage imageNamed:@"success"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    hud.customView = [[UIImageView alloc] initWithImage:image];
-    hud.square = YES;
-    hud.labelText = NSLocalizedString(@"Login Successed", @"HUD done title");
-    [hud hide:YES afterDelay:1.0];
+    [self.navigationController.navigationBar setBarTintColor:kIOThemeColors];
 }
 
 - (void)viewDidLoad {
@@ -123,8 +124,20 @@
 
 #pragma mark - custom method
 
+- (void)setupProgressView {
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.mode = MBProgressHUDModeCustomView;
+    
+    UIImage *image = [[UIImage imageNamed:@"success"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    hud.customView = [[UIImageView alloc] initWithImage:image];
+    hud.square = YES;
+    hud.labelText = NSLocalizedString(@"Login Successed", @"HUD done title");
+    [hud hide:YES afterDelay:1.0];
+}
+
 - (void)setupNavigationView {
     [self.navigationController.navigationBar setBarTintColor:kIOThemeColors];
+    
     UIBarButtonItem *locatingBtn = [UIBarButtonItem initWithNormalImage:@"address_icon" target:self action:@selector(locatingBtnClick:) width:15 height:20];
     UIBarButtonItem *locatingLabel = [UIBarButtonItem initWithtitleColor:[UIColor whiteColor] target:self action:@selector(locatingBtnClick:) title:@"定位"];
     self.navigationItem.rightBarButtonItems = @[locatingBtn, locatingLabel];

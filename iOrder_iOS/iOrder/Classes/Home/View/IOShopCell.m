@@ -132,7 +132,7 @@
     return cell;
 }
 
-- (void)setDish:(IODish *)dish {
+- (void)setDish:(IODish *)dish {//刷新Cell内的所有数据
     _dish = dish;
     
     [self setupDish];
@@ -227,6 +227,10 @@
     
     _dishPrice.text = [NSString stringWithFormat:@"¥%.2f", _dish.price];
     _dishPrice.font = [UIFont systemFontOfSize:15];
+    
+    _unOrderBtn.hidden = YES;
+    _dishCount.text = @"0";
+    _dishCount.hidden = YES;
 }
 
 - (void)orderBtnClicked:(UIButton *)btn {

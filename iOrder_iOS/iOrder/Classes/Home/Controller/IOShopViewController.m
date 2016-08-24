@@ -31,6 +31,7 @@
 
 @property (nonatomic, strong) NSArray *dataArray;
 @property (nonatomic, strong) NSMutableArray *dishInfos;
+@property (nonatomic, weak) NSMutableArray *subViewArray;
 @property (nonatomic, strong) IOShoppingCartInfo *shoppingCartInfo;
 
 @property (nonatomic, weak) IOShopHeaderView *shopHeaderView;
@@ -45,8 +46,16 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    NSLog(@"nimeide hhhhhh");
+    self.view.backgroundColor = [UIColor whiteColor];
     
     [self refreshView];
+    
+    [self setupNavigationItem];
+    
+    [self setupShopHeaderView];
+    
+    [self setupSegmentScrollView];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -86,30 +95,31 @@
 #pragma mark - custom methods
 
 - (void)refreshView {
-    self.view.backgroundColor = [UIColor whiteColor];
-    
     //    初始化数组和加载数据
     [self dishInfos];
     [self loadDishInfosWithShopId:self.shopId];
     [self loadShoppingCartInfosWithUserId:1 shopId:_shopId];
-    
-    [self setupNavigationItem];
-    
-    [self setupShopHeaderView];
-    
-    [self setupSegmentScrollView];
-    
-    [self setUpShoppingCartView];
 }
 
-- (void)setupSegmentScrollView {
-//    self.automaticallyAdjustsScrollViewInsets = NO;
+- (void)setupSegmentScrollView {//设置SegmentScrollView及其内容
     
     NSMutableArray *subViewArray = [NSMutableArray array];
-    YWJDoubleTableView *doubleTableView = [[YWJDoubleTableView alloc] initWithFrame:CGRectMake(0, kHeaderHeight + 40, self.view.width, self.view.height - kHeaderHeight - 44 - 40)];
+    
+//    1、添加点菜View
+    UIView *orderView = [[UIView alloc] initWithFrame:CGRectMake(0, kHeaderHeight + 44, self.view.width, self.view.height - kHeaderHeight - 44)];
+    [subViewArray addObject:orderView];
+//    a、添加DoubleTableView
+    YWJDoubleTableView *doubleTableView = [[YWJDoubleTableView alloc] initWithFrame:CGRectMake(0, 0, orderView.width, orderView.height - 54)];
     doubleTableView.delegate = self;
     _doubleTableView = doubleTableView;
-    [subViewArray addObject:doubleTableView];
+    [orderView addSubview:doubleTableView];
+//    b、添加购物车view
+    IOShoppingCartView *shoppingCartView = [[IOShoppingCartView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(doubleTableView.frame), orderView.width, 54)];
+    shoppingCartView.delegate = self;
+    _shoppingCartView = shoppingCartView;
+    [orderView addSubview:shoppingCartView];
+    
+//    2、3、
     for (NSInteger i = 0; i < 2; i++) {
         UIView *view = [[UIView alloc] init];
         if (i == 0) {
@@ -120,7 +130,8 @@
         [subViewArray addObject:view];
     }
     
-    IOSegmentScrollView *scrollView = [[IOSegmentScrollView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(_shopHeaderView.frame), self.view.width, self.view.height - CGRectGetMaxY(_shopHeaderView.frame) - 44) titleArray:@[@"点菜", @"评价", @"商家"] contentViewArray:subViewArray];
+//    4、添加SegmentScrollView以便左右滑动
+    IOSegmentScrollView *scrollView = [[IOSegmentScrollView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(_shopHeaderView.frame), self.view.width, self.view.height - kHeaderHeight) titleArray:@[@"点菜", @"评价", @"店铺详情"] contentViewArray:subViewArray];
     [self.view addSubview:scrollView];
 }
 
@@ -184,19 +195,10 @@
         shoppingCartInfo.itmes = itemsArray;
         _shoppingCartInfo = shoppingCartInfo;
         _shoppingCartView.totalPri = _shoppingCartInfo.totalPri;
+        NSLog(@"%ld %f", shoppingCartInfo.itmes.count, _shoppingCartInfo.totalPri);
     } failure:^(NSError *error) {
         YWJLog(@"%@", error);
     }];
-}
-
-/**
- *  购物栏的View
- */
-- (void)setUpShoppingCartView {
-    IOShoppingCartView *shoppingCartView = [[IOShoppingCartView alloc] initWithFrame:CGRectMake(0, self.view.height - 54, self.view.width, 54)];
-    shoppingCartView.delegate = self;
-    _shoppingCartView = shoppingCartView;
-    [self.view addSubview:shoppingCartView];
 }
 
 - (void)collectBtnClick {
@@ -248,6 +250,13 @@
     submitVc.shopInfo = self.shopInfo;
     submitVc.delegate = self;
     submitVc.totalPrice = shoppingCartView.totalPrice.text;
+    
+//    将doubleTableView的代理设为空
+    _doubleTableView.leftTableView.delegate = nil;
+    _doubleTableView.leftTableView.dataSource = nil;
+    _doubleTableView.rightTableView.delegate = nil;
+    _doubleTableView.rightTableView.dataSource = nil;
+    
     [self.navigationController pushViewController:submitVc animated:YES];
 }
 
