@@ -24,6 +24,8 @@
 #import "IOShopHeaderView.h"
 #import "YWJDoubleTableView.h"
 #import "IOSegmentScrollView.h"
+#import "IOShopEvaluate.h"
+#import "IOShopDetail.h"
 
 #define kHeaderHeight 136
 
@@ -46,7 +48,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    NSLog(@"nimeide hhhhhh");
+    
     self.view.backgroundColor = [UIColor whiteColor];
     
     [self refreshView];
@@ -104,9 +106,10 @@
 - (void)setupSegmentScrollView {//设置SegmentScrollView及其内容
     
     NSMutableArray *subViewArray = [NSMutableArray array];
+    CGRect subViewFrame = CGRectMake(0, kHeaderHeight + 44, self.view.width, self.view.height - kHeaderHeight - 44);
     
 //    1、添加点菜View
-    UIView *orderView = [[UIView alloc] initWithFrame:CGRectMake(0, kHeaderHeight + 44, self.view.width, self.view.height - kHeaderHeight - 44)];
+    UIView *orderView = [[UIView alloc] initWithFrame:subViewFrame];
     [subViewArray addObject:orderView];
 //    a、添加DoubleTableView
     YWJDoubleTableView *doubleTableView = [[YWJDoubleTableView alloc] initWithFrame:CGRectMake(0, 0, orderView.width, orderView.height - 54)];
@@ -119,16 +122,14 @@
     _shoppingCartView = shoppingCartView;
     [orderView addSubview:shoppingCartView];
     
-//    2、3、
-    for (NSInteger i = 0; i < 2; i++) {
-        UIView *view = [[UIView alloc] init];
-        if (i == 0) {
-            view.backgroundColor = [UIColor yellowColor];
-        } else if (i == 1) {
-            view.backgroundColor = [UIColor greenColor];
-        }
-        [subViewArray addObject:view];
-    }
+//    2、添加商店评价界面
+    IOShopEvaluate *evaluateView = [[IOShopEvaluate alloc] initWithFrame:subViewFrame];
+    evaluateView.backgroundColor = [UIColor yellowColor];
+    [subViewArray addObject:evaluateView];
+    
+//    3、添加店铺详情界面
+    IOShopDetail *detailView = [[IOShopDetail alloc] initWithFrame:subViewFrame];
+    [subViewArray addObject:detailView];
     
 //    4、添加SegmentScrollView以便左右滑动
     IOSegmentScrollView *scrollView = [[IOSegmentScrollView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(_shopHeaderView.frame), self.view.width, self.view.height - kHeaderHeight) titleArray:@[@"点菜", @"评价", @"店铺详情"] contentViewArray:subViewArray];

@@ -58,6 +58,9 @@
 		CAC8FCA51D65601A00B455D7 /* IOUser.m in Sources */ = {isa = PBXBuildFile; fileRef = CAC8FCA41D65601A00B455D7 /* IOUser.m */; settings = {ASSET_TAGS = (); }; };
 		CACD5CB11CE4119A00ADE187 /* IOShopCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CACD5CAC1CE4119A00ADE187 /* IOShopCell.m */; };
 		CAE310211D6AA1B4005287DC /* YWJRootNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE310201D6AA1B4005287DC /* YWJRootNavigationViewController.m */; settings = {ASSET_TAGS = (); }; };
+		CAE795B61D6D1DB600CD999F /* IOShopEvaluate.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE795B51D6D1DB600CD999F /* IOShopEvaluate.m */; settings = {ASSET_TAGS = (); }; };
+		CAE795B91D6D1DCE00CD999F /* IOShopDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE795B81D6D1DCE00CD999F /* IOShopDetail.m */; settings = {ASSET_TAGS = (); }; };
+		CAE795BC1D6D413800CD999F /* IOShopDetailCellInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE795BB1D6D413800CD999F /* IOShopDetailCellInfo.m */; settings = {ASSET_TAGS = (); }; };
 		CAE8F02C1CB940E2005618B0 /* iOrderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F02B1CB940E2005618B0 /* iOrderTests.m */; };
 		CAE8F0371CB940E2005618B0 /* iOrderUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F0361CB940E2005618B0 /* iOrderUITests.m */; };
 		CAE8F07B1CB94170005618B0 /* YWJBadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F04E1CB94170005618B0 /* YWJBadgeView.m */; };
@@ -200,6 +203,12 @@
 		CACD5CAC1CE4119A00ADE187 /* IOShopCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOShopCell.m; sourceTree = "<group>"; };
 		CAE3101F1D6AA1B4005287DC /* YWJRootNavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWJRootNavigationViewController.h; sourceTree = "<group>"; };
 		CAE310201D6AA1B4005287DC /* YWJRootNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWJRootNavigationViewController.m; sourceTree = "<group>"; };
+		CAE795B41D6D1DB600CD999F /* IOShopEvaluate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOShopEvaluate.h; sourceTree = "<group>"; };
+		CAE795B51D6D1DB600CD999F /* IOShopEvaluate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOShopEvaluate.m; sourceTree = "<group>"; };
+		CAE795B71D6D1DCE00CD999F /* IOShopDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOShopDetail.h; sourceTree = "<group>"; };
+		CAE795B81D6D1DCE00CD999F /* IOShopDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOShopDetail.m; sourceTree = "<group>"; };
+		CAE795BA1D6D413800CD999F /* IOShopDetailCellInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOShopDetailCellInfo.h; sourceTree = "<group>"; };
+		CAE795BB1D6D413800CD999F /* IOShopDetailCellInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOShopDetailCellInfo.m; sourceTree = "<group>"; };
 		CAE8F00E1CB940E2005618B0 /* iOrder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOrder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CAE8F0221CB940E2005618B0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CAE8F0271CB940E2005618B0 /* iOrderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iOrderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -433,6 +442,8 @@
 				CA8D2C6C1CE56E44006E3D2A /* IOShoppingViewInfo.m */,
 				CAB149D71CFF0DB600561B31 /* IOShoppingCartInfo.h */,
 				CAB149D81CFF0DB600561B31 /* IOShoppingCartInfo.m */,
+				CAE795BA1D6D413800CD999F /* IOShopDetailCellInfo.h */,
+				CAE795BB1D6D413800CD999F /* IOShopDetailCellInfo.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -462,6 +473,10 @@
 				CAAC90B21CF67DDF00BB1AB9 /* IOSubmitCell.m */,
 				CA0CE2111D37717F00AEE9EF /* IOSegmentScrollView.h */,
 				CA0CE2121D37717F00AEE9EF /* IOSegmentScrollView.m */,
+				CAE795B41D6D1DB600CD999F /* IOShopEvaluate.h */,
+				CAE795B51D6D1DB600CD999F /* IOShopEvaluate.m */,
+				CAE795B71D6D1DCE00CD999F /* IOShopDetail.h */,
+				CAE795B81D6D1DCE00CD999F /* IOShopDetail.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1044,6 +1059,7 @@
 				CA280A211CFB1D5C00644670 /* YWJShoppingCartTool.m in Sources */,
 				CA9019921CE16B7A00AC5712 /* YWJDishesResult.m in Sources */,
 				CA6539591CBD44CF000972E2 /* YWJNewFeatureScrollPage.m in Sources */,
+				CAE795B61D6D1DB600CD999F /* IOShopEvaluate.m in Sources */,
 				9A4C58491CF989D900AD1330 /* IOOrderResult.m in Sources */,
 				CAF4BFA71CF54E9F001E88F7 /* IOSubmitOrderView.m in Sources */,
 				CAC8FCA21D655F5200B455D7 /* YWJLoginResult.m in Sources */,
@@ -1066,6 +1082,8 @@
 				CAE8F0951CB946E8005618B0 /* IONavigationController.m in Sources */,
 				9A8CC36C1CE0AFC7005E19D9 /* IOShopViewController.m in Sources */,
 				CA9F01351CFC4C7E007408D5 /* YWJSubmitOrderTool.m in Sources */,
+				CAE795B91D6D1DCE00CD999F /* IOShopDetail.m in Sources */,
+				CAE795BC1D6D413800CD999F /* IOShopDetailCellInfo.m in Sources */,
 				9A8CC3851CE3075E005E19D9 /* IOOrder.m in Sources */,
 				9A4C58441CF9805000AD1330 /* IOOrdersTool.m in Sources */,
 				9A8CC38A1CE572C8005E19D9 /* IOProfileHeaderView.m in Sources */,
