@@ -21,6 +21,7 @@
 @interface IOShopDetailCell : UITableViewCell
 
 @property (nonatomic, strong) IOShopDetailCellInfo *info;
+@property (nonatomic, weak) UILabel *detailLabel;
 
 + (instancetype)cellWithTableView:(UITableView *)tableView;
 
@@ -31,6 +32,7 @@
 @interface IOShopDetailCell1 : UITableViewCell
 
 @property (nonatomic, strong) IOShopDetailCellInfo *info;
+@property (nonatomic, weak) UILabel *detailLabel;
 
 + (instancetype)cellWithTableView:(UITableView *)tableView;
 

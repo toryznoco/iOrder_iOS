@@ -106,6 +106,7 @@
                 info.detail = @"13308050850";
                 
                 ((IOShopDetailCell *)cell).info = info;
+                ((IOShopDetailCell *)cell).detailLabel.textColor = kIOThemeColors;
                 break;
                 
             case 3:
@@ -140,6 +141,21 @@
 
 #pragma mark - UITableViewDelegate
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 1;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.width, 1)];
+    view.backgroundColor = [UIColor clearColor];
+    return view;
+}
+
+//- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+//    return 0;
+//}
+
+//- tableview
 
 @end
 
@@ -148,7 +164,6 @@
 @interface IOShopDetailCell ()
 
 @property (nonatomic, weak) UIImageView *iconView;
-@property (nonatomic, weak) UILabel *detailLabel;
 
 @end
 
@@ -194,6 +209,7 @@
     _iconView = iconView;
     
     UILabel *detailLabel = [[UILabel alloc] init];
+    detailLabel.font = [UIFont systemFontOfSize:15];
     [self addSubview:detailLabel];
     _detailLabel = detailLabel;
 }
@@ -230,7 +246,6 @@
 
 @property (nonatomic, weak) UIImageView *iconView;
 @property (nonatomic, weak) UILabel *titleLabel;
-@property (nonatomic, weak) UILabel *detailLabel;
 
 @end
 
@@ -277,10 +292,12 @@
     _iconView = iconView;
     
     UILabel *titleLabel = [[UILabel alloc] init];
+    titleLabel.font = [UIFont systemFontOfSize:15];
     [self addSubview:titleLabel];
     _titleLabel = titleLabel;
     
     UILabel *detailLabel = [[UILabel alloc] init];
+    detailLabel.font = [UIFont systemFontOfSize:15];
     [self addSubview:detailLabel];
     _detailLabel = detailLabel;
 }
@@ -303,7 +320,7 @@
         make.left.equalTo(self.iconView.mas_right).offset(8);
         make.right.equalTo(self.detailLabel.mas_left).offset(-17);
         make.height.equalTo(@17);
-        make.width.equalTo(@100);
+        make.width.equalTo(@61);
         make.centerY.equalTo(self.iconView.mas_centerY);
     }];
     

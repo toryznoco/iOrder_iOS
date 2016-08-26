@@ -13,3 +13,17 @@
 @interface IOShopEvaluate : UIView
 
 @end
+
+#pragma mark - interface IOShopEvaluateHeaderView
+
+@interface IOShopEvaluateHeaderView : UIView
+
+@end
+
+#pragma mark - interface IOShopEvaluateCell
+
+@interface IOShopEvaluateCell : UITableViewCell
+
++ (instancetype)cellWithTableView:(UITableView *)tableView;
+
+@end

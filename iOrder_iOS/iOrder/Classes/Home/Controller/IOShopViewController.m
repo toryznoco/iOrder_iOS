@@ -124,7 +124,6 @@
     
 //    2、添加商店评价界面
     IOShopEvaluate *evaluateView = [[IOShopEvaluate alloc] initWithFrame:subViewFrame];
-    evaluateView.backgroundColor = [UIColor yellowColor];
     [subViewArray addObject:evaluateView];
     
 //    3、添加店铺详情界面
