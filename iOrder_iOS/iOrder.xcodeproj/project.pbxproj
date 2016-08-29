@@ -42,6 +42,11 @@
 		CA6539591CBD44CF000972E2 /* YWJNewFeatureScrollPage.m in Sources */ = {isa = PBXBuildFile; fileRef = CA6539581CBD44CF000972E2 /* YWJNewFeatureScrollPage.m */; };
 		CA7069CB1CE5F564007C5F3F /* UIBarButtonItem+IOBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = CA7069CA1CE5F564007C5F3F /* UIBarButtonItem+IOBarButtonItem.m */; };
 		CA7069CE1CE6037B007C5F3F /* IOShopHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = CA7069CD1CE6037B007C5F3F /* IOShopHeaderView.m */; };
+		CA8B690C1D73D4360026C436 /* IOProfileMyCollectController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA8B690B1D73D4360026C436 /* IOProfileMyCollectController.m */; settings = {ASSET_TAGS = (); }; };
+		CA8B690F1D73D50B0026C436 /* IOProfileMyEvaluateController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA8B690E1D73D50B0026C436 /* IOProfileMyEvaluateController.m */; settings = {ASSET_TAGS = (); }; };
+		CA8B69121D73D6080026C436 /* IOProfileMyPointController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA8B69111D73D6080026C436 /* IOProfileMyPointController.m */; settings = {ASSET_TAGS = (); }; };
+		CA8B69151D73D62F0026C436 /* IOProfileMyCouponController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA8B69141D73D62F0026C436 /* IOProfileMyCouponController.m */; settings = {ASSET_TAGS = (); }; };
+		CA8B69181D73DD340026C436 /* IOProfileMyCollectView.m in Sources */ = {isa = PBXBuildFile; fileRef = CA8B69171D73DD340026C436 /* IOProfileMyCollectView.m */; settings = {ASSET_TAGS = (); }; };
 		CA8D2C6D1CE56E44006E3D2A /* IOShoppingViewInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = CA8D2C6C1CE56E44006E3D2A /* IOShoppingViewInfo.m */; };
 		CA9019911CE16B7A00AC5712 /* YWJDishesParam.m in Sources */ = {isa = PBXBuildFile; fileRef = CA90198B1CE16B7A00AC5712 /* YWJDishesParam.m */; };
 		CA9019921CE16B7A00AC5712 /* YWJDishesResult.m in Sources */ = {isa = PBXBuildFile; fileRef = CA90198E1CE16B7A00AC5712 /* YWJDishesResult.m */; };
@@ -171,6 +176,16 @@
 		CA7069CA1CE5F564007C5F3F /* UIBarButtonItem+IOBarButtonItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBarButtonItem+IOBarButtonItem.m"; sourceTree = "<group>"; };
 		CA7069CC1CE6037B007C5F3F /* IOShopHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOShopHeaderView.h; sourceTree = "<group>"; };
 		CA7069CD1CE6037B007C5F3F /* IOShopHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOShopHeaderView.m; sourceTree = "<group>"; };
+		CA8B690A1D73D4360026C436 /* IOProfileMyCollectController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOProfileMyCollectController.h; sourceTree = "<group>"; };
+		CA8B690B1D73D4360026C436 /* IOProfileMyCollectController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOProfileMyCollectController.m; sourceTree = "<group>"; };
+		CA8B690D1D73D50B0026C436 /* IOProfileMyEvaluateController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOProfileMyEvaluateController.h; sourceTree = "<group>"; };
+		CA8B690E1D73D50B0026C436 /* IOProfileMyEvaluateController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOProfileMyEvaluateController.m; sourceTree = "<group>"; };
+		CA8B69101D73D6080026C436 /* IOProfileMyPointController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOProfileMyPointController.h; sourceTree = "<group>"; };
+		CA8B69111D73D6080026C436 /* IOProfileMyPointController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOProfileMyPointController.m; sourceTree = "<group>"; };
+		CA8B69131D73D62F0026C436 /* IOProfileMyCouponController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOProfileMyCouponController.h; sourceTree = "<group>"; };
+		CA8B69141D73D62F0026C436 /* IOProfileMyCouponController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOProfileMyCouponController.m; sourceTree = "<group>"; };
+		CA8B69161D73DD340026C436 /* IOProfileMyCollectView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOProfileMyCollectView.h; sourceTree = "<group>"; };
+		CA8B69171D73DD340026C436 /* IOProfileMyCollectView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOProfileMyCollectView.m; sourceTree = "<group>"; };
 		CA8D2C6B1CE56E44006E3D2A /* IOShoppingViewInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOShoppingViewInfo.h; sourceTree = "<group>"; };
 		CA8D2C6C1CE56E44006E3D2A /* IOShoppingViewInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOShoppingViewInfo.m; sourceTree = "<group>"; };
 		CA90198A1CE16B7A00AC5712 /* YWJDishesParam.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWJDishesParam.h; sourceTree = "<group>"; };
@@ -515,6 +530,8 @@
 				9A8CC3891CE572C8005E19D9 /* IOProfileHeaderView.m */,
 				CAF4BFB11CF5C5CD001E88F7 /* IOProfileCell.h */,
 				CAF4BFB21CF5C5CD001E88F7 /* IOProfileCell.m */,
+				CA8B69161D73DD340026C436 /* IOProfileMyCollectView.h */,
+				CA8B69171D73DD340026C436 /* IOProfileMyCollectView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -854,6 +871,14 @@
 			children = (
 				CAE8F0901CB9461C005618B0 /* IOProfileViewController.h */,
 				CAE8F0911CB9461C005618B0 /* IOProfileViewController.m */,
+				CA8B690A1D73D4360026C436 /* IOProfileMyCollectController.h */,
+				CA8B690B1D73D4360026C436 /* IOProfileMyCollectController.m */,
+				CA8B690D1D73D50B0026C436 /* IOProfileMyEvaluateController.h */,
+				CA8B690E1D73D50B0026C436 /* IOProfileMyEvaluateController.m */,
+				CA8B69101D73D6080026C436 /* IOProfileMyPointController.h */,
+				CA8B69111D73D6080026C436 /* IOProfileMyPointController.m */,
+				CA8B69131D73D62F0026C436 /* IOProfileMyCouponController.h */,
+				CA8B69141D73D62F0026C436 /* IOProfileMyCouponController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1047,6 +1072,7 @@
 				CAE8F0831CB94170005618B0 /* main.m in Sources */,
 				CAF439EB1D63E29A009D687A /* IORegisterViewController.m in Sources */,
 				CA41C87A1D2BF0C90092921E /* UIView+Masonry_YWJ.m in Sources */,
+				CA8B690C1D73D4360026C436 /* IOProfileMyCollectController.m in Sources */,
 				9A8CC3261CDF779B005E19D9 /* IOTransmitters.m in Sources */,
 				CAB149DC1CFF10AE00561B31 /* YWJShoppingCartInfoParam.m in Sources */,
 				CAE8F0811CB94170005618B0 /* UIView+YWJFrame.m in Sources */,
@@ -1058,6 +1084,7 @@
 				CAB149D91CFF0DB600561B31 /* IOShoppingCartInfo.m in Sources */,
 				CA280A211CFB1D5C00644670 /* YWJShoppingCartTool.m in Sources */,
 				CA9019921CE16B7A00AC5712 /* YWJDishesResult.m in Sources */,
+				CA8B690F1D73D50B0026C436 /* IOProfileMyEvaluateController.m in Sources */,
 				CA6539591CBD44CF000972E2 /* YWJNewFeatureScrollPage.m in Sources */,
 				CAE795B61D6D1DB600CD999F /* IOShopEvaluate.m in Sources */,
 				9A4C58491CF989D900AD1330 /* IOOrderResult.m in Sources */,
@@ -1082,6 +1109,7 @@
 				CAE8F0951CB946E8005618B0 /* IONavigationController.m in Sources */,
 				9A8CC36C1CE0AFC7005E19D9 /* IOShopViewController.m in Sources */,
 				CA9F01351CFC4C7E007408D5 /* YWJSubmitOrderTool.m in Sources */,
+				CA8B69181D73DD340026C436 /* IOProfileMyCollectView.m in Sources */,
 				CAE795B91D6D1DCE00CD999F /* IOShopDetail.m in Sources */,
 				CAE795BC1D6D413800CD999F /* IOShopDetailCellInfo.m in Sources */,
 				9A8CC3851CE3075E005E19D9 /* IOOrder.m in Sources */,
@@ -1102,9 +1130,11 @@
 				9A8CC36A1CE0AFC7005E19D9 /* IODishViewController.m in Sources */,
 				9A8CC3761CE0AFC7005E19D9 /* IOHomeCell.m in Sources */,
 				9AC55EE01CF2FCAE00A84A8B /* IOSignInFooterView.m in Sources */,
+				CA8B69151D73D62F0026C436 /* IOProfileMyCouponController.m in Sources */,
 				9A8CC3401CE0AF84005E19D9 /* YWJRootTool.m in Sources */,
 				CAB149E01CFF11D100561B31 /* YWJShoppingCartInfoResult.m in Sources */,
 				CA6539561CBD40E6000972E2 /* IONewFeatureViewController.m in Sources */,
+				CA8B69121D73D6080026C436 /* IOProfileMyPointController.m in Sources */,
 				CAC8FC9C1D655F0D00B455D7 /* YWJLoginTool.m in Sources */,
 				9A8CC36B1CE0AFC7005E19D9 /* IOHomeViewController.m in Sources */,
 				CAC8FCA51D65601A00B455D7 /* IOUser.m in Sources */,

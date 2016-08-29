@@ -16,7 +16,6 @@
 
 @property (nonatomic, weak) IOScrollView *scrollView;
 @property (nonatomic, weak) IOSpecialView *specialView;
-@property (nonatomic, weak) IOTitleView *titleView;
 
 @end
 
@@ -47,12 +46,6 @@
     CGFloat specialViewX = 0;
     CGFloat specialViewY = CGRectGetMaxY(_scrollView.frame) + 10;
     _specialView.frame = CGRectMake(specialViewX, specialViewY, specialViewW, specialViewH);
-    
-    CGFloat titleViewW = scrollViewW;
-    CGFloat titleViewH = 25;
-    CGFloat titleViewX = 0;
-    CGFloat titleViewY = CGRectGetMaxY(_specialView.frame) + 9;
-    _titleView.frame = CGRectMake(titleViewX, titleViewY, titleViewW, titleViewH);
 }
 
 #pragma mark - custom methods
@@ -73,10 +66,6 @@
     [self addSubview:specialView];
     _specialView = specialView;
     _specialView.datas = datas;
-    
-    IOTitleView *titleView = [[IOTitleView alloc] init];
-    [self addSubview:titleView];
-    _titleView = titleView;
 }
 
 @end
@@ -211,62 +200,6 @@
     [self addSubview:specialView];
     specialView.backgroundColor = [UIColor whiteColor];
     _specialView = specialView;
-}
-
-@end
-
-#pragma mark - implementation IOTitleView
-@interface IOTitleView ()
-
-@property (nonatomic, weak) UIImageView *iconView;
-@property (nonatomic, weak) UILabel *title;
-
-@end
-
-@implementation IOTitleView
-
-#pragma mark - privacy
-
-- (instancetype)init {
-    if (self = [super init]) {
-        self.backgroundColor = [UIColor whiteColor];
-        [self setupAllChildView];
-    }
-    return self;
-}
-
-- (void)layoutSubviews {
-    [super layoutSubviews];
-    
-    CGFloat iconW = 21;
-    CGFloat iconH = 21;
-    CGFloat iconX = 10;
-    CGFloat iconY = 2;
-    _iconView.frame = CGRectMake(iconX, iconY, iconW, iconH);
-    
-    CGFloat titleW = _title.width;
-    CGFloat titleH = _title.height;
-    CGFloat titleX = CGRectGetMaxX(_iconView.frame) + 10;
-    CGFloat titleY = 3;
-    _title.frame = CGRectMake(titleX, titleY, titleW, titleH);
-}
-
-#pragma mark - custom methods
-
-- (void)setupAllChildView {
-    UIImageView *iconView = [[UIImageView alloc] init];
-    [self addSubview:iconView];
-    _iconView = iconView;
-    
-    _iconView.image = [UIImage imageNamed:@"store_image"];
-    
-    UILabel *title = [[UILabel alloc] init];
-    [self addSubview:title];
-    title.text = @"附近商家";
-    title.textColor = [UIColor colorWithRed:180/255.0 green:180/255.0 blue:180/255.0 alpha:1];
-    title.font = [UIFont systemFontOfSize:15];
-    [title sizeToFit];
-    _title = title;
 }
 
 @end

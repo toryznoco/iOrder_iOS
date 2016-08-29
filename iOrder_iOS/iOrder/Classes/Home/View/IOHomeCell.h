@@ -39,3 +39,9 @@
 @property (nonatomic, assign) float startCount;
 
 @end
+
+#pragma mark - interface IOHomeCellHeaderView
+
+@interface IOHomeCellHeaderView : UIView
+
+@end

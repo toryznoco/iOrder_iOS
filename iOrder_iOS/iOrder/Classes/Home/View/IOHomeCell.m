@@ -259,3 +259,79 @@
 }
 
 @end
+
+#pragma mark - IOHomeCellHeaderView
+
+@interface IOHomeCellHeaderView ()
+
+@property (nonatomic, weak) UIImageView *iconView;
+@property (nonatomic, weak) UILabel *title;
+@property (nonatomic, weak) UIView *underLineView;
+
+@end
+
+@implementation IOHomeCellHeaderView
+
+#pragma mark - privace
+
+- (instancetype)initWithFrame:(CGRect)frame {
+    if (self = [super initWithFrame:frame]) {
+        self.backgroundColor = [UIColor whiteColor];
+        [self setupAllChildView];
+    }
+    
+    return self;
+}
+
+#pragma mark - public
+
+#pragma mark - custom
+
+- (void)setupAllChildView {
+    UIImageView *iconView = [[UIImageView alloc] init];
+    [self addSubview:iconView];
+    _iconView = iconView;
+    _iconView.image = [UIImage imageNamed:@"store_image"];
+    
+    UILabel *title = [[UILabel alloc] init];
+    [self addSubview:title];
+    title.text = @"附近商家";
+    title.textColor = [UIColor colorWithRed:180/255.0 green:180/255.0 blue:180/255.0 alpha:1];
+    title.font = [UIFont systemFontOfSize:15];
+    _title = title;
+    
+    UIView *underLineView = [[UIView alloc] init];
+    underLineView.backgroundColor = YWJRGBColor(234, 234, 234, 1);
+    [self addSubview:underLineView];
+    _underLineView = underLineView;
+}
+
+#pragma mark - masonry
+
++ (BOOL)requiresConstraintBasedLayout {
+    return YES;
+}
+
+- (void)updateConstraints {
+    [self.iconView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self).offset(10);
+        make.width.height.equalTo(@21);
+        make.centerY.equalTo(self);
+    }];
+    
+    [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.iconView.mas_right).offset(10);
+        make.width.equalTo(@60);
+        make.height.equalTo(@15);
+        make.centerY.equalTo(self);
+    }];
+    
+    [self.underLineView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.bottom.right.equalTo(self);
+        make.height.equalTo(@1);
+    }];
+    
+    [super updateConstraints];
+}
+
+@end

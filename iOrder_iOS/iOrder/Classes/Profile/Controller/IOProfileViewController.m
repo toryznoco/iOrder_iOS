@@ -12,6 +12,11 @@
 #import "IOUserInfo.h"
 #import "IOProfileCell.h"
 
+#import "IOProfileMyCollectController.h"
+#import "IOProfileMyCouponController.h"
+#import "IOProfileMyEvaluateController.h"
+#import "IOProfileMyPointController.h"
+
 @interface IOProfileViewController ()
 
 @property (nonatomic, weak) IOProfileHeaderView *profileHeaderView;
@@ -36,11 +41,13 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    UINavigationBar *navigationBar = self.navigationController.navigationBar;
+    [self.navigationController setNavigationBarHidden:YES animated:NO];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
     
-    //去除导航栏下方的横线 透明
-    [navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
-    [navigationBar setShadowImage:[UIImage new]];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -101,6 +108,29 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
     return 12;
+}
+
+#pragma mark - UITableViewDelegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+//    选择将要跳转的界面
+    if (indexPath.section == 0) {
+        if (indexPath.row == 0) {
+            IOProfileMyCollectController *collectVc = [[IOProfileMyCollectController alloc] init];
+            [self.navigationController pushViewController:collectVc animated:YES];
+        } else if (indexPath.row == 1) {
+            IOProfileMyEvaluateController *evaluateVc = [[IOProfileMyEvaluateController alloc] init];
+            [self.navigationController pushViewController:evaluateVc animated:YES];
+        }
+    } else {
+        if (indexPath.row == 0) {
+            IOProfileMyCouponController *collectVc = [[IOProfileMyCouponController alloc] init];
+            [self.navigationController pushViewController:collectVc animated:YES];
+        } else if (indexPath.row == 1) {
+            IOProfileMyPointController *evaluateVc = [[IOProfileMyPointController alloc] init];
+            [self.navigationController pushViewController:evaluateVc animated:YES];
+        }
+    }
 }
 
 

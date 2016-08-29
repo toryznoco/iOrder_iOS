@@ -70,7 +70,7 @@
     //    设置行高
     self.tableView.rowHeight = 70;
     
-    IOHomeHeaderView *homeHeaderView = [[IOHomeHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 305)];
+    IOHomeHeaderView *homeHeaderView = [[IOHomeHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 280)];
     _homeHeaderView = homeHeaderView;
     self.tableView.tableHeaderView = homeHeaderView;
 }
@@ -105,6 +105,16 @@
 }
 
 #pragma mark - UITableViewDelegate
+
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 25;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    IOHomeCellHeaderView *tableViewHeaderView = [[IOHomeCellHeaderView alloc] init];
+    return tableViewHeaderView;
+}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     IOShopViewController *shopVc = [[IOShopViewController alloc] init];
