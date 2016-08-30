@@ -135,12 +135,12 @@
 #pragma mark - custom method
 
 - (void)setupProgressView {
-    UIView *mask = [[UIView alloc] initWithFrame:self.view.frame];
-    mask.backgroundColor = [UIColor greenColor];
+    UIView *mask = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 200, 200)];
+    mask.center = CGPointMake(self.view.center.x, 150);
+    mask.backgroundColor = [UIColor clearColor];
     [self.view addSubview:mask];
     
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:mask animated:YES];
-//    [self.view bringSubviewToFront:hud];
     hud.mode = MBProgressHUDModeCustomView;
     
     UIImage *image = [[UIImage imageNamed:@"success"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
