@@ -7,11 +7,13 @@
 //
 
 #import "IOProfileMyCollectView.h"
-
+#import "IOProfileHeaderView.h"
+#import "IOUserInfo.h"
 #pragma mark - implementation IOProfileMyCollectView
 
 @interface IOProfileMyCollectView ()<UICollectionViewDataSource, UICollectionViewDelegate>
 
+@property (nonatomic, weak) IOUserInfoView *userInfoView;
 @property (nonatomic, weak) UICollectionView *collectionView;
 
 @end
@@ -36,6 +38,15 @@
 
 - (void)setupAllChildView {
 //    1、设置头部内容
+    IOUserInfoView *userInfoView = [[IOUserInfoView alloc] init];
+    [self addSubview:userInfoView];
+    _userInfoView = userInfoView;
+    
+    IOUserInfo *userInfo = [[IOUserInfo alloc] init];
+    userInfo.userIcon = @"profile_userImage";
+    userInfo.userName = @"姐有姐的范儿";
+    userInfoView.userInfo = userInfo;
+    
 //    2、添加收藏菜品
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
     layout.scrollDirection = UICollectionViewScrollDirectionVertical;
@@ -49,6 +60,7 @@
     [collectionView registerClass:[IOProfileMyCollectViewHeader class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"headerId"];
     collectionView.dataSource = self;
     collectionView.delegate = self;
+    collectionView.showsVerticalScrollIndicator = NO;
     [self addSubview:collectionView];
     _collectionView = collectionView;
 }
@@ -99,8 +111,14 @@
 }
 
 - (void)updateConstraints {
+    [self.userInfoView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.right.equalTo(self);
+        make.height.equalTo(@198);
+    }];
+    
     [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.bottom.right.equalTo(self);
+        make.top.equalTo(self.userInfoView.mas_bottom);
+        make.left.bottom.right.equalTo(self);
     }];
     
     [super updateConstraints];
@@ -217,7 +235,7 @@
 //    1、菜品图片
     UIImageView *dishIcon = [[UIImageView alloc] init];
     [self addSubview:dishIcon];
-    dishIcon.image = [UIImage imageNamed:@"005"];
+    dishIcon.image = [UIImage imageNamed:@"roll_image_2"];
     _dishIcon = dishIcon;
     
 //    2、蒙板
@@ -228,14 +246,16 @@
     
 //    3、菜名
     UILabel *dishName = [[UILabel alloc] init];
-    dishName.text = @"jkdjfks";
+    dishName.font = [UIFont systemFontOfSize:10];
+    dishName.text = @"肉丸乌冬面";
     [dishMask addSubview:dishName];
     _dishName = dishName;
     
 //    4、菜价
     UILabel *dishPrice = [[UILabel alloc] init];
+    dishPrice.font = [UIFont systemFontOfSize:10];
     dishPrice.textAlignment = NSTextAlignmentRight;
-    dishPrice.text = @"fjskj";
+    dishPrice.text = @"¥28";
     [dishMask addSubview:dishPrice];
     _dishPrice = dishPrice;
 }
@@ -258,12 +278,12 @@
     
     [self.dishName mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.bottom.equalTo(self.dishMask);
-        make.width.equalTo(self).multipliedBy(0.5);
+        make.right.equalTo(self.dishPrice.mas_left);
     }];
     
     [self.dishPrice mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.bottom.right.equalTo(self.dishMask);
-        make.width.equalTo(self).multipliedBy(0.5);
+        make.width.equalTo(@30);
     }];
     
     [super updateConstraints];

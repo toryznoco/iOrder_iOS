@@ -20,16 +20,6 @@
 
 #pragma mark - privacy
 
-+ (instancetype)cellWithTableView:(UITableView *)tableView {
-    static NSString *reuseId = @"ProfileCell";
-    id cell = [tableView dequeueReusableCellWithIdentifier:reuseId];
-    if (!cell) {
-        cell = [[self alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:reuseId];
-    }
-    
-    return cell;
-}
-
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         self.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -48,30 +38,17 @@
     // Configure the view for the selected state
 }
 
-- (void)layoutSubviews {
-    [super layoutSubviews];
-    
-    CGFloat iconImageViewW = 18;
-    CGFloat iconImageViewH = 18;
-    CGFloat iconImageViewX = iconImageViewW * 0.5 + 10;
-    CGFloat iconImageViewY = self.height * 0.5;
-    _iconImageView.frame = CGRectMake(0, 0, iconImageViewW, iconImageViewH);
-    _iconImageView.center = CGPointMake(iconImageViewX, iconImageViewY);
-    
-    CGFloat titleW = 200;
-    CGFloat titleH = 16;
-    CGFloat titleX = CGRectGetMaxX(_iconImageView.frame) + 10;
-    CGFloat titleY = _iconImageView.y;
-    _titleLabel.frame = CGRectMake(titleX, titleY, titleW, titleH);
-    
-    CGFloat accessoryW = 8;
-    CGFloat accessoryH = 13;
-    CGFloat accessoryX = self.width - 20 - accessoryW * 0.5;
-    CGFloat accessoryY = self.height * 0.5;
-    _accessoryImageView.frame = CGRectMake(accessoryX, accessoryY, accessoryW, accessoryH);
-}
-
 #pragma mark - public
+
++ (instancetype)cellWithTableView:(UITableView *)tableView {
+    static NSString *reuseId = @"ProfileCell";
+    id cell = [tableView dequeueReusableCellWithIdentifier:reuseId];
+    if (!cell) {
+        cell = [[self alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:reuseId];
+    }
+    
+    return cell;
+}
 
 - (void)setIconName:(NSString *)iconName {
     _iconName = iconName;
@@ -101,6 +78,36 @@
     accessoryImageView.image = [UIImage imageNamed:@"profile_arrow"];
     _accessoryImageView = accessoryImageView;
     [self addSubview:accessoryImageView];
+}
+
+#pragma mark - masonry
+
++ (BOOL)requiresConstraintBasedLayout {
+    return YES;
+}
+
+- (void)updateConstraints {
+    [self.iconImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self).offset(8);
+        make.centerY.equalTo(self);
+        make.width.height.equalTo(@18);
+    }];
+    
+    [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.iconImageView.mas_right).offset(10);
+        make.centerY.equalTo(self);
+        make.width.equalTo(@200);
+        make.height.equalTo(@16);
+    }];
+    
+    [self.accessoryImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self).offset(-8);
+        make.centerY.equalTo(self);
+        make.width.equalTo(@8);
+        make.height.equalTo(@13);
+    }];
+    
+    [super updateConstraints];
 }
 
 @end

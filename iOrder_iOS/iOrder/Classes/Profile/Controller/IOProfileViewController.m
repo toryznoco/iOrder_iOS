@@ -30,8 +30,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.edgesForExtendedLayout = UIRectEdgeNone;
+    self.view.backgroundColor = [UIColor whiteColor];
     
+    self.edgesForExtendedLayout = UIRectEdgeNone;
+    [self setupNavigationView];
     
     [self setupTableHeaderView];
     
@@ -76,12 +78,12 @@
     if (indexPath.section == 0) {
         switch (indexPath.row) {
             case 0:
-                cell.iconName = @"ecaluate";
-                cell.title = @"我的评价";
-                break;
-            case 1:
                 cell.iconName = @"profile_heart";
                 cell.title = @"我的收藏";
+                break;
+            case 1:
+                cell.iconName = @"ecaluate";
+                cell.title = @"我的评价";
                 break;
             default:
                 cell.textLabel.text = @"默认";
@@ -135,6 +137,11 @@
 
 
 #pragma mark - custom methods
+
+- (void)setupNavigationView {
+    UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:self action:nil];
+    self.navigationItem.backBarButtonItem = backItem;
+}
 
 - (void)setupTableHeaderView {
     [self.navigationController setNavigationBarHidden:YES animated:YES];

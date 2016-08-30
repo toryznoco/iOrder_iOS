@@ -72,7 +72,7 @@
     
     IOHomeHeaderView *homeHeaderView = [[IOHomeHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 280)];
     _homeHeaderView = homeHeaderView;
-    self.tableView.tableHeaderView = homeHeaderView;[self setupProgressView];
+    self.tableView.tableHeaderView = homeHeaderView;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -135,8 +135,9 @@
 #pragma mark - custom method
 
 - (void)setupProgressView {
-    UIView *mask = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 200, 200)];
-    mask.center = CGPointMake(self.view.center.x, 150);
+//    UIView *mask = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 250, 250)];
+    UIView *mask = [[UIView alloc] initWithFrame:self.view.frame];
+//    mask.center = CGPointMake(self.view.center.x, 150);
     mask.backgroundColor = [UIColor clearColor];
     [self.view addSubview:mask];
     
@@ -147,10 +148,10 @@
     hud.customView = [[UIImageView alloc] initWithImage:image];
     hud.square = YES;
     hud.labelText = NSLocalizedString(@"Login Successed", @"HUD done title");
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [mask removeFromSuperview];
-    });
-    [hud hide:YES afterDelay:1.0];
+//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//        [mask removeFromSuperview];
+//    });
+//    [hud hide:YES afterDelay:1.0];
 }
 
 - (void)setupNavigationView {
