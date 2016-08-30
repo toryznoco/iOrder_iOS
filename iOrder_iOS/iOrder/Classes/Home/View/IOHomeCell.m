@@ -38,57 +38,6 @@
     return self;
 }
 
-- (void)layoutSubviews {
-    [super layoutSubviews];
-    
-    CGFloat iconW = 60;
-    CGFloat iconH = iconW;
-    CGFloat iconX = 10;
-    CGFloat iconY = 5;
-    _shopIcon.frame = CGRectMake(iconX, iconY, iconW, iconH);
-    
-    CGFloat nameW = 0;
-    CGFloat nameH = 0;
-    CGFloat nameX = CGRectGetMaxX(_shopIcon.frame) + 10;
-    CGFloat nameY = iconY;
-    _shopName.frame = CGRectMake(nameX, nameY, nameW, nameH);
-    [_shopName sizeToFit];
-    
-    CGFloat introW = 0;
-    CGFloat introH = 0;
-    CGFloat introX = nameX;
-    CGFloat introY = CGRectGetMaxY(_shopName.frame) + 2;
-    _shopIntro.frame = CGRectMake(introX, introY, introW, introH);
-    [_shopIntro sizeToFit];
-    
-    [_shopDistance sizeToFit];
-    CGFloat distanceW = _shopDistance.width;
-    CGFloat distanceH = _shopDistance.height;
-    CGFloat distanceX = self.width - distanceW - 10;
-    CGFloat distanceY = iconY;
-    _shopDistance.frame = CGRectMake(distanceX, distanceY, distanceW, distanceH);
-    
-    CGFloat starViewW = _shopStarView.width;
-    CGFloat starViewH = _shopStarView.height;
-    CGFloat starViewX = nameX;
-    CGFloat starViewY = self.height - starViewH - 8;
-    _shopStarView.frame = CGRectMake(starViewX, starViewY, starViewW, starViewH);
-    
-    [_shopPrice sizeToFit];
-    CGFloat priceW = _shopPrice.width;
-    CGFloat priceH = _shopPrice.height;
-    CGFloat priceX = CGRectGetMaxX(_shopStarView.frame) + 10;
-    CGFloat priceY = self.height - priceH - 5;
-    _shopPrice.frame = CGRectMake(priceX, priceY, priceW, priceH);
-    
-    [_shopSaleCount sizeToFit];
-    CGFloat saleCountW = _shopSaleCount.width;
-    CGFloat saleCountH = _shopSaleCount.height;
-    CGFloat saleCountX = self.width - saleCountW - 10;
-    CGFloat saleCountY = self.height - saleCountH - 5;
-    _shopSaleCount.frame = CGRectMake(saleCountX, saleCountY, saleCountW, saleCountH);
-}
-
 - (void)awakeFromNib {
     // Initialization code
 }
@@ -164,6 +113,7 @@
     
 //    店铺距离
     UILabel *shopDistance = [[UILabel alloc] init];
+    shopDistance.textAlignment = NSTextAlignmentRight;
     [self addSubview:shopDistance];
     self.shopDistance = shopDistance;
     
@@ -179,8 +129,68 @@
     
 //    店铺销售量
     UILabel *shopSaleCount = [[UILabel alloc] init];
+    shopSaleCount.textAlignment = NSTextAlignmentRight;
     [self addSubview:shopSaleCount];
     _shopSaleCount = shopSaleCount;
+}
+
+#pragma mark - masonry
+
++ (BOOL)requiresConstraintBasedLayout {
+    return YES;
+}
+
+- (void)updateConstraints {
+    [self.shopIcon mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self).offset(5);
+        make.left.equalTo(self).offset(10);
+        make.width.height.equalTo(@60);
+    }];
+    
+    [self.shopName mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.shopIcon);
+        make.left.equalTo(self.shopIcon.mas_right).offset(10);
+        make.right.equalTo(self.mas_centerX);
+        make.height.equalTo(@15);
+    }];
+    
+    [_shopIntro sizeToFit];
+    [self.shopIntro mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.shopName.mas_bottom).offset(2);
+        make.left.equalTo(self.shopName);
+        make.right.equalTo(self);
+        make.height.equalTo(@13);
+    }];
+    
+    [self.shopDistance mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.shopIcon);
+        make.left.equalTo(self.mas_centerX);
+        make.right.equalTo(self).offset(-10);
+        make.height.equalTo(@13);
+    }];
+    
+    [self.shopStarView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.shopName);
+        make.bottom.equalTo(self).offset(-8);
+        make.height.equalTo(@13);
+        make.width.equalTo(@(13 * 5));
+    }];
+    
+    [self.shopPrice mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(self).offset(-5);
+        make.height.equalTo(@13);
+        make.left.equalTo(self.shopStarView.mas_right).offset(10);
+        make.width.equalTo(@100);
+    }];
+    
+    [self.shopSaleCount mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(self).offset(-5);
+        make.right.equalTo(self).offset(-10);
+        make.width.equalTo(@100);
+        make.height.equalTo(@13);
+    }];
+    
+    [super updateConstraints];
 }
 
 @end
@@ -223,20 +233,11 @@
 #pragma mark - custom methods
 
 - (void)setupAllChildView {
-    CGFloat starX = 0;
-    CGFloat starY = 0;
-    CGFloat starW = 13;
-    CGFloat starH = starW;
     for (NSInteger i = 0; i < 5; i++) {
-        starX = i * starW;
         UIImageView *star = [[UIImageView alloc] init];
         [self addSubview:star];
         [_stars addObject:star];
-        star.frame = CGRectMake(starX, starY, starW, starH);
     }
-    
-    self.width = 5 * starW;
-    self.height = starH;
 }
 
 - (void)setupData {
@@ -256,6 +257,31 @@
             [star setImage:[UIImage imageNamed:@"star_common_icon"]];
         }
     }
+}
+
+#pragma mark - masonry
+
++ (BOOL)requiresConstraintBasedLayout {
+    return YES;
+}
+
+- (void)updateConstraints {
+    NSInteger lastObj = 0;
+    [self.stars[lastObj] mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.bottom.equalTo(self);
+        make.width.equalTo(@13);
+    }];
+    
+    for (NSInteger i = 1; i < 5; i++) {
+        [self.stars[i] mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.bottom.equalTo(self);
+            make.left.equalTo(((UIImageView *)self.stars[lastObj]).mas_right);
+            make.width.equalTo(@13);
+        }];
+        lastObj++;
+    }
+    
+    [super updateConstraints];
 }
 
 @end

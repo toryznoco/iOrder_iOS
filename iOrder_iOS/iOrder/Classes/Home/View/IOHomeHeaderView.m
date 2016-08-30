@@ -32,22 +32,6 @@
     return self;
 }
 
-- (void)layoutSubviews {
-    [super layoutSubviews];
-    
-    CGFloat scrollViewW = self.width;
-    CGFloat scrollViewH = 160;
-    CGFloat scrollViewX = 0;
-    CGFloat scrollViewY = 0;
-    _scrollView.frame = CGRectMake(scrollViewX, scrollViewY, scrollViewW, scrollViewH);
-    
-    CGFloat specialViewW = scrollViewW;
-    CGFloat specialViewH = 100;
-    CGFloat specialViewX = 0;
-    CGFloat specialViewY = CGRectGetMaxY(_scrollView.frame) + 10;
-    _specialView.frame = CGRectMake(specialViewX, specialViewY, specialViewW, specialViewH);
-}
-
 #pragma mark - custom methods
 
 - (void)setupAllChildView {
@@ -66,6 +50,29 @@
     [self addSubview:specialView];
     _specialView = specialView;
     _specialView.datas = datas;
+}
+
+#pragma mark - masonry
+
++ (BOOL)requiresConstraintBasedLayout {
+    return YES;
+}
+
+- (void)updateConstraints {
+    [self.scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.equalTo(self);
+        make.width.equalTo(self.superview);
+        make.height.equalTo(@160);
+    }];
+    
+    [self.specialView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.scrollView.mas_bottom).offset(10);
+        make.left.equalTo(self);
+        make.width.equalTo(self.superview);
+        make.height.equalTo(@100);
+    }];
+    
+    [super updateConstraints];
 }
 
 @end
@@ -142,32 +149,11 @@
 
 - (instancetype)init {
     if (self = [super init]) {
+        [self setTranslatesAutoresizingMaskIntoConstraints:NO];
         self.backgroundColor = [UIColor clearColor];
         [self setupAllChildView];
     }
     return self;
-}
-
-- (void)layoutSubviews {
-    [super layoutSubviews];
-    
-    CGFloat weekendW = YWJKeyWindow.width * 0.5 - 0.5;
-    CGFloat weekendH = 100;
-    CGFloat weekendX = 0;
-    CGFloat weekendY = 0;
-    _weekendView.frame = CGRectMake(weekendX, weekendY, weekendW, weekendH);
-    
-    CGFloat dayW = weekendW;
-    CGFloat dayH = 49.5;
-    CGFloat dayX = CGRectGetMaxX(_weekendView.frame) + 1.0;
-    CGFloat dayY = 0;
-    _dayView.frame = CGRectMake(dayX, dayY, dayW, dayH);
-    
-    CGFloat specialW = dayW;
-    CGFloat specialH = dayH;
-    CGFloat specialX = dayX;
-    CGFloat specialY = CGRectGetMaxY(_dayView.frame) + 1.0;
-    _specialView.frame = CGRectMake(specialX, specialY, specialW, specialH);
 }
 
 #pragma mark - public
@@ -200,6 +186,34 @@
     [self addSubview:specialView];
     specialView.backgroundColor = [UIColor whiteColor];
     _specialView = specialView;
+}
+
+#pragma mark - masonry
+
++ (BOOL)requiresConstraintBasedLayout {
+    return YES;
+}
+
+- (void)updateConstraints {
+    [self.weekendView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.equalTo(self);
+        make.right.equalTo(self.mas_centerX).offset(-0.5);
+        make.height.equalTo(@100);
+    }];
+    
+    [self.dayView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.right.equalTo(self);
+        make.left.equalTo(self.mas_centerX).offset(0.5);
+        make.bottom.equalTo(self.mas_centerY).offset(-0.5);
+    }];
+    
+    [self.specialView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.mas_centerY).offset(0.5);
+        make.bottom.right.equalTo(self);
+        make.left.equalTo(self.mas_centerX).offset(0.5);
+    }];
+    
+    [super updateConstraints];
 }
 
 @end

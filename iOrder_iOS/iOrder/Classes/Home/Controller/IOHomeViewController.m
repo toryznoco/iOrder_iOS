@@ -33,7 +33,7 @@
 
 - (instancetype)init {
     if (self = [super init]) {
-        [self setupProgressView];
+//        [self setupProgressView];
     }
     
     return self;
@@ -72,7 +72,7 @@
     
     IOHomeHeaderView *homeHeaderView = [[IOHomeHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 280)];
     _homeHeaderView = homeHeaderView;
-    self.tableView.tableHeaderView = homeHeaderView;
+    self.tableView.tableHeaderView = homeHeaderView;[self setupProgressView];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -135,13 +135,21 @@
 #pragma mark - custom method
 
 - (void)setupProgressView {
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    UIView *mask = [[UIView alloc] initWithFrame:self.view.frame];
+    mask.backgroundColor = [UIColor greenColor];
+    [self.view addSubview:mask];
+    
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:mask animated:YES];
+//    [self.view bringSubviewToFront:hud];
     hud.mode = MBProgressHUDModeCustomView;
     
     UIImage *image = [[UIImage imageNamed:@"success"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     hud.customView = [[UIImageView alloc] initWithImage:image];
     hud.square = YES;
     hud.labelText = NSLocalizedString(@"Login Successed", @"HUD done title");
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [mask removeFromSuperview];
+    });
     [hud hide:YES afterDelay:1.0];
 }
 

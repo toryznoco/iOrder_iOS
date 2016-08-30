@@ -222,6 +222,7 @@
     
 //    2、蒙板
     UIView *dishMask = [[UIView alloc] init];
+    dishMask.backgroundColor = YWJRGBColor(255, 255, 255, 0.5);
     [self addSubview:dishMask];
     _dishMask = dishMask;
     
@@ -257,7 +258,6 @@
     
     [self.dishName mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.bottom.equalTo(self.dishMask);
-//        make.left.equalTo(self);
         make.width.equalTo(self).multipliedBy(0.5);
     }];
     
