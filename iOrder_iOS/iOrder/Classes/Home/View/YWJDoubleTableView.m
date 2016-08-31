@@ -4,7 +4,7 @@
 //
 //  Created by 易无解 on 5/17/16.
 //  Copyright © 2016 易无解. All rights reserved.
-//
+//  
 
 #import "YWJDoubleTableView.h"
 
@@ -36,7 +36,6 @@
 
 - (void)setDishInfos:(NSMutableArray *)dishInfos{
     _dishInfos = dishInfos;
-    
     _leftTableView.delegate = self;
     _leftTableView.dataSource = self;
     _rightTableView.delegate = self;
@@ -47,7 +46,7 @@
 
 #pragma mark - custom method
 
-- (void)setupAllChildView {
+- (void)setupAllChildView {//添加所有的子控件
     UITableView *leftTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.width * kScale, self.height)];
     leftTableView.backgroundColor = [UIColor whiteColor];
     _leftTableView = leftTableView;
@@ -62,7 +61,7 @@
 
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {//刷新左右两边tableView中的分组个数
     if (tableView == _leftTableView) {
         return 1;
     }else{
@@ -70,7 +69,7 @@
     }
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {//刷新tableView中的数据
     IODishes *dishInfo = _dishInfos[section];
     if (tableView == self.leftTableView) {
         return _dishInfos.count;
@@ -91,7 +90,6 @@
     }else{
         cell = [IOShopRightCell cellWithTableView:tableView];
         ((IOShopRightCell *)cell).delegate = self;
-        
         IODishes *dishInfo = _dishInfos[indexPath.section];
         IODish *dish = dishInfo.dishes[indexPath.row];
         

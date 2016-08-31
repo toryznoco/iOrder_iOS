@@ -29,9 +29,3 @@
 @property (nonatomic, strong) NSArray *datas;
 
 @end
-
-
-#pragma mark - interface IOTitleView
-@interface IOTitleView : UIView
-
-@end

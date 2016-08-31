@@ -4,7 +4,7 @@
 //
 //  Created by 易无解 on 5/17/16.
 //  Copyright © 2016 易无解. All rights reserved.
-//
+//  创建一个两边都有TableView的View
 
 #import <UIKit/UIKit.h>
 @class IOShopLeftCell;

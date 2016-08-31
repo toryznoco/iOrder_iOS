@@ -16,7 +16,6 @@
 
 @property (nonatomic, weak) IOScrollView *scrollView;
 @property (nonatomic, weak) IOSpecialView *specialView;
-@property (nonatomic, weak) IOTitleView *titleView;
 
 @end
 
@@ -31,28 +30,6 @@
         [self setupAllChildView];
     }
     return self;
-}
-
-- (void)layoutSubviews {
-    [super layoutSubviews];
-    
-    CGFloat scrollViewW = self.width;
-    CGFloat scrollViewH = 160;
-    CGFloat scrollViewX = 0;
-    CGFloat scrollViewY = 0;
-    _scrollView.frame = CGRectMake(scrollViewX, scrollViewY, scrollViewW, scrollViewH);
-    
-    CGFloat specialViewW = scrollViewW;
-    CGFloat specialViewH = 100;
-    CGFloat specialViewX = 0;
-    CGFloat specialViewY = CGRectGetMaxY(_scrollView.frame) + 10;
-    _specialView.frame = CGRectMake(specialViewX, specialViewY, specialViewW, specialViewH);
-    
-    CGFloat titleViewW = scrollViewW;
-    CGFloat titleViewH = 25;
-    CGFloat titleViewX = 0;
-    CGFloat titleViewY = CGRectGetMaxY(_specialView.frame) + 9;
-    _titleView.frame = CGRectMake(titleViewX, titleViewY, titleViewW, titleViewH);
 }
 
 #pragma mark - custom methods
@@ -73,10 +50,29 @@
     [self addSubview:specialView];
     _specialView = specialView;
     _specialView.datas = datas;
+}
+
+#pragma mark - masonry
+
++ (BOOL)requiresConstraintBasedLayout {
+    return YES;
+}
+
+- (void)updateConstraints {
+    [self.scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.equalTo(self);
+        make.width.equalTo(self.superview);
+        make.height.equalTo(@160);
+    }];
     
-    IOTitleView *titleView = [[IOTitleView alloc] init];
-    [self addSubview:titleView];
-    _titleView = titleView;
+    [self.specialView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.scrollView.mas_bottom).offset(10);
+        make.left.equalTo(self);
+        make.width.equalTo(self.superview);
+        make.height.equalTo(@100);
+    }];
+    
+    [super updateConstraints];
 }
 
 @end
@@ -153,32 +149,11 @@
 
 - (instancetype)init {
     if (self = [super init]) {
+        [self setTranslatesAutoresizingMaskIntoConstraints:NO];
         self.backgroundColor = [UIColor clearColor];
         [self setupAllChildView];
     }
     return self;
-}
-
-- (void)layoutSubviews {
-    [super layoutSubviews];
-    
-    CGFloat weekendW = YWJKeyWindow.width * 0.5 - 0.5;
-    CGFloat weekendH = 100;
-    CGFloat weekendX = 0;
-    CGFloat weekendY = 0;
-    _weekendView.frame = CGRectMake(weekendX, weekendY, weekendW, weekendH);
-    
-    CGFloat dayW = weekendW;
-    CGFloat dayH = 49.5;
-    CGFloat dayX = CGRectGetMaxX(_weekendView.frame) + 1.0;
-    CGFloat dayY = 0;
-    _dayView.frame = CGRectMake(dayX, dayY, dayW, dayH);
-    
-    CGFloat specialW = dayW;
-    CGFloat specialH = dayH;
-    CGFloat specialX = dayX;
-    CGFloat specialY = CGRectGetMaxY(_dayView.frame) + 1.0;
-    _specialView.frame = CGRectMake(specialX, specialY, specialW, specialH);
 }
 
 #pragma mark - public
@@ -213,60 +188,32 @@
     _specialView = specialView;
 }
 
-@end
+#pragma mark - masonry
 
-#pragma mark - implementation IOTitleView
-@interface IOTitleView ()
-
-@property (nonatomic, weak) UIImageView *iconView;
-@property (nonatomic, weak) UILabel *title;
-
-@end
-
-@implementation IOTitleView
-
-#pragma mark - privacy
-
-- (instancetype)init {
-    if (self = [super init]) {
-        self.backgroundColor = [UIColor whiteColor];
-        [self setupAllChildView];
-    }
-    return self;
++ (BOOL)requiresConstraintBasedLayout {
+    return YES;
 }
 
-- (void)layoutSubviews {
-    [super layoutSubviews];
+- (void)updateConstraints {
+    [self.weekendView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.equalTo(self);
+        make.right.equalTo(self.mas_centerX).offset(-0.5);
+        make.height.equalTo(@100);
+    }];
     
-    CGFloat iconW = 21;
-    CGFloat iconH = 21;
-    CGFloat iconX = 10;
-    CGFloat iconY = 2;
-    _iconView.frame = CGRectMake(iconX, iconY, iconW, iconH);
+    [self.dayView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.right.equalTo(self);
+        make.left.equalTo(self.mas_centerX).offset(0.5);
+        make.bottom.equalTo(self.mas_centerY).offset(-0.5);
+    }];
     
-    CGFloat titleW = _title.width;
-    CGFloat titleH = _title.height;
-    CGFloat titleX = CGRectGetMaxX(_iconView.frame) + 10;
-    CGFloat titleY = 3;
-    _title.frame = CGRectMake(titleX, titleY, titleW, titleH);
-}
-
-#pragma mark - custom methods
-
-- (void)setupAllChildView {
-    UIImageView *iconView = [[UIImageView alloc] init];
-    [self addSubview:iconView];
-    _iconView = iconView;
+    [self.specialView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.mas_centerY).offset(0.5);
+        make.bottom.right.equalTo(self);
+        make.left.equalTo(self.mas_centerX).offset(0.5);
+    }];
     
-    _iconView.image = [UIImage imageNamed:@"store_image"];
-    
-    UILabel *title = [[UILabel alloc] init];
-    [self addSubview:title];
-    title.text = @"附近商家";
-    title.textColor = [UIColor colorWithRed:180/255.0 green:180/255.0 blue:180/255.0 alpha:1];
-    title.font = [UIFont systemFontOfSize:15];
-    [title sizeToFit];
-    _title = title;
+    [super updateConstraints];
 }
 
 @end

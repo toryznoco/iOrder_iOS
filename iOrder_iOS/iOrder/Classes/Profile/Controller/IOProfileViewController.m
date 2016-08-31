@@ -12,6 +12,11 @@
 #import "IOUserInfo.h"
 #import "IOProfileCell.h"
 
+#import "IOProfileMyCollectController.h"
+#import "IOProfileMyCouponController.h"
+#import "IOProfileMyEvaluateController.h"
+#import "IOProfileMyPointController.h"
+
 @interface IOProfileViewController ()
 
 @property (nonatomic, weak) IOProfileHeaderView *profileHeaderView;
@@ -25,8 +30,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.edgesForExtendedLayout = UIRectEdgeNone;
+    self.view.backgroundColor = [UIColor whiteColor];
     
+    self.edgesForExtendedLayout = UIRectEdgeNone;
+    [self setupNavigationView];
     
     [self setupTableHeaderView];
     
@@ -36,11 +43,13 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    UINavigationBar *navigationBar = self.navigationController.navigationBar;
+    [self.navigationController setNavigationBarHidden:YES animated:NO];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
     
-    //去除导航栏下方的横线 透明
-    [navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
-    [navigationBar setShadowImage:[UIImage new]];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -69,12 +78,12 @@
     if (indexPath.section == 0) {
         switch (indexPath.row) {
             case 0:
-                cell.iconName = @"ecaluate";
-                cell.title = @"我的评价";
-                break;
-            case 1:
                 cell.iconName = @"profile_heart";
                 cell.title = @"我的收藏";
+                break;
+            case 1:
+                cell.iconName = @"ecaluate";
+                cell.title = @"我的评价";
                 break;
             default:
                 cell.textLabel.text = @"默认";
@@ -103,8 +112,36 @@
     return 12;
 }
 
+#pragma mark - UITableViewDelegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+//    选择将要跳转的界面
+    if (indexPath.section == 0) {
+        if (indexPath.row == 0) {
+            IOProfileMyCollectController *collectVc = [[IOProfileMyCollectController alloc] init];
+            [self.navigationController pushViewController:collectVc animated:YES];
+        } else if (indexPath.row == 1) {
+            IOProfileMyEvaluateController *evaluateVc = [[IOProfileMyEvaluateController alloc] init];
+            [self.navigationController pushViewController:evaluateVc animated:YES];
+        }
+    } else {
+        if (indexPath.row == 0) {
+            IOProfileMyCouponController *collectVc = [[IOProfileMyCouponController alloc] init];
+            [self.navigationController pushViewController:collectVc animated:YES];
+        } else if (indexPath.row == 1) {
+            IOProfileMyPointController *evaluateVc = [[IOProfileMyPointController alloc] init];
+            [self.navigationController pushViewController:evaluateVc animated:YES];
+        }
+    }
+}
+
 
 #pragma mark - custom methods
+
+- (void)setupNavigationView {
+    UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:self action:nil];
+    self.navigationItem.backBarButtonItem = backItem;
+}
 
 - (void)setupTableHeaderView {
     [self.navigationController setNavigationBarHidden:YES animated:YES];

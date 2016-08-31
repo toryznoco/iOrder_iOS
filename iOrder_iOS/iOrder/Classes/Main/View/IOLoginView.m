@@ -122,21 +122,25 @@
     param.userPass = self.password.text;
     
     [YWJLoginTool loginWithLoginParam:param success:^(YWJLoginResult *loginResult) {
-        if (loginResult.code == 1) {
-            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.superview animated:YES];
-            
-            dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
-                [self doSomeWork];
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [hud hide:YES afterDelay:2.];
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.superview animated:YES];
+        dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
+            [self doSomeWork];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [hud hide:YES afterDelay:2.];
+                if (loginResult.code == 1) {
                     if ([self.delegate respondsToSelector:@selector(loginView:loginBtnDidPressed:)]) {
                         [self.delegate loginView:self loginBtnDidPressed:btn];
                     }
-                });
+                } else {
+                    hud.mode = MBProgressHUDModeCustomView;
+                    UIImage *image = [[UIImage imageNamed:@"error"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+                    hud.customView = [[UIImageView alloc] initWithImage:image];
+                    hud.square = YES;
+                    hud.labelText = NSLocalizedString(@"Login Failed", @"HUD done title");
+                    [hud hide:YES afterDelay:1.f];
+                }
             });
-        } else {
-            
-        }
+        });
     } failure:^(NSError *error) {
         NSLog(@"%@", error);
     }];

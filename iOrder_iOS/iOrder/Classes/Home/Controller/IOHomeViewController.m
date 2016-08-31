@@ -31,6 +31,14 @@
 
 #pragma mark - privacy
 
+- (instancetype)init {
+    if (self = [super init]) {
+//        [self setupProgressView];
+    }
+    
+    return self;
+}
+
 - (NSMutableArray *)shops {
     if (!_shops) {
         _shops = [NSMutableArray array];
@@ -41,14 +49,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:animated];
-    hud.mode = MBProgressHUDModeCustomView;
-    
-    UIImage *image = [[UIImage imageNamed:@"Checkmark"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    hud.customView = [[UIImageView alloc] initWithImage:image];
-    hud.square = YES;
-    hud.labelText = NSLocalizedString(@"Login Successed", @"HUD done title");
-    [hud hide:YES afterDelay:1.0];
+    [self.navigationController.navigationBar setBarTintColor:kIOThemeColors];
 }
 
 - (void)viewDidLoad {
@@ -69,7 +70,7 @@
     //    设置行高
     self.tableView.rowHeight = 70;
     
-    IOHomeHeaderView *homeHeaderView = [[IOHomeHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 305)];
+    IOHomeHeaderView *homeHeaderView = [[IOHomeHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 280)];
     _homeHeaderView = homeHeaderView;
     self.tableView.tableHeaderView = homeHeaderView;
 }
@@ -105,6 +106,16 @@
 
 #pragma mark - UITableViewDelegate
 
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 25;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    IOHomeCellHeaderView *tableViewHeaderView = [[IOHomeCellHeaderView alloc] init];
+    return tableViewHeaderView;
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     IOShopViewController *shopVc = [[IOShopViewController alloc] init];
     int shopId = (int)(indexPath.row);
@@ -123,8 +134,29 @@
 
 #pragma mark - custom method
 
+- (void)setupProgressView {
+//    UIView *mask = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 250, 250)];
+    UIView *mask = [[UIView alloc] initWithFrame:self.view.frame];
+//    mask.center = CGPointMake(self.view.center.x, 150);
+    mask.backgroundColor = [UIColor clearColor];
+    [self.view addSubview:mask];
+    
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:mask animated:YES];
+    hud.mode = MBProgressHUDModeCustomView;
+    
+    UIImage *image = [[UIImage imageNamed:@"success"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    hud.customView = [[UIImageView alloc] initWithImage:image];
+    hud.square = YES;
+    hud.labelText = NSLocalizedString(@"Login Successed", @"HUD done title");
+//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//        [mask removeFromSuperview];
+//    });
+//    [hud hide:YES afterDelay:1.0];
+}
+
 - (void)setupNavigationView {
     [self.navigationController.navigationBar setBarTintColor:kIOThemeColors];
+    
     UIBarButtonItem *locatingBtn = [UIBarButtonItem initWithNormalImage:@"address_icon" target:self action:@selector(locatingBtnClick:) width:15 height:20];
     UIBarButtonItem *locatingLabel = [UIBarButtonItem initWithtitleColor:[UIColor whiteColor] target:self action:@selector(locatingBtnClick:) title:@"定位"];
     self.navigationItem.rightBarButtonItems = @[locatingBtn, locatingLabel];

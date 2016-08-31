@@ -196,7 +196,7 @@
 
 - (void)setupAllChildView {
     UIImageView *userIcon = [[UIImageView alloc] init];
-    userIcon.layer.cornerRadius = self.height/6;
+    userIcon.layer.cornerRadius = 30;
     userIcon.layer.masksToBounds = YES;
     [self addSubview:userIcon];
     _userIcon = userIcon;
@@ -214,17 +214,16 @@
 }
 
 - (void)updateConstraints {
-    UIView *superView = self;
-    
     [self.userIcon mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.center.mas_equalTo(CGPointMake(0, -superView.height/9));
-        make.size.mas_equalTo(CGSizeMake(superView.height/3, superView.height/3));
+        make.width.height.equalTo(@60);
+        make.centerX.equalTo(self);
+        make.centerY.equalTo(self).offset(-10);
     }];
     
     [self.userName mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_userIcon.mas_bottom).offset(10);
-        make.left.equalTo(superView.mas_left);
-        make.right.equalTo(superView.mas_right);
+        make.left.equalTo(self.mas_left);
+        make.right.equalTo(self.mas_right);
         make.height.equalTo(@17);
     }];
     
