@@ -151,8 +151,8 @@
     self.tableView.tableHeaderView = profileHeaderView;
     
     IOUserInfo *userInfo = [[IOUserInfo alloc] init];
-    userInfo.userIcon = @"profile_userImage";
-    userInfo.userName = @"姐有姐的范儿";
+    userInfo.userIcon = @"profile_HeadPortrait";
+    userInfo.userName = @"SXM12648181460 V2";
     userInfo.wallet = 10;
     userInfo.redPacket = 20;
     userInfo.voucher = 30;
