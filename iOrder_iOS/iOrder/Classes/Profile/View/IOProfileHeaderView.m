@@ -98,21 +98,21 @@
     [self addSubview:firstAsset];
     _firstAsset = firstAsset;
     firstAsset.unit = @"元";
-    firstAsset.iconName = @"my_wallet-0";
+    firstAsset.iconName = @"profile_MyWallet";
     firstAsset.assetName = @"我的钱包";
     
     IOAssetView *secondAsset = [[IOAssetView alloc] init];
     [self addSubview:secondAsset];
     _secondAsset = secondAsset;
     secondAsset.unit = @"张";
-    secondAsset.iconName = @"red_packet";
+    secondAsset.iconName = @"profile_RedPacket";
     secondAsset.assetName = @"iOrder红包";
     
     IOAssetView *thirdAsset = [[IOAssetView alloc] init];
     [self addSubview:thirdAsset];
     _thirdAsset = thirdAsset;
     thirdAsset.unit = @"张";
-    thirdAsset.iconName = @"voucher";
+    thirdAsset.iconName = @"profile_Voucher";
     thirdAsset.assetName = @"商家代金券";
 }
 
@@ -307,12 +307,13 @@
 
 - (void)setupAllChildView {
     UILabel *countLabel = [[UILabel alloc] init];
-    
+    countLabel.textColor = kIOProfileTitleColor;
     countLabel.textAlignment = NSTextAlignmentRight;
     [self addSubview:countLabel];
     _countLabel = countLabel;
     
     UILabel *unitLabel = [[UILabel alloc] init];
+    unitLabel.textColor = kIOProfileTitleColor;
     unitLabel.font = [UIFont systemFontOfSize:13];
     unitLabel.textAlignment = NSTextAlignmentLeft;
     [self addSubview:unitLabel];
@@ -325,6 +326,7 @@
     _assetIcon = assetIcon;
     
     UILabel *assetNameLabel = [[UILabel alloc] init];
+    assetNameLabel.textColor = kIOProfileTitleColor;
     assetNameLabel.font = [UIFont systemFontOfSize:13];
     assetNameLabel.textAlignment = NSTextAlignmentCenter;
     [self addSubview:assetNameLabel];
