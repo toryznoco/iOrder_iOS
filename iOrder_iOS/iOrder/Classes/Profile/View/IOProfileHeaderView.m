@@ -17,6 +17,7 @@
 #pragma mark - implementation IOProfileHeaderView
 @interface IOProfileHeaderView ()
 
+@property (nonatomic, weak) UIView *background;
 @property (nonatomic, weak) IOUserInfoView *userInfoView;
 @property (nonatomic, weak) IOAssetsView *assetsView;
 
@@ -45,6 +46,11 @@
 #pragma mark - custom methods
 
 - (void)setupAllChildView {
+    UIView *background = [[UIView alloc] init];
+    background.backgroundColor = kIOProfileTitleColor;
+    [self addSubview:background];
+    _background = background;
+    
     IOUserInfoView *userInfoView = [[IOUserInfoView alloc] initWithFrame:CGRectMake(0, 0, self.width, 180)];
     [self addSubview:userInfoView];
     _userInfoView = userInfoView;
@@ -52,6 +58,20 @@
     IOAssetsView *assetsView = [[IOAssetsView alloc] initWithFrame:CGRectMake(0, 180, self.width, 65)];
     [self addSubview:assetsView];
     _assetsView = assetsView;
+}
+
+#pragma mark - masonry
+
++ (BOOL)requiresConstraintBasedLayout {
+    return YES;
+}
+
+- (void)updateConstraints {
+    [self.background mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.bottom.right.equalTo(self);
+    }];
+    
+    [super updateConstraints];
 }
 
 @end
