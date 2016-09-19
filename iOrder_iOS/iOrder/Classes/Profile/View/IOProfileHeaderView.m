@@ -11,8 +11,9 @@
 #import "IOUserInfo.h"
 #import "UIView+Masonry_YWJ.h"
 
+#define kIOProfileBackgroundColor [UIColor colorWithRed:244/255.0 green:244/255.0 blue:244/255.0 alpha:1]  //我的界面背景颜色
 #define kIOProfileTitleColor [UIColor colorWithRed:172/255.0 green:172/255.0 blue:172/255.0 alpha:1]  //我的界面文字颜色
-#define kIOProfileUserIconWidth 29  //用户头像高度和宽度
+#define kIOProfileUserIconWidth 80  //用户头像高度和宽度
 
 #pragma mark - implementation IOProfileHeaderView
 @interface IOProfileHeaderView ()
@@ -47,7 +48,7 @@
 
 - (void)setupAllChildView {
     UIView *background = [[UIView alloc] init];
-    background.backgroundColor = kIOProfileTitleColor;
+    background.backgroundColor = kIOProfileBackgroundColor;
     [self addSubview:background];
     _background = background;
     
@@ -232,6 +233,7 @@
     UILabel *userName = [[UILabel alloc] init];
     userName.font = [UIFont systemFontOfSize:15];
     userName.textAlignment = NSTextAlignmentCenter;
+    userName.textColor = [UIColor whiteColor];
     [self addSubview:userName];
     _userName = userName;
 }

@@ -30,14 +30,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.view.backgroundColor = [UIColor whiteColor];
-    
     self.edgesForExtendedLayout = UIRectEdgeNone;
     [self setupNavigationView];
     
     [self setupTableHeaderView];
     
-    self.tableView.tableFooterView = [[UIView alloc] init];
+    self.view.backgroundColor = kIOBackgroundColor;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -157,6 +155,12 @@
     }
 }
 
+- (nullable UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+    UIView *footerView = [[UIView alloc] init];
+    footerView.backgroundColor = kIOBackgroundColor;
+    return footerView;
+}
+
 
 #pragma mark - custom methods
 
@@ -174,7 +178,7 @@
     
     IOUserInfo *userInfo = [[IOUserInfo alloc] init];
     userInfo.userIcon = @"profile_HeadPortrait";
-    userInfo.userName = @"SXM12648181460 V2";
+    userInfo.userName = @"SXM12648181460";
     userInfo.wallet = 10;
     userInfo.redPacket = 20;
     userInfo.voucher = 30;
