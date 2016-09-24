@@ -27,24 +27,14 @@
 
 #pragma mark -  eventColor
 
-- (void)setEventDefaultColor:(UIColor *)eventDefaultColor
+- (void)setEventColor:(UIColor *)eventColor
 {
-    self.appearance.eventDefaultColor = eventDefaultColor;
+    self.appearance.eventColor = eventColor;
 }
 
-- (UIColor *)eventDefaultColor
+- (UIColor *)eventColor
 {
-    return self.appearance.eventDefaultColor;
-}
-
-- (void)setEventSelectionColor:(UIColor *)eventSelectionColor
-{
-    self.appearance.eventSelectionColor = eventSelectionColor;
-}
-
-- (UIColor *)eventSelectionColor
-{
-    return self.appearance.eventSelectionColor;
+    return self.appearance.eventColor;
 }
 
 #pragma mark - weekdayTextColor

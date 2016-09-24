@@ -34,13 +34,11 @@ static NSMutableDictionary *ignoredCodingPropertyNamesDict_;
 
 + (NSMutableDictionary *)dictForKey:(const void *)key
 {
-    @synchronized (self) {
-        if (key == &MJAllowedPropertyNamesKey) return allowedPropertyNamesDict_;
-        if (key == &MJIgnoredPropertyNamesKey) return ignoredPropertyNamesDict_;
-        if (key == &MJAllowedCodingPropertyNamesKey) return allowedCodingPropertyNamesDict_;
-        if (key == &MJIgnoredCodingPropertyNamesKey) return ignoredCodingPropertyNamesDict_;
-        return nil;
-    }
+    if (key == &MJAllowedPropertyNamesKey) return allowedPropertyNamesDict_;
+    if (key == &MJIgnoredPropertyNamesKey) return ignoredPropertyNamesDict_;
+    if (key == &MJAllowedCodingPropertyNamesKey) return allowedCodingPropertyNamesDict_;
+    if (key == &MJIgnoredCodingPropertyNamesKey) return ignoredCodingPropertyNamesDict_;
+    return nil;
 }
 
 + (void)mj_enumerateClasses:(MJClassesEnumeration)enumeration

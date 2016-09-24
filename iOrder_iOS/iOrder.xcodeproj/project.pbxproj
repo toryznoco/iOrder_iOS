@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0C39DD33B6D8ED391FA88ED5 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AA08641E7F59BD859B41E36B /* libPods.a */; };
 		9A4C58441CF9805000AD1330 /* IOOrdersTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A4C58431CF9805000AD1330 /* IOOrdersTool.m */; };
 		9A4C58491CF989D900AD1330 /* IOOrderResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A4C58481CF989D900AD1330 /* IOOrderResult.m */; };
 		9A4C584C1CFB130B00AD1330 /* IOOrdersParam.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A4C584B1CFB130B00AD1330 /* IOOrdersParam.m */; };
@@ -31,42 +30,42 @@
 		9AC55EE01CF2FCAE00A84A8B /* IOSignInFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AC55EDF1CF2FCAE00A84A8B /* IOSignInFooterView.m */; };
 		9AFEED761CEC3ECE0009528C /* IOSingInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AFEED751CEC3ECE0009528C /* IOSingInViewController.m */; };
 		9AFEED791CEC6DF70009528C /* IOSignInHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AFEED781CEC6DF70009528C /* IOSignInHeaderView.m */; };
-		CA0CE2131D37717F00AEE9EF /* IOSegmentScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = CA0CE2121D37717F00AEE9EF /* IOSegmentScrollView.m */; settings = {ASSET_TAGS = (); }; };
+		CA0CE2131D37717F00AEE9EF /* IOSegmentScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = CA0CE2121D37717F00AEE9EF /* IOSegmentScrollView.m */; };
 		CA218FDC1CEB3B0C00627FBD /* IOHomeHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = CA218FDB1CEB3B0C00627FBD /* IOHomeHeaderView.m */; };
 		CA218FE21CEB5C5E00627FBD /* YWJDoubleTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = CA218FE11CEB5C5E00627FBD /* YWJDoubleTableView.m */; };
-		CA280A1E1CFB1C8500644670 /* YWJShoppingCartParam.m in Sources */ = {isa = PBXBuildFile; fileRef = CA280A1D1CFB1C8500644670 /* YWJShoppingCartParam.m */; settings = {ASSET_TAGS = (); }; };
-		CA280A211CFB1D5C00644670 /* YWJShoppingCartTool.m in Sources */ = {isa = PBXBuildFile; fileRef = CA280A201CFB1D5C00644670 /* YWJShoppingCartTool.m */; settings = {ASSET_TAGS = (); }; };
-		CA41C87A1D2BF0C90092921E /* UIView+Masonry_YWJ.m in Sources */ = {isa = PBXBuildFile; fileRef = CA41C8791D2BF0C90092921E /* UIView+Masonry_YWJ.m */; settings = {ASSET_TAGS = (); }; };
+		CA280A1E1CFB1C8500644670 /* YWJShoppingCartParam.m in Sources */ = {isa = PBXBuildFile; fileRef = CA280A1D1CFB1C8500644670 /* YWJShoppingCartParam.m */; };
+		CA280A211CFB1D5C00644670 /* YWJShoppingCartTool.m in Sources */ = {isa = PBXBuildFile; fileRef = CA280A201CFB1D5C00644670 /* YWJShoppingCartTool.m */; };
+		CA41C87A1D2BF0C90092921E /* UIView+Masonry_YWJ.m in Sources */ = {isa = PBXBuildFile; fileRef = CA41C8791D2BF0C90092921E /* UIView+Masonry_YWJ.m */; };
 		CA5CD0541CF4486300324C92 /* IOUserInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = CA5CD0531CF4486300324C92 /* IOUserInfo.m */; };
 		CA6539561CBD40E6000972E2 /* IONewFeatureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA6539551CBD40E6000972E2 /* IONewFeatureViewController.m */; };
 		CA6539591CBD44CF000972E2 /* YWJNewFeatureScrollPage.m in Sources */ = {isa = PBXBuildFile; fileRef = CA6539581CBD44CF000972E2 /* YWJNewFeatureScrollPage.m */; };
 		CA7069CB1CE5F564007C5F3F /* UIBarButtonItem+IOBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = CA7069CA1CE5F564007C5F3F /* UIBarButtonItem+IOBarButtonItem.m */; };
 		CA7069CE1CE6037B007C5F3F /* IOShopHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = CA7069CD1CE6037B007C5F3F /* IOShopHeaderView.m */; };
-		CA8B690C1D73D4360026C436 /* IOProfileMyCollectController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA8B690B1D73D4360026C436 /* IOProfileMyCollectController.m */; settings = {ASSET_TAGS = (); }; };
-		CA8B690F1D73D50B0026C436 /* IOProfileMyEvaluateController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA8B690E1D73D50B0026C436 /* IOProfileMyEvaluateController.m */; settings = {ASSET_TAGS = (); }; };
-		CA8B69121D73D6080026C436 /* IOProfileMyPointController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA8B69111D73D6080026C436 /* IOProfileMyPointController.m */; settings = {ASSET_TAGS = (); }; };
-		CA8B69151D73D62F0026C436 /* IOProfileMyCouponController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA8B69141D73D62F0026C436 /* IOProfileMyCouponController.m */; settings = {ASSET_TAGS = (); }; };
-		CA8B69181D73DD340026C436 /* IOProfileMyCollectView.m in Sources */ = {isa = PBXBuildFile; fileRef = CA8B69171D73DD340026C436 /* IOProfileMyCollectView.m */; settings = {ASSET_TAGS = (); }; };
+		CA8B690C1D73D4360026C436 /* IOProfileMyCollectController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA8B690B1D73D4360026C436 /* IOProfileMyCollectController.m */; };
+		CA8B690F1D73D50B0026C436 /* IOProfileMyEvaluateController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA8B690E1D73D50B0026C436 /* IOProfileMyEvaluateController.m */; };
+		CA8B69121D73D6080026C436 /* IOProfileMyPointController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA8B69111D73D6080026C436 /* IOProfileMyPointController.m */; };
+		CA8B69151D73D62F0026C436 /* IOProfileMyCouponController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA8B69141D73D62F0026C436 /* IOProfileMyCouponController.m */; };
+		CA8B69181D73DD340026C436 /* IOProfileMyCollectView.m in Sources */ = {isa = PBXBuildFile; fileRef = CA8B69171D73DD340026C436 /* IOProfileMyCollectView.m */; };
 		CA8D2C6D1CE56E44006E3D2A /* IOShoppingViewInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = CA8D2C6C1CE56E44006E3D2A /* IOShoppingViewInfo.m */; };
 		CA9019911CE16B7A00AC5712 /* YWJDishesParam.m in Sources */ = {isa = PBXBuildFile; fileRef = CA90198B1CE16B7A00AC5712 /* YWJDishesParam.m */; };
 		CA9019921CE16B7A00AC5712 /* YWJDishesResult.m in Sources */ = {isa = PBXBuildFile; fileRef = CA90198E1CE16B7A00AC5712 /* YWJDishesResult.m */; };
 		CA9019931CE16B7A00AC5712 /* YWJDishesTool.m in Sources */ = {isa = PBXBuildFile; fileRef = CA9019901CE16B7A00AC5712 /* YWJDishesTool.m */; };
-		CA9F01321CFC4C19007408D5 /* YWJSubmitOrderParam.m in Sources */ = {isa = PBXBuildFile; fileRef = CA9F01311CFC4C19007408D5 /* YWJSubmitOrderParam.m */; settings = {ASSET_TAGS = (); }; };
-		CA9F01351CFC4C7E007408D5 /* YWJSubmitOrderTool.m in Sources */ = {isa = PBXBuildFile; fileRef = CA9F01341CFC4C7E007408D5 /* YWJSubmitOrderTool.m */; settings = {ASSET_TAGS = (); }; };
+		CA9F01321CFC4C19007408D5 /* YWJSubmitOrderParam.m in Sources */ = {isa = PBXBuildFile; fileRef = CA9F01311CFC4C19007408D5 /* YWJSubmitOrderParam.m */; };
+		CA9F01351CFC4C7E007408D5 /* YWJSubmitOrderTool.m in Sources */ = {isa = PBXBuildFile; fileRef = CA9F01341CFC4C7E007408D5 /* YWJSubmitOrderTool.m */; };
 		CAAC90B31CF67DDF00BB1AB9 /* IOSubmitCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CAAC90B21CF67DDF00BB1AB9 /* IOSubmitCell.m */; };
-		CAB149D91CFF0DB600561B31 /* IOShoppingCartInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = CAB149D81CFF0DB600561B31 /* IOShoppingCartInfo.m */; settings = {ASSET_TAGS = (); }; };
-		CAB149DC1CFF10AE00561B31 /* YWJShoppingCartInfoParam.m in Sources */ = {isa = PBXBuildFile; fileRef = CAB149DB1CFF10AE00561B31 /* YWJShoppingCartInfoParam.m */; settings = {ASSET_TAGS = (); }; };
-		CAB149E01CFF11D100561B31 /* YWJShoppingCartInfoResult.m in Sources */ = {isa = PBXBuildFile; fileRef = CAB149DF1CFF11D100561B31 /* YWJShoppingCartInfoResult.m */; settings = {ASSET_TAGS = (); }; };
-		CAC8FC9C1D655F0D00B455D7 /* YWJLoginTool.m in Sources */ = {isa = PBXBuildFile; fileRef = CAC8FC9B1D655F0D00B455D7 /* YWJLoginTool.m */; settings = {ASSET_TAGS = (); }; };
-		CAC8FC9F1D655F4100B455D7 /* YWJLoginParam.m in Sources */ = {isa = PBXBuildFile; fileRef = CAC8FC9E1D655F4100B455D7 /* YWJLoginParam.m */; settings = {ASSET_TAGS = (); }; };
-		CAC8FCA21D655F5200B455D7 /* YWJLoginResult.m in Sources */ = {isa = PBXBuildFile; fileRef = CAC8FCA11D655F5200B455D7 /* YWJLoginResult.m */; settings = {ASSET_TAGS = (); }; };
-		CAC8FCA51D65601A00B455D7 /* IOUser.m in Sources */ = {isa = PBXBuildFile; fileRef = CAC8FCA41D65601A00B455D7 /* IOUser.m */; settings = {ASSET_TAGS = (); }; };
+		CAB149D91CFF0DB600561B31 /* IOShoppingCartInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = CAB149D81CFF0DB600561B31 /* IOShoppingCartInfo.m */; };
+		CAB149DC1CFF10AE00561B31 /* YWJShoppingCartInfoParam.m in Sources */ = {isa = PBXBuildFile; fileRef = CAB149DB1CFF10AE00561B31 /* YWJShoppingCartInfoParam.m */; };
+		CAB149E01CFF11D100561B31 /* YWJShoppingCartInfoResult.m in Sources */ = {isa = PBXBuildFile; fileRef = CAB149DF1CFF11D100561B31 /* YWJShoppingCartInfoResult.m */; };
+		CAC8FC9C1D655F0D00B455D7 /* YWJLoginTool.m in Sources */ = {isa = PBXBuildFile; fileRef = CAC8FC9B1D655F0D00B455D7 /* YWJLoginTool.m */; };
+		CAC8FC9F1D655F4100B455D7 /* YWJLoginParam.m in Sources */ = {isa = PBXBuildFile; fileRef = CAC8FC9E1D655F4100B455D7 /* YWJLoginParam.m */; };
+		CAC8FCA21D655F5200B455D7 /* YWJLoginResult.m in Sources */ = {isa = PBXBuildFile; fileRef = CAC8FCA11D655F5200B455D7 /* YWJLoginResult.m */; };
+		CAC8FCA51D65601A00B455D7 /* IOUser.m in Sources */ = {isa = PBXBuildFile; fileRef = CAC8FCA41D65601A00B455D7 /* IOUser.m */; };
 		CACD5CB11CE4119A00ADE187 /* IOShopCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CACD5CAC1CE4119A00ADE187 /* IOShopCell.m */; };
-		CAD1E7C61D90016F001A37B8 /* YWJLoginCacheTool.m in Sources */ = {isa = PBXBuildFile; fileRef = CAD1E7C51D90016F001A37B8 /* YWJLoginCacheTool.m */; settings = {ASSET_TAGS = (); }; };
-		CAE310211D6AA1B4005287DC /* YWJRootNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE310201D6AA1B4005287DC /* YWJRootNavigationViewController.m */; settings = {ASSET_TAGS = (); }; };
-		CAE795B61D6D1DB600CD999F /* IOShopEvaluate.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE795B51D6D1DB600CD999F /* IOShopEvaluate.m */; settings = {ASSET_TAGS = (); }; };
-		CAE795B91D6D1DCE00CD999F /* IOShopDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE795B81D6D1DCE00CD999F /* IOShopDetail.m */; settings = {ASSET_TAGS = (); }; };
-		CAE795BC1D6D413800CD999F /* IOShopDetailCellInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE795BB1D6D413800CD999F /* IOShopDetailCellInfo.m */; settings = {ASSET_TAGS = (); }; };
+		CAD1E7C61D90016F001A37B8 /* YWJLoginCacheTool.m in Sources */ = {isa = PBXBuildFile; fileRef = CAD1E7C51D90016F001A37B8 /* YWJLoginCacheTool.m */; };
+		CAE310211D6AA1B4005287DC /* YWJRootNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE310201D6AA1B4005287DC /* YWJRootNavigationViewController.m */; };
+		CAE795B61D6D1DB600CD999F /* IOShopEvaluate.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE795B51D6D1DB600CD999F /* IOShopEvaluate.m */; };
+		CAE795B91D6D1DCE00CD999F /* IOShopDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE795B81D6D1DCE00CD999F /* IOShopDetail.m */; };
+		CAE795BC1D6D413800CD999F /* IOShopDetailCellInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE795BB1D6D413800CD999F /* IOShopDetailCellInfo.m */; };
 		CAE8F02C1CB940E2005618B0 /* iOrderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F02B1CB940E2005618B0 /* iOrderTests.m */; };
 		CAE8F0371CB940E2005618B0 /* iOrderUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F0361CB940E2005618B0 /* iOrderUITests.m */; };
 		CAE8F07B1CB94170005618B0 /* YWJBadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F04E1CB94170005618B0 /* YWJBadgeView.m */; };
@@ -80,13 +79,14 @@
 		CAE8F0921CB9461C005618B0 /* IOProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F0911CB9461C005618B0 /* IOProfileViewController.m */; };
 		CAE8F0951CB946E8005618B0 /* IONavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F0941CB946E8005618B0 /* IONavigationController.m */; };
 		CAE8F0AF1CB9680B005618B0 /* IOTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F0AE1CB9680B005618B0 /* IOTabBarController.m */; };
-		CAF439E81D63E289009D687A /* IOLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CAF439E71D63E289009D687A /* IOLoginViewController.m */; settings = {ASSET_TAGS = (); }; };
-		CAF439EB1D63E29A009D687A /* IORegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CAF439EA1D63E29A009D687A /* IORegisterViewController.m */; settings = {ASSET_TAGS = (); }; };
-		CAF439EE1D63E2CE009D687A /* IOLoginView.m in Sources */ = {isa = PBXBuildFile; fileRef = CAF439ED1D63E2CE009D687A /* IOLoginView.m */; settings = {ASSET_TAGS = (); }; };
-		CAF439F11D63E2DA009D687A /* IORegisterView.m in Sources */ = {isa = PBXBuildFile; fileRef = CAF439F01D63E2DA009D687A /* IORegisterView.m */; settings = {ASSET_TAGS = (); }; };
+		CAF439E81D63E289009D687A /* IOLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CAF439E71D63E289009D687A /* IOLoginViewController.m */; };
+		CAF439EB1D63E29A009D687A /* IORegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CAF439EA1D63E29A009D687A /* IORegisterViewController.m */; };
+		CAF439EE1D63E2CE009D687A /* IOLoginView.m in Sources */ = {isa = PBXBuildFile; fileRef = CAF439ED1D63E2CE009D687A /* IOLoginView.m */; };
+		CAF439F11D63E2DA009D687A /* IORegisterView.m in Sources */ = {isa = PBXBuildFile; fileRef = CAF439F01D63E2DA009D687A /* IORegisterView.m */; };
 		CAF4BFA71CF54E9F001E88F7 /* IOSubmitOrderView.m in Sources */ = {isa = PBXBuildFile; fileRef = CAF4BFA61CF54E9F001E88F7 /* IOSubmitOrderView.m */; };
 		CAF4BFAF1CF5B973001E88F7 /* IOSubmitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CAF4BFAD1CF5B973001E88F7 /* IOSubmitViewController.m */; };
 		CAF4BFB31CF5C5CD001E88F7 /* IOProfileCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CAF4BFB21CF5C5CD001E88F7 /* IOProfileCell.m */; };
+		CFEA7B973FA4FE6762466625 /* libPods-iOrder.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 565EF0A881111C2576CC81D4 /* libPods-iOrder.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -107,6 +107,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3A6A169DE0BA56711B632DC4 /* Pods-iOrder.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOrder.release.xcconfig"; path = "Pods/Target Support Files/Pods-iOrder/Pods-iOrder.release.xcconfig"; sourceTree = "<group>"; };
+		565EF0A881111C2576CC81D4 /* libPods-iOrder.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-iOrder.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A4C58421CF9805000AD1330 /* IOOrdersTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOOrdersTool.h; sourceTree = "<group>"; };
 		9A4C58431CF9805000AD1330 /* IOOrdersTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOOrdersTool.m; sourceTree = "<group>"; };
 		9A4C58471CF989D900AD1330 /* IOOrderResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOOrderResult.h; sourceTree = "<group>"; };
@@ -153,7 +155,6 @@
 		9AFEED751CEC3ECE0009528C /* IOSingInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOSingInViewController.m; sourceTree = "<group>"; };
 		9AFEED771CEC6DF70009528C /* IOSignInHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOSignInHeaderView.h; sourceTree = "<group>"; };
 		9AFEED781CEC6DF70009528C /* IOSignInHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOSignInHeaderView.m; sourceTree = "<group>"; };
-		AA08641E7F59BD859B41E36B /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA0CE2111D37717F00AEE9EF /* IOSegmentScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOSegmentScrollView.h; sourceTree = "<group>"; };
 		CA0CE2121D37717F00AEE9EF /* IOSegmentScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOSegmentScrollView.m; sourceTree = "<group>"; };
 		CA10A4961CC7B3B500131D56 /* Reveal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Reveal.framework; sourceTree = "<group>"; };
@@ -270,8 +271,7 @@
 		CAF4BFAD1CF5B973001E88F7 /* IOSubmitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOSubmitViewController.m; sourceTree = "<group>"; };
 		CAF4BFB11CF5C5CD001E88F7 /* IOProfileCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOProfileCell.h; sourceTree = "<group>"; };
 		CAF4BFB21CF5C5CD001E88F7 /* IOProfileCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOProfileCell.m; sourceTree = "<group>"; };
-		CD440F0C591F9F0ECB765D3A /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
-		CD94856A0BB8EB254EBFD826 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		E54237A12030477D4B151FF1 /* Pods-iOrder.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOrder.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iOrder/Pods-iOrder.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -279,7 +279,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0C39DD33B6D8ED391FA88ED5 /* libPods.a in Frameworks */,
+				CFEA7B973FA4FE6762466625 /* libPods-iOrder.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -300,11 +300,11 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		71C142701D6985C588AB91CD /* Pods */ = {
+		6300372F0D50A535DA5791E0 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				CD440F0C591F9F0ECB765D3A /* Pods.debug.xcconfig */,
-				CD94856A0BB8EB254EBFD826 /* Pods.release.xcconfig */,
+				E54237A12030477D4B151FF1 /* Pods-iOrder.debug.xcconfig */,
+				3A6A169DE0BA56711B632DC4 /* Pods-iOrder.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -543,7 +543,7 @@
 			isa = PBXGroup;
 			children = (
 				CA10A4961CC7B3B500131D56 /* Reveal.framework */,
-				AA08641E7F59BD859B41E36B /* libPods.a */,
+				565EF0A881111C2576CC81D4 /* libPods-iOrder.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -709,8 +709,8 @@
 				CAE8F02A1CB940E2005618B0 /* iOrderTests */,
 				CAE8F0351CB940E2005618B0 /* iOrderUITests */,
 				CAE8F00F1CB940E2005618B0 /* Products */,
-				71C142701D6985C588AB91CD /* Pods */,
 				AC53E7F2F1CB4D0E4F921365 /* Frameworks */,
+				6300372F0D50A535DA5791E0 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -895,12 +895,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CAE8F03B1CB940E2005618B0 /* Build configuration list for PBXNativeTarget "iOrder" */;
 			buildPhases = (
-				11CE56D60DDED8D0E7D58377 /* Check Pods Manifest.lock */,
+				5D569730AB2AF17D1E8CBBF0 /* [CP] Check Pods Manifest.lock */,
 				CAE8F00A1CB940E2005618B0 /* Sources */,
 				CAE8F00B1CB940E2005618B0 /* Frameworks */,
 				CAE8F00C1CB940E2005618B0 /* Resources */,
-				AF6DC4783BD80C3A613BB8C5 /* Embed Pods Frameworks */,
-				119A797B832F53534C4D67CE /* Copy Pods Resources */,
+				31FACBC2E65BE306D655D47B /* [CP] Embed Pods Frameworks */,
+				6613B17C9EB6452998C61BFF /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1018,29 +1018,29 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		119A797B832F53534C4D67CE /* Copy Pods Resources */ = {
+		31FACBC2E65BE306D655D47B /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-iOrder/Pods-iOrder-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		11CE56D60DDED8D0E7D58377 /* Check Pods Manifest.lock */ = {
+		5D569730AB2AF17D1E8CBBF0 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1048,19 +1048,19 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		AF6DC4783BD80C3A613BB8C5 /* Embed Pods Frameworks */ = {
+		6613B17C9EB6452998C61BFF /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Embed Pods Frameworks";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-iOrder/Pods-iOrder-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -1219,7 +1219,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -1258,7 +1258,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -1267,7 +1267,7 @@
 		};
 		CAE8F03C1CB940E2005618B0 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CD440F0C591F9F0ECB765D3A /* Pods.debug.xcconfig */;
+			baseConfigurationReference = E54237A12030477D4B151FF1 /* Pods-iOrder.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -1279,14 +1279,9 @@
 					"$(PROJECT_DIR)",
 				);
 				GCC_PREFIX_HEADER = iOrder/Classes/Other/IOIOrder.pch;
-				HEADER_SEARCH_PATHS = /Users/yiwujie/Github/iOrder/iOrder/iOrder/iOrder/Classes/Other/Lib/AprilSDK/Headers;
 				INFOPLIST_FILE = iOrder/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)/**",
-					"$(PROJECT_DIR)/iOrder/Classes/Other/Lib/AprilSDK/**",
-				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -1313,13 +1308,12 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = cn.net.normcore.order;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/**";
 			};
 			name = Debug;
 		};
 		CAE8F03D1CB940E2005618B0 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CD94856A0BB8EB254EBFD826 /* Pods.release.xcconfig */;
+			baseConfigurationReference = 3A6A169DE0BA56711B632DC4 /* Pods-iOrder.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -1331,14 +1325,9 @@
 					"$(PROJECT_DIR)",
 				);
 				GCC_PREFIX_HEADER = iOrder/Classes/Other/IOIOrder.pch;
-				HEADER_SEARCH_PATHS = /Users/yiwujie/Github/iOrder/iOrder/iOrder/iOrder/Classes/Other/Lib/AprilSDK/Headers;
 				INFOPLIST_FILE = iOrder/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)/**",
-					"$(PROJECT_DIR)/iOrder/Classes/Other/Lib/AprilSDK/**",
-				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -1365,7 +1354,6 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = cn.net.normcore.order;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/**";
 			};
 			name = Release;
 		};
