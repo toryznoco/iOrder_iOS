@@ -11,9 +11,14 @@
 #import "IOUserInfo.h"
 #import "UIView+Masonry_YWJ.h"
 
+#define kIOProfileBackgroundColor [UIColor colorWithRed:244/255.0 green:244/255.0 blue:244/255.0 alpha:1]  //我的界面背景颜色
+#define kIOProfileTitleColor [UIColor colorWithRed:172/255.0 green:172/255.0 blue:172/255.0 alpha:1]  //我的界面文字颜色
+#define kIOProfileUserIconWidth 80  //用户头像高度和宽度
+
 #pragma mark - implementation IOProfileHeaderView
 @interface IOProfileHeaderView ()
 
+@property (nonatomic, weak) UIView *background;
 @property (nonatomic, weak) IOUserInfoView *userInfoView;
 @property (nonatomic, weak) IOAssetsView *assetsView;
 
@@ -24,8 +29,6 @@
 #pragma mark - privacy
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
-        self.backgroundColor = YWJRGBColor(231, 231, 231, 1);
-        
         [self setupAllChildView];
     }
     return self;
@@ -44,6 +47,11 @@
 #pragma mark - custom methods
 
 - (void)setupAllChildView {
+    UIView *background = [[UIView alloc] init];
+    background.backgroundColor = kIOProfileBackgroundColor;
+    [self addSubview:background];
+    _background = background;
+    
     IOUserInfoView *userInfoView = [[IOUserInfoView alloc] initWithFrame:CGRectMake(0, 0, self.width, 180)];
     [self addSubview:userInfoView];
     _userInfoView = userInfoView;
@@ -51,6 +59,20 @@
     IOAssetsView *assetsView = [[IOAssetsView alloc] initWithFrame:CGRectMake(0, 180, self.width, 65)];
     [self addSubview:assetsView];
     _assetsView = assetsView;
+}
+
+#pragma mark - masonry
+
++ (BOOL)requiresConstraintBasedLayout {
+    return YES;
+}
+
+- (void)updateConstraints {
+    [self.background mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.bottom.right.equalTo(self);
+    }];
+    
+    [super updateConstraints];
 }
 
 @end
@@ -97,21 +119,21 @@
     [self addSubview:firstAsset];
     _firstAsset = firstAsset;
     firstAsset.unit = @"元";
-    firstAsset.iconName = @"my_wallet-0";
+    firstAsset.iconName = @"profile_MyWallet";
     firstAsset.assetName = @"我的钱包";
     
     IOAssetView *secondAsset = [[IOAssetView alloc] init];
     [self addSubview:secondAsset];
     _secondAsset = secondAsset;
     secondAsset.unit = @"张";
-    secondAsset.iconName = @"red_packet";
+    secondAsset.iconName = @"profile_RedPacket";
     secondAsset.assetName = @"iOrder红包";
     
     IOAssetView *thirdAsset = [[IOAssetView alloc] init];
     [self addSubview:thirdAsset];
     _thirdAsset = thirdAsset;
     thirdAsset.unit = @"张";
-    thirdAsset.iconName = @"voucher";
+    thirdAsset.iconName = @"profile_Voucher";
     thirdAsset.assetName = @"商家代金券";
 }
 
@@ -161,6 +183,7 @@
 #pragma mark - implementation IOUserInfoView
 @interface IOUserInfoView ()
 
+@property (nonatomic, weak) UIImageView *backgroundIMG;
 @property (nonatomic, weak) UIImageView *userIcon;
 @property (nonatomic, weak) UILabel *userName;
 
@@ -171,7 +194,7 @@
 #pragma mark - privacy
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
-        self.backgroundColor = kIOThemeColors;
+        self.backgroundColor = [UIColor whiteColor];
         [self setupAllChildView];
     }
     return self;
@@ -195,14 +218,22 @@
 #pragma mark - custom methods
 
 - (void)setupAllChildView {
+    UIImageView *backgroundIMG = [[UIImageView alloc] init];
+    UIImage *bgIMG = [UIImage imageNamed:@"profile_backgroundImage"];
+    [backgroundIMG setImage:bgIMG];
+    [self addSubview:backgroundIMG];
+    _backgroundIMG = backgroundIMG;
+    
     UIImageView *userIcon = [[UIImageView alloc] init];
-    userIcon.layer.cornerRadius = 30;
+    userIcon.layer.cornerRadius = kIOProfileUserIconWidth / 2.0;
     userIcon.layer.masksToBounds = YES;
     [self addSubview:userIcon];
     _userIcon = userIcon;
     
     UILabel *userName = [[UILabel alloc] init];
+    userName.font = [UIFont systemFontOfSize:15];
     userName.textAlignment = NSTextAlignmentCenter;
+    userName.textColor = [UIColor whiteColor];
     [self addSubview:userName];
     _userName = userName;
 }
@@ -214,17 +245,22 @@
 }
 
 - (void)updateConstraints {
+    [self.backgroundIMG mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.bottom.right.equalTo(self);
+    }];
+    
     [self.userIcon mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.height.equalTo(@60);
-        make.centerX.equalTo(self);
-        make.centerY.equalTo(self).offset(-10);
+        make.width.height.equalTo(@(kIOProfileUserIconWidth));
+        make.left.equalTo(self).offset(15);
+        make.bottom.equalTo(self).offset(-50);
+        make.right.equalTo(self.userName.mas_left).offset(-15);
     }];
     
     [self.userName mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_userIcon.mas_bottom).offset(10);
-        make.left.equalTo(self.mas_left);
-        make.right.equalTo(self.mas_right);
-        make.height.equalTo(@17);
+        make.left.equalTo(self.userIcon.mas_right).offset(15);
+        make.centerY.equalTo(self.userIcon.mas_centerY);
+        make.width.equalTo(@150);
+        make.height.equalTo(@15);
     }];
     
     [super updateConstraints];
@@ -293,12 +329,13 @@
 
 - (void)setupAllChildView {
     UILabel *countLabel = [[UILabel alloc] init];
-    
+    countLabel.textColor = kIOProfileTitleColor;
     countLabel.textAlignment = NSTextAlignmentRight;
     [self addSubview:countLabel];
     _countLabel = countLabel;
     
     UILabel *unitLabel = [[UILabel alloc] init];
+    unitLabel.textColor = kIOProfileTitleColor;
     unitLabel.font = [UIFont systemFontOfSize:13];
     unitLabel.textAlignment = NSTextAlignmentLeft;
     [self addSubview:unitLabel];
@@ -311,6 +348,7 @@
     _assetIcon = assetIcon;
     
     UILabel *assetNameLabel = [[UILabel alloc] init];
+    assetNameLabel.textColor = kIOProfileTitleColor;
     assetNameLabel.font = [UIFont systemFontOfSize:13];
     assetNameLabel.textAlignment = NSTextAlignmentCenter;
     [self addSubview:assetNameLabel];

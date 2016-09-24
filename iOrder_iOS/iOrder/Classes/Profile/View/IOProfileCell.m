@@ -8,6 +8,9 @@
 
 #import "IOProfileCell.h"
 
+#define kIOProfileTitleFont [UIFont systemFontOfSize:15] //我的界面字体大小
+#define kIOProfileTitleColor [UIColor colorWithRed:172/255.0 green:172/255.0 blue:172/255.0 alpha:1] //我的界面字体颜色
+
 @interface IOProfileCell ()
 
 @property (nonatomic, weak) UIImageView *iconImageView;
@@ -34,7 +37,7 @@
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
-
+    
     // Configure the view for the selected state
 }
 
@@ -71,11 +74,13 @@
     [self addSubview:iconImageView];
     
     UILabel *titleLabel = [[UILabel alloc] init];
+    titleLabel.font = kIOProfileTitleFont;
+    titleLabel.textColor = kIOProfileTitleColor;
     _titleLabel = titleLabel;
     [self addSubview:titleLabel];
     
     UIImageView *accessoryImageView = [[UIImageView alloc] init];
-    accessoryImageView.image = [UIImage imageNamed:@"profile_arrow"];
+    accessoryImageView.image = [UIImage imageNamed:@"profile_arrows"];
     _accessoryImageView = accessoryImageView;
     [self addSubview:accessoryImageView];
 }
@@ -88,23 +93,24 @@
 
 - (void)updateConstraints {
     [self.iconImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self).offset(8);
+        make.left.equalTo(self).offset(12);
         make.centerY.equalTo(self);
-        make.width.height.equalTo(@18);
+        make.width.height.equalTo(@15);
     }];
     
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.iconImageView.mas_right).offset(10);
+        make.left.equalTo(self.iconImageView.mas_right).offset(9);
         make.centerY.equalTo(self);
         make.width.equalTo(@200);
-        make.height.equalTo(@16);
+        make.height.equalTo(@15);
     }];
     
     [self.accessoryImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self).offset(-8);
+        make.top.equalTo(self).offset(15);
+        make.bottom.equalTo(self).offset(-15);
+        make.right.equalTo(self).offset(-12);
         make.centerY.equalTo(self);
-        make.width.equalTo(@8);
-        make.height.equalTo(@13);
+        make.width.equalTo(@9);
     }];
     
     [super updateConstraints];

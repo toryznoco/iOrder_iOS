@@ -30,14 +30,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.view.backgroundColor = [UIColor whiteColor];
-    
     self.edgesForExtendedLayout = UIRectEdgeNone;
     [self setupNavigationView];
     
     [self setupTableHeaderView];
     
-    self.tableView.tableFooterView = [[UIView alloc] init];
+    self.view.backgroundColor = kIOBackgroundColor;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -60,14 +58,16 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 2;
+    return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (section == 0) {
+        return 3;
+    } else if(section == 1) {
         return 2;
     } else {
-        return 2;
+        return 1;
     }
 }
 
@@ -78,12 +78,32 @@
     if (indexPath.section == 0) {
         switch (indexPath.row) {
             case 0:
-                cell.iconName = @"profile_heart";
+                cell.iconName = @"profile_MyCollect";
                 cell.title = @"我的收藏";
                 break;
             case 1:
-                cell.iconName = @"ecaluate";
+                cell.iconName = @"proflie_MyEvaluate";
                 cell.title = @"我的评价";
+                break;
+                
+            case 2:
+                cell.iconName = @"profile_-MyAddress";
+                cell.title = @"我的地址";
+                break;
+                
+            default:
+                cell.textLabel.text = @"默认";
+                break;
+        }
+    } else if(indexPath.section == 1) {
+        switch (indexPath.row) {
+            case 0:
+                cell.iconName = @"profile_HelpFeedback";
+                cell.title = @"帮助与反馈";
+                break;
+            case 1:
+                cell.iconName = @"profile_service";
+                cell.title = @"在线服务";
                 break;
             default:
                 cell.textLabel.text = @"默认";
@@ -92,11 +112,7 @@
     } else {
         switch (indexPath.row) {
             case 0:
-                cell.iconName = @"help";
-                cell.title = @"帮助与反馈";
-                break;
-            case 1:
-                cell.iconName = @"more";
+                cell.iconName = @"profile_more";
                 cell.title = @"更多";
                 break;
             default:
@@ -108,8 +124,12 @@
     return cell;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    return 12;
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    return 11;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 44;
 }
 
 #pragma mark - UITableViewDelegate
@@ -135,6 +155,12 @@
     }
 }
 
+- (nullable UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+    UIView *footerView = [[UIView alloc] init];
+    footerView.backgroundColor = kIOBackgroundColor;
+    return footerView;
+}
+
 
 #pragma mark - custom methods
 
@@ -146,13 +172,13 @@
 - (void)setupTableHeaderView {
     [self.navigationController setNavigationBarHidden:YES animated:YES];
     self.navigationController.interactivePopGestureRecognizer.delegate = nil;
-    IOProfileHeaderView *profileHeaderView = [[IOProfileHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 245)];
+    IOProfileHeaderView *profileHeaderView = [[IOProfileHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 246)];
     _profileHeaderView = profileHeaderView;
     self.tableView.tableHeaderView = profileHeaderView;
     
     IOUserInfo *userInfo = [[IOUserInfo alloc] init];
-    userInfo.userIcon = @"profile_userImage";
-    userInfo.userName = @"姐有姐的范儿";
+    userInfo.userIcon = @"profile_HeadPortrait";
+    userInfo.userName = @"SXM12648181460";
     userInfo.wallet = 10;
     userInfo.redPacket = 20;
     userInfo.voucher = 30;
