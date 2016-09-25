@@ -105,13 +105,13 @@ BOOL isInRegion;
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
-- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:notification.alertBody delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
-    [alert show];
-}
+//- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
+//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:notification.alertBody delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
+//    [alert show];
+//}
 
 - (void)startMonitoringForRegion {
-    if (!self.regions.count) {
+    if (!self.regions.count) {  //  regions没有值就创建
         IOTransmitters *tran = [IOTransmitters sharedTransmitters];
         [[tran transmitters] enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             NSUUID *proximityUUID = [[NSUUID alloc] initWithUUIDString:obj[@"uuid"]];
@@ -121,14 +121,19 @@ BOOL isInRegion;
             beaconRegion.notifyEntryStateOnDisplay = YES;
             [self.regions addObject:beaconRegion];
         }];
-        NSLog(@"%@", self.regions[1]);
-        [self.beaconManager startMonitoringForRegion:self.regions[1]];
+    } else {    //  regions有值就先停掉之前的
+        for (int i = 0; i < self.regions.count; i++) {
+            [self.beaconManager stopMonitoringForRegion:self.regions[i]];
+        }
     }
+    NSLog(@"%@", self.regions[1]);
+    [self.beaconManager startMonitoringForRegion:self.regions[1]];
 }
-    
+
 #pragma mark - UNUserNotificationCenterDelegate
-- (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler {
-    
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:response.notification.request.content.body delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
+    [alert show];
 }
 
 #pragma mark - beacon manager delegate
