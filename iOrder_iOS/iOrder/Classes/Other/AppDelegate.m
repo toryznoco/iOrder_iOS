@@ -115,14 +115,14 @@ BOOL isInRegion;
         IOTransmitters *tran = [IOTransmitters sharedTransmitters];
         [[tran transmitters] enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             NSUUID *proximityUUID = [[NSUUID alloc] initWithUUIDString:obj[@"uuid"]];
-            ABBeaconRegion *beaconRegion = [[ABBeaconRegion alloc] initWithProximityUUID:proximityUUID identifier:proximityUUID.UUIDString];
+            ABBeaconRegion *beaconRegion = [[ABBeaconRegion alloc] initWithProximityUUID:proximityUUID identifier:obj[@"name"]];
             beaconRegion.notifyOnEntry = YES;
             beaconRegion.notifyOnExit = YES;
             beaconRegion.notifyEntryStateOnDisplay = YES;
             [self.regions addObject:beaconRegion];
         }];
-        NSLog(@"%@", self.regions[0]);
-        [self.beaconManager startMonitoringForRegion:self.regions[0]];
+        NSLog(@"%@", self.regions[1]);
+        [self.beaconManager startMonitoringForRegion:self.regions[1]];
     }
 }
     
