@@ -1282,6 +1282,10 @@
 				INFOPLIST_FILE = iOrder/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/iOrder/Classes/Other/AprilSDK",
+				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -1306,7 +1310,7 @@
 					"-framework",
 					Reveal,
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = cn.net.normcore.order;
+				PRODUCT_BUNDLE_IDENTIFIER = com.normcore.iOrder;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -1328,6 +1332,10 @@
 				INFOPLIST_FILE = iOrder/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/iOrder/Classes/Other/AprilSDK",
+				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -1352,7 +1360,7 @@
 					"-framework",
 					Reveal,
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = cn.net.normcore.order;
+				PRODUCT_BUNDLE_IDENTIFIER = com.normcore.iOrder;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

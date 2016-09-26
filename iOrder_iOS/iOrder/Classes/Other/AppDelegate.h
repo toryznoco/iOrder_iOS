@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-#import <AprilBeaconSDK.h>
+#import "AprilBeaconSDK.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate, ABBeaconManagerDelegate>
 

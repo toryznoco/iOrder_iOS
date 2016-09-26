@@ -16,21 +16,22 @@
 #import "AFNetworking.h"
 
 #import "IOTransmitters.h"
+
 @import UserNotifications;
 
 BOOL isInRegion;
 
 @interface AppDelegate () <UNUserNotificationCenterDelegate>
 
-@property (nonatomic, strong) NSMutableArray<ABBeaconRegion *> *regions;
-
 @property (nonatomic) UIBackgroundTaskIdentifier taskId;
+
+@property (nonatomic, strong) ABBeaconRegion *region;
 
 @end
 
 @implementation AppDelegate
 
-#pragma mark - self
+#pragma mark - UIApplicationDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     //  创建beacon管理者
@@ -38,13 +39,11 @@ BOOL isInRegion;
     //  设置beacon的代理
     self.beaconManager.delegate = self;
     
-    self.regions = [NSMutableArray array];
-    
     UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
     center.delegate = self;
     
     //  iOS 10以后注册通知
-    [center requestAuthorizationWithOptions:UNAuthorizationOptionBadge | UNAuthorizationOptionSound | UNAuthorizationOptionAlert  completionHandler:^(BOOL granted, NSError * _Nullable error) {
+    [center requestAuthorizationWithOptions:(UNAuthorizationOptionAlert + UNAuthorizationOptionBadge + UNAuthorizationOptionSound) completionHandler:^(BOOL granted, NSError * _Nullable error) {
         NSLog(@"granted = %d", granted);
     }];
     
@@ -110,37 +109,39 @@ BOOL isInRegion;
 //    [alert show];
 //}
 
+#pragma mark - Custom methods
 - (void)startMonitoringForRegion {
-    if (!self.regions.count) {  //  regions没有值就创建
+    if (!self.region) {  //  region没有值就创建
         IOTransmitters *tran = [IOTransmitters sharedTransmitters];
-        [[tran transmitters] enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            NSUUID *proximityUUID = [[NSUUID alloc] initWithUUIDString:obj[@"uuid"]];
-            ABBeaconRegion *beaconRegion = [[ABBeaconRegion alloc] initWithProximityUUID:proximityUUID identifier:obj[@"name"]];
-            beaconRegion.notifyOnEntry = YES;
-            beaconRegion.notifyOnExit = YES;
-            beaconRegion.notifyEntryStateOnDisplay = YES;
-            [self.regions addObject:beaconRegion];
-        }];
-    } else {    //  regions有值就先停掉之前的
-        for (int i = 0; i < self.regions.count; i++) {
-            [self.beaconManager stopMonitoringForRegion:self.regions[i]];
-        }
+        NSDictionary *dict = [[tran transmitters] lastObject];
+        NSUUID *proximityUUID = [[NSUUID alloc] initWithUUIDString:dict[@"uuid"]];
+        self.region = [[ABBeaconRegion alloc] initWithProximityUUID:proximityUUID
+                                                         identifier:dict[@"uuid"]];
+        self.region.notifyOnEntry = YES;
+        self.region.notifyOnExit = YES;
+        self.region.notifyEntryStateOnDisplay = YES;
+    } else {    //  region有值就先停掉之前的
+            [self.beaconManager stopMonitoringForRegion:self.region];
     }
-    NSLog(@"%@", self.regions[1]);
-    [self.beaconManager startMonitoringForRegion:self.regions[1]];
+    NSLog(@"self.region = %@", self.region);
+    [self.beaconManager startMonitoringForRegion:self.region];
+    NSLog(@"开始监控");
 }
 
 #pragma mark - UNUserNotificationCenterDelegate
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:response.notification.request.content.body delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
-    [alert show];
+    completionHandler(UNNotificationPresentationOptionAlert);
+//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:response.notification.request.content.body delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
+//    [alert show];
 }
 
 #pragma mark - beacon manager delegate
+- (void)beaconManager:(ABBeaconManager *)manager monitoringDidFailForRegion:(ABBeaconRegion *)region withError:(NSError *)error {
+    NSLog(@"manager = %@, region = %@, error = %@", manager, region, error);
+}
 - (void)beaconManager:(ABBeaconManager *)manager didEnterRegion:(ABBeaconRegion *)region {
     isInRegion = YES;
     NSLog(@"进入区域了");
-    
     NSString *contentBody = [NSString localizedUserNotificationStringForKey:@"欢迎进入点餐区域！"
                                                                   arguments:nil];
     
@@ -153,10 +154,8 @@ BOOL isInRegion;
     NSString *contentBody= [NSString localizedUserNotificationStringForKey:@"您已退出点餐区域，欢迎下次再来！"
                                                                  arguments:nil];
     
-    [self pushNotificationWithContentBody:contentBody identifier:@"EnterRegion"];
+    [self pushNotificationWithContentBody:contentBody identifier:@"ExitRegion"];
 }
-
-#pragma mark - 推送消息
 
 /**
  推送beacon通知
@@ -165,11 +164,8 @@ BOOL isInRegion;
  @param identifier  通知标识
  */
 - (void)pushNotificationWithContentBody:(NSString *)contentBody identifier:(NSString *)identifier {
-    // 使用 UNUserNotificationCenter 来管理通知
-    UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
-    
-    UNMutableNotificationContent* content = [[UNMutableNotificationContent alloc] init];
-    content.title = [NSString localizedUserNotificationStringForKey:@"提示"
+    UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];
+    content.title = [NSString localizedUserNotificationStringForKey:@"温馨提示"
                                                           arguments:nil];
     content.body = [NSString localizedUserNotificationStringForKey:contentBody
                                                          arguments:nil];
@@ -178,11 +174,13 @@ BOOL isInRegion;
     content.badge = @1;
     
     //  时间触发器
-    UNTimeIntervalNotificationTrigger *timeTri = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:1.0 repeats:NO];
-    UNNotificationRequest* request = [UNNotificationRequest requestWithIdentifier:identifier
+    UNTimeIntervalNotificationTrigger *trigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:1.0 repeats:NO];
+    //  创建推送通知请求
+    UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier:identifier
                                                                           content:content
-                                                                          trigger:timeTri];
-    
+                                                                          trigger:trigger];
+    // 使用 UNUserNotificationCenter 来管理通知
+    UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
     [center addNotificationRequest:request withCompletionHandler:^(NSError * _Nullable error) {
         NSLog(@"推送添加成功");
     }];

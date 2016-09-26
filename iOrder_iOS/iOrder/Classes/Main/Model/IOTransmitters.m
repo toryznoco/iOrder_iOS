@@ -47,18 +47,11 @@
 - (void)setupData {
     NSArray *data =@[
                      @{
-                         @"name":@"AprilBeacon_7DEB",
-                         @"uuid":@"FDA50693-A4E2-4FB1-AFCF-C6EB07647825",
-                         @"major":@20,
-                         @"minor":@32235,
-                         @"power":@-59
-                         },
-                     @{
-                         @"name":@"AprilBeacon_866F",
-                         @"uuid":@"FDA50693-A4E2-4FB1-AFCF-C6EB07647825",
-                         @"major":@20,
-                         @"minor":@34415,
-                         @"power":@-58
+                         @"name" : @"WeixinForBeacon",
+                         @"uuid" : @"FDA50693-A4E2-4FB1-AFCF-C6EB07647825",
+                         @"major" : @0,
+                         @"minor" : @0,
+                         @"power" : @-59
                          }
                      ];
     
