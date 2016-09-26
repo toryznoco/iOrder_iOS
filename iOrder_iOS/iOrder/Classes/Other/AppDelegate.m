@@ -71,8 +71,6 @@ BOOL isInRegion;
     return YES;
 }
 
-
-
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
@@ -130,8 +128,15 @@ BOOL isInRegion;
 
 #pragma mark - UNUserNotificationCenterDelegate
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler {
-    completionHandler(UNNotificationPresentationOptionAlert);
+    NSLog(@"要发推送了");
+//    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:response.notification.request.content.body preferredStyle:UIAlertControllerStyleAlert];
+//    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
+//    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"好的" style:UIAlertActionStyleDefault handler:nil];
+//    [alertController addAction:cancelAction];
+//    [alertController addAction:okAction];
+//    [self presentViewController:alertController animated:YES completion:nil];
 //    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:response.notification.request.content.body delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
+    
 //    [alert show];
 }
 
@@ -182,7 +187,6 @@ BOOL isInRegion;
     // 使用 UNUserNotificationCenter 来管理通知
     UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
     [center addNotificationRequest:request withCompletionHandler:^(NSError * _Nullable error) {
-        NSLog(@"推送添加成功");
     }];
     
     //    UILocalNotification *notification = [[UILocalNotification alloc] init];
