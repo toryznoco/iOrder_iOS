@@ -25,10 +25,10 @@
 //    NSString *lastVersion = [YWJVersionTool currentVersion];
 //    
 //    if ([currentVersion isEqualToString:lastVersion]) {
-//    IOLoginViewController *loginVc = [[IOLoginViewController alloc] init];
-//    YWJRootNavigationViewController *loginNav = [[YWJRootNavigationViewController alloc] initWithRootViewController:loginVc];
-//    window.rootViewController = loginNav;
-        window.rootViewController = [[IOTabBarController alloc] init];
+    IOLoginViewController *loginVc = [[IOLoginViewController alloc] init];
+    YWJRootNavigationViewController *loginNav = [[YWJRootNavigationViewController alloc] initWithRootViewController:loginVc];
+    window.rootViewController = loginNav;
+//        window.rootViewController = [[IOTabBarController alloc] init];
 //    }else{
 //        window.rootViewController = [[IONewFeatureViewController alloc] init];
 //        [YWJVersionTool saveVersion:currentVersion];
