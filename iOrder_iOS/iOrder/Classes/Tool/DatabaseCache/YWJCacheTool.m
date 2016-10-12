@@ -45,14 +45,16 @@ static FMDatabase *_db;
         NSMutableDictionary *dic = result.mj_keyValues;
         NSLog(@"%@", dic);
         NSData *data = [NSKeyedArchiver archivedDataWithRootObject:result.mj_keyValues];
+        
         //        判断记录是否已经存在
         NSString *sql = [NSString stringWithFormat:@"select * from t_users where userName = '%@' and userPass = '%@'", param.userName, param.userPass];
         FMResultSet *queryResult = [_db executeQuery:sql];
         [queryResult next];
+        BOOL flag2 = ([[queryResult stringForColumn:@"userName"] isEqualToString:param.userName] && [[queryResult stringForColumn:@"userPass"] isEqualToString:param.userPass]);
         
-        if ([[queryResult stringForColumn:@"userName"] isEqualToString:param.userName]) {
+        if (flag2) {
             YWJLog(@"The data has exists");
-        } else {
+        } else {//插入新记录
             BOOL flag3 = [_db executeUpdate:@"insert into t_users (userName, userPass, userInfo) values(?, ?, ?)", param.userName, param.userPass, data];
             if (flag3) {
                 YWJLog(@"insert data - userInfo successful");
@@ -93,10 +95,8 @@ static FMDatabase *_db;
         
         if (flag2) {
             YWJLog(@"The data has exists");
-        } else {
-            NSLog(@"hahah");
-            BOOL flag3 = [_db executeUpdate:@"insert into t_shops (startId, amount, userLng, userLat, shopInfo) values(?, ?, ?, ?, ?)", param.startId, param.amount, param.userLng, param.userLat, data];
-//            BOOL flag3 = [_db executeUpdate:@"insert into t_shops (startId, amount, userLng, userLat) values(?, ?, ?, ?)", param.startId, param.amount, param.userLng, param.userLat];
+        } else {//插入新记录
+            BOOL flag3 = [_db executeUpdate:@"insert into t_shops (startid, amount, userlng, userlat, shopinfo) values(?, ?, ?, ?, ?)", @(param.startId), @(param.amount), @(param.userLng), @(param.userLat), data];
             if (flag3) {
                 YWJLog(@"insert data - shopInfo successful");
             } else {
