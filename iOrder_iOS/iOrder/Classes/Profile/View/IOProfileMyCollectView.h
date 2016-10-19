@@ -24,6 +24,14 @@
 
 @interface IOProfileMyCollectViewCell : UICollectionViewCell
 
+/**
+ 使用collectionView初始化cell
+
+ @param collectionView 将要装入cell的collectionview
+ @param indexPath      将要插入的位置
+
+ @return 返回一个实例化的cell
+ */
 + (instancetype)cellWithCollectionView:(UICollectionView *)collectionView withIndexPath:(NSIndexPath *)indexPath;
 
 @end
