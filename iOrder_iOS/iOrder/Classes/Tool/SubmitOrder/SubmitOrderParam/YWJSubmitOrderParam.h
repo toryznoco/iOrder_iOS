@@ -10,10 +10,19 @@
 
 @interface YWJSubmitOrderParam : NSObject
 
+/**
+ 用户id
+ */
 @property (nonatomic, assign) NSInteger userId;
 
+/**
+ 商店id
+ */
 @property (nonatomic, assign) NSInteger shopId;
 
+/**
+ 优惠券id
+ */
 @property (nonatomic, assign) NSInteger couponId;
 
 @end
