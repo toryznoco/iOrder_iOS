@@ -967,7 +967,6 @@
 				TargetAttributes = {
 					CAE8F00D1CB940E2005618B0 = {
 						CreatedOnToolsVersion = 7.0.1;
-						DevelopmentTeam = H5NEKKV7XW;
 						ProvisioningStyle = Automatic;
 					};
 					CAE8F0261CB940E2005618B0 = {
@@ -1281,7 +1280,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = H5NEKKV7XW;
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -1318,7 +1317,7 @@
 					"-framework",
 					Reveal,
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.11467.guangzhou0365120.----";
+				PRODUCT_BUNDLE_IDENTIFIER = cn.net.normcore.iorder;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -1331,7 +1330,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = H5NEKKV7XW;
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -1368,7 +1367,7 @@
 					"-framework",
 					Reveal,
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.11467.guangzhou0365120.----";
+				PRODUCT_BUNDLE_IDENTIFIER = cn.net.normcore.iorder;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
