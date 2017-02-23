@@ -66,8 +66,8 @@ extern BOOL isInRegion;
     self.calendarView = calendarView;
     
     //  设置选中日
-    NSDate *yesterday = [self.calendarView yesterdayOfDate:self.calendarView.today];
-    [self.calendarView selectDate:yesterday];
+//    NSDate *yesterday = [self.calendarView yesterdayOfDate:self.calendarView.today];
+//    [self.calendarView selectDate:yesterday];
 }
 
 - (void)initFooterView {

@@ -13,53 +13,42 @@
 
 #import "FSCalendar.h"
 #import "FSCalendarCell.h"
-#import "FSCalendarHeader.h"
+#import "FSCalendarHeaderView.h"
 #import "FSCalendarStickyHeader.h"
 #import "FSCalendarCollectionView.h"
-#import "FSCalendarFlowLayout.h"
+#import "FSCalendarCollectionViewLayout.h"
 #import "FSCalendarScopeHandle.h"
-#import "FSCalendarAnimator.h"
+#import "FSCalendarCalculator.h"
+#import "FSCalendarTransitionCoordinator.h"
+#import "FSCalendarDelegationProxy.h"
 
 @interface FSCalendar (Dynamic)
 
-@property (readonly, nonatomic) FSCalendarHeader *header;
 @property (readonly, nonatomic) FSCalendarCollectionView *collectionView;
 @property (readonly, nonatomic) FSCalendarScopeHandle *scopeHandle;
-@property (readonly, nonatomic) FSCalendarFlowLayout *collectionViewLayout;
-@property (readonly, nonatomic) FSCalendarAnimator *animator;
-@property (readonly, nonatomic) NSArray *weekdays;
-@property (readonly, nonatomic) BOOL ibEditing;
+@property (readonly, nonatomic) FSCalendarCollectionViewLayout *collectionViewLayout;
+@property (readonly, nonatomic) FSCalendarTransitionCoordinator *transitionCoordinator;
+@property (readonly, nonatomic) FSCalendarCalculator *calculator;
 @property (readonly, nonatomic) BOOL floatingMode;
 @property (readonly, nonatomic) NSArray *visibleStickyHeaders;
 @property (readonly, nonatomic) CGFloat preferredHeaderHeight;
 @property (readonly, nonatomic) CGFloat preferredWeekdayHeight;
-@property (readonly, nonatomic) CGFloat preferredRowHeight;
-@property (readonly, nonatomic) CGFloat preferredPadding;
 @property (readonly, nonatomic) UIView *bottomBorder;
 
-@property (readonly, nonatomic) NSCalendar *calendar;
+@property (readonly, nonatomic) NSCalendar *gregorian;
 @property (readonly, nonatomic) NSDateComponents *components;
 @property (readonly, nonatomic) NSDateFormatter *formatter;
 
 @property (readonly, nonatomic) UIView *contentView;
 @property (readonly, nonatomic) UIView *daysContainer;
 
-@property (assign, nonatomic) BOOL needsAdjustingMonthPosition;
 @property (assign, nonatomic) BOOL needsAdjustingViewFrame;
 
-- (void)invalidateWeekdayFont;
-- (void)invalidateWeekdayTextColor;
-
 - (void)invalidateHeaders;
-- (void)invalidateWeekdaySymbols;
-- (void)invalidateAppearanceForCell:(FSCalendarCell *)cell;
+- (void)adjustMonthPosition;
 
-- (NSDate *)dateForIndexPath:(NSIndexPath *)indexPath;
-- (NSDate *)dateForIndexPath:(NSIndexPath *)indexPath scope:(FSCalendarScope)scope;
-- (NSIndexPath *)indexPathForDate:(NSDate *)date;
-- (NSIndexPath *)indexPathForDate:(NSDate *)date scope:(FSCalendarScope)scope;
-
-- (NSInteger)numberOfHeadPlaceholdersForMonth:(NSDate *)month;
+- (BOOL)isPageInRange:(NSDate *)page;
+- (BOOL)isDateInRange:(NSDate *)date;
 
 - (CGSize)sizeThatFits:(CGSize)size scope:(FSCalendarScope)scope;
 
@@ -74,12 +63,21 @@
 @property (readonly, nonatomic) NSDictionary *subtitleColors;
 @property (readonly, nonatomic) NSDictionary *borderColors;
 
-@property (readonly, nonatomic) UIFont *preferredTitleFont;
-@property (readonly, nonatomic) UIFont *preferredSubtitleFont;
-@property (readonly, nonatomic) UIFont *preferredWeekdayFont;
-@property (readonly, nonatomic) UIFont *preferredHeaderTitleFont;
+@end
 
-- (void)adjustTitleIfNecessary;
-- (void)invalidateFonts;
+@interface FSCalendarWeekdayView (Dynamic)
+
+@property (readwrite, nonatomic) FSCalendar *calendar;
 
 @end
+
+@interface FSCalendarCollectionViewLayout (Dynamic)
+
+@property (readonly, nonatomic) CGSize estimatedItemSize;
+
+@end
+
+@interface FSCalendarDelegationProxy()<FSCalendarDataSource,FSCalendarDelegate,FSCalendarDelegateAppearance>
+@end
+
+

@@ -45,7 +45,7 @@
 
 #pragma mark - private
 - (void)setupData {
-    NSArray *data =@[
+    NSArray *data = @[
                      @{
                          @"name" : @"WeixinForBeacon",
                          @"uuid" : @"FDA50693-A4E2-4FB1-AFCF-C6EB07647825",

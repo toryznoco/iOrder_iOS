@@ -1,0 +1,51 @@
+//
+//  IOIOrder.pch
+//  iOrder
+//
+//  Created by 易无解 on 4/9/16.
+//  Copyright © 2016 易无解. All rights reserved.
+//
+
+#ifndef IOIOrder_pch
+#define IOIOrder_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+#ifdef __OBJC__
+
+#import "UIView+YWJFrame.h"
+#import "Masonry.h"
+
+//  尺寸
+#define kIONavigationBarHeight 64
+#define IOScreenWidth [UIScreen mainScreen].bounds.size.width
+#define IOScreenHeight [UIScreen mainScreen].bounds.size.height
+
+// 颜色
+#define kIOThemeColors [UIColor orangeColor]
+#define kIOBackgroundColor [UIColor colorWithRed:244.0/255.0 green:244.0/255.0 blue:244.0/255.0 alpha:1.0]
+
+//------------ tool ---------------
+#define YWJUserDefaults [NSUserDefaults standardUserDefaults]
+#define YWJKeyWindow [UIApplication sharedApplication].keyWindow
+#define YWJRGBColor(r, g, b, a) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:a]
+
+//------------ key ----------------
+#define kVersionKey @"version"
+#define kPictureServerPath @"http://normcore.net.cn/fileServ/picture/"
+#define kBackStageServerPath @"http://normcore.net.cn/iorder/server/"
+
+#ifdef DEBUG // 调试
+
+#define YWJLog(...) NSLog(__VA_ARGS__)
+
+#else // 发布
+
+#define NSLog(...)
+
+#endif
+
+#endif
+
+#endif /* IOIOrder_pch */

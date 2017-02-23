@@ -18,7 +18,7 @@ PODS:
   - FMDB (2.6.2):
     - FMDB/standard (= 2.6.2)
   - FMDB/standard (2.6.2)
-  - FSCalendar (2.3.3)
+  - FSCalendar (2.7.0)
   - Masonry (1.0.2)
   - MBProgressHUD (0.9.2)
   - MJExtension (3.0.13)
@@ -48,7 +48,7 @@ SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
   AprilSDK: b6d2b35b7012955618e022772c0d2b202b25f277
   FMDB: 854a0341b4726e53276f2a8996f06f1b80f9259a
-  FSCalendar: 430254999f6285bb5ccf0bb0b124b1953ad56768
+  FSCalendar: 4957703ebd99b4fd0bfd46bf3e3c6465c0a25482
   Masonry: 7c429b56da9d4ee0bbb3ed77a5ea710d6a5df39e
   MBProgressHUD: 1569cf7ace17a8bac47aabfbb8580a49690386d1
   MJExtension: 5932755f451458eefa24239358817f8d291240c7
@@ -60,4 +60,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 15bb6dbce52a8596ce8d1c6b8231656a202f568e
 
-COCOAPODS: 1.0.1
+COCOAPODS: 1.1.1

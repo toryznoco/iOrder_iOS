@@ -12,7 +12,7 @@
 
 @class IOShop;
 
-#pragma mark - interface IOHomeViewCell
+#pragma mark - interface IOHomeCell
 @interface IOHomeCell : UITableViewCell
 
 /**

@@ -13,7 +13,7 @@
 #import "YWJLoginResult.h"
 #import "MBProgressHUD.h"
 
-#pragma mark - implementation IOLoginView
+#pragma mark - IOLoginView
 
 @interface IOLoginView ()
 
@@ -161,7 +161,7 @@
     NSLog(@"help....");
 }
 
-#pragma mark - masonry
+#pragma mark - Masonry
 
 + (BOOL)requiresConstraintBasedLayout {
     return YES;
@@ -244,7 +244,7 @@
 
 @end
 
-#pragma mark - implementation IOLoginTextField
+#pragma mark - IOLoginTextField
 
 @implementation IOLoginTextField
 

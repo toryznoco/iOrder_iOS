@@ -8,7 +8,7 @@
 //  https://github.com/WenchaoD
 //
 
-#import "FSCalendarConstance.h"
+#import "FSCalendarConstants.h"
 
 @class FSCalendar;
 
@@ -22,11 +22,6 @@ typedef NS_ENUM(NSInteger, FSCalendarCellState) {
     FSCalendarCellStateTodaySelected = FSCalendarCellStateToday|FSCalendarCellStateSelected
 };
 
-typedef NS_ENUM(NSUInteger, FSCalendarCellShape) {
-    FSCalendarCellShapeCircle    = 0,
-    FSCalendarCellShapeRectangle = 1
-};
-
 typedef NS_OPTIONS(NSUInteger, FSCalendarCaseOptions) {
     FSCalendarCaseOptionsHeaderUsesDefaultCase      = 0,
     FSCalendarCaseOptionsHeaderUsesUpperCase        = 1,
@@ -34,6 +29,13 @@ typedef NS_OPTIONS(NSUInteger, FSCalendarCaseOptions) {
     FSCalendarCaseOptionsWeekdayUsesDefaultCase     = 0 << 4,
     FSCalendarCaseOptionsWeekdayUsesUpperCase       = 1 << 4,
     FSCalendarCaseOptionsWeekdayUsesSingleUpperCase = 2 << 4,
+};
+
+typedef NS_OPTIONS(NSUInteger, FSCalendarSeparators) {
+    FSCalendarSeparatorNone          = 0,
+    FSCalendarSeparatorInterRows     = 1 << 0,
+    FSCalendarSeparatorInterColumns  = 1 << 1,   // Will implement soon
+    FSCalendarSeparatorBelowWeekdays = 1 << 2    // Will implement soon
 };
 
 /**
@@ -45,29 +47,21 @@ typedef NS_OPTIONS(NSUInteger, FSCalendarCaseOptions) {
 
 /**
  * The font of the day text.
- *
- * @warning The size of font is adjusted by calendar size. To turn it off, set adjustsFontSizeToFitContentSize to NO;
  */
 @property (strong, nonatomic) UIFont   *titleFont;
 
 /**
  * The font of the subtitle text.
- *
- * @warning The size of font is adjusted by calendar size. To turn it off, set adjustsFontSizeToFitContentSize to NO;
  */
 @property (strong, nonatomic) UIFont   *subtitleFont;
 
 /**
  * The font of the weekday text.
- *
-* @warning The size of font is adjusted by calendar size. To turn it off, set adjustsFontSizeToFitContentSize to NO;
  */
 @property (strong, nonatomic) UIFont   *weekdayFont;
 
 /**
  * The font of the month text.
- *
- * @warning The size of font is adjusted by calendar size. To turn it off, set adjustsFontSizeToFitContentSize to NO;
  */
 @property (strong, nonatomic) UIFont   *headerTitleFont;
 
@@ -197,11 +191,9 @@ typedef NS_OPTIONS(NSUInteger, FSCalendarCaseOptions) {
 @property (strong, nonatomic) UIColor  *borderSelectionColor;
 
 /**
- * The shape appears when a day is selected or today.
- *
- * @see FSCalendarCellShape
+ * The border radius, while 1 means a circle, 0 means a rectangle, and the middle value will give it a corner radius.
  */
-@property (assign, nonatomic) FSCalendarCellShape cellShape;
+@property (assign, nonatomic) CGFloat borderRadius;
 
 /**
  * The case options manage the case of month label and weekday symbols.
@@ -211,27 +203,19 @@ typedef NS_OPTIONS(NSUInteger, FSCalendarCaseOptions) {
 @property (assign, nonatomic) FSCalendarCaseOptions caseOptions;
 
 /**
- * A Boolean value indicates whether the calendar should adjust font size by its content size.
+ * The line integrations for calendar.
  *
- * @see titleFont
- * @see subtitleFont
- * @see weekdayFont
- * @see headerTitleFont
  */
-@property (assign, nonatomic) BOOL adjustsFontSizeToFitContentSize;
+@property (assign, nonatomic) FSCalendarSeparators separators;
 
 #if TARGET_INTERFACE_BUILDER
 
 // For preview only
 @property (assign, nonatomic) BOOL      fakeSubtitles;
+@property (assign, nonatomic) BOOL      fakeEventDots;
 @property (assign, nonatomic) NSInteger fakedSelectedDay;
 
 #endif
-
-/**
- * Triggers an appearance update.
- */
-- (void)invalidateAppearance;
 
 @end
 
@@ -240,18 +224,13 @@ typedef NS_OPTIONS(NSUInteger, FSCalendarCaseOptions) {
  */
 @interface FSCalendarAppearance (Deprecated)
 
-@property (assign, nonatomic) FSCalendarCellStyle cellStyle FSCalendarDeprecated('cellShape');
 @property (assign, nonatomic) BOOL useVeryShortWeekdaySymbols FSCalendarDeprecated('caseOptions');
-@property (assign, nonatomic) BOOL autoAdjustTitleSize FSCalendarDeprecated('adjustFontSizeToFitContentSize');
-@property (assign, nonatomic) BOOL adjustsFontSizeToFitCellSize FSCalendarDeprecated('adjustFontSizeToFitContentSize');
-
-@property (assign, nonatomic) CGFloat titleTextSize FSCalendarDeprecated('titleFont');
-@property (assign, nonatomic) CGFloat subtitleTextSize FSCalendarDeprecated('subtitleFont');
-@property (assign, nonatomic) CGFloat weekdayTextSize FSCalendarDeprecated('weekdayFont');
-@property (assign, nonatomic) CGFloat headerTitleTextSize FSCalendarDeprecated('headerTitleFont');
 @property (assign, nonatomic) CGFloat titleVerticalOffset FSCalendarDeprecated('titleOffset');
 @property (assign, nonatomic) CGFloat subtitleVerticalOffset FSCalendarDeprecated('subtitleOffset');
 @property (strong, nonatomic) UIColor *eventColor FSCalendarDeprecated('eventDefaultColor');
+@property (assign, nonatomic) FSCalendarCellShape cellShape FSCalendarDeprecated('borderRadius');
+@property (assign, nonatomic) BOOL adjustsFontSizeToFitContentSize DEPRECATED_MSG_ATTRIBUTE("The attribute \'adjustsFontSizeToFitContentSize\' is not neccesary anymore.");
+- (void)invalidateAppearance FSCalendarDeprecated('FSCalendar setNeedsConfigureAppearance');
 
 @end
 

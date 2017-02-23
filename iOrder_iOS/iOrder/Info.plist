@@ -35,6 +35,12 @@
 	<string>允许Location Usage Description来探测iBeacons</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>允许Location When In Usage Description来探测iBeacons</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>bluetooth-central</string>
+		<string>bluetooth-peripheral</string>
+		<string>location</string>
+	</array>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>

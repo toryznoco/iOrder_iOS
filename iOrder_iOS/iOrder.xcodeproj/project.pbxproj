@@ -27,6 +27,8 @@
 		9A8CC3821CE306B4005E19D9 /* IOOrderViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC3811CE306B4005E19D9 /* IOOrderViewCell.m */; };
 		9A8CC3851CE3075E005E19D9 /* IOOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC3841CE3075E005E19D9 /* IOOrder.m */; };
 		9A8CC38A1CE572C8005E19D9 /* IOProfileHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CC3891CE572C8005E19D9 /* IOProfileHeaderView.m */; };
+		9AC08D701E39F3C600D728AD /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AC08D6F1E39F3C600D728AD /* main.m */; };
+		9AC08D791E39F4E200D728AD /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AC08D741E39F4E200D728AD /* AppDelegate.m */; };
 		9AC55EE01CF2FCAE00A84A8B /* IOSignInFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AC55EDF1CF2FCAE00A84A8B /* IOSignInFooterView.m */; };
 		9AFEED761CEC3ECE0009528C /* IOSingInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AFEED751CEC3ECE0009528C /* IOSingInViewController.m */; };
 		9AFEED791CEC6DF70009528C /* IOSignInHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AFEED781CEC6DF70009528C /* IOSignInHeaderView.m */; };
@@ -71,9 +73,7 @@
 		CAE8F07B1CB94170005618B0 /* YWJBadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F04E1CB94170005618B0 /* YWJBadgeView.m */; };
 		CAE8F07C1CB94170005618B0 /* YWJTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F0501CB94170005618B0 /* YWJTabBar.m */; };
 		CAE8F07D1CB94170005618B0 /* YWJTabBarButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F0521CB94170005618B0 /* YWJTabBarButton.m */; };
-		CAE8F0801CB94170005618B0 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F0611CB94170005618B0 /* AppDelegate.m */; };
 		CAE8F0811CB94170005618B0 /* UIView+YWJFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F0641CB94170005618B0 /* UIView+YWJFrame.m */; };
-		CAE8F0831CB94170005618B0 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F0711CB94170005618B0 /* main.m */; };
 		CAE8F0861CB9417F005618B0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CAE8F0851CB9417F005618B0 /* Assets.xcassets */; };
 		CAE8F08F1CB9459B005618B0 /* IOOrderedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F08E1CB9459B005618B0 /* IOOrderedViewController.m */; };
 		CAE8F0921CB9461C005618B0 /* IOProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F0911CB9461C005618B0 /* IOProfileViewController.m */; };
@@ -149,6 +149,10 @@
 		9A8CC3841CE3075E005E19D9 /* IOOrder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOOrder.m; sourceTree = "<group>"; };
 		9A8CC3881CE572C8005E19D9 /* IOProfileHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOProfileHeaderView.h; sourceTree = "<group>"; };
 		9A8CC3891CE572C8005E19D9 /* IOProfileHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOProfileHeaderView.m; sourceTree = "<group>"; };
+		9AC08D6F1E39F3C600D728AD /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		9AC08D731E39F4E200D728AD /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		9AC08D741E39F4E200D728AD /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		9AC08D751E39F4E200D728AD /* IOIOrder.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOIOrder.pch; sourceTree = "<group>"; };
 		9AC55EDE1CF2FCAE00A84A8B /* IOSignInFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOSignInFooterView.h; sourceTree = "<group>"; };
 		9AC55EDF1CF2FCAE00A84A8B /* IOSignInFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOSignInFooterView.m; sourceTree = "<group>"; };
 		9AFEED741CEC3ECE0009528C /* IOSingInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOSingInViewController.h; sourceTree = "<group>"; };
@@ -242,11 +246,8 @@
 		CAE8F0501CB94170005618B0 /* YWJTabBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWJTabBar.m; sourceTree = "<group>"; };
 		CAE8F0511CB94170005618B0 /* YWJTabBarButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWJTabBarButton.h; sourceTree = "<group>"; };
 		CAE8F0521CB94170005618B0 /* YWJTabBarButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWJTabBarButton.m; sourceTree = "<group>"; };
-		CAE8F0601CB94170005618B0 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		CAE8F0611CB94170005618B0 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		CAE8F0631CB94170005618B0 /* UIView+YWJFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+YWJFrame.h"; sourceTree = "<group>"; };
 		CAE8F0641CB94170005618B0 /* UIView+YWJFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+YWJFrame.m"; sourceTree = "<group>"; };
-		CAE8F0711CB94170005618B0 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		CAE8F0851CB9417F005618B0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CAE8F08D1CB9459B005618B0 /* IOOrderedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOOrderedViewController.h; sourceTree = "<group>"; };
 		CAE8F08E1CB9459B005618B0 /* IOOrderedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOOrderedViewController.m; sourceTree = "<group>"; };
@@ -254,7 +255,6 @@
 		CAE8F0911CB9461C005618B0 /* IOProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOProfileViewController.m; sourceTree = "<group>"; };
 		CAE8F0931CB946E8005618B0 /* IONavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IONavigationController.h; sourceTree = "<group>"; };
 		CAE8F0941CB946E8005618B0 /* IONavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IONavigationController.m; sourceTree = "<group>"; };
-		CAE8F0971CB947D7005618B0 /* IOIOrder.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IOIOrder.pch; sourceTree = "<group>"; };
 		CAE8F0AD1CB9680B005618B0 /* IOTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOTabBarController.h; sourceTree = "<group>"; };
 		CAE8F0AE1CB9680B005618B0 /* IOTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOTabBarController.m; sourceTree = "<group>"; };
 		CAF439E61D63E289009D687A /* IOLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOLoginViewController.h; sourceTree = "<group>"; };
@@ -540,6 +540,67 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		9AC08D611E39EEBD00D728AD /* Datum */ = {
+			isa = PBXGroup;
+			children = (
+				9AC08D621E39EEBD00D728AD /* Files */,
+				9AC08D631E39EEBD00D728AD /* Images */,
+			);
+			path = Datum;
+			sourceTree = "<group>";
+		};
+		9AC08D621E39EEBD00D728AD /* Files */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Files;
+			sourceTree = "<group>";
+		};
+		9AC08D631E39EEBD00D728AD /* Images */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Images;
+			sourceTree = "<group>";
+		};
+		9AC08D711E39F4E200D728AD /* Base */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
+		9AC08D721E39F4E200D728AD /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				9AC08D731E39F4E200D728AD /* AppDelegate.h */,
+				9AC08D741E39F4E200D728AD /* AppDelegate.m */,
+				9AC08D751E39F4E200D728AD /* IOIOrder.pch */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		9AC08D761E39F4E200D728AD /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Helper;
+			sourceTree = "<group>";
+		};
+		9AC08D771E39F4E200D728AD /* Tool */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Tool;
+			sourceTree = "<group>";
+		};
+		9AC08D781E39F4E200D728AD /* Vendor */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Vendor;
+			sourceTree = "<group>";
+		};
 		AC53E7F2F1CB4D0E4F921365 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -737,7 +798,6 @@
 			children = (
 				CAE8F0441CB94170005618B0 /* Classes */,
 				CAE8F0111CB940E2005618B0 /* Supporting Files */,
-				CAE8F0851CB9417F005618B0 /* Assets.xcassets */,
 			);
 			path = iOrder;
 			sourceTree = "<group>";
@@ -745,7 +805,10 @@
 		CAE8F0111CB940E2005618B0 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				9AC08D611E39EEBD00D728AD /* Datum */,
+				CAE8F0851CB9417F005618B0 /* Assets.xcassets */,
 				CAE8F0221CB940E2005618B0 /* Info.plist */,
+				9AC08D6F1E39F3C600D728AD /* main.m */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -847,11 +910,12 @@
 		CAE8F05F1CB94170005618B0 /* Other */ = {
 			isa = PBXGroup;
 			children = (
+				9AC08D711E39F4E200D728AD /* Base */,
+				9AC08D721E39F4E200D728AD /* Core */,
+				9AC08D761E39F4E200D728AD /* Helper */,
+				9AC08D771E39F4E200D728AD /* Tool */,
+				9AC08D781E39F4E200D728AD /* Vendor */,
 				CAE8F0621CB94170005618B0 /* Category */,
-				CAE8F0601CB94170005618B0 /* AppDelegate.h */,
-				CAE8F0611CB94170005618B0 /* AppDelegate.m */,
-				CAE8F0711CB94170005618B0 /* main.m */,
-				CAE8F0971CB947D7005618B0 /* IOIOrder.pch */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -967,7 +1031,13 @@
 				TargetAttributes = {
 					CAE8F00D1CB940E2005618B0 = {
 						CreatedOnToolsVersion = 7.0.1;
+						DevelopmentTeam = CQA977E7GY;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 					CAE8F0261CB940E2005618B0 = {
 						CreatedOnToolsVersion = 7.0.1;
@@ -1052,7 +1122,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		6613B17C9EB6452998C61BFF /* [CP] Copy Pods Resources */ = {
@@ -1077,12 +1147,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9AC08D791E39F4E200D728AD /* AppDelegate.m in Sources */,
 				9A4C584C1CFB130B00AD1330 /* IOOrdersParam.m in Sources */,
 				CAF439F11D63E2DA009D687A /* IORegisterView.m in Sources */,
 				CA9019911CE16B7A00AC5712 /* YWJDishesParam.m in Sources */,
 				CAF439E81D63E289009D687A /* IOLoginViewController.m in Sources */,
 				CA218FDC1CEB3B0C00627FBD /* IOHomeHeaderView.m in Sources */,
-				CAE8F0831CB94170005618B0 /* main.m in Sources */,
 				CAF439EB1D63E29A009D687A /* IORegisterViewController.m in Sources */,
 				CA41C87A1D2BF0C90092921E /* UIView+Masonry_YWJ.m in Sources */,
 				CA8B690C1D73D4360026C436 /* IOProfileMyCollectController.m in Sources */,
@@ -1118,6 +1188,7 @@
 				CA8D2C6D1CE56E44006E3D2A /* IOShoppingViewInfo.m in Sources */,
 				CAE8F07B1CB94170005618B0 /* YWJBadgeView.m in Sources */,
 				9AFEED761CEC3ECE0009528C /* IOSingInViewController.m in Sources */,
+				9AC08D701E39F3C600D728AD /* main.m in Sources */,
 				9A8CC33F1CE0AF84005E19D9 /* YWJVersionTool.m in Sources */,
 				9A8CC3421CE0AF84005E19D9 /* YWJShopsResult.m in Sources */,
 				CAE8F0951CB946E8005618B0 /* IONavigationController.m in Sources */,
@@ -1138,7 +1209,6 @@
 				9A8CC3781CE0AFC7005E19D9 /* IOShoppingCartView.m in Sources */,
 				CAF4BFAF1CF5B973001E88F7 /* IOSubmitViewController.m in Sources */,
 				CACD5CB11CE4119A00ADE187 /* IOShopCell.m in Sources */,
-				CAE8F0801CB94170005618B0 /* AppDelegate.m in Sources */,
 				CA9019931CE16B7A00AC5712 /* YWJDishesTool.m in Sources */,
 				CA7069CB1CE5F564007C5F3F /* UIBarButtonItem+IOBarButtonItem.m in Sources */,
 				9A8CC36A1CE0AFC7005E19D9 /* IODishViewController.m in Sources */,
@@ -1280,12 +1350,12 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = CQA977E7GY;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
-				GCC_PREFIX_HEADER = iOrder/Classes/Other/IOIOrder.pch;
+				GCC_PREFIX_HEADER = iOrder/Classes/Other/Core/IOIOrder.pch;
 				INFOPLIST_FILE = iOrder/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1317,7 +1387,7 @@
 					"-framework",
 					Reveal,
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = cn.net.normcore.iorder;
+				PRODUCT_BUNDLE_IDENTIFIER = com.toryznoco.iOrder;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -1330,12 +1400,12 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = CQA977E7GY;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
-				GCC_PREFIX_HEADER = iOrder/Classes/Other/IOIOrder.pch;
+				GCC_PREFIX_HEADER = iOrder/Classes/Other/Core/IOIOrder.pch;
 				INFOPLIST_FILE = iOrder/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1367,7 +1437,7 @@
 					"-framework",
 					Reveal,
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = cn.net.normcore.iorder;
+				PRODUCT_BUNDLE_IDENTIFIER = com.toryznoco.iOrder;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

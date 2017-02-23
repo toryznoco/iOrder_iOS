@@ -3,14 +3,14 @@
 //  FSCalendar
 //
 //  Created by dingwenchao on 4/29/16.
-//  Copyright © 2016 wenchaoios. All rights reserved.
+//  Copyright © 2016 Wenchao Ding. All rights reserved.
 //
 
 #import "FSCalendarScopeHandle.h"
 #import "FSCalendar.h"
-#import "FSCalendarAnimator.h"
+#import "FSCalendarTransitionCoordinator.h"
 #import "FSCalendarDynamicHeader.h"
-#import "UIView+FSExtension.h"
+#import "FSCalendarExtensions.h"
 
 @interface FSCalendarScopeHandle () <UIGestureRecognizerDelegate>
 
@@ -33,7 +33,7 @@
         UIView *view;
         
         view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 1)];
-        view.backgroundColor = FSCalendarStandardSeparatorColor;
+        view.backgroundColor = FSCalendarStandardLineColor;
         [self addSubview:view];
         self.topBorder = view;
         
@@ -66,13 +66,13 @@
 
 - (void)handlePan:(id)sender
 {
-    [self.calendar.animator handlePan:sender];
+    [self.calendar.transitionCoordinator handleScopeGesture:sender];
 }
 
 - (void)setCalendar:(FSCalendar *)calendar
 {
     _calendar = calendar;
-    self.panGesture.delegate = self.calendar.animator;
+    self.panGesture.delegate = self.calendar.transitionCoordinator;
 }
 
 @end

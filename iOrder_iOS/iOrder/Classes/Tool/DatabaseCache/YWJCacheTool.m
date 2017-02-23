@@ -21,6 +21,7 @@
 static FMDatabase *_db;
 
 + (void)initialize {
+    
     //    1.获取缓存路径
     NSString *cachePath = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)[0];
     //    2.拼接文件名
