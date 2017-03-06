@@ -17,13 +17,18 @@
 
 #import "IOTransmitters.h"
 
+#import <CoreBluetooth/CoreBluetooth.h>
+
 @import UserNotifications;
 
 BOOL isInRegion;
 
-@interface AppDelegate () <UNUserNotificationCenterDelegate>
+@interface AppDelegate () <UNUserNotificationCenterDelegate, CBCentralManagerDelegate>
 
 @property (nonatomic) UIBackgroundTaskIdentifier taskId;
+
+/** 蓝牙管理者 */
+@property (nonatomic, strong) CBCentralManager *centralManager;
 
 @property (nonatomic, strong) ABBeaconRegion *region;
 
@@ -38,6 +43,8 @@ BOOL isInRegion;
     self.beaconManager = [[ABBeaconManager alloc] init];
     //  设置beacon的代理
     self.beaconManager.delegate = self;
+    
+    self.centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil options:nil];
     
     UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
     center.delegate = self;
@@ -103,6 +110,8 @@ BOOL isInRegion;
         [self.beaconManager requestAlwaysAuthorization];
     }
     
+    // 检测蓝牙状态
+    
     //  开始监测
     [self startMonitoringForRegion];
 }
@@ -115,6 +124,34 @@ BOOL isInRegion;
 //    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:notification.alertBody delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
 //    [alert show];
 //}
+
+#pragma mark - CLLocationManagerDelegate
+- (void)centralManagerDidUpdateState:(CBCentralManager *)central {
+    NSString *message = nil;
+    switch (central.state) {
+        case 1:
+            message = @"该设备不支持蓝牙功能,请检查系统设置";
+            break;
+        case 2:
+            message = @"该设备蓝牙未授权,请检查系统设置";
+            break;
+        case 3:
+            message = @"该设备蓝牙未授权,请检查系统设置";
+            break;
+        case 4:
+            message = @"该设备尚未打开蓝牙,请在设置中打开";
+            break;
+        case 5:
+            message = @"蓝牙已经成功开启,请稍后再试";
+            break;
+        default:
+            break;
+    }
+    if(message!=nil&&message.length!=0)
+    {
+        NSLog(@"message == %@",message);
+    }
+}
 
 #pragma mark - Custom methods
 - (void)startMonitoringForRegion {
