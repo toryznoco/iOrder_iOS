@@ -1379,13 +1379,8 @@
 					"-framework",
 					"\"QuartzCore\"",
 					"-framework",
-					"\"Reveal\"",
-					"-framework",
 					"\"UIKit\"",
-					"-ObjC",
 					"-lz",
-					"-framework",
-					Reveal,
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.toryznoco.iOrder;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1429,13 +1424,8 @@
 					"-framework",
 					"\"QuartzCore\"",
 					"-framework",
-					"\"Reveal\"",
-					"-framework",
 					"\"UIKit\"",
-					"-ObjC",
 					"-lz",
-					"-framework",
-					Reveal,
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.toryznoco.iOrder;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1500,7 +1490,7 @@
 				CAE8F03A1CB940E2005618B0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		CAE8F03B1CB940E2005618B0 /* Build configuration list for PBXNativeTarget "iOrder" */ = {
 			isa = XCConfigurationList;
@@ -1509,7 +1499,7 @@
 				CAE8F03D1CB940E2005618B0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		CAE8F03E1CB940E2005618B0 /* Build configuration list for PBXNativeTarget "iOrderTests" */ = {
 			isa = XCConfigurationList;
@@ -1518,7 +1508,7 @@
 				CAE8F0401CB940E2005618B0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		CAE8F0411CB940E2005618B0 /* Build configuration list for PBXNativeTarget "iOrderUITests" */ = {
 			isa = XCConfigurationList;
@@ -1527,7 +1517,7 @@
 				CAE8F0431CB940E2005618B0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 	};

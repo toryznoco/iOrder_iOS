@@ -14,9 +14,8 @@
 
 @interface FSCalendarHeaderView ()<UICollectionViewDataSource,UICollectionViewDelegate>
 
-@property (readonly, nonatomic) BOOL hasValidateVisibleLayout;
-
 - (void)scrollToOffset:(CGFloat)scrollOffset animated:(BOOL)animated;
+- (void)configureCell:(FSCalendarHeaderCell *)cell atIndexPath:(NSIndexPath *)indexPath;
 
 @end
 
@@ -134,44 +133,7 @@
 {
     FSCalendarHeaderCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cell" forIndexPath:indexPath];
     cell.header = self;
-    cell.titleLabel.font = _appearance.headerTitleFont;
-    cell.titleLabel.textColor = _appearance.headerTitleColor;
-    _calendar.formatter.dateFormat = _appearance.headerDateFormat;
-    BOOL usesUpperCase = (_appearance.caseOptions & 15) == FSCalendarCaseOptionsHeaderUsesUpperCase;
-    NSString *text = nil;
-    switch (self.calendar.transitionCoordinator.representingScope) {
-        case FSCalendarScopeMonth: {
-            if (_scrollDirection == UICollectionViewScrollDirectionHorizontal) {
-                // 多出的两项需要制空
-                if ((indexPath.item == 0 || indexPath.item == [collectionView numberOfItemsInSection:0] - 1)) {
-                    text = nil;
-                } else {
-                    NSDate *date = [self.calendar.gregorian dateByAddingUnit:NSCalendarUnitMonth value:indexPath.item-1 toDate:self.calendar.minimumDate options:0];
-                    text = [_calendar.formatter stringFromDate:date];
-                }
-            } else {
-                NSDate *date = [self.calendar.gregorian dateByAddingUnit:NSCalendarUnitMonth value:indexPath.item toDate:self.calendar.minimumDate options:0];
-                text = [_calendar.formatter stringFromDate:date];
-            }
-            break;
-        }
-        case FSCalendarScopeWeek: {
-            if ((indexPath.item == 0 || indexPath.item == [collectionView numberOfItemsInSection:0] - 1)) {
-                text = nil;
-            } else {
-                NSDate *firstPage = [self.calendar.gregorian fs_middleDayOfWeek:self.calendar.minimumDate];
-                NSDate *date = [self.calendar.gregorian dateByAddingUnit:NSCalendarUnitWeekOfYear value:indexPath.item-1 toDate:firstPage options:0];
-                text = [_calendar.formatter stringFromDate:date];
-            }
-            break;
-        }
-        default: {
-            break;
-        }
-    }
-    text = usesUpperCase ? text.uppercaseString : text;
-    cell.titleLabel.text = text;
-    [cell setNeedsLayout];
+    [self configureCell:cell atIndexPath:indexPath];
     return cell;
 }
 
@@ -187,15 +149,13 @@
 
 #pragma mark - Properties
 
-
+#if TARGET_INTERFACE_BUILDER
 - (void)setCalendar:(FSCalendar *)calendar
 {
-    if (![_calendar isEqual:calendar]) {
-        _calendar = calendar;
-        _appearance = calendar.appearance;
-    }
+    _calendar = calendar;
+    [self configureAppearance];
 }
-
+#endif
 
 - (void)setScrollOffset:(CGFloat)scrollOffset
 {
@@ -207,19 +167,15 @@
     if (_scrollOffset != scrollOffset) {
         _scrollOffset = scrollOffset;
     }
-    if (self.hasValidateVisibleLayout) {
-        [self scrollToOffset:scrollOffset animated:NO];
-    } else {
-        _needsAdjustingMonthPosition = YES;
-        [self setNeedsLayout];
-    }
+    [self scrollToOffset:scrollOffset animated:NO];
 }
 
 - (void)scrollToOffset:(CGFloat)scrollOffset animated:(BOOL)animated
 {
-#if TARGET_INTERFACE_BUILDER
-    _needsAdjustingMonthPosition = YES;
-#endif
+    if (CGSizeEqualToSize(self.collectionView.contentSize, CGSizeZero)) {
+        _needsAdjustingMonthPosition = YES;
+        return;
+    }
     if (self.scrollDirection == UICollectionViewScrollDirectionHorizontal) {
         CGFloat step = self.collectionView.fs_width*((self.scrollDirection==UICollectionViewScrollDirectionHorizontal)?0.5:1);
         [_collectionView setContentOffset:CGPointMake((scrollOffset+0.5)*step, 0) animated:animated];
@@ -247,15 +203,6 @@
     }
 }
 
-- (BOOL)hasValidateVisibleLayout
-{
-#if TARGET_INTERFACE_BUILDER
-    return YES;
-#else
-    return self.superview  && !CGRectIsEmpty(_collectionView.frame) && !CGSizeEqualToSize(_collectionView.contentSize, CGSizeZero);
-#endif
-}
-
 #pragma mark - Public
 
 - (void)reloadData
@@ -263,11 +210,53 @@
     [_collectionView reloadData];
 }
 
+- (void)configureCell:(FSCalendarHeaderCell *)cell atIndexPath:(NSIndexPath *)indexPath
+{
+    FSCalendarAppearance *appearance = self.calendar.appearance;
+    cell.titleLabel.font = appearance.headerTitleFont;
+    cell.titleLabel.textColor = appearance.headerTitleColor;
+    _calendar.formatter.dateFormat = appearance.headerDateFormat;
+    BOOL usesUpperCase = (appearance.caseOptions & 15) == FSCalendarCaseOptionsHeaderUsesUpperCase;
+    NSString *text = nil;
+    switch (self.calendar.transitionCoordinator.representingScope) {
+        case FSCalendarScopeMonth: {
+            if (_scrollDirection == UICollectionViewScrollDirectionHorizontal) {
+                // 多出的两项需要制空
+                if ((indexPath.item == 0 || indexPath.item == [self.collectionView numberOfItemsInSection:0] - 1)) {
+                    text = nil;
+                } else {
+                    NSDate *date = [self.calendar.gregorian dateByAddingUnit:NSCalendarUnitMonth value:indexPath.item-1 toDate:self.calendar.minimumDate options:0];
+                    text = [_calendar.formatter stringFromDate:date];
+                }
+            } else {
+                NSDate *date = [self.calendar.gregorian dateByAddingUnit:NSCalendarUnitMonth value:indexPath.item toDate:self.calendar.minimumDate options:0];
+                text = [_calendar.formatter stringFromDate:date];
+            }
+            break;
+        }
+        case FSCalendarScopeWeek: {
+            if ((indexPath.item == 0 || indexPath.item == [self.collectionView numberOfItemsInSection:0] - 1)) {
+                text = nil;
+            } else {
+                NSDate *firstPage = [self.calendar.gregorian fs_middleDayOfWeek:self.calendar.minimumDate];
+                NSDate *date = [self.calendar.gregorian dateByAddingUnit:NSCalendarUnitWeekOfYear value:indexPath.item-1 toDate:firstPage options:0];
+                text = [_calendar.formatter stringFromDate:date];
+            }
+            break;
+        }
+        default: {
+            break;
+        }
+    }
+    text = usesUpperCase ? text.uppercaseString : text;
+    cell.titleLabel.text = text;
+    [cell setNeedsLayout];
+}
+
 - (void)configureAppearance
 {
     [self.collectionView.visibleCells enumerateObjectsUsingBlock:^(__kindof FSCalendarHeaderCell * _Nonnull cell, NSUInteger idx, BOOL * _Nonnull stop) {
-        cell.titleLabel.font = self.appearance.headerTitleFont;
-        cell.titleLabel.textColor = self.appearance.headerTitleColor;
+        [self configureCell:cell atIndexPath:[self.collectionView indexPathForCell:cell]];
     }];
 }
 
@@ -306,14 +295,14 @@
         CGFloat position = [self.contentView convertPoint:CGPointMake(CGRectGetMidX(self.contentView.bounds), CGRectGetMidY(self.contentView.bounds)) toView:self.header].x;
         CGFloat center = CGRectGetMidX(self.header.bounds);
         if (self.header.scrollEnabled) {
-            self.contentView.alpha = 1.0 - (1.0-self.header.appearance.headerMinimumDissolvedAlpha)*ABS(center-position)/self.fs_width;
+            self.contentView.alpha = 1.0 - (1.0-self.header.calendar.appearance.headerMinimumDissolvedAlpha)*ABS(center-position)/self.fs_width;
         } else {
             self.contentView.alpha = (position > 0 && position < self.header.fs_width*0.75);
         }
     } else if (self.header.scrollDirection == UICollectionViewScrollDirectionVertical) {
         CGFloat position = [self.contentView convertPoint:CGPointMake(CGRectGetMidX(self.contentView.bounds), CGRectGetMidY(self.contentView.bounds)) toView:self.header].y;
         CGFloat center = CGRectGetMidY(self.header.bounds);
-        self.contentView.alpha = 1.0 - (1.0-self.header.appearance.headerMinimumDissolvedAlpha)*ABS(center-position)/self.fs_height;
+        self.contentView.alpha = 1.0 - (1.0-self.header.calendar.appearance.headerMinimumDissolvedAlpha)*ABS(center-position)/self.fs_height;
     }
     
 }
