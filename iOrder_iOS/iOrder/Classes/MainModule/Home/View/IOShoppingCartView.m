@@ -71,7 +71,7 @@
         self.backgroundColor = [UIColor clearColor];
         CALayer *back = [CALayer layer];
         back.frame = CGRectMake(0, 10, frame.size.width, 44);
-        back.backgroundColor = YWJRGBColor(238, 240, 241, 1).CGColor;
+        back.backgroundColor = IORGBColor(238, 240, 241, 1).CGColor;
         [self.layer addSublayer:back];
         [self setupAllChildViewWith:frame];
     }

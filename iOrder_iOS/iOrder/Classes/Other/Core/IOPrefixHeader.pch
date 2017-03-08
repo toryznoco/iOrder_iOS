@@ -27,9 +27,9 @@
 #define kIOBackgroundColor [UIColor colorWithRed:244.0/255.0 green:244.0/255.0 blue:244.0/255.0 alpha:1.0]
 
 //------------ tool ---------------
-#define YWJUserDefaults [NSUserDefaults standardUserDefaults]
-#define YWJKeyWindow [UIApplication sharedApplication].keyWindow
-#define YWJRGBColor(r, g, b, a) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:a]
+#define IOUserDefaults [NSUserDefaults standardUserDefaults]
+#define IOKeyWindow [UIApplication sharedApplication].keyWindow
+#define IORGBColor(r, g, b, a) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:a]
 
 //------------ key ----------------
 #define kVersionKey @"version"

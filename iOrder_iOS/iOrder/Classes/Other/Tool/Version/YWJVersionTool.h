@@ -18,10 +18,10 @@
 + (void)saveVersion:(NSString *)version;
 
 /**
- *  获取程序当前的版本号
+ *  获保存的版本号
  *
- *  @return 返回程序当前的版本号
+ *  @return 返回保存的版本号
  */
-+ (NSString *)currentVersion;
++ (NSString *)savedVersion;
 
 @end

@@ -55,7 +55,7 @@
     layout.sectionInset = UIEdgeInsetsMake(8, 20, 8, 20);
     layout.headerReferenceSize = CGSizeMake(self.width, 42);
     UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
-    collectionView.backgroundColor = YWJRGBColor(241, 241, 241, 1);
+    collectionView.backgroundColor = IORGBColor(241, 241, 241, 1);
     [collectionView registerClass:[IOProfileMyCollectViewCell class] forCellWithReuseIdentifier:@"profileCollectionCell"];
     [collectionView registerClass:[IOProfileMyCollectViewHeader class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"headerId"];
     collectionView.dataSource = self;
@@ -156,7 +156,7 @@
 //    1、标题
     UILabel *titleLabel = [[UILabel alloc] init];
     titleLabel.text = @"我的收藏";
-    titleLabel.textColor = YWJRGBColor(139, 139, 139, 1);
+    titleLabel.textColor = IORGBColor(139, 139, 139, 1);
     [self addSubview:titleLabel];
     _titleLabel = titleLabel;
     
@@ -240,7 +240,7 @@
     
 //    2、蒙板
     UIView *dishMask = [[UIView alloc] init];
-    dishMask.backgroundColor = YWJRGBColor(255, 255, 255, 0.5);
+    dishMask.backgroundColor = IORGBColor(255, 255, 255, 0.5);
     [self addSubview:dishMask];
     _dishMask = dishMask;
     

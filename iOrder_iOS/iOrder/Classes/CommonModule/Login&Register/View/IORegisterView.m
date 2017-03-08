@@ -59,7 +59,7 @@
     IORegisterTextField *phoneNumber = [[IORegisterTextField alloc] init];
     phoneNumber.background = [UIImage imageNamed:@"phone number_backgroud_frame"];
     phoneNumber.placeholder = @"phone number";
-    [phoneNumber setValue:YWJRGBColor(111, 95, 97, 1) forKeyPath:@"_placeholderLabel.textColor"];
+    [phoneNumber setValue:IORGBColor(111, 95, 97, 1) forKeyPath:@"_placeholderLabel.textColor"];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textLabelChanged) name:UITextFieldTextDidChangeNotification object:phoneNumber];
     [self addSubview:phoneNumber];
     _phoneNumber = phoneNumber;
@@ -69,7 +69,7 @@
     password.background = [UIImage imageNamed:@"password_backgroud_frame"];
     password.placeholder = @"password";
     [password setSecureTextEntry:YES];
-    [password setValue:YWJRGBColor(111, 95, 97, 1) forKeyPath:@"_placeholderLabel.textColor"];
+    [password setValue:IORGBColor(111, 95, 97, 1) forKeyPath:@"_placeholderLabel.textColor"];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textLabelChanged) name:UITextFieldTextDidChangeNotification object:password];
     [self addSubview:password];
     _password = password;
@@ -79,7 +79,7 @@
     verificationCode.background = [UIImage imageNamed:@"Verificationcode_backgroud_frame"];
     verificationCode.placeholder = @"Verification code";
 //    verificationCode.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
-    [verificationCode setValue:YWJRGBColor(111, 95, 97, 1) forKeyPath:@"_placeholderLabel.textColor"];
+    [verificationCode setValue:IORGBColor(111, 95, 97, 1) forKeyPath:@"_placeholderLabel.textColor"];
 //    [verificationCode setValue:[UIFont boldSystemFontOfSize:13] forKeyPath:@"_placeholderLabel.font"];
     [self addSubview:verificationCode];
     _verificationCode = verificationCode;

@@ -14,8 +14,8 @@
 /** App管理者的单例 */
 Singleton_interface(Manager)
 
-/** 进入App */
-- (void)enterApp;
+/** 根据情况选择根控制器 */
+- (void)chooseRootViewController;
 
 /** 开始监听指定区域 */
 - (void)startMonitoringForRegion;

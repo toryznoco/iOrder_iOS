@@ -30,7 +30,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.view.backgroundColor = YWJRGBColor(245, 245, 245, 1);
+    self.view.backgroundColor = IORGBColor(245, 245, 245, 1);
     
     [self setupNavigationItem];
     
@@ -143,7 +143,7 @@
 - (void)setupTableView {
     UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 44)];
     tableView.tableFooterView = [[UIView alloc] init];
-    tableView.backgroundColor = YWJRGBColor(245, 245, 245, 1);
+    tableView.backgroundColor = IORGBColor(245, 245, 245, 1);
     tableView.scrollEnabled = NO;
     tableView.dataSource = self;
     tableView.delegate = self;

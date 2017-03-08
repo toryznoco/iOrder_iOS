@@ -71,7 +71,7 @@
 }
 
 - (void)loginView:(IOLoginView *)loginView loginBtnDidPressed:(UIButton *)loginBtn {
-    YWJKeyWindow.rootViewController = [[IOTabBarController alloc] init];
+    IOKeyWindow.rootViewController = [[IOTabBarController alloc] init];
 }
 
 /*

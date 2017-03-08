@@ -171,7 +171,7 @@
     UILabel *evaluateTitle = [[UILabel alloc] init];
     evaluateTitle.text = @"整体评价";
     evaluateTitle.font = [UIFont systemFontOfSize:10];
-    evaluateTitle.textColor = YWJRGBColor(139, 139, 139, 1);
+    evaluateTitle.textColor = IORGBColor(139, 139, 139, 1);
     [totalEvaluateView addSubview:evaluateTitle];
     _evaluateTitle = evaluateTitle;
     
@@ -183,14 +183,14 @@
     UILabel *serveTitle = [[UILabel alloc] init];
     serveTitle.text = @"配送服务";
     serveTitle.font = [UIFont systemFontOfSize:10];
-    serveTitle.textColor = YWJRGBColor(139, 139, 139, 1);
+    serveTitle.textColor = IORGBColor(139, 139, 139, 1);
     [headerView addSubview:serveTitle];
     _serveTitle = serveTitle;
     
     UILabel *qualityTitle = [[UILabel alloc] init];
     qualityTitle.text = @"商品质量";
     qualityTitle.font = [UIFont systemFontOfSize:10];
-    qualityTitle.textColor = YWJRGBColor(139, 139, 139, 1);
+    qualityTitle.textColor = IORGBColor(139, 139, 139, 1);
     [headerView addSubview:qualityTitle];
     _qualityTitle = qualityTitle;
     
@@ -233,7 +233,7 @@
     for (NSInteger i = 0; i < 4; i++) {
         UIButton *evaluateBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         evaluateBtn.font = [UIFont systemFontOfSize:8];
-        [evaluateBtn setTitleColor:YWJRGBColor(139, 139, 139, 1) forState:UIControlStateNormal];
+        [evaluateBtn setTitleColor:IORGBColor(139, 139, 139, 1) forState:UIControlStateNormal];
         [evaluateBtn setTitleColor:kIOThemeColors forState:UIControlStateSelected];
         [evaluateBtn setBackgroundImage:[UIImage imageNamed:@"ellipse_normal"] forState:UIControlStateNormal];
         [evaluateBtn setBackgroundImage:[UIImage imageNamed:@"ellipse_light"] forState:UIControlStateSelected];

@@ -79,7 +79,7 @@
 
 - (void)setupTabBarTitleAttri {
     RDVTabBarItem *item = [RDVTabBarItem appearanceWhenContainedInInstancesOfClasses:@[[super class]]];
-    item.backgroundColor = YWJRGBColor(244, 244, 244, 1);
+    item.backgroundColor = IORGBColor(244, 244, 244, 1);
     NSMutableDictionary *selTitleAttr = [NSMutableDictionary dictionary];
     selTitleAttr[NSForegroundColorAttributeName] = [UIColor orangeColor];
     selTitleAttr[NSFontAttributeName] = [UIFont systemFontOfSize:11];

@@ -328,7 +328,7 @@
     _title = title;
     
     UIView *underLineView = [[UIView alloc] init];
-    underLineView.backgroundColor = YWJRGBColor(234, 234, 234, 1);
+    underLineView.backgroundColor = IORGBColor(234, 234, 234, 1);
     [self addSubview:underLineView];
     _underLineView = underLineView;
 }

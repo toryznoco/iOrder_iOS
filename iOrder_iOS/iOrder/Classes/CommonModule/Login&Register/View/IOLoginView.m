@@ -67,7 +67,7 @@
     IOLoginTextField *userName = [[IOLoginTextField alloc] init];
     userName.background = [UIImage imageNamed:@"usename_bar"];
     userName.placeholder = @"username";
-    [userName setValue:YWJRGBColor(111, 95, 97, 1) forKeyPath:@"_placeholderLabel.textColor"];
+    [userName setValue:IORGBColor(111, 95, 97, 1) forKeyPath:@"_placeholderLabel.textColor"];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textLabelChanged) name:UITextFieldTextDidChangeNotification object:userName];
     [self addSubview:userName];
     _userName = userName;
@@ -77,7 +77,7 @@
     password.background = [UIImage imageNamed:@"password_bar"];
     password.placeholder = @"password";
     [password setSecureTextEntry:YES];
-    [password setValue:YWJRGBColor(111, 95, 97, 1) forKeyPath:@"_placeholderLabel.textColor"];
+    [password setValue:IORGBColor(111, 95, 97, 1) forKeyPath:@"_placeholderLabel.textColor"];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textLabelChanged) name:UITextFieldTextDidChangeNotification object:password];
     [self addSubview:password];
     _password = password;

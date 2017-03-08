@@ -44,7 +44,7 @@
 //#pragma mark - Navigation Controller
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
     //    获取主窗口的rootViewController, 即tabBarController
-    UITabBarController *tabBarC = (UITabBarController *)YWJKeyWindow.rootViewController;
+    UITabBarController *tabBarC = (UITabBarController *)IOKeyWindow.rootViewController;
     
     //    移除系统的tabBarButton
     for (UIView *tabBarButton in tabBarC.tabBar.subviews) {

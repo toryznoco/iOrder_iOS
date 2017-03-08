@@ -53,8 +53,8 @@
     self.window = [[UIWindow alloc] initWithFrame:CGRectMake(0, 0, IOScreenWidth, IOScreenHeight)];
     [self.window makeKeyAndVisible];
     
-    //  进入App
-    [[IOGlobalManager sharedManager] enterApp];
+    // 全局管理者根据情况选择根控制器
+    [[IOGlobalManager sharedManager] chooseRootViewController];
     
     return YES;
 }

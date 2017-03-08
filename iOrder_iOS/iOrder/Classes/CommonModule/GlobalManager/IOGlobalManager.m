@@ -10,8 +10,19 @@
 #import "AprilBeaconSDK.h"
 #import "IOTransmitters.h"
 #import "YWJRootTool.h"
+#import "IORootTool.h"
 #import "YWJVersionTool.h"
 #import <CoreBluetooth/CoreBluetooth.h>
+
+#import "YWJRootNavigationViewController.h"
+#import "IONewFeatureViewController.h"
+#import "IOLoginViewController.h"
+#import "YWJVersionTool.h"
+
+#import "IONewFeatureViewController.h"
+#import "IOTabBarController.h"
+
+@import UserNotifications;
 
 BOOL isInRegion = NO;
 BOOL isBlueToothAvilable = NO;
@@ -46,14 +57,48 @@ Singleton_implementation(Manager)
     return self;
 }
 
-- (void)enterApp {
-#warning 以后不需要此行代码，此处便于调试
-    // 1.进入App，先判断版本，版本号大于存的版本号就显示新特性页面
+/** 根据情况选择根控制器 */
+- (void)chooseRootViewController {
+    // 直接进入登录界面
+    [self enterLogin];
     
+    /*
+    // 进入App，先判断版本
+    // 版本号大于存的版本号就进入新特性页面，并保存新的版本号
+//    [YWJVersionTool saveVersion:@"0.1"];
     
-    // 2.判断有无本地账号，有的话则进入首页，没有就弹出登录界面
-    //    [YWJVersionTool saveVersion:@"0.1"];
-    //    [YWJRootTool chooseRootViewController:self.window];
+    // 当前版本
+    NSString *currentVersion = [NSBundle mainBundle].infoDictionary[@"CFBundleVersion"];
+    // 之前保存的版本
+    NSString *savedVersion = [YWJVersionTool savedVersion];
+    
+    if ([currentVersion isEqualToString:savedVersion]) { // 版本号相同
+        // 判断有无本地账号，有则自动登录进入首页，没有则进入登录界面
+        // 这里默认没有存储账号，直接进入登录页面
+        [self enterLogin];
+        
+    } else { // 版本号不同，进入新特性页面
+        IONewFeatureViewController *newFeatureVC = [[IONewFeatureViewController alloc] init];
+        
+        [IORootTool changeRootViewControllerTo:newFeatureVC];
+        
+        [YWJVersionTool saveVersion:currentVersion];
+    }
+     */
+}
+
+// 进入登录页面
+- (void)enterLogin {
+    IOLoginViewController *loginVc = [[IOLoginViewController alloc] init];
+    YWJRootNavigationViewController *loginNav = [[YWJRootNavigationViewController alloc] initWithRootViewController:loginVc];
+    
+    [IORootTool changeRootViewControllerTo:loginNav];
+}
+
+// 进入主页
+- (void)enterHome {
+    IOTabBarController *tabBarVC = [[IOTabBarController alloc] init];
+    [IORootTool changeRootViewControllerTo:tabBarVC];
 }
 
 #pragma mark - 开始监听区域

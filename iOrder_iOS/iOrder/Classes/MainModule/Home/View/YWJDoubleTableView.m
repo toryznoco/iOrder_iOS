@@ -128,12 +128,12 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     if (tableView == self.rightTableView) {
         UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.width, 22)];
-        view.backgroundColor = YWJRGBColor(217, 217, 217, 0.7);
+        view.backgroundColor = IORGBColor(217, 217, 217, 0.7);
         
         UILabel *label = [[UILabel alloc] initWithFrame:view.bounds];
         IODishes *dishInfo = _dishInfos[section];
         label.text = [NSString stringWithFormat:@"   %@", dishInfo.catgName];
-        label.textColor = YWJRGBColor(88, 88, 88, 1);
+        label.textColor = IORGBColor(88, 88, 88, 1);
         label.font = [UIFont systemFontOfSize:15];
         [view addSubview:label];
         

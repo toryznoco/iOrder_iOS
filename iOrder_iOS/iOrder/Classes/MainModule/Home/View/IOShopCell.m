@@ -156,7 +156,7 @@
     //    菜品销售量
     UILabel *dishSaleCount = [[UILabel alloc] init];
     dishSaleCount.font = [UIFont systemFontOfSize:11];
-    dishSaleCount.textColor = YWJRGBColor(180, 180, 180, 1);
+    dishSaleCount.textColor = IORGBColor(180, 180, 180, 1);
     [self addSubview:dishSaleCount];
     _dishSaleCount = dishSaleCount;
     
@@ -169,7 +169,7 @@
     //    点赞数
     UILabel *followCount = [[UILabel alloc] init];
     followCount.font = [UIFont systemFontOfSize:12];
-    followCount.textColor = YWJRGBColor(180, 180, 180, 1);
+    followCount.textColor = IORGBColor(180, 180, 180, 1);
     [self addSubview:followCount];
     _followCount = followCount;
     
@@ -183,7 +183,7 @@
     UILabel *dishPriceSuffix = [[UILabel alloc] init];
     dishPriceSuffix.font = [UIFont systemFontOfSize:12];
     dishPriceSuffix.text = @"/份";
-    dishPriceSuffix.textColor = YWJRGBColor(180, 180, 180, 1);
+    dishPriceSuffix.textColor = IORGBColor(180, 180, 180, 1);
     [self addSubview:dishPriceSuffix];
     _dishPriceSuffix = dishPriceSuffix;
     
@@ -288,7 +288,7 @@
     
     self.textLabel.text = category;
     self.textLabel.font = [UIFont systemFontOfSize:15];
-    self.textLabel.textColor = YWJRGBColor(88, 88, 88, 1);
+    self.textLabel.textColor = IORGBColor(88, 88, 88, 1);
     self.textLabel.numberOfLines = 0;
 }
 
@@ -307,7 +307,7 @@
 
 - (void)setupAllChidView {
     UIView *selectedBgView = [[UIView alloc] initWithFrame:self.frame];
-    selectedBgView.backgroundColor = YWJRGBColor(217, 217, 217, 0.5);
+    selectedBgView.backgroundColor = IORGBColor(217, 217, 217, 0.5);
     self.selectedBackgroundView = selectedBgView;
     
     UIView *liner = [[UIView alloc] initWithFrame:CGRectMake(0, 5, 5, 41)];

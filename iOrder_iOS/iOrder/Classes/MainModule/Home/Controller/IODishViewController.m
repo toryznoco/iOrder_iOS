@@ -51,7 +51,7 @@
 
 - (void)refreshView {
     
-    self.view.backgroundColor = YWJRGBColor(245, 245, 245, 1);
+    self.view.backgroundColor = IORGBColor(245, 245, 245, 1);
     
     [self setupDishImageView];
     

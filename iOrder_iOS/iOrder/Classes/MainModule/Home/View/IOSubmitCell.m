@@ -83,7 +83,7 @@
     
     UILabel *detailLabel = [[UILabel alloc] init];
     detailLabel.textAlignment = NSTextAlignmentRight;
-    detailLabel.textColor = YWJRGBColor(180, 180, 180, 1);
+    detailLabel.textColor = IORGBColor(180, 180, 180, 1);
     [self addSubview:detailLabel];
     _detailLabel = detailLabel;
 }
@@ -177,7 +177,7 @@
     
     UILabel *detailLabel = [[UILabel alloc] init];
     detailLabel.textAlignment = NSTextAlignmentRight;
-    detailLabel.textColor = YWJRGBColor(180, 180, 180, 1);
+    detailLabel.textColor = IORGBColor(180, 180, 180, 1);
     [self addSubview:detailLabel];
     _detailLabel = detailLabel;
 }
@@ -272,13 +272,13 @@
     _iconImageView = iconImageView;
     
     UILabel *textName = [[UILabel alloc] init];
-    textName.textColor = YWJRGBColor(180, 180, 180, 1);
+    textName.textColor = IORGBColor(180, 180, 180, 1);
     [self addSubview:textName];
     _textName = textName;
     
     UILabel *detailLabel = [[UILabel alloc] init];
     detailLabel.textAlignment = NSTextAlignmentRight;
-    detailLabel.textColor = YWJRGBColor(180, 180, 180, 1);
+    detailLabel.textColor = IORGBColor(180, 180, 180, 1);
     [self addSubview:detailLabel];
     _detailLabel = detailLabel;
 }

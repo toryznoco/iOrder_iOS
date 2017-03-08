@@ -93,7 +93,7 @@
 #pragma mark - privacy
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
-        self.backgroundColor = YWJRGBColor(231, 231, 231, 1);
+        self.backgroundColor = IORGBColor(231, 231, 231, 1);
         [self setupAllChildView];
     }
     return self;

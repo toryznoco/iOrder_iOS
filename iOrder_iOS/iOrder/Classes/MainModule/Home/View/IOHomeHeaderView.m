@@ -93,10 +93,10 @@
     if (self = [super init]) {
         self.backgroundColor = [UIColor colorWithRed:0.98 green:0.98 blue:0.98 alpha:0.99];
         UIImageView *backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"005.jpg"]];
-        backgroundView.frame = CGRectMake(0, 0, YWJKeyWindow.width, 160);
+        backgroundView.frame = CGRectMake(0, 0, IOKeyWindow.width, 160);
         [self addSubview:backgroundView];
         
-        SDCycleScrollView *cycleScrollView = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 0, YWJKeyWindow.width, 160) shouldInfiniteLoop:YES imageNamesGroup:nil];
+        SDCycleScrollView *cycleScrollView = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 0, IOKeyWindow.width, 160) shouldInfiniteLoop:YES imageNamesGroup:nil];
         [self addSubview:cycleScrollView];
         _cycleScrollView = cycleScrollView;
         
