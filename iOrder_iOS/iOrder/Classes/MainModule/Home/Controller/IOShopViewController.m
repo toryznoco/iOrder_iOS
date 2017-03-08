@@ -177,7 +177,7 @@
         [_dishInfos addObjectsFromArray:dishInfosArray];
         _doubleTableView.dishInfos = _dishInfos;
     } failure:^(NSError *error) {
-        YWJLog(@"%@", error);
+        IOLog(@"%@", error);
     }];
 }
 
@@ -197,12 +197,12 @@
         _shoppingCartView.totalPri = _shoppingCartInfo.totalPri;
         NSLog(@"%ld %f", shoppingCartInfo.itmes.count, _shoppingCartInfo.totalPri);
     } failure:^(NSError *error) {
-        YWJLog(@"%@", error);
+        IOLog(@"%@", error);
     }];
 }
 
 - (void)collectBtnClick {
-    YWJLog(@"collectBtn click");
+    IOLog(@"collectBtn click");
 }
 
 - (void)signInBtnClick {

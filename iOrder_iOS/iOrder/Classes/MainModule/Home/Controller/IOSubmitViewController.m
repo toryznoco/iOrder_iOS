@@ -204,9 +204,9 @@
                         [_delegate submitViewController:self isPaySuccessful:YES];
                     }
                     [YWJSubmitOrderTool submitOrderWithUserId:1 shopId:_shopInfo.shopId couponId:0 success:^{
-                        YWJLog(@"提交成功");
+                        IOLog(@"提交成功");
                     } failure:^(NSError *error) {
-                        YWJLog(@"%@", error);
+                        IOLog(@"%@", error);
                     }];
                     [self.navigationController popViewControllerAnimated:YES];
                 });

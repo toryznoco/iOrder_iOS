@@ -124,11 +124,11 @@
 #pragma mark - SDCycleScrollViewDelegate
 
 - (void)cycleScrollView:(SDCycleScrollView *)cycleScrollView didSelectItemAtIndex:(NSInteger)index {
-    YWJLog(@"点击了某张图片");
+    IOLog(@"点击了某张图片");
 }
 
 - (void)cycleScrollView:(SDCycleScrollView *)cycleScrollView didScrollToIndex:(NSInteger)index {
-//    YWJLog(@"滑动到第几张图片");
+//    IOLog(@"滑动到第几张图片");
 }
 
 @end

@@ -38,7 +38,7 @@
 
 #ifdef DEBUG // 调试
 
-#define YWJLog(...) NSLog(__VA_ARGS__)
+#define IOLog(...) NSLog(__VA_ARGS__)
 
 #else // 发布
 

@@ -187,16 +187,16 @@
 - (void)shopRightCell:(IOShopRightCell *)shopRightCell dishPrice:(float)dishPrice clickedBtn:(UIButton *)btn {
     if (btn.tag == 1) {
         [YWJShoppingCartTool addDishToShoppingCartWithUserId:1 dishesId:shopRightCell.dish.dishesId amount:1 success:^{
-            YWJLog(@"成功");
+            IOLog(@"成功");
         } failure:^(NSError *error) {
-            YWJLog(@"%@", error);
+            IOLog(@"%@", error);
         }];
     } else {
         
         [YWJShoppingCartTool removeDishFromShoppingCartWithUserId:1 dishesId:shopRightCell.dish.dishesId amount:1 success:^{
-            YWJLog(@"移除");
+            IOLog(@"移除");
         } failure:^(NSError *error) {
-            YWJLog(@"%@", error);
+            IOLog(@"%@", error);
         }];
     }
     

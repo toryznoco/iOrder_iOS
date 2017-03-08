@@ -207,7 +207,7 @@
         [self.tableView reloadData];
         [self.tableView.mj_header endRefreshing];
     } failure:^(NSError *error) {
-        YWJLog(@"%@", error);
+        IOLog(@"%@", error);
     }];
 }
 

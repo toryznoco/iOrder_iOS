@@ -54,13 +54,13 @@ static FMDatabase *_db;
         BOOL flag2 = ([[queryResult stringForColumn:@"userName"] isEqualToString:param.userName] && [[queryResult stringForColumn:@"userPass"] isEqualToString:param.userPass]);
         
         if (flag2) {
-            YWJLog(@"The data has exists");
+            IOLog(@"The data has exists");
         } else {//插入新记录
             BOOL flag3 = [_db executeUpdate:@"insert into t_users (userName, userPass, userInfo) values(?, ?, ?)", param.userName, param.userPass, data];
             if (flag3) {
-                YWJLog(@"insert data - userInfo successful");
+                IOLog(@"insert data - userInfo successful");
             } else {
-                YWJLog(@"insert data - userInfo failed");
+                IOLog(@"insert data - userInfo failed");
             }
         }
     } else {
@@ -95,17 +95,17 @@ static FMDatabase *_db;
         BOOL flag2 = ([queryResult intForColumn:@"startId"] == param.startId && [queryResult intForColumn:@"amount"] == param.amount && [queryResult intForColumn:@"userLng"] == param.userLng && [queryResult intForColumn:@"userLat"] == param.userLat);
         
         if (flag2) {
-            YWJLog(@"The data has exists");
+            IOLog(@"The data has exists");
         } else {//插入新记录
             BOOL flag3 = [_db executeUpdate:@"insert into t_shops (startid, amount, userlng, userlat, shopinfo) values(?, ?, ?, ?, ?)", @(param.startId), @(param.amount), @(param.userLng), @(param.userLat), data];
             if (flag3) {
-                YWJLog(@"insert data - shopInfo successful");
+                IOLog(@"insert data - shopInfo successful");
             } else {
-                YWJLog(@"insert data - shopInfo failed");
+                IOLog(@"insert data - shopInfo failed");
             }
         }
     } else {
-        YWJLog(@"create t_shops failed");
+        IOLog(@"create t_shops failed");
     }
 }
 

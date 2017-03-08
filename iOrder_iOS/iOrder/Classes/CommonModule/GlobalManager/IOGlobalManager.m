@@ -1,0 +1,174 @@
+//
+//  IOGlobalManager.m
+//  iOrder
+//
+//  Created by Tory on 07/03/2017.
+//  Copyright © 2017 normcore. All rights reserved.
+//
+
+#import "IOGlobalManager.h"
+#import "AprilBeaconSDK.h"
+#import "IOTransmitters.h"
+#import "YWJRootTool.h"
+#import "YWJVersionTool.h"
+#import <CoreBluetooth/CoreBluetooth.h>
+
+BOOL isInRegion = NO;
+BOOL isBlueToothAvilable = NO;
+
+@interface IOGlobalManager () <ABBeaconManagerDelegate, CBCentralManagerDelegate>
+
+/** beacon管理者 */
+@property (nonatomic, strong) ABBeaconManager *beaconManager;
+
+/** 蓝牙管理者 */
+@property (nonatomic, strong) CBCentralManager *centralManager;
+
+/** 监听区域 */
+@property (nonatomic, strong) ABBeaconRegion *region;
+
+@end
+
+@implementation IOGlobalManager
+
+Singleton_implementation(Manager)
+
+- (instancetype)init {
+    if (self = [super init]) {
+        //  初始化beacon管理者
+        _beaconManager = [[ABBeaconManager alloc] init];
+        //  设置beacon管理者的代理
+        _beaconManager.delegate = self;
+        
+        // 初始化蓝牙管理者
+        self.centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil options:nil];
+    }
+    return self;
+}
+
+- (void)enterApp {
+#warning 以后不需要此行代码，此处便于调试
+    // 1.进入App，先判断版本，版本号大于存的版本号就显示新特性页面
+    
+    
+    // 2.判断有无本地账号，有的话则进入首页，没有就弹出登录界面
+    //    [YWJVersionTool saveVersion:@"0.1"];
+    //    [YWJRootTool chooseRootViewController:self.window];
+}
+
+#pragma mark - 开始监听区域
+- (void)startMonitoringForRegion {
+    if (!self.region) {  //  region没有值就创建
+        IOTransmitters *tran = [IOTransmitters sharedTransmitters];
+        NSDictionary *dict = [[tran transmitters] lastObject];
+        NSUUID *proximityUUID = [[NSUUID alloc] initWithUUIDString:dict[@"uuid"]];
+        self.region = [[ABBeaconRegion alloc] initWithProximityUUID:proximityUUID
+                                                         identifier:dict[@"uuid"]];
+        self.region.notifyOnEntry = YES;
+        self.region.notifyOnExit = YES;
+        self.region.notifyEntryStateOnDisplay = YES;
+    } else {    // region有值就先停掉之前的
+        [self.beaconManager stopMonitoringForRegion:self.region];
+    }
+    IOLog(@"self.region = %@", self.region);
+    [self.beaconManager startMonitoringForRegion:self.region];
+    IOLog(@"开始监控");
+}
+
+#pragma mark - ABBeaconManagerDelegate
+- (void)beaconManager:(ABBeaconManager *)manager monitoringDidFailForRegion:(ABBeaconRegion *)region withError:(NSError *)error {
+    IOLog(@"manager = %@, region = %@, error = %@", manager, region, error);
+}
+
+- (void)beaconManager:(ABBeaconManager *)manager didEnterRegion:(ABBeaconRegion *)region {
+    isInRegion = YES;
+    IOLog(@"进入区域了");
+    NSString *contentBody = [NSString localizedUserNotificationStringForKey:@"欢迎进入点餐区域！"
+                                                                  arguments:nil];
+    
+    [self pushNotificationWithContentBody:contentBody identifier:@"EnterRegion"];
+}
+
+- (void)beaconManager:(ABBeaconManager *)manager didExitRegion:(ABBeaconRegion *)region {
+    isInRegion = NO;
+    IOLog(@"退出区域了");
+    NSString *contentBody= [NSString localizedUserNotificationStringForKey:@"您已退出点餐区域，欢迎下次再来！"
+                                                                 arguments:nil];
+    
+    [self pushNotificationWithContentBody:contentBody identifier:@"ExitRegion"];
+}
+
+/**
+ 推送beacon通知
+ 
+ @param contentBody 提示内容
+ @param identifier  通知标识
+ */
+- (void)pushNotificationWithContentBody:(NSString *)contentBody identifier:(NSString *)identifier {
+    UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];
+    content.title = [NSString localizedUserNotificationStringForKey:@"温馨提示"
+                                                          arguments:nil];
+    content.body = [NSString localizedUserNotificationStringForKey:contentBody
+                                                         arguments:nil];
+    content.sound = [UNNotificationSound defaultSound];
+    //  设置应用程序右上角的提醒个数
+    content.badge = @1;
+    
+    //  时间触发器
+    UNTimeIntervalNotificationTrigger *trigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:0.1 repeats:NO];
+    //  创建推送通知请求
+    UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier:identifier
+                                                                          content:content
+                                                                          trigger:trigger];
+    // 使用 UNUserNotificationCenter 来管理通知
+    UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+    [center addNotificationRequest:request withCompletionHandler:^(NSError * _Nullable error) {
+        if (!error) {
+            IOLog(@"%@", error);
+        }
+    }];
+    
+    //    UILocalNotification *notification = [[UILocalNotification alloc] init];
+    //    notification.alertBody = @"欢迎进入点餐区域！";
+    //    notification.soundName = UILocalNotificationDefaultSoundName;
+    //    [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
+    //  设置应用程序右上角的提醒个数
+    //    [UIApplication sharedApplication].applicationIconBadgeNumber += 1;
+}
+
+#pragma mark - CBCentralManagerDelegate
+- (void)centralManagerDidUpdateState:(CBCentralManager *)central {
+    IOLog(@"%s--开始检测蓝牙", __func__);
+    NSString *message = nil;
+    switch (central.state) {
+            case 1:
+            message = @"该设备不支持蓝牙功能,请检查系统设置";
+            isBlueToothAvilable = NO;
+            break;
+            case 2:
+            message = @"该设备蓝牙未授权,请检查系统设置";
+            isBlueToothAvilable = NO;
+            break;
+            case 3:
+            message = @"该设备蓝牙未授权,请检查系统设置";
+            isBlueToothAvilable = NO;
+            break;
+            case 4:
+            message = @"该设备尚未打开蓝牙,请在设置中打开";
+            isBlueToothAvilable = NO;
+            break;
+            case 5:
+            message = @"蓝牙已经成功开启,请稍后再试";
+            isBlueToothAvilable = YES;
+            break;
+        default:
+            break;
+    }
+    if(message!=nil&&message.length!=0)
+    {
+        IOLog(@"message == %@",message);
+    }
+}
+
+
+@end

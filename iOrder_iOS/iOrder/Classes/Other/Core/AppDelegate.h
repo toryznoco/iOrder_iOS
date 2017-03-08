@@ -8,15 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-#import "AprilBeaconSDK.h"
-
-@interface AppDelegate : UIResponder <UIApplicationDelegate, ABBeaconManagerDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
-/**
- *  beacon的管理者
- */
-@property (nonatomic, strong) ABBeaconManager *beaconManager;
 
 @end
 
