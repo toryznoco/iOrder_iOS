@@ -3,7 +3,7 @@
 //  iOrder
 //
 //  Created by 易无解 on 4/3/16.
-//  Copyright © 2016 易无解. All rights reserved.
+//  Copyright © 2016 normcore. All rights reserved.
 //  UITabBar 里的内容
 
 #import <UIKit/UIKit.h>

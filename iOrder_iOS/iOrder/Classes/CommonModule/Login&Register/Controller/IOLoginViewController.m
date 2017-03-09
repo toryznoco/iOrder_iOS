@@ -3,13 +3,14 @@
 //  iOrder
 //
 //  Created by 易无解 on 8/17/16.
-//  Copyright © 2016 易无解. All rights reserved.
+//  Copyright © 2016 normcore. All rights reserved.
 //
 
 #import "IOLoginViewController.h"
 #import "IOLoginView.h"
 
 #import "IOTabBarController.h"
+#import "IOGlobalManager.h"
 #import "IORegisterViewController.h"
 
 @interface IOLoginViewController ()<IOLoginViewDelegate>
@@ -71,7 +72,8 @@
 }
 
 - (void)loginView:(IOLoginView *)loginView loginBtnDidPressed:(UIButton *)loginBtn {
-    IOKeyWindow.rootViewController = [[IOTabBarController alloc] init];
+    [IOGlobalManager enterHome];
+//    IOKeyWindow.rootViewController = [[IOTabBarController alloc] init];
 }
 
 /*

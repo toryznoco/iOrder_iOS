@@ -3,7 +3,7 @@
 //  iOrder
 //
 //  Created by 易无解 on 3/25/16.
-//  Copyright © 2016 易无解. All rights reserved.
+//  Copyright © 2016 normcore. All rights reserved.
 //
 
 
@@ -54,7 +54,7 @@
     [self.window makeKeyAndVisible];
     
     // 全局管理者根据情况选择根控制器
-    [[IOGlobalManager sharedManager] chooseRootViewController];
+    [IOGlobalManager chooseRootViewController];
     
     return YES;
 }

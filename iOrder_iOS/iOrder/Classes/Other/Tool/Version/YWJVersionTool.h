@@ -3,7 +3,7 @@
 //  iOrder
 //
 //  Created by 易无解 on 4/11/16.
-//  Copyright © 2016 易无解. All rights reserved.
+//  Copyright © 2016 normcore. All rights reserved.
 //  储存和获取程序当前的版本号
 
 #import <Foundation/Foundation.h>

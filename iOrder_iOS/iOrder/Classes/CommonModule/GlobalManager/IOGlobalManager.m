@@ -58,9 +58,9 @@ Singleton_implementation(Manager)
 }
 
 /** 根据情况选择根控制器 */
-- (void)chooseRootViewController {
++ (void)chooseRootViewController {
     // 直接进入登录界面
-    [self enterLogin];
+    [IOGlobalManager enterLogin];
     
     /*
     // 进入App，先判断版本
@@ -88,7 +88,7 @@ Singleton_implementation(Manager)
 }
 
 // 进入登录页面
-- (void)enterLogin {
++ (void)enterLogin {
     IOLoginViewController *loginVc = [[IOLoginViewController alloc] init];
     YWJRootNavigationViewController *loginNav = [[YWJRootNavigationViewController alloc] initWithRootViewController:loginVc];
     
@@ -96,7 +96,7 @@ Singleton_implementation(Manager)
 }
 
 // 进入主页
-- (void)enterHome {
++ (void)enterHome {
     IOTabBarController *tabBarVC = [[IOTabBarController alloc] init];
     [IORootTool changeRootViewControllerTo:tabBarVC];
 }
@@ -209,8 +209,7 @@ Singleton_implementation(Manager)
         default:
             break;
     }
-    if(message!=nil&&message.length!=0)
-    {
+    if (message!=nil&&message.length!=0) {
         IOLog(@"message == %@",message);
     }
 }

@@ -3,7 +3,7 @@
 //  iOrder
 //
 //  Created by 易无解 on 8/24/16.
-//  Copyright © 2016 易无解. All rights reserved.
+//  Copyright © 2016 normcore. All rights reserved.
 //  商店详情的界面
 
 #import <UIKit/UIKit.h>

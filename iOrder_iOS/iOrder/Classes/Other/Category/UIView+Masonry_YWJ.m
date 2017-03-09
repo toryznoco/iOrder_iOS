@@ -3,7 +3,7 @@
 //  iOrder
 //
 //  Created by 易无解 on 7/5/16.
-//  Copyright © 2016 易无解. All rights reserved.
+//  Copyright © 2016 normcore. All rights reserved.
 //
 
 #import "UIView+Masonry_YWJ.h"

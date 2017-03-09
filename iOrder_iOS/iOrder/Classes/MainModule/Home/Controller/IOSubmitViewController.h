@@ -3,7 +3,7 @@
 //  iOrder
 //
 //  Created by 易无解 on 5/25/16.
-//  Copyright © 2016 易无解. All rights reserved.
+//  Copyright © 2016 normcore. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

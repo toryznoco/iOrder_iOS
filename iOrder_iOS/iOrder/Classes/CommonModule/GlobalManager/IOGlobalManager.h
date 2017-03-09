@@ -15,7 +15,13 @@
 Singleton_interface(Manager)
 
 /** 根据情况选择根控制器 */
-- (void)chooseRootViewController;
++ (void)chooseRootViewController;
+
+/** 进入登录页面 */
++ (void)enterLogin;
+
+/** 进入主页 */
++ (void)enterHome;
 
 /** 开始监听指定区域 */
 - (void)startMonitoringForRegion;
