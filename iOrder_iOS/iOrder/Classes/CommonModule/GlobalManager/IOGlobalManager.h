@@ -14,14 +14,14 @@
 /** App管理者的单例 */
 Singleton_interface(Manager)
 
-/** 根据情况选择根控制器 */
+/** 进入App时，根据情况选择根控制器 */
 + (void)chooseRootViewController;
 
 /** 进入登录页面 */
-+ (void)enterLogin;
+- (void)enterLogin;
 
 /** 进入主页 */
-+ (void)enterHome;
+- (void)enterHome;
 
 /** 开始监听指定区域 */
 - (void)startMonitoringForRegion;

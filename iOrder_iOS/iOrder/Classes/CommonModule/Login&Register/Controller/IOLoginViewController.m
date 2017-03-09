@@ -72,7 +72,7 @@
 }
 
 - (void)loginView:(IOLoginView *)loginView loginBtnDidPressed:(UIButton *)loginBtn {
-    [IOGlobalManager enterHome];
+    [[IOGlobalManager sharedManager] enterHome];
 //    IOKeyWindow.rootViewController = [[IOTabBarController alloc] init];
 }
 

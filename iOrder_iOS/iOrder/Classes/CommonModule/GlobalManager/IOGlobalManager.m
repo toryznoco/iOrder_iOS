@@ -25,7 +25,6 @@
 @import UserNotifications;
 
 BOOL isInRegion = NO;
-BOOL isBlueToothAvilable = NO;
 
 @interface IOGlobalManager () <ABBeaconManagerDelegate, CBCentralManagerDelegate>
 
@@ -42,7 +41,11 @@ BOOL isBlueToothAvilable = NO;
 
 @implementation IOGlobalManager
 
+#pragma mark - 单例
+
 Singleton_implementation(Manager)
+
+#pragma mark - 初始化方法
 
 - (instancetype)init {
     if (self = [super init]) {
@@ -57,10 +60,12 @@ Singleton_implementation(Manager)
     return self;
 }
 
+
+#pragma mark - 选择根控制器
 /** 根据情况选择根控制器 */
 + (void)chooseRootViewController {
     // 直接进入登录界面
-    [IOGlobalManager enterLogin];
+    [[IOGlobalManager sharedManager] enterLogin];
     
     /*
     // 进入App，先判断版本
@@ -88,7 +93,7 @@ Singleton_implementation(Manager)
 }
 
 // 进入登录页面
-+ (void)enterLogin {
+- (void)enterLogin {
     IOLoginViewController *loginVc = [[IOLoginViewController alloc] init];
     YWJRootNavigationViewController *loginNav = [[YWJRootNavigationViewController alloc] initWithRootViewController:loginVc];
     
@@ -96,9 +101,52 @@ Singleton_implementation(Manager)
 }
 
 // 进入主页
-+ (void)enterHome {
+- (void)enterHome {
     IOTabBarController *tabBarVC = [[IOTabBarController alloc] init];
     [IORootTool changeRootViewControllerTo:tabBarVC];
+    
+    // 检测蓝牙状态
+    // 不可用就提示用户开启蓝牙并授权
+    NSString *message = nil;
+    switch (self.centralManager.state) {
+            case 0:
+            // CBManagerStateUnknown 未知，提示设备未知
+            break;
+            
+            case 1:
+            // CBManagerStateResetting 重置中
+            break;
+            
+            case 2:
+            // CBManagerStateUnsupported 不支持蓝牙，提示用户设备不支持
+            message = @"设备不支持蓝牙，无法点餐。";
+            break;
+            
+            case 3:
+            // CBManagerStateUnauthorized 蓝牙未授权，请求用户授权
+            message = @"设备尚未授权iOrder使用您的蓝牙，为了方便您的点餐，请同意授权。";
+            break;
+            
+            case 4:
+            // CBManagerStatePoweredOff 未打开蓝牙，提示用户去打开
+            message = @"设备尚未打开蓝牙，请打开您的蓝牙。";
+            break;
+            
+            case 5:
+            // CBManagerStatePoweredOn 蓝牙可用且已授权，则开始监听
+            [self startMonitoringForRegion];
+            break;
+            
+        default:
+            break;
+    }
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"提示"
+                                                                   message:message
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction * action) {}];
+    [alert addAction:defaultAction];
+    [tabBarVC presentViewController:alert animated:YES completion:nil];
 }
 
 #pragma mark - 开始监听区域
@@ -188,31 +236,25 @@ Singleton_implementation(Manager)
     switch (central.state) {
             case 1:
             message = @"该设备不支持蓝牙功能,请检查系统设置";
-            isBlueToothAvilable = NO;
             break;
             case 2:
             message = @"该设备蓝牙未授权,请检查系统设置";
-            isBlueToothAvilable = NO;
             break;
             case 3:
             message = @"该设备蓝牙未授权,请检查系统设置";
-            isBlueToothAvilable = NO;
             break;
             case 4:
             message = @"该设备尚未打开蓝牙,请在设置中打开";
-            isBlueToothAvilable = NO;
             break;
             case 5:
             message = @"蓝牙已经成功开启,请稍后再试";
-            isBlueToothAvilable = YES;
             break;
         default:
             break;
     }
-    if (message!=nil&&message.length!=0) {
+    if (message && message.length != 0) {
         IOLog(@"message == %@",message);
     }
 }
-
 
 @end
