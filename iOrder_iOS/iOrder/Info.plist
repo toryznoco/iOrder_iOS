@@ -4,8 +4,6 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
-	<key>CFBundleDisplayName</key>
-	<string>iOrder</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -28,13 +26,13 @@
 		<true/>
 	</dict>
 	<key>NSBluetoothPeripheralUsageDescription</key>
-	<string>允许iOrder使用蓝牙来探测iBeacon，否则无法点餐</string>
+	<string>允许iOrder使用蓝牙来探测iBeacon，以方便您点餐</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>允许iOrder总是使用您的位置信息，否则无法点餐</string>
+	<string>允许iOrder总是使用您的位置信息，以方便您点餐</string>
 	<key>NSLocationUsageDescription</key>
-	<string>允许iOrder使用您的位置信息，否则无法点餐</string>
+	<string>允许iOrder使用您的位置信息，以方便您点餐</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>允许iOrder在使用时使用您的位置信息，否则无法点餐</string>
+	<string>允许iOrder在使用时使用您的位置信息，以方便您点餐</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>bluetooth-central</string>

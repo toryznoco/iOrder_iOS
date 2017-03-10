@@ -108,44 +108,61 @@ Singleton_implementation(Manager)
     // 检测蓝牙状态
     // 不可用就提示用户开启蓝牙并授权
     NSString *message = nil;
+    UIAlertAction *rightAction = nil;
+    
     switch (self.centralManager.state) {
-            case 0:
             // CBManagerStateUnknown 未知，提示设备未知
+            case 0:
             break;
             
-            case 1:
             // CBManagerStateResetting 重置中
+            case 1:
             break;
             
-            case 2:
             // CBManagerStateUnsupported 不支持蓝牙，提示用户设备不支持
-            message = @"设备不支持蓝牙，无法点餐。";
+            case 2:
+            message = @"设备不支持蓝牙，请您去前台点餐。";
             break;
             
-            case 3:
             // CBManagerStateUnauthorized 蓝牙未授权，请求用户授权
-            message = @"设备尚未授权iOrder使用您的蓝牙，为了方便您的点餐，请同意授权。";
+            case 3:
+            message = @"设备尚未授权iOrder使用您的蓝牙，为了方便您点餐，请同意授权。";
+            rightAction = [UIAlertAction actionWithTitle:@"去授权" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+            
+            }];
             break;
             
-            case 4:
             // CBManagerStatePoweredOff 未打开蓝牙，提示用户去打开
+            case 4:
             message = @"设备尚未打开蓝牙，请打开您的蓝牙。";
+            rightAction = [UIAlertAction actionWithTitle:@"去打开" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                    NSURL *url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+                     
+                    if([[UIApplication sharedApplication] canOpenURL:url]) {
+                        [[UIApplication sharedApplication] openURL:url];
+                    }
+            }];
             break;
             
-            case 5:
             // CBManagerStatePoweredOn 蓝牙可用且已授权，则开始监听
+            case 5:
             [self startMonitoringForRegion];
             break;
             
         default:
             break;
     }
-    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"提示"
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示"
                                                                    message:message
                                                             preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault
+    UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault
                                                           handler:^(UIAlertAction * action) {}];
     [alert addAction:defaultAction];
+    if (rightAction) {
+        [alert addAction:rightAction];
+    }
+    
     [tabBarVC presentViewController:alert animated:YES completion:nil];
 }
 
@@ -237,21 +254,27 @@ Singleton_implementation(Manager)
             case 1:
             message = @"该设备不支持蓝牙功能,请检查系统设置";
             break;
+            
             case 2:
-            message = @"该设备蓝牙未授权,请检查系统设置";
+            message = @"设备不支持蓝牙，请您去前台点餐。";
             break;
+            
             case 3:
-            message = @"该设备蓝牙未授权,请检查系统设置";
+            message = @"设备尚未授权iOrder使用您的蓝牙，为了方便您点餐，请同意授权。";
             break;
+            
             case 4:
-            message = @"该设备尚未打开蓝牙,请在设置中打开";
+            message = @"设备尚未打开蓝牙，为了方便您点餐，,请打开蓝牙。";
             break;
+            
             case 5:
-            message = @"蓝牙已经成功开启,请稍后再试";
+            message = @"蓝牙已经成功开启";
             break;
+            
         default:
             break;
     }
+    
     if (message && message.length != 0) {
         IOLog(@"message == %@",message);
     }
