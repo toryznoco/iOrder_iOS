@@ -262,7 +262,6 @@
 		9AC08D731E39F4E200D728AD /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		9AC08D741E39F4E200D728AD /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		9AC08D751E39F4E200D728AD /* IOPrefixHeader.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOPrefixHeader.pch; sourceTree = "<group>"; };
-		CA10A4961CC7B3B500131D56 /* Reveal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Reveal.framework; sourceTree = "<group>"; };
 		CA41C8781D2BF0C90092921E /* UIView+Masonry_YWJ.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Masonry_YWJ.h"; sourceTree = "<group>"; };
 		CA41C8791D2BF0C90092921E /* UIView+Masonry_YWJ.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Masonry_YWJ.m"; sourceTree = "<group>"; };
 		CA7069C91CE5F564007C5F3F /* UIBarButtonItem+IOBarButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBarButtonItem+IOBarButtonItem.h"; sourceTree = "<group>"; };
@@ -908,7 +907,6 @@
 		AC53E7F2F1CB4D0E4F921365 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				CA10A4961CC7B3B500131D56 /* Reveal.framework */,
 				565EF0A881111C2576CC81D4 /* libPods-iOrder.a */,
 			);
 			name = Frameworks;
