@@ -184,7 +184,7 @@
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 1) {
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-        hud.labelText = NSLocalizedString(@"支付中...", @"HUD preparing title");
+        hud.label.text = NSLocalizedString(@"支付中...", @"HUD preparing title");
         
         dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
             [self doSomeWork];
@@ -196,9 +196,9 @@
                 UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
                 hud1.customView = imageView;
                 hud1.mode = MBProgressHUDModeCustomView;
-                hud1.labelText = NSLocalizedString(@"支付成功", @"HUD completed title");
+                hud1.label.text = NSLocalizedString(@"支付成功", @"HUD completed title");
                 
-                [hud1 hide:YES afterDelay:1.f];
+                [hud1 hideAnimated:YES afterDelay:1.f];
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                     if ([_delegate respondsToSelector:@selector(submitViewController:isPaySuccessful:)]) {
                         [_delegate submitViewController:self isPaySuccessful:YES];

@@ -136,11 +136,11 @@ Singleton_implementation(Manager)
             case 4:
             message = @"设备尚未打开蓝牙，请打开您的蓝牙。";
             rightAction = [UIAlertAction actionWithTitle:@"去打开" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-                    NSURL *url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
-                     
-                    if([[UIApplication sharedApplication] canOpenURL:url]) {
-                        [[UIApplication sharedApplication] openURL:url];
-                    }
+                
+//                NSURL *url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+//                if([[UIApplication sharedApplication] canOpenURL:url]) {
+//                    [[UIApplication sharedApplication] openURL:url];
+//                }
             }];
             break;
             

@@ -1092,10 +1092,12 @@
 					};
 					CAE8F0261CB940E2005618B0 = {
 						CreatedOnToolsVersion = 7.0.1;
+						DevelopmentTeam = CQA977E7GY;
 						TestTargetID = CAE8F00D1CB940E2005618B0;
 					};
 					CAE8F0311CB940E2005618B0 = {
 						CreatedOnToolsVersion = 7.0.1;
+						DevelopmentTeam = CQA977E7GY;
 						TestTargetID = CAE8F00D1CB940E2005618B0;
 					};
 				};
@@ -1412,10 +1414,7 @@
 				INFOPLIST_FILE = iOrder/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/iOrder/Classes/Other/AprilSDK",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -1437,6 +1436,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.toryznoco.iOrder;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Debug;
 		};
@@ -1457,10 +1458,7 @@
 				INFOPLIST_FILE = iOrder/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/iOrder/Classes/Other/AprilSDK",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -1512,6 +1510,7 @@
 		CAE8F0421CB940E2005618B0 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				DEVELOPMENT_TEAM = CQA977E7GY;
 				INFOPLIST_FILE = iOrderUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = yiwujie.iOrderUITests;
@@ -1524,6 +1523,7 @@
 		CAE8F0431CB940E2005618B0 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				DEVELOPMENT_TEAM = CQA977E7GY;
 				INFOPLIST_FILE = iOrderUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = yiwujie.iOrderUITests;

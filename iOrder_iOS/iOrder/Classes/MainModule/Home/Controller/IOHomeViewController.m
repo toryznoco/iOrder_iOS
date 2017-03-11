@@ -147,7 +147,7 @@
     UIImage *image = [[UIImage imageNamed:@"success"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     hud.customView = [[UIImageView alloc] initWithImage:image];
     hud.square = YES;
-    hud.labelText = NSLocalizedString(@"Login Successed", @"HUD done title");
+    hud.label.text = NSLocalizedString(@"Login Successed", @"HUD done title");
 //    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
 //        [mask removeFromSuperview];
 //    });

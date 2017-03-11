@@ -232,7 +232,7 @@
     _evaluateBtns = evaluateBtns;
     for (NSInteger i = 0; i < 4; i++) {
         UIButton *evaluateBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        evaluateBtn.font = [UIFont systemFontOfSize:8];
+        evaluateBtn.titleLabel.font = [UIFont systemFontOfSize:8];
         [evaluateBtn setTitleColor:IORGBColor(139, 139, 139, 1) forState:UIControlStateNormal];
         [evaluateBtn setTitleColor:kIOThemeColors forState:UIControlStateSelected];
         [evaluateBtn setBackgroundImage:[UIImage imageNamed:@"ellipse_normal"] forState:UIControlStateNormal];

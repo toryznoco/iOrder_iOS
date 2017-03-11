@@ -126,7 +126,7 @@
         dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
             [self doSomeWork];
             dispatch_async(dispatch_get_main_queue(), ^{
-                [hud hide:YES afterDelay:2.];
+                [hud hideAnimated:YES afterDelay:2.0];
                 if (loginResult.code == 1) {
                     if ([self.delegate respondsToSelector:@selector(loginView:loginBtnDidPressed:)]) {
                         [self.delegate loginView:self loginBtnDidPressed:btn];
@@ -136,8 +136,8 @@
                     UIImage *image = [[UIImage imageNamed:@"error"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
                     hud.customView = [[UIImageView alloc] initWithImage:image];
                     hud.square = YES;
-                    hud.labelText = NSLocalizedString(@"Login Failed", @"HUD done title");
-                    [hud hide:YES afterDelay:1.f];
+                    hud.label.text = NSLocalizedString(@"Login Failed", @"HUD done title");
+                    [hud hideAnimated:YES afterDelay:1.0];
                 }
             });
         });

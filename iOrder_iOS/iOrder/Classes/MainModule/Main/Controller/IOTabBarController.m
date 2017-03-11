@@ -95,7 +95,6 @@
 //}
 
 - (void)customizeInterface {
-#warning comprehension later
     UINavigationBar *navigationBarAppearance = [UINavigationBar appearance];
     
     UIImage *backgroundImage = nil;
