@@ -67,8 +67,8 @@ Singleton_implementation(Manager)
 }
 
 
-#pragma mark - 选择根控制器
-/** 根据情况选择根控制器 */
+#pragma mark - Public Method
+/** 进入App时，根据情况选择根控制器 */
 + (void)chooseRootViewController {
     // 直接进入登录界面
     [[IOGlobalManager sharedManager] enterLogin];
@@ -96,6 +96,26 @@ Singleton_implementation(Manager)
         [YWJVersionTool saveVersion:currentVersion];
     }
      */
+}
+
+/** 检测是否总是允许使用位置信息 */
++ (void)checkIfAllowAlwaysUseLocation {
+    if ([ABBeaconManager authorizationStatus] != kCLAuthorizationStatusAuthorizedAlways) {
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"注意" message:@"您尚未允许使用位置信息，请设置为\" 总是\"，方便您点餐。" preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"知道了" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {}];
+        UIAlertAction *rightAction = [UIAlertAction actionWithTitle:@"去设置" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+            // 跳转到设置页面
+            NSURL *url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+            if ([[UIApplication sharedApplication] canOpenURL:url]) {
+                [[UIApplication sharedApplication] openURL:url];
+            }
+        }];
+        
+        [alert addAction:defaultAction];
+        [alert addAction:rightAction];
+        [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:alert animated:YES completion:nil];
+    }
 }
 
 // 进入登录页面
@@ -184,7 +204,7 @@ Singleton_implementation(Manager)
     if (message && message.length!=0) {
         IOLog(@"message == %@",message);
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"注意" message:message preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {}];
+        UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"知道了" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {}];
         [alert addAction:defaultAction];
         
         // 需要跳转才添加右边按钮

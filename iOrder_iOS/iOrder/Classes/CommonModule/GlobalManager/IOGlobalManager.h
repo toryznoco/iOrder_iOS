@@ -17,6 +17,9 @@ Singleton_interface(Manager)
 /** 进入App时，根据情况选择根控制器 */
 + (void)chooseRootViewController;
 
+/** 检测是否总是允许使用位置信息 */
++ (void)checkIfAllowAlwaysUseLocation;
+
 /** 进入登录页面 */
 - (void)enterLogin;
 
