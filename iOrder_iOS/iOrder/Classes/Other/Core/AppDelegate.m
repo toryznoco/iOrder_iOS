@@ -48,7 +48,7 @@
 //        [application registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert|UIUserNotificationTypeBadge|UIUserNotificationTypeSound categories:nil]];
 //    }
     
-//    application.networkActivityIndicatorVisible=YES;
+//    application.networkActivityIndicatorVisible = YES;
     
     self.window = [[UIWindow alloc] initWithFrame:CGRectMake(0, 0, IOScreenWidth, IOScreenHeight)];
     [self.window makeKeyAndVisible];

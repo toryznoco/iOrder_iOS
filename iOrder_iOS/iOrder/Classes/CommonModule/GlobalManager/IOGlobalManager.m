@@ -230,28 +230,22 @@ Singleton_implementation(Manager)
  @param identifier  通知标识
  */
 - (void)pushNotificationWithContentBody:(NSString *)contentBody identifier:(NSString *)identifier {
-    UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];
-    content.title = [NSString localizedUserNotificationStringForKey:@"温馨提示"
-                                                          arguments:nil];
-    content.body = [NSString localizedUserNotificationStringForKey:contentBody
-                                                         arguments:nil];
-    content.sound = [UNNotificationSound defaultSound];
-    //  设置应用程序右上角的提醒个数
-    content.badge = @1;
     
-    //  时间触发器
-    UNTimeIntervalNotificationTrigger *trigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:0.1 repeats:NO];
-    //  创建推送通知请求
-    UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier:identifier
-                                                                          content:content
-                                                                          trigger:trigger];
-    // 使用 UNUserNotificationCenter 来管理通知
-    UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
-    [center addNotificationRequest:request withCompletionHandler:^(NSError * _Nullable error) {
-        if (!error) {
-            IOLog(@"%@", error);
-        }
-    }];
+    UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];
+    content.title = [NSString localizedUserNotificationStringForKey:@"温馨提示" arguments:nil];
+    content.body = [NSString localizedUserNotificationStringForKey:contentBody arguments:nil];
+    content.sound = [UNNotificationSound defaultSound];
+    
+    //  设置应用程序右上角的提醒个数
+//    content.badge = @1;
+    
+    // Deliver the notification in 1 seconds.
+    UNTimeIntervalNotificationTrigger *trigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:1 repeats:NO];
+    UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier:identifier content:content trigger:trigger];
+    
+    // Schedule the notification.
+    UNUserNotificationCenter* center = [UNUserNotificationCenter currentNotificationCenter];
+    [center addNotificationRequest:request withCompletionHandler:nil];
     
     //    UILocalNotification *notification = [[UILocalNotification alloc] init];
     //    notification.alertBody = @"欢迎进入点餐区域！";
