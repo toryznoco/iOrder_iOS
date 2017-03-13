@@ -133,23 +133,6 @@ Singleton_implementation(Manager)
     [IORootTool changeRootViewControllerTo:tabBarVC];
 }
 
-#pragma mark - 开始监听iBeacon
-- (void)startMonitoringForRegion {
-    if (!self.region) {  //  region没有值就创建
-        IOTransmitters *tran = [IOTransmitters sharedTransmitters];
-        NSDictionary *dict = [[tran transmitters] lastObject];
-        NSUUID *proximityUUID = [[NSUUID alloc] initWithUUIDString:dict[@"uuid"]];
-        self.region = [[ABBeaconRegion alloc] initWithProximityUUID:proximityUUID
-                                                         identifier:dict[@"uuid"]];
-        self.region.notifyOnEntry = YES;
-        self.region.notifyOnExit = YES;
-        self.region.notifyEntryStateOnDisplay = YES;
-    }
-    
-    [self.beaconManager startMonitoringForRegion:self.region];
-    IOLog(@"开始监控");
-}
-
 #pragma mark - CBCentralManagerDelegate
 - (void)centralManagerDidUpdateState:(CBCentralManager *)central {
     IOLog(@"%s--开始检测蓝牙", __func__);
@@ -275,6 +258,26 @@ Singleton_implementation(Manager)
     //    [UIApplication sharedApplication].applicationIconBadgeNumber += 1;
 }
 
+
+/** 
+ 开始监听iBeacon
+ */
+- (void)startMonitoringForRegion {
+    if (!self.region) {  //  region没有值就创建
+        IOTransmitters *tran = [IOTransmitters sharedTransmitters];
+        NSDictionary *dict = [[tran transmitters] lastObject];
+        NSUUID *proximityUUID = [[NSUUID alloc] initWithUUIDString:dict[@"uuid"]];
+        self.region = [[ABBeaconRegion alloc] initWithProximityUUID:proximityUUID
+                                                         identifier:dict[@"uuid"]];
+        self.region.notifyOnEntry = YES;
+        self.region.notifyOnExit = YES;
+        self.region.notifyEntryStateOnDisplay = YES;
+    }
+    
+    [self.beaconManager startMonitoringForRegion:self.region];
+    IOLog(@"开始监控");
+}
+
 #pragma mark - UNUserNotificationCenterDelegate
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler {
     IOLog(@"要发推送了");
@@ -284,6 +287,7 @@ Singleton_implementation(Manager)
     //    [alertController addAction:cancelAction];
     //    [alertController addAction:okAction];
     //    [self presentViewController:alertController animated:YES completion:nil];
+    
     //    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:response.notification.request.content.body delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
     
     //    [alert show];
