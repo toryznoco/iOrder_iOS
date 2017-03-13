@@ -23,7 +23,4 @@ Singleton_interface(Manager)
 /** 进入主页 */
 - (void)enterHome;
 
-/** 开始监听指定区域 */
-- (void)startMonitoringForRegion;
-
 @end

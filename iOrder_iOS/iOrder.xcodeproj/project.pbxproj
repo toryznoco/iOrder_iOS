@@ -34,7 +34,6 @@
 		9A1BFDDB1E6EA8DE00A0007F /* YWJDoubleTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A1BFD881E6EA8DE00A0007F /* YWJDoubleTableView.m */; };
 		9A1BFDDD1E6EA8DE00A0007F /* IONavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A1BFD8E1E6EA8DE00A0007F /* IONavigationController.m */; };
 		9A1BFDDF1E6EA8DE00A0007F /* IOTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A1BFD921E6EA8DE00A0007F /* IOTabBarController.m */; };
-		9A1BFDE01E6EA8DE00A0007F /* IOTransmitters.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A1BFD951E6EA8DE00A0007F /* IOTransmitters.m */; };
 		9A1BFDE11E6EA8DE00A0007F /* IOUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A1BFD971E6EA8DE00A0007F /* IOUser.m */; };
 		9A1BFDE41E6EA8DE00A0007F /* YWJBadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A1BFD9E1E6EA8DE00A0007F /* YWJBadgeView.m */; };
 		9A1BFDE51E6EA8DE00A0007F /* YWJTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A1BFDA01E6EA8DE00A0007F /* YWJTabBar.m */; };
@@ -80,6 +79,7 @@
 		9A1BFE611E6EACE200A0007F /* IOGlobalManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A1BFE601E6EACE200A0007F /* IOGlobalManager.m */; };
 		9A1BFE661E6FE71D00A0007F /* IORootTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A1BFE651E6FE71D00A0007F /* IORootTool.m */; };
 		9A1BFE6A1E6FE97800A0007F /* YWJVersionTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A1BFE691E6FE97800A0007F /* YWJVersionTool.m */; };
+		9AC052EA1E76893800C73F81 /* IOTransmitters.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AC052E91E76893800C73F81 /* IOTransmitters.m */; };
 		9AC08D701E39F3C600D728AD /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AC08D6F1E39F3C600D728AD /* main.m */; };
 		9AC08D791E39F4E200D728AD /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AC08D741E39F4E200D728AD /* AppDelegate.m */; };
 		CA41C87A1D2BF0C90092921E /* UIView+Masonry_YWJ.m in Sources */ = {isa = PBXBuildFile; fileRef = CA41C8791D2BF0C90092921E /* UIView+Masonry_YWJ.m */; };
@@ -165,8 +165,6 @@
 		9A1BFD8E1E6EA8DE00A0007F /* IONavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IONavigationController.m; sourceTree = "<group>"; };
 		9A1BFD911E6EA8DE00A0007F /* IOTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOTabBarController.h; sourceTree = "<group>"; };
 		9A1BFD921E6EA8DE00A0007F /* IOTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOTabBarController.m; sourceTree = "<group>"; };
-		9A1BFD941E6EA8DE00A0007F /* IOTransmitters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOTransmitters.h; sourceTree = "<group>"; };
-		9A1BFD951E6EA8DE00A0007F /* IOTransmitters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOTransmitters.m; sourceTree = "<group>"; };
 		9A1BFD961E6EA8DE00A0007F /* IOUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOUser.h; sourceTree = "<group>"; };
 		9A1BFD971E6EA8DE00A0007F /* IOUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOUser.m; sourceTree = "<group>"; };
 		9A1BFD9D1E6EA8DE00A0007F /* YWJBadgeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWJBadgeView.h; sourceTree = "<group>"; };
@@ -258,6 +256,8 @@
 		9A1BFE651E6FE71D00A0007F /* IORootTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IORootTool.m; sourceTree = "<group>"; };
 		9A1BFE681E6FE97800A0007F /* YWJVersionTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWJVersionTool.h; sourceTree = "<group>"; };
 		9A1BFE691E6FE97800A0007F /* YWJVersionTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWJVersionTool.m; sourceTree = "<group>"; };
+		9AC052E81E76893800C73F81 /* IOTransmitters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOTransmitters.h; sourceTree = "<group>"; };
+		9AC052E91E76893800C73F81 /* IOTransmitters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOTransmitters.m; sourceTree = "<group>"; };
 		9AC08D6F1E39F3C600D728AD /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		9AC08D731E39F4E200D728AD /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		9AC08D741E39F4E200D728AD /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -474,8 +474,6 @@
 		9A1BFD931E6EA8DE00A0007F /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				9A1BFD941E6EA8DE00A0007F /* IOTransmitters.h */,
-				9A1BFD951E6EA8DE00A0007F /* IOTransmitters.m */,
 				9A1BFD961E6EA8DE00A0007F /* IOUser.h */,
 				9A1BFD971E6EA8DE00A0007F /* IOUser.m */,
 			);
@@ -613,6 +611,7 @@
 		9A1BFE021E6EAA1800A0007F /* Tool */ = {
 			isa = PBXGroup;
 			children = (
+				9AC052E71E76893800C73F81 /* Transmitters */,
 				9A1BFE031E6EAA1800A0007F /* DatabaseCache */,
 				9A1BFE061E6EAA1800A0007F /* Dishes */,
 				9A1BFE0F1E6EAA1800A0007F /* Http */,
@@ -850,23 +849,32 @@
 			path = Version;
 			sourceTree = "<group>";
 		};
-		9AC08D611E39EEBD00D728AD /* Datum */ = {
+		9AC052E71E76893800C73F81 /* Transmitters */ = {
 			isa = PBXGroup;
 			children = (
-				9AC08D621E39EEBD00D728AD /* Files */,
-				9AC08D631E39EEBD00D728AD /* Images */,
+				9AC052E81E76893800C73F81 /* IOTransmitters.h */,
+				9AC052E91E76893800C73F81 /* IOTransmitters.m */,
 			);
-			path = Datum;
+			path = Transmitters;
 			sourceTree = "<group>";
 		};
-		9AC08D621E39EEBD00D728AD /* Files */ = {
+		9AC052EB1E76894D00C73F81 /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				9AC052EC1E76894D00C73F81 /* Files */,
+				9AC052ED1E76894D00C73F81 /* Images */,
+			);
+			path = Resource;
+			sourceTree = "<group>";
+		};
+		9AC052EC1E76894D00C73F81 /* Files */ = {
 			isa = PBXGroup;
 			children = (
 			);
 			path = Files;
 			sourceTree = "<group>";
 		};
-		9AC08D631E39EEBD00D728AD /* Images */ = {
+		9AC052ED1E76894D00C73F81 /* Images */ = {
 			isa = PBXGroup;
 			children = (
 			);
@@ -946,7 +954,7 @@
 		CAE8F0111CB940E2005618B0 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				9AC08D611E39EEBD00D728AD /* Datum */,
+				9AC052EB1E76894D00C73F81 /* Resource */,
 				CAE8F0851CB9417F005618B0 /* Assets.xcassets */,
 				CAE8F0221CB940E2005618B0 /* Info.plist */,
 				9AC08D6F1E39F3C600D728AD /* main.m */,
@@ -1251,6 +1259,7 @@
 				9A1BFDD21E6EA8DE00A0007F /* IOShopCell.m in Sources */,
 				CAE8F0811CB94170005618B0 /* UIView+YWJFrame.m in Sources */,
 				9A1BFDCC1E6EA8DE00A0007F /* IOShopDetailCellInfo.m in Sources */,
+				9AC052EA1E76893800C73F81 /* IOTransmitters.m in Sources */,
 				9A1BFDC41E6EA8DE00A0007F /* YWJNewFeatureScrollPage.m in Sources */,
 				9A1BFDE91E6EA8DE00A0007F /* IOOrderViewCell.m in Sources */,
 				9A1BFDEE1E6EA8DE00A0007F /* IOProfileViewController.m in Sources */,
@@ -1266,7 +1275,6 @@
 				9A1BFDE61E6EA8DE00A0007F /* YWJTabBarButton.m in Sources */,
 				9A1BFDC61E6EA8DE00A0007F /* IOHomeViewController.m in Sources */,
 				9A1BFDCB1E6EA8DE00A0007F /* IOShop.m in Sources */,
-				9A1BFDE01E6EA8DE00A0007F /* IOTransmitters.m in Sources */,
 				9A1BFE4C1E6EAA1800A0007F /* YWJLoginParam.m in Sources */,
 				9A1BFDD71E6EA8DE00A0007F /* IOSignInFooterView.m in Sources */,
 				9A1BFDDB1E6EA8DE00A0007F /* YWJDoubleTableView.m in Sources */,

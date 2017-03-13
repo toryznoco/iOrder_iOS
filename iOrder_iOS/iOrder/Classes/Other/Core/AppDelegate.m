@@ -15,8 +15,9 @@
 #import "IOGlobalManager.h"
 
 @import UserNotifications;
+@import CoreLocation;
 
-@interface AppDelegate () <UNUserNotificationCenterDelegate>
+@interface AppDelegate ()
 
 @property (nonatomic) UIBackgroundTaskIdentifier taskId;
 
@@ -30,7 +31,6 @@
     
     // 注册通知
     UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
-    center.delegate = self;
     
     //  iOS 10以后注册通知
     [center requestAuthorizationWithOptions:(UNAuthorizationOptionAlert + UNAuthorizationOptionBadge + UNAuthorizationOptionSound) completionHandler:^(BOOL granted, NSError * _Nullable error) {
@@ -55,6 +55,8 @@
     
     // 全局管理者根据情况选择根控制器
     [IOGlobalManager chooseRootViewController];
+    
+    
     
     return YES;
 }
@@ -81,16 +83,7 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
 //    application.applicationIconBadgeNumber = 0;
-
-    // 检测蓝牙状态，如果没有允许就向用户询问
     
-    // 设置请求总是允许访问
-//    if (!(kCLAuthorizationStatusAuthorizedAlways == [ABBeaconManager authorizationStatus])) {
-//        [self.beaconManager requestAlwaysAuthorization];
-//    }
-    
-    //  开始监测
-//    [[IOGlobalManager sharedManager] startMonitoringForRegion];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
@@ -101,20 +94,6 @@
 //    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:notification.alertBody delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
 //    [alert show];
 //}
-
-#pragma mark - UNUserNotificationCenterDelegate
-- (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler {
-    IOLog(@"要发推送了");
-//    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:response.notification.request.content.body preferredStyle:UIAlertControllerStyleAlert];
-//    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
-//    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"好的" style:UIAlertActionStyleDefault handler:nil];
-//    [alertController addAction:cancelAction];
-//    [alertController addAction:okAction];
-//    [self presentViewController:alertController animated:YES completion:nil];
-//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:response.notification.request.content.body delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
-    
-//    [alert show];
-}
 
 
 

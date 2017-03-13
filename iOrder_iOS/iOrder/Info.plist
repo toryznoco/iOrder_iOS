@@ -26,13 +26,11 @@
 		<true/>
 	</dict>
 	<key>NSBluetoothPeripheralUsageDescription</key>
-	<string>允许iOrder使用蓝牙来探测iBeacon，以方便您点餐</string>
+	<string>请允许iOrder使用蓝牙来探测店铺，方便您点餐！</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>允许iOrder总是使用您的位置信息，以方便您点餐</string>
+	<string>请允许iOrder在后台访问您的位置信息来探测店铺，方便您点餐！</string>
 	<key>NSLocationUsageDescription</key>
-	<string>允许iOrder使用您的位置信息，以方便您点餐</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>允许iOrder在使用时使用您的位置信息，以方便您点餐</string>
+	<string>请允许iOrder访问您的位置信息来点餐！</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>bluetooth-central</string>
