@@ -85,8 +85,24 @@
     
     application.applicationIconBadgeNumber = 0;
     
-    // 检查是否允许总是使用位置信息
-    [IOGlobalManager checkIfAllowAlwaysUseLocation];
+    // 检查 允许总是使用位置信息，允许推送通知
+    if (!([IOGlobalManager checkIfAllowAlwaysUseLocation] && [IOGlobalManager checkIfAllowPushNotification])) {
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"注意" message:@"您尚未允许总是使用位置信息或推送通知，为了方便您点餐，请设置为总是和允许。" preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"知道了" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {}];
+        UIAlertAction *rightAction = [UIAlertAction actionWithTitle:@"去设置" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+            // 跳转到设置页面
+            NSURL *url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+            if ([[UIApplication sharedApplication] canOpenURL:url]) {
+                [[UIApplication sharedApplication] openURL:url];
+            }
+        }];
+        
+        [alert addAction:defaultAction];
+        [alert addAction:rightAction];
+        [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:alert animated:YES completion:nil];
+    }
+    
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {

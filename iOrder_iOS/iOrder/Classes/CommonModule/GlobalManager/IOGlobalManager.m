@@ -99,23 +99,21 @@ Singleton_implementation(Manager)
 }
 
 /** 检测是否总是允许使用位置信息 */
-+ (void)checkIfAllowAlwaysUseLocation {
-    if ([ABBeaconManager authorizationStatus] != kCLAuthorizationStatusAuthorizedAlways) {
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"注意" message:@"您尚未允许使用位置信息，请设置为\" 总是\"，方便您点餐。" preferredStyle:UIAlertControllerStyleAlert];
-        
-        UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"知道了" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {}];
-        UIAlertAction *rightAction = [UIAlertAction actionWithTitle:@"去设置" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-            // 跳转到设置页面
-            NSURL *url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
-            if ([[UIApplication sharedApplication] canOpenURL:url]) {
-                [[UIApplication sharedApplication] openURL:url];
-            }
-        }];
-        
-        [alert addAction:defaultAction];
-        [alert addAction:rightAction];
-        [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:alert animated:YES completion:nil];
-    }
++ (BOOL)checkIfAllowAlwaysUseLocation {
+    return [ABBeaconManager authorizationStatus] == kCLAuthorizationStatusAuthorizedAlways;
+}
+
+/**
+ 检测是否允许发送推送通知
+ 
+ @return 是或否
+ */
++ (BOOL)checkIfAllowPushNotification {
+    __block UNAuthorizationStatus status = UNAuthorizationStatusDenied;
+    [[UNUserNotificationCenter currentNotificationCenter] getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings * _Nonnull settings) {
+        status = settings.authorizationStatus;
+    }];
+    return status == UNAuthorizationStatusAuthorized;
 }
 
 // 进入登录页面
