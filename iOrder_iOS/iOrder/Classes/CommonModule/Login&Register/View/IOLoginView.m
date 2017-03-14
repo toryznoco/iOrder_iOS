@@ -117,12 +117,14 @@
 }
 
 - (void)loginBtnDidPressed:(UIButton *)btn {
+    /*
     YWJLoginParam *param = [[YWJLoginParam alloc] init];
     param.userName = self.userName.text;
     param.userPass = self.password.text;
     
     [YWJLoginTool loginWithLoginParam:param success:^(YWJLoginResult *loginResult) {
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.superview animated:YES];
+        hud.label.text = NSLocalizedString(@"Loging...", @"HUD loading title");
         dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
             [self doSomeWork];
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -144,11 +146,55 @@
     } failure:^(NSError *error) {
         NSLog(@"%@", error);
     }];
+     */
     
-}
-
-- (void)doSomeWork {
-    sleep(2.);
+    // 先开始转菊花
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self animated:YES];
+    
+    // Change the background view style and color.
+    hud.backgroundView.style = MBProgressHUDBackgroundStyleSolidColor;
+    hud.backgroundView.color = [UIColor colorWithWhite:0.f alpha:0.1f];
+    
+    // Set the label text.
+    hud.label.text = NSLocalizedString(@"Logining...", @"HUD loading title");
+    
+    // 异步请求
+    dispatch_sync(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
+        
+        YWJLoginParam *param = [[YWJLoginParam alloc] init];
+        param.userName = self.userName.text;
+        param.userPass = self.password.text;
+        
+        [YWJLoginTool loginWithLoginParam:param success:^(YWJLoginResult *loginResult) {
+            if (loginResult.code == 1) {
+                // 登录成功
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    // 隐藏菊花
+                    [hud hideAnimated:YES];
+                    if ([self.delegate respondsToSelector:@selector(loginView:loginBtnDidPressed:)]) {
+                        [self.delegate loginView:self loginBtnDidPressed:btn];
+                    }
+                });
+            } else {
+                // 登录失败
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    // Set the custom view mode to show any view.
+                    hud.mode = MBProgressHUDModeCustomView;
+                    // Set an image view with a checkmark.
+                    UIImage *image = [[UIImage imageNamed:@"error"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+                    hud.customView = [[UIImageView alloc] initWithImage:image];
+                    // Looks a bit nicer if we make it square.
+                    hud.square = YES;
+                    // Optional label text.
+                    hud.label.text = NSLocalizedString(@"Login Failed", @"HUD failed title");
+                    
+                    [hud hideAnimated:YES afterDelay:1.5];
+                });
+            }
+        } failure:^(NSError *error) {
+            IOLog(@"%@", error);
+        }];
+    });
 }
 
 - (void)registerBtnDidPressed:(UIButton *)btn {

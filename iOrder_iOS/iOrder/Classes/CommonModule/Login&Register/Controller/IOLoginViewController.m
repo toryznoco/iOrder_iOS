@@ -13,6 +13,11 @@
 #import "IOGlobalManager.h"
 #import "IORegisterViewController.h"
 
+#import "YWJLoginTool.h"
+#import "YWJLoginParam.h"
+#import "YWJLoginResult.h"
+#import "MBProgressHUD.h"
+
 @interface IOLoginViewController ()<IOLoginViewDelegate>
 
 @end
@@ -73,7 +78,6 @@
 
 - (void)loginView:(IOLoginView *)loginView loginBtnDidPressed:(UIButton *)loginBtn {
     [[IOGlobalManager sharedManager] enterHome];
-//    IOKeyWindow.rootViewController = [[IOTabBarController alloc] init];
 }
 
 /*

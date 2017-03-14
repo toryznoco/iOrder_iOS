@@ -27,13 +27,14 @@
             success(loginResult);
         }
         return ;
-    } else {//获取失败
+    } else {
+        // 获取失败
         [IOHttpTool GET:urlString parameters:loginParam.mj_keyValues success:^(id responseObject) {
             YWJLoginResult *result = [YWJLoginResult mj_objectWithKeyValues:responseObject];
             if (success) {
                 success(result);
             }
-            //        保存到数据库
+            // 保存到数据库
             [YWJCacheTool saveUserInfoWithLoginParam:loginParam andLoginResult:result];
         } failure:^(NSError *error) {
             if (failure) {
