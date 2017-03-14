@@ -19,6 +19,7 @@ PODS:
     - FMDB/standard (= 2.6.2)
   - FMDB/standard (2.6.2)
   - FSCalendar (2.7.3)
+  - IQKeyboardManager (4.0.8)
   - Masonry (1.0.2)
   - MBProgressHUD (1.0.0)
   - MJExtension (3.0.13)
@@ -36,6 +37,7 @@ DEPENDENCIES:
   - AprilSDK
   - FMDB
   - FSCalendar
+  - IQKeyboardManager (~> 4.0.8)
   - Masonry
   - MBProgressHUD (~> 1.0.0)
   - MJExtension
@@ -49,6 +51,7 @@ SPEC CHECKSUMS:
   AprilSDK: b6d2b35b7012955618e022772c0d2b202b25f277
   FMDB: 854a0341b4726e53276f2a8996f06f1b80f9259a
   FSCalendar: 574388d70778c22719eed9341653e1743b345573
+  IQKeyboardManager: 1a8189fa153bf09044355ee0ad36826f6767e7f7
   Masonry: 7c429b56da9d4ee0bbb3ed77a5ea710d6a5df39e
   MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
   MJExtension: 5932755f451458eefa24239358817f8d291240c7
@@ -58,6 +61,6 @@ SPEC CHECKSUMS:
   SDCycleScrollView: f72904c77698a7f93a41bcbbc2d78b073bf7326c
   SDWebImage: '098e97e6176540799c27e804c96653ee0833d13c'
 
-PODFILE CHECKSUM: 67a70b8eb3db9809ad46336346c536d51888ca27
+PODFILE CHECKSUM: 47cd9549b4a58403fa14834830cd124d83e943b9
 
 COCOAPODS: 1.2.0

@@ -13,6 +13,7 @@
 #import "AFNetworking.h"
 
 #import "IOGlobalManager.h"
+#import "IQKeyboardManager.h"
 
 @import UserNotifications;
 @import CoreLocation;
@@ -28,6 +29,8 @@
 #pragma mark - UIApplicationDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    // 开启键盘管理者
+    [IQKeyboardManager sharedManager].enable = YES;
     
     // 注册通知
     UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
