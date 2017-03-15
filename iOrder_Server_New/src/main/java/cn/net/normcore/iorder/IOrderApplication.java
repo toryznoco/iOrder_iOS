@@ -6,6 +6,7 @@ import org.glassfish.jersey.server.ServerProperties;
 import org.glassfish.jersey.server.TracingConfig;
 
 /**
+ * Jersey配置类
  * Created by 81062 on 2017/3/15.
  */
 public class IOrderApplication extends ResourceConfig {
