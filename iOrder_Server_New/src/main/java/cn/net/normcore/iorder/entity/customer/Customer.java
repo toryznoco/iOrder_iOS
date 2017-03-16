@@ -1,5 +1,6 @@
 package cn.net.normcore.iorder.entity.customer;
 
+import cn.net.normcore.iorder.common.utils.InfoUtil;
 import cn.net.normcore.iorder.entity.BaseEntity;
 import cn.net.normcore.iorder.entity.order.Order;
 
@@ -92,5 +93,15 @@ public class Customer extends BaseEntity {
 
     public void setMarkedGoods(List<MarkedGoods> markedGoods) {
         this.markedGoods = markedGoods;
+    }
+
+    /**
+     * 判断密码是否正确
+     *
+     * @param password
+     * @return
+     */
+    public boolean checkPassword(String password) {
+        return InfoUtil.getMd5Password(password, getSalt()).equals(getPassword());
     }
 }

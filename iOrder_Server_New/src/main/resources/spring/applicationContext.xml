@@ -5,8 +5,10 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
        default-lazy-init="true">
 
+    <!--自动扫描注解bean-->
     <context:component-scan base-package="cn.net.normcore.iorder.service"/>
     <context:component-scan base-package="cn.net.normcore.iorder.api"/>
+    <context:component-scan base-package="cn.net.normcore.iorder.redis"/>
 
     <context:property-placeholder location="classpath:config/*.properties"/>
 

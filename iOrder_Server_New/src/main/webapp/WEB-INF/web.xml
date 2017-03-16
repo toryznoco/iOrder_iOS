@@ -52,7 +52,7 @@
     <filter>
         <filter-name>TokenFilter</filter-name>
         <filter-class>cn.net.normcore.iorder.filter.TokenFilter</filter-class>
-        <!--需要验证Token的URL前缀-->
+        <!--需要验证Token的URL-->
         <init-param>
             <param-name>UrlToIntercept</param-name>
             <param-value>/app/*,/web/*</param-value>

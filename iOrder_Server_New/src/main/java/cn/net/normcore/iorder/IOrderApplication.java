@@ -12,6 +12,7 @@ import org.glassfish.jersey.server.TracingConfig;
 public class IOrderApplication extends ResourceConfig {
 
     public IOrderApplication() {
+        //指定resource所在包名
         packages("cn.net.normcore.iorder.api");
         register(LoggingFeature.class);
         property(ServerProperties.TRACING, TracingConfig.ON_DEMAND.name());
