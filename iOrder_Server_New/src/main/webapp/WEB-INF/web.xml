@@ -8,10 +8,13 @@
         <welcome-file>/index.jsp</welcome-file>
     </welcome-file-list>
 
+    <!--自定义项目RootKey-->
     <context-param>
         <param-name>webAppRootKey</param-name>
         <param-value>iOrder.root</param-value>
     </context-param>
+
+    <!--日志-->
     <context-param>
         <param-name>log4jConfigLocation</param-name>
         <param-value>classpath:config/log4j.properties</param-value>
@@ -28,12 +31,14 @@
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
+
     <!-- 指定Spring配置文件，可以多个配置文件，以逗号分隔 -->
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>classpath:spring/applicationContext.xml</param-value>
     </context-param>
 
+    <!--OpenEntityManagerInView-->
     <filter>
         <filter-name>Spring OpenEntityManagerInViewFilter</filter-name>
         <filter-class>org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter</filter-class>
@@ -43,6 +48,22 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
+    <!--Token过滤器，需要配置在Jersey前面，起到拦截作用-->
+    <filter>
+        <filter-name>TokenFilter</filter-name>
+        <filter-class>cn.net.normcore.iorder.filter.TokenFilter</filter-class>
+        <!--需要验证Token的URL前缀-->
+        <init-param>
+            <param-name>UrlToIntercept</param-name>
+            <param-value>/app/*,/web/*</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>TokenFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <!--Jersey-->
     <filter>
         <filter-name>Jersey REST Service</filter-name>
         <filter-class>org.glassfish.jersey.servlet.ServletContainer</filter-class>

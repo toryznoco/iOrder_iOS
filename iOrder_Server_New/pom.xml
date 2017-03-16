@@ -19,6 +19,8 @@
         <json.version>20160212</json.version>
         <junit.version>4.12</junit.version>
         <druid.version>1.0.25</druid.version>
+        <spring.data.redis.version>1.6.4.RELEASE</spring.data.redis.version>
+        <jedis.version>2.7.3</jedis.version>
     </properties>
 
     <dependencyManagement>
@@ -112,6 +114,16 @@
             <artifactId>junit</artifactId>
             <version>${junit.version}</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-redis</artifactId>
+            <version>${spring.data.redis.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>${jedis.version}</version>
         </dependency>
     </dependencies>
 
