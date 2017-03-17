@@ -1,13 +1,14 @@
 package cn.net.normcore.iorder.api.open;
 
 import cn.net.normcore.iorder.common.SimpleResult;
-import cn.net.normcore.iorder.common.utils.ClientUtil;
-import cn.net.normcore.iorder.common.utils.InfoUtil;
-import cn.net.normcore.iorder.common.utils.UuidUtil;
+import cn.net.normcore.iorder.common.utils.ClientUtils;
+import cn.net.normcore.iorder.common.utils.InfoUtils;
+import cn.net.normcore.iorder.common.utils.UuidUtils;
 import cn.net.normcore.iorder.entity.customer.Customer;
-import cn.net.normcore.iorder.redis.ClientTokenRefreshRecordService;
-import cn.net.normcore.iorder.redis.TokenService;
 import cn.net.normcore.iorder.service.customer.CustomerService;
+import cn.net.normcore.iorder.service.redis.ClientService;
+import cn.net.normcore.iorder.service.redis.TokenService;
+import cn.net.normcore.iorder.vo.common.Client;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -16,7 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -31,7 +31,7 @@ public class AppOpenApi {
     @Autowired
     private TokenService<Customer> tokenService;
     @Autowired
-    private ClientTokenRefreshRecordService tokenRecordService;
+    private ClientService clientService;
 
     @POST
     @Path("/register")
@@ -39,7 +39,7 @@ public class AppOpenApi {
     public Map<String, Object> register(Customer customer) {
         if (customer == null)
             return SimpleResult.pessimistic("4004", "请提交数据");
-        if (!InfoUtil.isMobileNo(customer.getMobile()))
+        if (!InfoUtils.isMobileNo(customer.getMobile()))
             return SimpleResult.pessimistic("4003", "手机号码格式错误");
         if (StringUtils.isEmpty(customer.getNickName()))
             return SimpleResult.pessimistic("4004", "参数[nickName]不能为空");
@@ -48,8 +48,8 @@ public class AppOpenApi {
         if (customerService.findByMobile(customer.getMobile()) != null)
             return SimpleResult.pessimistic("4005", "手机号码已经注册");
         customer.setHeadImage("iorder/promotion/carousel2.png");
-        customer.setSalt(InfoUtil.getMd5Salt());
-        customer.setPassword(InfoUtil.getMd5Password(customer.getPassword(), customer.getSalt()));
+        customer.setSalt(InfoUtils.getMd5Salt());
+        customer.setPassword(InfoUtils.getMd5Password(customer.getPassword(), customer.getSalt()));
         customerService.save(customer);
         return SimpleResult.optimistic("注册成功");
     }
@@ -63,14 +63,14 @@ public class AppOpenApi {
         if (!customer.checkPassword(password))
             return SimpleResult.pessimistic("4006", "密码错误");
 
-        String ip = request.getRemoteHost();
-        if ("1".equals(tokenRecordService.get(ip))) {
+        Client<Customer> client = ClientUtils.buildClient(request, customer);
+        if (client.getClientId().equals(clientService.getClientId(client))) {
             return SimpleResult.pessimistic("4007", "获取TOKEN过于频繁");
         }
 
-        String token = UuidUtil.simpleUuid();
-        tokenService.save(token, ip, customer);
-        tokenRecordService.save(ip);
+        String token = UuidUtils.simpleUuid();
+        tokenService.save(token, client.getClientId(), customer);
+        clientService.saveClientId(client);
         Map<String, Object> result = SimpleResult.optimistic("刷新TOKEN成功");
         result.put("token", token);
         return result;

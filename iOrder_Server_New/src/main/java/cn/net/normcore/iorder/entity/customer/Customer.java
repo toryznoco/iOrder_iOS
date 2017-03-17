@@ -1,6 +1,6 @@
 package cn.net.normcore.iorder.entity.customer;
 
-import cn.net.normcore.iorder.common.utils.InfoUtil;
+import cn.net.normcore.iorder.common.utils.InfoUtils;
 import cn.net.normcore.iorder.entity.BaseEntity;
 import cn.net.normcore.iorder.entity.order.Order;
 
@@ -102,6 +102,6 @@ public class Customer extends BaseEntity {
      * @return
      */
     public boolean checkPassword(String password) {
-        return InfoUtil.getMd5Password(password, getSalt()).equals(getPassword());
+        return InfoUtils.getMd5Password(password, getSalt()).equals(getPassword());
     }
 }

@@ -6,7 +6,7 @@ import java.util.UUID;
  * UUID工具类
  * Created by 81062 on 2017/3/16.
  */
-public class UuidUtil {
+public class UuidUtils {
 
     /**
      * 生成32位唯一UUID

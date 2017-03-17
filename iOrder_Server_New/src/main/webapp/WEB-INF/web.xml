@@ -67,10 +67,12 @@
     <filter>
         <filter-name>Jersey REST Service</filter-name>
         <filter-class>org.glassfish.jersey.servlet.ServletContainer</filter-class>
+        <!--指定Jersey配置类-->
         <init-param>
             <param-name>javax.ws.rs.Application</param-name>
             <param-value>cn.net.normcore.iorder.IOrderApplication</param-value>
         </init-param>
+        <!--当Jersey 404时是否继续转发请求-->
         <init-param>
             <param-name>jersey.config.servlet.filter.forwardOn404</param-name>
             <param-value>true</param-value>
@@ -79,6 +81,8 @@
     <filter-mapping>
         <filter-name>Jersey REST Service</filter-name>
         <url-pattern>/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
     </filter-mapping>
 
     <display-name>iOrder</display-name>

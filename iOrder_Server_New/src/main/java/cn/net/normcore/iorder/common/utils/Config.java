@@ -11,7 +11,7 @@ import java.util.Properties;
  * Created by 81062 on 2017/3/16.
  */
 public class Config {
-    private static final Logger logger = LoggerFactory.getLogger(Config.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Config.class);
     private static final Properties PROPERTIES = new Properties();
 
     static {
@@ -19,14 +19,24 @@ public class Config {
             PROPERTIES.load(Config.class.getResourceAsStream("/config/app.properties"));
         } catch (IOException e) {
             e.printStackTrace();
-            logger.error("配置文件加载失败！");
+            LOGGER.error("配置文件加载失败！");
+        }
+    }
+
+    public static long getLong(String key) {
+        String stringValue = getProperty(key);
+        try {
+            return Long.parseLong(stringValue);
+        } catch (NumberFormatException e) {
+            LOGGER.error("属性值转换错误：[{}] TO Long", stringValue);
+            return 0;
         }
     }
 
     public static String getProperty(String key) {
         String value = PROPERTIES.getProperty(key, "Undefined");
         if (value.equals("Undefined"))
-            logger.warn("配置项【{}】未设置！", key);
+            LOGGER.warn("配置项【{}】未设置！", key);
         return value;
     }
 }

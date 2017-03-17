@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
  * 信息处理工具类
  * Created by 81062 on 2017/3/16.
  */
-public class InfoUtil {
+public class InfoUtils {
 
     public static String getMd5Password(String password, String salt) {
         return parseStrToMd5L32(password + salt);

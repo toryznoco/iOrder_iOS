@@ -4,7 +4,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by 81062 on 2017/3/16.
+ * 通用请求响应结果
+ * 每个请求结果都包含result、code、message三个字段
+ * result表示请求结果，当结果为正常业务期望返回值时，result=success，否则result=error
+ * code表示结果码，当结果为正常业务期望返回值时，code=2000，否则code为错误码
+ * message是对请求结果的简单描述，可能为空
+ * Created by RenQiang on 2017/2/3.
  */
 public class SimpleResult {
 

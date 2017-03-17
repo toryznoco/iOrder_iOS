@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import java.util.Map;
 
@@ -18,7 +19,7 @@ import java.util.Map;
 public class CustomerApi {
 
     @GET
-    public Map<String, Object> test() {
-        return SimpleResult.optimistic("6666");
+    public Map<String, Object> test(@QueryParam("customerId") String customerId) {
+        return SimpleResult.optimistic("6666" + "-" + customerId);
     }
 }

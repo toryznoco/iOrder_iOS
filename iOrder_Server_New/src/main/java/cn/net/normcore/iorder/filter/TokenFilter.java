@@ -1,9 +1,11 @@
 package cn.net.normcore.iorder.filter;
 
+import cn.net.normcore.iorder.common.utils.ClientUtils;
 import cn.net.normcore.iorder.common.utils.Config;
 import cn.net.normcore.iorder.entity.customer.Customer;
-import cn.net.normcore.iorder.redis.TokenService;
-import cn.net.normcore.iorder.vo.common.TokenVo;
+import cn.net.normcore.iorder.service.redis.TokenService;
+import cn.net.normcore.iorder.vo.common.Client;
+import cn.net.normcore.iorder.vo.common.Token;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -19,7 +21,8 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 /**
- * Created by 81062 on 2017/3/16.
+ * Token过滤器，所有请求都会首先经过TokenFilter
+ * Created by RenQiang on 2017/3/16.
  */
 public class TokenFilter implements Filter {
     private static final Logger LOGGER = LoggerFactory.getLogger(TokenFilter.class);
@@ -65,25 +68,28 @@ public class TokenFilter implements Filter {
             return;
         }
         //获得提交的TOKEN
-        String token = req.getParameter(Config.getProperty("token_key"));
+        String tokenValue = req.getParameter(Config.getProperty("token_key"));
         //TOKEN格式错误
-        if (token == null || token.length() != 32) {
+        if (tokenValue == null || tokenValue.length() != 32) {
             httpResp.sendRedirect("/open/common/token/error");
-            LOGGER.error("TOKEN格式错误，token=[{}]，URI=[{}]", token, reqUri);
+            LOGGER.error("TOKEN格式错误，token=[{}]，URI=[{}]", tokenValue, reqUri);
             return;
         }
         //查询缓存中的TOKEN数据
-        TokenVo tokenVo = tokenService.get(token);
-        //获得客户端IP
-        String ip = req.getRemoteHost();
-        //缓存中没有查询到TOKEN或者存入TOKEN的客户端IP与当前请求客户端IP不匹配（说明TOKEN被盗用）都视为TOKEN验证失败
-        if (tokenVo == null || !tokenVo.getIp().equals(ip)) {
+        Token token = tokenService.get(tokenValue);
+        //获得客户端唯一标识
+        Client client = ClientUtils.buildClient(httpReq, new Customer());
+        //缓存中没有查询到TOKEN或者存入TOKEN的客户端ID与当前请求客户端ID不匹配（说明TOKEN被盗用）都视为TOKEN验证失败
+        if (token == null || !token.getClientId().equals(client.getClientId())) {
             httpResp.sendRedirect("/open/common/token/invalid");
-            LOGGER.error("TOKEN无效，token=[{}]，URI=[{}]，IP=[{}]", token, reqUri, ip);
+            LOGGER.error("TOKEN无效，token=[{}]，URI=[{}]，Client={}", tokenValue, reqUri, client);
             return;
         }
 
-        chain.doFilter(req, resp);
+        //把用户ID放入请求
+        String queryString = httpReq.getQueryString();
+        queryString += "&" + (token.getType() == '1' ? "customerId" : token.getType() == '2' ? "shopmanId" : "id") + "=" + token.getId();
+        req.getRequestDispatcher(reqUri + "?" + queryString).forward(req, resp);
     }
 
     public void init(FilterConfig config) throws ServletException {
