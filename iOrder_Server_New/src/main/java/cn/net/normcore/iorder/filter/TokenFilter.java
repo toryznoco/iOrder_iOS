@@ -59,6 +59,8 @@ public class TokenFilter implements Filter {
      * @throws IOException
      */
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
+        req.setCharacterEncoding("UTF-8");
+
         HttpServletRequest httpReq = (HttpServletRequest) req;
         HttpServletResponse httpResp = (HttpServletResponse) resp;
         String reqUri = httpReq.getRequestURI();
@@ -69,6 +71,9 @@ public class TokenFilter implements Filter {
         }
         //获得提交的TOKEN
         String tokenValue = req.getParameter(Config.getProperty("token_key"));
+        if (tokenValue == null) {
+            tokenValue = httpReq.getHeader(Config.getProperty("token_key"));
+        }
         //TOKEN格式错误
         if (tokenValue == null || tokenValue.length() != 32) {
             httpResp.sendRedirect("/open/common/token/error");

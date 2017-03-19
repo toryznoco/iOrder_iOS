@@ -14,6 +14,7 @@ import java.util.Date;
 @Table(name = "sign_in_record")
 public class SignInRecord extends BaseEntity {
     private Date signInTime;  //签到时间
+    private Date signInDate;  //签到日期，每天只能签到一次
     private Customer customer;  //顾客
     private Shop shop;  //签到的店铺
 
@@ -25,6 +26,16 @@ public class SignInRecord extends BaseEntity {
 
     public void setSignInTime(Date signInTime) {
         this.signInTime = signInTime;
+    }
+
+    @Column(name = "sign_in_date", nullable = false, updatable = false)
+    @Temporal(TemporalType.DATE)
+    public Date getSignInDate() {
+        return signInDate;
+    }
+
+    public void setSignInDate(Date signInDate) {
+        this.signInDate = signInDate;
     }
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

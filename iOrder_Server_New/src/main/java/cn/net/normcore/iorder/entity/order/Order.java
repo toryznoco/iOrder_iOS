@@ -2,10 +2,13 @@ package cn.net.normcore.iorder.entity.order;
 
 import cn.net.normcore.iorder.entity.BaseEntity;
 import cn.net.normcore.iorder.entity.business.Coupon;
+import cn.net.normcore.iorder.entity.business.Shop;
 import cn.net.normcore.iorder.entity.customer.Customer;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 订单实体
@@ -24,8 +27,21 @@ public class Order extends BaseEntity {
     private Date cancelTime;  //订单取消时间
     private Float totalPrice;  //订单总金额
     private Float payPrice;  //订单实际支付金额
+    private int goodsAmount;  //订单商品总数量
     private Customer customer;  //订单所属用户
     private Coupon coupon;  //订单使用的优惠券，空表示没使用优惠券
+    private Shop shop;  //订单所属店铺
+    private List<OrderItem> orderItems;  //订单的订单项列表
+
+    public void bindOrderItems(List<OrderItem> items) {
+        orderItems = new ArrayList<>();
+        items.forEach(item -> addOrderItem(item));
+    }
+
+    private void addOrderItem(OrderItem item) {
+        item.setOrder(this);
+        orderItems.add(item);
+    }
 
     @Column(name = "code", length = 20, nullable = false, unique = true)
     public String getCode() {
@@ -123,6 +139,15 @@ public class Order extends BaseEntity {
         this.payPrice = payPrice;
     }
 
+    @Transient
+    public int getGoodsAmount() {
+        return goodsAmount;
+    }
+
+    public void setGoodsAmount(int goodsAmount) {
+        this.goodsAmount = goodsAmount;
+    }
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "customer_id", referencedColumnName = "id")
     public Customer getCustomer() {
@@ -141,5 +166,24 @@ public class Order extends BaseEntity {
 
     public void setCoupon(Coupon coupon) {
         this.coupon = coupon;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "shop_id", referencedColumnName = "id")
+    public Shop getShop() {
+        return shop;
+    }
+
+    public void setShop(Shop shop) {
+        this.shop = shop;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "order", cascade = {CascadeType.PERSIST})
+    public List<OrderItem> getOrderItems() {
+        return orderItems;
+    }
+
+    public void setOrderItems(List<OrderItem> orderItems) {
+        this.orderItems = orderItems;
     }
 }

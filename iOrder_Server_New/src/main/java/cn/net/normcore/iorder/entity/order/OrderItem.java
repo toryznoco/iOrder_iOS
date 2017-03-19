@@ -1,6 +1,7 @@
 package cn.net.normcore.iorder.entity.order;
 
 import cn.net.normcore.iorder.entity.BaseEntity;
+import cn.net.normcore.iorder.entity.business.Shop;
 import cn.net.normcore.iorder.entity.customer.Customer;
 import cn.net.normcore.iorder.entity.goods.Goods;
 
@@ -14,12 +15,23 @@ import java.util.Date;
 @Entity
 @Table(name = "order_item")
 public class OrderItem extends BaseEntity {
+    private Integer amount;  //商品数量
     private String comment;  //评论内容
     private Date commentTime;  //评论时间
     private Integer score;  //评星
     private Customer customer;  //顾客
     private Goods goods;  //商品
     private Order order;  //所属订单，为空时表示购物车
+    private Shop shop;
+
+    @Column(name = "amount", nullable = false)
+    public Integer getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Integer amount) {
+        this.amount = amount;
+    }
 
     @Column(name = "comment", length = 100)
     public String getComment() {
@@ -77,5 +89,15 @@ public class OrderItem extends BaseEntity {
 
     public void setOrder(Order order) {
         this.order = order;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "shop_id", referencedColumnName = "id")
+    public Shop getShop() {
+        return shop;
+    }
+
+    public void setShop(Shop shop) {
+        this.shop = shop;
     }
 }

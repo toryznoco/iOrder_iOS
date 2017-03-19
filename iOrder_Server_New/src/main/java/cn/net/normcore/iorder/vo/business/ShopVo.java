@@ -1,22 +1,16 @@
-package cn.net.normcore.iorder.entity.business;
+package cn.net.normcore.iorder.vo.business;
 
-import cn.net.normcore.iorder.entity.BaseEntity;
-import cn.net.normcore.iorder.entity.goods.Goods;
-import cn.net.normcore.iorder.entity.goods.GoodsCategory;
-import cn.net.normcore.iorder.entity.ibeacon.IBeacon;
+import cn.net.normcore.iorder.entity.business.Shop;
+import cn.net.normcore.iorder.vo.BaseVo;
 
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 /**
- * 店铺实体类
- * Created by 81062 on 2017/3/15.
+ * Created by 81062 on 2017/3/18.
  */
-@Entity
-@Table(name = "shop")
-public class Shop extends BaseEntity {
+public class ShopVo extends BaseVo {
     private String name;  //商铺名称
     private String address;  //商铺地址
     private Double xCoord;  //商铺所在位置经度，正数表示东经，负数表示西经，如：东经113.15°：113.15 西经113.15°：-113.15
@@ -35,26 +29,37 @@ public class Shop extends BaseEntity {
     private Boolean payOnline;  //是否支持在线支付
     private int distance;  //距离
     private boolean isTodaySigned;  //今日是否已签到
-    private List<IBeacon> iBeacons;  //店铺的IBeacon列表
-    private List<GoodsCategory> goodsCategories;  //店铺的商品分类列表
-    private List<Goods> goods;  //店铺的商品列表
-    private List<Coupon> coupons;  //店铺发布的优惠券列表
 
-    /**
-     * 获得店铺未分类的商品列表
-     *
-     * @return
-     */
-    public List<Goods> noCategoryGoods() {
-        List<Goods> noCategoryGoods = new ArrayList<>();
-        goods.forEach(g -> {
-            if (g.getCategory() == null)
-                noCategoryGoods.add(g);
-        });
-        return noCategoryGoods;
+    public static List<ShopVo> listFromShops(List<Shop> shops) {
+        List<ShopVo> shopVos = new ArrayList<>();
+        shops.forEach(shop -> shopVos.add(fromShop(shop)));
+        return shopVos;
     }
 
-    @Column(name = "detail_back_image", length = 100)
+    public static ShopVo fromShop(Shop shop) {
+        ShopVo shopVo = new ShopVo();
+        shopVo.setId(shop.getId());
+        shopVo.setName(shop.getName());
+        shopVo.setAddress(shop.getAddress());
+        shopVo.setxCoord(shop.getxCoord());
+        shopVo.setyCoord(shop.getyCoord());
+        shopVo.setCheapInfo(shop.getCheapInfo());
+        shopVo.setTotalSale(shop.getTotalSale());
+        shopVo.setPicture(shop.getPicture());
+        shopVo.setHeadImage(shop.getHeadImage());
+        shopVo.setPersonalPrice(shop.getPersonalPrice());
+        shopVo.setDetailBackImage(shop.getDetailBackImage());
+        shopVo.setScore(shop.getScore());
+        shopVo.setOpenTime(shop.getOpenTime());
+        shopVo.setCloseTime(shop.getCloseTime());
+        shopVo.setPhone(shop.getPhone());
+        shopVo.setNotice(shop.getNotice());
+        shopVo.setPayOnline(shop.getPayOnline());
+        shopVo.setDistance(shop.getDistance());
+        shopVo.setTodaySigned(shop.isTodaySigned());
+        return shopVo;
+    }
+
     public String getDetailBackImage() {
         return detailBackImage;
     }
@@ -63,7 +68,6 @@ public class Shop extends BaseEntity {
         this.detailBackImage = detailBackImage;
     }
 
-    @Column(name = "score", nullable = false)
     public Float getScore() {
         return score;
     }
@@ -72,8 +76,6 @@ public class Shop extends BaseEntity {
         this.score = score;
     }
 
-    @Column(name = "open_time")
-    @Temporal(TemporalType.TIME)
     public Date getOpenTime() {
         return openTime;
     }
@@ -82,8 +84,6 @@ public class Shop extends BaseEntity {
         this.openTime = openTime;
     }
 
-    @Column(name = "close_time")
-    @Temporal(TemporalType.TIME)
     public Date getCloseTime() {
         return closeTime;
     }
@@ -92,7 +92,6 @@ public class Shop extends BaseEntity {
         this.closeTime = closeTime;
     }
 
-    @Column(name = "phone", length = 50)
     public String getPhone() {
         return phone;
     }
@@ -101,7 +100,6 @@ public class Shop extends BaseEntity {
         this.phone = phone;
     }
 
-    @Column(name = "notice", length = 100)
     public String getNotice() {
         return notice;
     }
@@ -110,7 +108,6 @@ public class Shop extends BaseEntity {
         this.notice = notice;
     }
 
-    @Column(name = "pay_online", nullable = false)
     public Boolean getPayOnline() {
         return payOnline;
     }
@@ -119,7 +116,6 @@ public class Shop extends BaseEntity {
         this.payOnline = payOnline;
     }
 
-    @Column(name = "name", nullable = false, length = 50)
     public String getName() {
         return name;
     }
@@ -128,7 +124,6 @@ public class Shop extends BaseEntity {
         this.name = name;
     }
 
-    @Column(name = "address", length = 100)
     public String getAddress() {
         return address;
     }
@@ -137,7 +132,6 @@ public class Shop extends BaseEntity {
         this.address = address;
     }
 
-    @Column(name = "coord_x")
     public Double getxCoord() {
         return xCoord;
     }
@@ -146,7 +140,6 @@ public class Shop extends BaseEntity {
         this.xCoord = xCoord;
     }
 
-    @Column(name = "coord_y")
     public Double getyCoord() {
         return yCoord;
     }
@@ -155,7 +148,6 @@ public class Shop extends BaseEntity {
         this.yCoord = yCoord;
     }
 
-    @Column(name = "cheep_info", length = 100)
     public String getCheapInfo() {
         return cheapInfo;
     }
@@ -164,7 +156,6 @@ public class Shop extends BaseEntity {
         this.cheapInfo = cheapInfo;
     }
 
-    @Column(name = "total_sale")
     public Integer getTotalSale() {
         return totalSale;
     }
@@ -173,7 +164,6 @@ public class Shop extends BaseEntity {
         this.totalSale = totalSale;
     }
 
-    @Column(name = "picture", length = 100)
     public String getPicture() {
         return picture;
     }
@@ -182,7 +172,6 @@ public class Shop extends BaseEntity {
         this.picture = picture;
     }
 
-    @Column(name = "head_image", length = 100)
     public String getHeadImage() {
         return headImage;
     }
@@ -191,7 +180,6 @@ public class Shop extends BaseEntity {
         this.headImage = headImage;
     }
 
-    @Column(name = "personal_price")
     public Float getPersonalPrice() {
         return personalPrice;
     }
@@ -200,7 +188,6 @@ public class Shop extends BaseEntity {
         this.personalPrice = personalPrice;
     }
 
-    @Transient
     public int getDistance() {
         return distance;
     }
@@ -209,7 +196,6 @@ public class Shop extends BaseEntity {
         this.distance = distance;
     }
 
-    @Transient
     public boolean isTodaySigned() {
         return isTodaySigned;
     }
@@ -217,41 +203,4 @@ public class Shop extends BaseEntity {
     public void setTodaySigned(boolean todaySigned) {
         isTodaySigned = todaySigned;
     }
-
-    @OneToMany(mappedBy = "shop", fetch = FetchType.LAZY)
-    public List<IBeacon> getiBeacons() {
-        return iBeacons;
-    }
-
-    public void setiBeacons(List<IBeacon> iBeacons) {
-        this.iBeacons = iBeacons;
-    }
-
-    @OneToMany(mappedBy = "shop", fetch = FetchType.LAZY)
-    public List<GoodsCategory> getGoodsCategories() {
-        return goodsCategories;
-    }
-
-    public void setGoodsCategories(List<GoodsCategory> goodsCategories) {
-        this.goodsCategories = goodsCategories;
-    }
-
-    @OneToMany(mappedBy = "shop", fetch = FetchType.LAZY)
-    public List<Goods> getGoods() {
-        return goods;
-    }
-
-    public void setGoods(List<Goods> goods) {
-        this.goods = goods;
-    }
-
-    @OneToMany(mappedBy = "shop", fetch = FetchType.LAZY)
-    public List<Coupon> getCoupons() {
-        return coupons;
-    }
-
-    public void setCoupons(List<Coupon> coupons) {
-        this.coupons = coupons;
-    }
-
 }

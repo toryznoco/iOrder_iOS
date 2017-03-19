@@ -4,6 +4,7 @@ import cn.net.normcore.iorder.entity.BaseEntity;
 import cn.net.normcore.iorder.entity.business.Shop;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * 商品分类实体
@@ -15,6 +16,7 @@ public class GoodsCategory extends BaseEntity {
     private String name;  //分类名称
     private String description;  //备注信息
     private Shop shop;  //所属店铺
+    private List<Goods> goods;  //分类下的菜品列表
 
     @Column(name = "name", length = 50, nullable = false)
     public String getName() {
@@ -42,5 +44,14 @@ public class GoodsCategory extends BaseEntity {
 
     public void setShop(Shop shop) {
         this.shop = shop;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "category")
+    public List<Goods> getGoods() {
+        return goods;
+    }
+
+    public void setGoods(List<Goods> goods) {
+        this.goods = goods;
     }
 }
