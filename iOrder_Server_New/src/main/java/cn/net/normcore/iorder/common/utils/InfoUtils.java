@@ -41,7 +41,7 @@ public class InfoUtils {
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-        return resultStr.toUpperCase();
+        return resultStr.toLowerCase();
     }
 
     /**

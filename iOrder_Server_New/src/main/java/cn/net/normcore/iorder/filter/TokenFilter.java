@@ -39,6 +39,8 @@ public class TokenFilter implements Filter {
      * @return
      */
     private boolean isUrlIntercepted(String url) {
+        if (url.contains("."))
+            return false;
         for (String urlRegex :
                 urlsToIntercept) {
             if (Pattern.compile("^" + urlRegex).matcher(url).find())
