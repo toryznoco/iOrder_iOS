@@ -1,20 +1,17 @@
 package cn.net.normcore.iorder.vo.common;
 
 import cn.net.normcore.iorder.common.utils.InfoUtils;
-import cn.net.normcore.iorder.entity.BaseEntity;
-import cn.net.normcore.iorder.entity.business.Shopman;
-import cn.net.normcore.iorder.entity.customer.Customer;
 
 /**
  * 客户端唯一标识
  * 以User-Agent + IP作为客户端唯一标识
- *
- * @param <E> 用户类型
+ * 以用户类型 + 用户ID作为Redis Key
  */
-public class Client<E extends BaseEntity> {
-    private E user;  //用户对象
+public class Client {
+    private UserType userType;  //用户类型
     private String ip;  //客户端IP地址
     private String userAgent;  //User-Agent请求头信息
+    private long userId;  //用户实体ID
 
     @Override
     public String toString() {
@@ -27,11 +24,11 @@ public class Client<E extends BaseEntity> {
      * @return
      */
     public String getRedisKey() {
-        if (user instanceof Customer) {
-            return "customer" + user.getId();
+        if (userType.equals(UserType.CUSTOMER)) {
+            return "customer" + getUserId();
         }
-        if (user instanceof Shopman) {
-            return "shopman" + user.getId();
+        if (userType.equals(UserType.SHOPMAN)) {
+            return "shopman" + getUserId();
         }
         return null;
     }
@@ -45,12 +42,20 @@ public class Client<E extends BaseEntity> {
         return InfoUtils.parseStrToMd5L32(ip + userAgent);
     }
 
-    public E getUser() {
-        return user;
+    public long getUserId() {
+        return userId;
     }
 
-    public void setUser(E user) {
-        this.user = user;
+    public void setUserId(long userId) {
+        this.userId = userId;
+    }
+
+    public UserType getUserType() {
+        return userType;
+    }
+
+    public void setUserType(UserType userType) {
+        this.userType = userType;
     }
 
     public String getIp() {

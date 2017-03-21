@@ -1,4 +1,4 @@
-package cn.net.normcore.iorder.api.open;
+package cn.net.normcore.iorder.api.web;
 
 import cn.net.normcore.iorder.common.SimpleResult;
 import cn.net.normcore.iorder.common.utils.ClientUtils;
@@ -21,12 +21,12 @@ import javax.ws.rs.core.MediaType;
 import java.util.Map;
 
 /**
- * Created by RenQiang on 2017/3/20.
+ * Created by 81062 on 2017/3/21.
  */
 @Controller
-@Path("/open/web")
+@Path("/web/shopman")
 @Produces(MediaType.APPLICATION_JSON)
-public class WebOpenApi {
+public class ShopmanApi {
     @Autowired
     private ShopmanService shopmanService;
     @Autowired
@@ -51,7 +51,7 @@ public class WebOpenApi {
         if (!shopman.checkPassword(password))
             return SimpleResult.pessimistic("4006", "密码错误");
 
-        Client<Shopman> client = ClientUtils.buildClient(request, shopman);
+        Client client = ClientUtils.buildClient(request, shopman);
         if (client.getClientId().equals(clientService.getClientId(client)))
             return SimpleResult.pessimistic("4007", "获取TOKEN过于频繁");
 

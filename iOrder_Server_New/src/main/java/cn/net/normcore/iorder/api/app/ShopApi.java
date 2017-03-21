@@ -2,6 +2,7 @@ package cn.net.normcore.iorder.api.app;
 
 import cn.net.normcore.iorder.common.SimpleResult;
 import cn.net.normcore.iorder.entity.business.Shop;
+import cn.net.normcore.iorder.filter.ValidateToken;
 import cn.net.normcore.iorder.service.business.ShopService;
 import cn.net.normcore.iorder.vo.business.ShopVo;
 import cn.net.normcore.iorder.vo.goods.GoodsCategoryVo;
@@ -21,6 +22,7 @@ import java.util.Map;
 @Controller
 @Path("/app/shop")
 @Produces(MediaType.APPLICATION_JSON)
+@ValidateToken
 public class ShopApi {
     @Autowired
     private ShopService shopService;
@@ -74,7 +76,7 @@ public class ShopApi {
      */
     @GET
     @Path("/detail")
-    public Map<String, Object> detail(@QueryParam("shopId") Long shopId, @QueryParam("customerId") Long customerId) {
+    public Map<String, Object> detail(@QueryParam("shopId") Long shopId, @HeaderParam("customerId") Long customerId) {
         if (shopId == null)
             return SimpleResult.pessimistic("4004", "参数[shopId]不能为空");
         Map<String, Object> result = SimpleResult.optimistic();

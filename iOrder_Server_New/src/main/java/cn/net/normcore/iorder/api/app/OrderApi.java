@@ -3,6 +3,7 @@ package cn.net.normcore.iorder.api.app;
 import cn.net.normcore.iorder.common.SimpleResult;
 import cn.net.normcore.iorder.entity.order.Order;
 import cn.net.normcore.iorder.entity.order.OrderItem;
+import cn.net.normcore.iorder.filter.ValidateToken;
 import cn.net.normcore.iorder.service.order.OrderItemService;
 import cn.net.normcore.iorder.service.order.OrderService;
 import cn.net.normcore.iorder.vo.order.OrderItemVo;
@@ -22,6 +23,7 @@ import java.util.Map;
 @Controller
 @Path("/app/order")
 @Produces(MediaType.APPLICATION_JSON)
+@ValidateToken
 public class OrderApi {
     @Autowired
     private OrderService orderService;
@@ -39,7 +41,7 @@ public class OrderApi {
      */
     @POST
     @Path("/cart/add")
-    public Map<String, Object> addToCart(@QueryParam("customerId") Long customerId, @FormParam("goodsId") Long goodsId, @FormParam("amount") @DefaultValue("1") Integer amount) {
+    public Map<String, Object> addToCart(@HeaderParam("customerId") Long customerId, @FormParam("goodsId") Long goodsId, @FormParam("amount") @DefaultValue("1") Integer amount) {
         if (goodsId == null)
             return SimpleResult.pessimistic("4004", "参数[goodsId]不能为空");
         if (customerId == null)
@@ -62,7 +64,7 @@ public class OrderApi {
      */
     @POST
     @Path("/cart/drop")
-    public Map<String, Object> removeFromCart(@QueryParam("customerId") Long customerId, @FormParam("goodsId") Long goodsId, @FormParam("amount") Integer amount) {
+    public Map<String, Object> removeFromCart(@HeaderParam("customerId") Long customerId, @FormParam("goodsId") Long goodsId, @FormParam("amount") Integer amount) {
         if (goodsId == null)
             return SimpleResult.pessimistic("4004", "参数[goodsId]不能为空");
         if (customerId == null)
@@ -86,7 +88,7 @@ public class OrderApi {
      */
     @GET
     @Path("/cart")
-    public Map<String, Object> cartInfo(@QueryParam("customerId") Long customerId, @QueryParam("shopId") Long shopId) {
+    public Map<String, Object> cartInfo(@HeaderParam("customerId") Long customerId, @QueryParam("shopId") Long shopId) {
         if (shopId == null)
             return SimpleResult.pessimistic("4004", "参数[shopId]不能为空");
         if (customerId == null)
@@ -108,7 +110,7 @@ public class OrderApi {
      */
     @POST
     @Path("/generate")
-    public Map<String, Object> generate(@QueryParam("customerId") Long customerId, @FormParam("shopId") Long shopId, @FormParam("couponId") Long couponId) {
+    public Map<String, Object> generate(@HeaderParam("customerId") Long customerId, @FormParam("shopId") Long shopId, @FormParam("couponId") Long couponId) {
         if (shopId == null)
             return SimpleResult.pessimistic("4004", "参数[shopId]不能为空");
         if (customerId == null)
@@ -129,7 +131,7 @@ public class OrderApi {
      */
     @GET
     @Path("/list")
-    public Map<String, Object> list(@QueryParam("customerId") Long customerId) {
+    public Map<String, Object> list(@HeaderParam("customerId") Long customerId) {
         if (customerId == null)
             return SimpleResult.pessimistic("5000", "系统内部错误，请联系开发者");
         Map<String, Object> result = SimpleResult.optimistic();
@@ -145,7 +147,7 @@ public class OrderApi {
      */
     @GET
     @Path("/detail")
-    public Map<String, Object> detail(@QueryParam("orderId") Long orderId, @QueryParam("customerId") Long customerId) {
+    public Map<String, Object> detail(@QueryParam("orderId") Long orderId, @HeaderParam("customerId") Long customerId) {
         if (orderId == null)
             return SimpleResult.pessimistic("4004", "参数[orderId]不能为空");
         Order order = orderService.get(orderId);
@@ -166,7 +168,7 @@ public class OrderApi {
      */
     @POST
     @Path("/pay")
-    public Map<String, Object> pay(@FormParam("orderId") Long orderId, @QueryParam("customerId") Long customerId) {
+    public Map<String, Object> pay(@FormParam("orderId") Long orderId, @HeaderParam("customerId") Long customerId) {
         if (orderId == null)
             return SimpleResult.pessimistic("4004", "参数[orderId]不能为空");
         Order order = orderService.get(orderId);
