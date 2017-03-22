@@ -48,21 +48,6 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
-    <!--Token过滤器，需要配置在Jersey前面，起到拦截作用-->
-    <filter>
-        <filter-name>TokenFilter</filter-name>
-        <filter-class>cn.net.normcore.iorder.filter.TokenFilter</filter-class>
-        <!--需要验证Token的URL-->
-        <init-param>
-            <param-name>UrlToIntercept</param-name>
-            <param-value>/app/*,/web/*</param-value>
-        </init-param>
-    </filter>
-    <filter-mapping>
-        <filter-name>TokenFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
-
     <!--Jersey-->
     <filter>
         <filter-name>Jersey REST Service</filter-name>
@@ -80,9 +65,7 @@
     </filter>
     <filter-mapping>
         <filter-name>Jersey REST Service</filter-name>
-        <url-pattern>/*</url-pattern>
-        <dispatcher>REQUEST</dispatcher>
-        <dispatcher>FORWARD</dispatcher>
+        <url-pattern>/api/*</url-pattern>
     </filter-mapping>
 
     <display-name>iOrder</display-name>

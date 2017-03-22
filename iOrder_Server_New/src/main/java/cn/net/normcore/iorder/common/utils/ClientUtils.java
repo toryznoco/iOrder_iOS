@@ -2,6 +2,7 @@ package cn.net.normcore.iorder.common.utils;
 
 import cn.net.normcore.iorder.entity.BaseEntity;
 import cn.net.normcore.iorder.vo.common.Client;
+import cn.net.normcore.iorder.vo.common.UserType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
@@ -22,9 +23,30 @@ public class ClientUtils {
      * @param request
      * @return
      */
-    public static <E extends BaseEntity> Client<E> buildClient(HttpServletRequest request, E user) {
-        Client<E> client = new Client<>();
-        client.setUser(user);
+    public static Client buildClient(HttpServletRequest request) {
+        Client client = new Client();
+        client.setUserType(UserType.UNKNOWN);
+        client.setUserId(0);
+        client.setIp(request.getRemoteHost());
+        String userAgent = request.getHeader("User-Agent");
+        if (StringUtils.isEmpty(userAgent)) {
+            userAgent = String.valueOf(System.currentTimeMillis());
+            LOGGER.warn("未提交User-Agent，IP=[{}]，User=[{}]，赋值默认User-Agent=[{}]", client.getIp(), client.getRedisKey(), userAgent);
+        }
+        client.setUserAgent(userAgent);
+        return client;
+    }
+
+    /**
+     * 获取客户端的唯一标识字符串
+     *
+     * @param request
+     * @return
+     */
+    public static <E extends BaseEntity> Client buildClient(HttpServletRequest request, E user) {
+        Client client = new Client();
+        client.setUserType(UserType.fromUser(user));
+        client.setUserId(user.getId());
         client.setIp(request.getRemoteHost());
         String userAgent = request.getHeader("User-Agent");
         if (StringUtils.isEmpty(userAgent)) {

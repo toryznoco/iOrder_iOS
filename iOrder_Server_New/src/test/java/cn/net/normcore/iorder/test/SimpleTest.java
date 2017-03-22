@@ -1,6 +1,7 @@
 package cn.net.normcore.iorder.test;
 
 import cn.net.normcore.iorder.common.utils.Config;
+import cn.net.normcore.iorder.common.utils.InfoUtils;
 import cn.net.normcore.iorder.common.utils.UuidUtils;
 import org.junit.Test;
 
@@ -37,6 +38,9 @@ public class SimpleTest {
         String uuid = UuidUtils.simpleUuid();
         System.out.println(uuid);
         System.out.println(uuid.length());
+        for (int i = 0; i < 6; i ++) {
+            System.out.println(InfoUtils.getMd5Salt());
+        }
     }
 
     @Test

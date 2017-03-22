@@ -7,24 +7,24 @@ import java.io.Serializable;
  * Created by 81062 on 2017/3/16.
  */
 public class Token implements Serializable {
-    private long id;  //用户ID
-    private char type;  //用户类型，1-顾客，2-商家
+    private long userId;  //用户ID
+    private UserType userType;  //用户类型
     private String clientId;  //客户端唯一标识，同时验证TOKEN和客户端标识，防止TOKEN被窃取盗用
 
-    public long getId() {
-        return id;
+    public long getUserId() {
+        return userId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 
-    public char getType() {
-        return type;
+    public UserType getUserType() {
+        return userType;
     }
 
-    public void setType(char type) {
-        this.type = type;
+    public void setUserType(UserType userType) {
+        this.userType = userType;
     }
 
     public String getClientId() {

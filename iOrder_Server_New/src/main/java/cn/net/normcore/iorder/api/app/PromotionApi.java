@@ -1,6 +1,7 @@
 package cn.net.normcore.iorder.api.app;
 
 import cn.net.normcore.iorder.common.SimpleResult;
+import cn.net.normcore.iorder.filter.ValidateToken;
 import cn.net.normcore.iorder.service.promotion.PromotionService;
 import cn.net.normcore.iorder.vo.promotion.PromotionVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import java.util.Map;
 @Controller
 @Path("/app/promotion")
 @Produces(MediaType.APPLICATION_JSON)
+@ValidateToken
 public class PromotionApi {
     @Autowired
     private PromotionService promotionService;
