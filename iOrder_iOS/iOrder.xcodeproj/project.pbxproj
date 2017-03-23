@@ -57,6 +57,8 @@
 		9A2B87361E83C3D5006DCD53 /* IOLoginManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A2B87351E83C3D5006DCD53 /* IOLoginManager.m */; };
 		9A2B87391E83C532006DCD53 /* IORegisterManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A2B87381E83C532006DCD53 /* IORegisterManager.m */; };
 		9A2B873C1E83CC77006DCD53 /* IORegisterParam.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A2B873B1E83CC77006DCD53 /* IORegisterParam.m */; };
+		9A2B87461E83FF47006DCD53 /* MBProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9A2B87451E83FF47006DCD53 /* MBProgressHUD.bundle */; };
+		9A2B87481E83FF52006DCD53 /* MBProgressHUD+YWJ.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A2B87471E83FF52006DCD53 /* MBProgressHUD+YWJ.m */; };
 		9A3963D11E82482E000E2E40 /* YWJCacheTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A39638A1E82482E000E2E40 /* YWJCacheTool.m */; };
 		9A3963D21E82482E000E2E40 /* YWJDishesParam.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A39638E1E82482E000E2E40 /* YWJDishesParam.m */; };
 		9A3963D31E82482E000E2E40 /* YWJDishesResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A3963911E82482E000E2E40 /* YWJDishesResult.m */; };
@@ -222,6 +224,9 @@
 		9A2B87381E83C532006DCD53 /* IORegisterManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IORegisterManager.m; sourceTree = "<group>"; };
 		9A2B873A1E83CC77006DCD53 /* IORegisterParam.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IORegisterParam.h; sourceTree = "<group>"; };
 		9A2B873B1E83CC77006DCD53 /* IORegisterParam.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IORegisterParam.m; sourceTree = "<group>"; };
+		9A2B87451E83FF47006DCD53 /* MBProgressHUD.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = MBProgressHUD.bundle; sourceTree = "<group>"; };
+		9A2B87471E83FF52006DCD53 /* MBProgressHUD+YWJ.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MBProgressHUD+YWJ.m"; sourceTree = "<group>"; };
+		9A2B87491E83FF5D006DCD53 /* MBProgressHUD+YWJ.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MBProgressHUD+YWJ.h"; sourceTree = "<group>"; };
 		9A3963891E82482E000E2E40 /* YWJCacheTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWJCacheTool.h; sourceTree = "<group>"; };
 		9A39638A1E82482E000E2E40 /* YWJCacheTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWJCacheTool.m; sourceTree = "<group>"; };
 		9A39638D1E82482E000E2E40 /* YWJDishesParam.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWJDishesParam.h; sourceTree = "<group>"; };
@@ -1075,6 +1080,9 @@
 				CA7069CA1CE5F564007C5F3F /* UIBarButtonItem+IOBarButtonItem.m */,
 				CA41C8781D2BF0C90092921E /* UIView+Masonry_YWJ.h */,
 				CA41C8791D2BF0C90092921E /* UIView+Masonry_YWJ.m */,
+				9A2B87451E83FF47006DCD53 /* MBProgressHUD.bundle */,
+				9A2B87491E83FF5D006DCD53 /* MBProgressHUD+YWJ.h */,
+				9A2B87471E83FF52006DCD53 /* MBProgressHUD+YWJ.m */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -1196,6 +1204,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CAE8F0861CB9417F005618B0 /* Assets.xcassets in Resources */,
+				9A2B87461E83FF47006DCD53 /* MBProgressHUD.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1294,6 +1303,7 @@
 				9A405B0E1E81521F0037A5AC /* IOOrderedViewController.m in Sources */,
 				9A1BFDD61E6EA8DE00A0007F /* IOShoppingCartView.m in Sources */,
 				9A3963D41E82482E000E2E40 /* YWJDishesTool.m in Sources */,
+				9A2B87481E83FF52006DCD53 /* MBProgressHUD+YWJ.m in Sources */,
 				9A3963E21E82482E000E2E40 /* YWJShoppingCartTool.m in Sources */,
 				9A1BFDEB1E6EA8DE00A0007F /* IOProfileMyCouponController.m in Sources */,
 				9A405B101E81521F0037A5AC /* IOOrderViewCell.m in Sources */,
