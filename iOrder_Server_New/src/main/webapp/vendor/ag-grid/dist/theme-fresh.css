@@ -14,7 +14,10 @@
   border-left: 1px solid transparent;
   border-bottom: 1px solid transparent;
 }
-.ag-fresh .ag-pinned-header {
+.ag-fresh .ag-cell-first-right-pinned {
+  border-left: 1px dotted #808080;
+}
+.ag-fresh .ag-header {
   background: -webkit-linear-gradient(#fff, #d3d3d3);
   background: -moz-linear-gradient(#fff, #d3d3d3);
   background: -o-linear-gradient(#fff, #d3d3d3);
@@ -22,7 +25,7 @@
   background: linear-gradient(#fff, #d3d3d3);
   border-bottom: 1px solid #808080;
 }
-.ag-fresh .ag-header-container {
+.ag-fresh .ag-no-scrolls .ag-header-container {
   background: -webkit-linear-gradient(#fff, #d3d3d3);
   background: -moz-linear-gradient(#fff, #d3d3d3);
   background: -o-linear-gradient(#fff, #d3d3d3);
@@ -47,7 +50,7 @@
 }
 .ag-fresh .ag-header-group-cell-label {
   padding: 4px;
-  font-weight: bold;
+  padding-left: 10px;
 }
 .ag-fresh .ag-header-group-text {
   margin-right: 2px;
@@ -61,6 +64,10 @@
   -webkit-box-sizing: content-box;
   -moz-box-sizing: content-box;
   box-sizing: content-box; /* When using bootstrap, box-sizing was set to 'border-box' */
+  line-height: 0px; /* normal line height, a space was appearing below the menu button */
+}
+.ag-fresh .ag-pinned-right-header {
+  border-left: 1px solid #808080;
 }
 .ag-fresh .ag-header-cell-menu-button:hover {
   border: 1px solid #000;
@@ -68,19 +75,32 @@
 .ag-fresh .ag-header-icon {
   color: #800000;
 }
-.ag-fresh .ag-dark .ag-header-expand-icon:hover {
-  cursor: pointer;
+.ag-fresh .ag-row-selected {
+  background-color: #b0e0e6 !important;
 }
-.ag-fresh .ag-row-odd {
+.ag-fresh .ag-body .ag-row-odd {
   background-color: #f6f6f6;
 }
-.ag-fresh .ag-row-even {
+.ag-fresh .ag-body .ag-row-even {
   background-color: #fff;
 }
-.ag-fresh .ag-loading-panel {
+.ag-fresh .ag-floating-top .ag-row {
+  background-color: #f0f0f0;
+}
+.ag-fresh .ag-floating-bottom .ag-row {
+  background-color: #f0f0f0;
+}
+.ag-fresh .ag-overlay-loading-wrapper {
   background-color: rgba(255,255,255,0.5);
 }
-.ag-fresh .ag-loading-center {
+.ag-fresh .ag-overlay-loading-center {
+  background-color: #fff;
+  border: 1px solid #a9a9a9;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  padding: 10px;
+}
+.ag-fresh .ag-overlay-no-rows-center {
   background-color: #fff;
   border: 1px solid #a9a9a9;
   -webkit-border-radius: 10px;
@@ -88,10 +108,7 @@
   padding: 10px;
 }
 .ag-fresh .ag-body {
-  background-color: #ddd;
-}
-.ag-fresh .ag-row-selected {
-  background-color: #b0e0e6;
+  background-color: #fafafa;
 }
 .ag-fresh .ag-group-cell-entire-row {
   background-color: #aaa;
@@ -104,6 +121,9 @@
 .ag-fresh .ag-group-cell {
   font-style: italic;
 }
+.ag-fresh .ag-group-expand {
+  padding-right: 2px;
+}
 .ag-fresh .ag-footer-cell {
   font-style: italic;
 }
@@ -115,9 +135,16 @@
 .ag-fresh .ag-filter-header-container {
   border-bottom: 1px solid #d3d3d3;
 }
+.ag-fresh .ag-filter-apply-panel {
+  border-top: 1px solid #d3d3d3;
+  padding: 2px;
+}
 .ag-fresh .ag-filter {
   border: 1px solid #000;
   background-color: #f0f0f0;
+}
+.ag-fresh .ag-filter-value {
+  margin-left: 4px;
 }
 .ag-fresh .ag-selection-checkbox {
   margin-left: 4px;
@@ -132,4 +159,50 @@
 .ag-fresh .ag-paging-row-summary-panel {
   display: inline-block;
   width: 300px;
+}
+.ag-fresh .ag-column-not-visible {
+  opacity: 0.75;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=75)";
+  filter: alpha(opacity=75);
+}
+.ag-fresh .ag-not-dragging {
+  border: 1px solid transparent;
+}
+.ag-fresh .ag-drop-target-above {
+  border-top: 5px solid #a9a9a9;
+}
+.ag-fresh .ag-drop-target-below {
+  border-bottom: 5px solid #a9a9a9;
+}
+.ag-fresh .ag-dragging {
+  border: 1px dotted #a9a9a9;
+}
+.ag-fresh .ag-list-item-selected {
+  color: #f0f0f0;
+}
+.ag-fresh .ag-list-item-not-selected {
+  font-style: italic;
+  color: #a0a0a0;
+}
+.ag-fresh .ag-tool-panel-container {
+  background-color: #eee;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  border: 1px solid #a9a9a9;
+  padding: 4px;
+}
+.ag-fresh .ag-list-selection {
+  background-color: #fff;
+  border: 1px solid #a9a9a9;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.ag-fresh .ag-popup-list .ag-list-item:hover {
+  background-color: #add8e6;
+}
+.ag-fresh .ag-visible-icons {
+  padding-left: 2px;
+  padding-right: 2px;
 }

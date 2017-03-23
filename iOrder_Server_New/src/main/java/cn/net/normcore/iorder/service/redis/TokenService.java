@@ -46,4 +46,14 @@ public class TokenService<E extends BaseEntity> {
         ValueOperations<String, Token> valueOper = template.opsForValue();
         valueOper.set(key, token, Config.getLong("token_ttl"), TimeUnit.MINUTES);
     }
+
+    /**
+     * 获取TOKEN剩余生存时间，单位毫秒
+     *
+     * @param tokenKey TOKEN键
+     * @return
+     */
+    public Long getTokenTTL(String tokenKey) {
+        return template.getExpire(tokenKey);
+    }
 }

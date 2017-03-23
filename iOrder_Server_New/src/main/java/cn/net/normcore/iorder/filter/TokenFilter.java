@@ -59,5 +59,8 @@ public class TokenFilter implements ContainerRequestFilter {
             requestContext.getHeaders().add("customerId", String.valueOf(token.getUserId()));
         if (token.getUserType().equals(UserType.SHOPMAN))
             requestContext.getHeaders().add("shopmanId", String.valueOf(token.getUserId()));
+
+        //把TOKEN有效时间放入响应头
+        response.addHeader(Config.getProperty("token_ttl_key"), String.valueOf(tokenService.getTokenTTL(tokenValue)));
     }
 }

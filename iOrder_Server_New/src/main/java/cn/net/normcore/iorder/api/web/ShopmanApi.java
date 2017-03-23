@@ -7,15 +7,13 @@ import cn.net.normcore.iorder.entity.business.Shopman;
 import cn.net.normcore.iorder.service.business.ShopmanService;
 import cn.net.normcore.iorder.service.redis.ClientService;
 import cn.net.normcore.iorder.service.redis.TokenService;
+import cn.net.normcore.iorder.vo.business.ShopmanVo;
 import cn.net.normcore.iorder.vo.common.Client;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.FormParam;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import java.util.Map;
@@ -26,6 +24,7 @@ import java.util.Map;
 @Controller
 @Path("/web/shopman")
 @Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public class ShopmanApi {
     @Autowired
     private ShopmanService shopmanService;
@@ -37,18 +36,16 @@ public class ShopmanApi {
     /**
      * web端获取TOKEN
      *
-     * @param account  登录帐号，可以是登录名或者手机号码
-     * @param password 密码
      * @param request
      * @return
      */
     @POST
     @Path("/token")
-    public Map<String, Object> token(@FormParam("account") String account, @FormParam("password") String password, @Context HttpServletRequest request) {
-        Shopman shopman = shopmanService.findLogin(account);
+    public Map<String, Object> token(ShopmanVo shopmanVo, @Context HttpServletRequest request) {
+        Shopman shopman = shopmanService.findLogin(shopmanVo.getAccount());
         if (shopman == null)
             return SimpleResult.pessimistic("4006", "账号不存在");
-        if (!shopman.checkPassword(password))
+        if (!shopman.checkPassword(shopmanVo.getPassword()))
             return SimpleResult.pessimistic("4006", "密码错误");
 
         Client client = ClientUtils.buildClient(request, shopman);
