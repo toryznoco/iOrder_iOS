@@ -13,8 +13,8 @@
 @property (nonatomic, weak) UIImageView *backgroundImg;
 @property (nonatomic, weak) UIImageView *appIconImg;
 @property (nonatomic, weak) UIImageView *appNameImg;
-@property (nonatomic, weak) IORegisterTextField *phoneNumber;
-@property (nonatomic, weak) IORegisterTextField *password;
+//@property (nonatomic, weak) IORegisterTextField *phoneNumber;
+//@property (nonatomic, weak) IORegisterTextField *password;
 @property (nonatomic, weak) UITextField *verificationCode;
 @property (nonatomic, weak) UIButton *getCodeBtn;
 @property (nonatomic, weak) UIButton *registerBtn;
@@ -109,7 +109,7 @@
 }
 
 - (void)registerBtnDidPressed:(UIButton *)btn {
-    if ([self.delegate respondsToSelector:@selector(registerView:registerBtnDidPressed:)]) {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(registerView:registerBtnDidPressed:)]) {
         [self.delegate registerView:self registerBtnDidPressed:btn];
     }
 }

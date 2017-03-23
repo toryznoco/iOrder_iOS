@@ -16,16 +16,21 @@
 
 @end
 
+#pragma mark - interface IORegisterTextField
+
+@interface IORegisterTextField : UITextField
+
+@end
+
 #pragma mark - interface IORegisterView
 
 @interface IORegisterView : UIView
 
 @property (nonatomic, weak) id<IORegisterViewDelegate> delegate;
 
-@end
-
-#pragma mark - interface IORegisterTextField
-
-@interface IORegisterTextField : UITextField
+@property (nonatomic, weak) IORegisterTextField *phoneNumber;
+@property (nonatomic, weak) IORegisterTextField *password;
 
 @end
+
+

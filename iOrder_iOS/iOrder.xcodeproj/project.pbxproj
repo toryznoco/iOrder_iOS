@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9A17D9D11E837CFB00DCAA74 /* IOAccountTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A17D9D01E837CFB00DCAA74 /* IOAccountTool.m */; };
 		9A1BFDC31E6EA8DE00A0007F /* IONewFeatureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A1BFD521E6EA8DE00A0007F /* IONewFeatureViewController.m */; };
 		9A1BFDC41E6EA8DE00A0007F /* YWJNewFeatureScrollPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A1BFD551E6EA8DE00A0007F /* YWJNewFeatureScrollPage.m */; };
 		9A1BFDC51E6EA8DE00A0007F /* IODishViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A1BFD5A1E6EA8DE00A0007F /* IODishViewController.m */; };
@@ -52,6 +53,10 @@
 		9A1BFE001E6EA99B00A0007F /* IOLoginView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A1BFDFD1E6EA99B00A0007F /* IOLoginView.m */; };
 		9A1BFE011E6EA99B00A0007F /* IORegisterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A1BFDFF1E6EA99B00A0007F /* IORegisterView.m */; };
 		9A1BFE611E6EACE200A0007F /* IOGlobalManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A1BFE601E6EACE200A0007F /* IOGlobalManager.m */; };
+		9A2B872D1E83A8F2006DCD53 /* IOError.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A2B872C1E83A8F2006DCD53 /* IOError.m */; };
+		9A2B87361E83C3D5006DCD53 /* IOLoginManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A2B87351E83C3D5006DCD53 /* IOLoginManager.m */; };
+		9A2B87391E83C532006DCD53 /* IORegisterManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A2B87381E83C532006DCD53 /* IORegisterManager.m */; };
+		9A2B873C1E83CC77006DCD53 /* IORegisterParam.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A2B873B1E83CC77006DCD53 /* IORegisterParam.m */; };
 		9A3963D11E82482E000E2E40 /* YWJCacheTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A39638A1E82482E000E2E40 /* YWJCacheTool.m */; };
 		9A3963D21E82482E000E2E40 /* YWJDishesParam.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A39638E1E82482E000E2E40 /* YWJDishesParam.m */; };
 		9A3963D31E82482E000E2E40 /* YWJDishesResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A3963911E82482E000E2E40 /* YWJDishesResult.m */; };
@@ -112,6 +117,8 @@
 /* Begin PBXFileReference section */
 		3A6A169DE0BA56711B632DC4 /* Pods-iOrder.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOrder.release.xcconfig"; path = "Pods/Target Support Files/Pods-iOrder/Pods-iOrder.release.xcconfig"; sourceTree = "<group>"; };
 		565EF0A881111C2576CC81D4 /* libPods-iOrder.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-iOrder.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9A17D9CF1E837CFB00DCAA74 /* IOAccountTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOAccountTool.h; sourceTree = "<group>"; };
+		9A17D9D01E837CFB00DCAA74 /* IOAccountTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOAccountTool.m; sourceTree = "<group>"; };
 		9A1BFD511E6EA8DE00A0007F /* IONewFeatureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IONewFeatureViewController.h; sourceTree = "<group>"; };
 		9A1BFD521E6EA8DE00A0007F /* IONewFeatureViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IONewFeatureViewController.m; sourceTree = "<group>"; };
 		9A1BFD541E6EA8DE00A0007F /* YWJNewFeatureScrollPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWJNewFeatureScrollPage.h; sourceTree = "<group>"; };
@@ -203,6 +210,18 @@
 		9A1BFE5F1E6EACE200A0007F /* IOGlobalManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOGlobalManager.h; sourceTree = "<group>"; };
 		9A1BFE601E6EACE200A0007F /* IOGlobalManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOGlobalManager.m; sourceTree = "<group>"; };
 		9A1BFE621E6F9EB500A0007F /* Singleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Singleton.h; sourceTree = "<group>"; };
+		9A2B872B1E83A8F2006DCD53 /* IOError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOError.h; sourceTree = "<group>"; };
+		9A2B872C1E83A8F2006DCD53 /* IOError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOError.m; sourceTree = "<group>"; };
+		9A2B872F1E83AE80006DCD53 /* CommonHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommonHeader.h; sourceTree = "<group>"; };
+		9A2B87301E83B0C3006DCD53 /* IOConst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOConst.h; sourceTree = "<group>"; };
+		9A2B87311E83B0E2006DCD53 /* IOString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOString.h; sourceTree = "<group>"; };
+		9A2B87321E83B4EF006DCD53 /* IOTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOTool.h; sourceTree = "<group>"; };
+		9A2B87341E83C3D5006DCD53 /* IOLoginManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOLoginManager.h; sourceTree = "<group>"; };
+		9A2B87351E83C3D5006DCD53 /* IOLoginManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOLoginManager.m; sourceTree = "<group>"; };
+		9A2B87371E83C532006DCD53 /* IORegisterManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IORegisterManager.h; sourceTree = "<group>"; };
+		9A2B87381E83C532006DCD53 /* IORegisterManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IORegisterManager.m; sourceTree = "<group>"; };
+		9A2B873A1E83CC77006DCD53 /* IORegisterParam.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IORegisterParam.h; sourceTree = "<group>"; };
+		9A2B873B1E83CC77006DCD53 /* IORegisterParam.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IORegisterParam.m; sourceTree = "<group>"; };
 		9A3963891E82482E000E2E40 /* YWJCacheTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWJCacheTool.h; sourceTree = "<group>"; };
 		9A39638A1E82482E000E2E40 /* YWJCacheTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWJCacheTool.m; sourceTree = "<group>"; };
 		9A39638D1E82482E000E2E40 /* YWJDishesParam.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWJDishesParam.h; sourceTree = "<group>"; };
@@ -318,6 +337,15 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		9A17D9CE1E837CA000DCAA74 /* Account */ = {
+			isa = PBXGroup;
+			children = (
+				9A17D9CF1E837CFB00DCAA74 /* IOAccountTool.h */,
+				9A17D9D01E837CFB00DCAA74 /* IOAccountTool.m */,
+			);
+			path = Account;
+			sourceTree = "<group>";
+		};
 		9A1BFD4D1E6EA8DE00A0007F /* CommonModule */ = {
 			isa = PBXGroup;
 			children = (
@@ -331,6 +359,7 @@
 		9A1BFD4E1E6EA8DE00A0007F /* Login&Register */ = {
 			isa = PBXGroup;
 			children = (
+				9A2B87331E83C23F006DCD53 /* Manager */,
 				9A1BFDF31E6EA96400A0007F /* Controller */,
 				9A1BFDF41E6EA96400A0007F /* Model */,
 				9A1BFDF51E6EA96400A0007F /* View */,
@@ -559,6 +588,8 @@
 		9A1BFDF41E6EA96400A0007F /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				9A2B873A1E83CC77006DCD53 /* IORegisterParam.h */,
+				9A2B873B1E83CC77006DCD53 /* IORegisterParam.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -583,6 +614,17 @@
 			path = GlobalManager;
 			sourceTree = "<group>";
 		};
+		9A2B87331E83C23F006DCD53 /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				9A2B87341E83C3D5006DCD53 /* IOLoginManager.h */,
+				9A2B87351E83C3D5006DCD53 /* IOLoginManager.m */,
+				9A2B87371E83C532006DCD53 /* IORegisterManager.h */,
+				9A2B87381E83C532006DCD53 /* IORegisterManager.m */,
+			);
+			path = Manager;
+			sourceTree = "<group>";
+		};
 		9A3963871E82482E000E2E40 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
@@ -591,6 +633,7 @@
 				9A3963941E82482E000E2E40 /* Http */,
 				9A3963971E82482E000E2E40 /* Login */,
 				9A3963EA1E8249F6000E2E40 /* Network */,
+				9A17D9CE1E837CA000DCAA74 /* Account */,
 				9A3963A01E82482E000E2E40 /* Orders */,
 				9A3963A91E82482E000E2E40 /* Root */,
 				9A3963B11E82482E000E2E40 /* ShoppingCarts */,
@@ -830,6 +873,8 @@
 			children = (
 				9A3963EB1E824A10000E2E40 /* IONetworkTool.h */,
 				9A3963EC1E824A10000E2E40 /* IONetworkTool.m */,
+				9A2B872B1E83A8F2006DCD53 /* IOError.h */,
+				9A2B872C1E83A8F2006DCD53 /* IOError.m */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -907,6 +952,7 @@
 				9AC08D731E39F4E200D728AD /* AppDelegate.h */,
 				9AC08D741E39F4E200D728AD /* AppDelegate.m */,
 				9AC08D751E39F4E200D728AD /* IOPrefixHeader.pch */,
+				9A2B872F1E83AE80006DCD53 /* CommonHeader.h */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -914,6 +960,9 @@
 		9AC08D761E39F4E200D728AD /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				9A2B87301E83B0C3006DCD53 /* IOConst.h */,
+				9A2B87311E83B0E2006DCD53 /* IOString.h */,
+				9A2B87321E83B4EF006DCD53 /* IOTool.h */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -1230,8 +1279,10 @@
 				9A3963DE1E82482E000E2E40 /* YWJRootTool.m in Sources */,
 				9A1BFDC71E6EA8DE00A0007F /* IOShopViewController.m in Sources */,
 				9A1BFDC81E6EA8DE00A0007F /* IOSingInViewController.m in Sources */,
+				9A2B87391E83C532006DCD53 /* IORegisterManager.m in Sources */,
 				9A1BFDD81E6EA8DE00A0007F /* IOSignInHeaderView.m in Sources */,
 				9A1BFDED1E6EA8DE00A0007F /* IOProfileMyPointController.m in Sources */,
+				9A17D9D11E837CFB00DCAA74 /* IOAccountTool.m in Sources */,
 				9A3963D81E82482E000E2E40 /* YWJLoginTool.m in Sources */,
 				9A3963DC1E82482E000E2E40 /* YWJRootNavigationViewController.m in Sources */,
 				9A3963D91E82482E000E2E40 /* IOOrdersTool.m in Sources */,
@@ -1257,6 +1308,7 @@
 				CA41C87A1D2BF0C90092921E /* UIView+Masonry_YWJ.m in Sources */,
 				9A1BFDD01E6EA8DE00A0007F /* IOHomeHeaderView.m in Sources */,
 				9A3963DF1E82482E000E2E40 /* YWJShoppingCartInfoParam.m in Sources */,
+				9A2B87361E83C3D5006DCD53 /* IOLoginManager.m in Sources */,
 				9A1BFDD11E6EA8DE00A0007F /* IOSegmentScrollView.m in Sources */,
 				9A1BFDEF1E6EA8DE00A0007F /* IOUserInfo.m in Sources */,
 				9A1BFDE41E6EA8DE00A0007F /* YWJBadgeView.m in Sources */,
@@ -1276,11 +1328,13 @@
 				CAE8F0811CB94170005618B0 /* UIView+YWJFrame.m in Sources */,
 				9A1BFDCC1E6EA8DE00A0007F /* IOShopDetailCellInfo.m in Sources */,
 				9A1BFDC41E6EA8DE00A0007F /* YWJNewFeatureScrollPage.m in Sources */,
+				9A2B872D1E83A8F2006DCD53 /* IOError.m in Sources */,
 				9A3963E61E82482E000E2E40 /* YWJSubmitOrderParam.m in Sources */,
 				9A1BFDEE1E6EA8DE00A0007F /* IOProfileViewController.m in Sources */,
 				9A405B0F1E81521F0037A5AC /* IOOrder.m in Sources */,
 				9A1BFDEC1E6EA8DE00A0007F /* IOProfileMyEvaluateController.m in Sources */,
 				9A1BFDD31E6EA8DE00A0007F /* IOShopDetail.m in Sources */,
+				9A2B873C1E83CC77006DCD53 /* IORegisterParam.m in Sources */,
 				9A1BFDD91E6EA8DE00A0007F /* IOSubmitCell.m in Sources */,
 				9A1BFDCE1E6EA8DE00A0007F /* IOShoppingViewInfo.m in Sources */,
 				9AC08D701E39F3C600D728AD /* main.m in Sources */,
