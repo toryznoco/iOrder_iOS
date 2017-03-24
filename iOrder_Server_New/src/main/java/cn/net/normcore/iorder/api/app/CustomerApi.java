@@ -2,16 +2,20 @@ package cn.net.normcore.iorder.api.app;
 
 import cn.net.normcore.iorder.common.SimpleResult;
 import cn.net.normcore.iorder.common.utils.ClientUtils;
+import cn.net.normcore.iorder.common.utils.Config;
 import cn.net.normcore.iorder.common.utils.InfoUtils;
 import cn.net.normcore.iorder.common.utils.UuidUtils;
 import cn.net.normcore.iorder.entity.customer.Customer;
 import cn.net.normcore.iorder.filter.ValidateToken;
+import cn.net.normcore.iorder.service.cache.*;
 import cn.net.normcore.iorder.service.customer.CustomerService;
 import cn.net.normcore.iorder.service.customer.SignInRecordService;
-import cn.net.normcore.iorder.service.redis.ClientService;
-import cn.net.normcore.iorder.service.redis.TokenService;
-import cn.net.normcore.iorder.vo.common.Client;
+import cn.net.normcore.iorder.vo.token.UserType;
 import cn.net.normcore.iorder.vo.customer.SignInRecordVo;
+import cn.net.normcore.iorder.vo.token.AccessToken;
+import cn.net.normcore.iorder.vo.token.Client;
+import cn.net.normcore.iorder.vo.token.RefreshToken;
+import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -21,7 +25,6 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Map;
 
 /**
@@ -37,9 +40,11 @@ public class CustomerApi {
     @Autowired
     private SignInRecordService signInRecordService;
     @Autowired
-    private ClientService clientService;
+    private ClientCacheService clientCacheService;
     @Autowired
-    private TokenService<Customer> tokenService;
+    private RefreshTokenCacheService refreshTokenCacheService;
+    @Autowired
+    private AccessTokenCacheService accessTokenCacheService;
 
     /**
      * 顾客账号注册
@@ -52,15 +57,13 @@ public class CustomerApi {
     @Consumes(MediaType.APPLICATION_JSON)
     public Map<String, Object> register(Customer customer) {
         if (customer == null)
-            return SimpleResult.pessimistic("4004", "请提交数据");
+            return SimpleResult.pessimistic(4004, "请提交数据");
         if (!InfoUtils.isMobileNo(customer.getMobile()))
-            return SimpleResult.pessimistic("4003", "手机号码格式错误");
-        if (StringUtils.isEmpty(customer.getNickName()))
-            return SimpleResult.pessimistic("4004", "参数[nickName]不能为空");
+            return SimpleResult.pessimistic(4003, "手机号码格式错误");
         if (StringUtils.isEmpty(customer.getPassword()))
-            return SimpleResult.pessimistic("4004", "参数[password]不能为空");
+            return SimpleResult.pessimistic(4004, "参数[password]不能为空");
         if (customerService.findByMobile(customer.getMobile()) != null)
-            return SimpleResult.pessimistic("4005", "手机号码已经注册");
+            return SimpleResult.pessimistic(4005, "手机号码已经注册");
         customer.setHeadImage("iorder/promotion/carousel2.png");
         customer.setSalt(InfoUtils.getMd5Salt());
         customer.setPassword(InfoUtils.getMd5Password(customer.getPassword(), customer.getSalt()));
@@ -69,32 +72,83 @@ public class CustomerApi {
     }
 
     /**
-     * 获得TOKEN
+     * 用户登陆
      *
-     * @param account  账号
-     * @param password 密码
+     * @param data
+     * @param request
+     * @return
+     */
+    @POST
+    @Path("/login")
+    public Map<String, Object> login(JsonNode data, @Context HttpServletRequest request) {
+        JsonNode account = data.get("account");
+        JsonNode password = data.get("password");
+        if (account == null)
+            return SimpleResult.pessimistic(4004, "参数[account]不能为空");
+        if (password == null)
+            return SimpleResult.pessimistic(4004, "参数[password]不能为空");
+
+        Customer customer = customerService.findByMobile(account.asText());
+        if (customer == null)
+            return SimpleResult.pessimistic(4006, "账号不存在");
+        if (!customer.checkPassword(password.asText()))
+            return SimpleResult.pessimistic(4006, "密码错误");
+
+        String clientKey = String.format("customer[%d]", customer.getId());
+        String clientId = ClientUtils.buildClientId(request);
+        Client savedClient = clientCacheService.get(clientKey);
+        if (savedClient != null && savedClient.getClientId().equals(clientId)) {
+            return SimpleResult.pessimistic(4011, "你已经登陆");
+        }
+        if (savedClient != null) {
+            refreshTokenCacheService.delete(savedClient.getRefreshToken());
+        }
+
+        String refreshToken = UuidUtils.simpleUuid();
+        String accessToken = UuidUtils.simpleUuid();
+        refreshTokenCacheService.save(refreshToken, new RefreshToken(customer.getId(), UserType.CUSTOMER, clientId, accessToken));
+        accessTokenCacheService.save(accessToken, new AccessToken(customer.getId(), UserType.CUSTOMER, clientId));
+        clientCacheService.save(clientKey, new Client(clientId, refreshToken));
+
+        Map<String, Object> result = SimpleResult.optimistic("登陆成功");
+        result.put("refreshToken", refreshToken);
+        result.put("accessToken", accessToken);
+        return result;
+    }
+
+    /**
+     * 获取Access Token
+     *
+     * @param data
      * @param request
      * @return
      */
     @POST
     @Path("/token")
-    public Map<String, Object> token(@FormParam("account") String account, @FormParam("password") String password, @Context HttpServletRequest request) {
-        Customer customer = customerService.findByMobile(account);
-        if (customer == null)
-            return SimpleResult.pessimistic("4006", "账号不存在");
-        if (!customer.checkPassword(password))
-            return SimpleResult.pessimistic("4006", "密码错误");
-
-        Client client = ClientUtils.buildClient(request, customer);
-        if (client.getClientId().equals(clientService.getClientId(client))) {
-            return SimpleResult.pessimistic("4007", "获取TOKEN过于频繁");
+    public Map<String, Object> token(JsonNode data, @Context HttpServletRequest request) {
+        String refreshTokenKey = data.get("refreshToken").asText();
+        RefreshToken refreshToken = refreshTokenCacheService.get(refreshTokenKey);
+        if (refreshToken == null || !ClientUtils.buildClientId(request).equals(refreshToken.getClientId())) {
+            return SimpleResult.pessimistic(4002, "TOKEN无效");
         }
+        AccessToken accessToken = accessTokenCacheService.get(refreshToken.getAccessToken());
+        if (accessToken != null && accessTokenCacheService.getTTL(refreshToken.getAccessToken()) > (Config.getLong("access_token_ttl") - Config.getLong("access_token_interval"))) {
+            return SimpleResult.pessimistic(4007, "获取token过于频繁");
+        }
+        refreshTokenCacheService.delete(refreshTokenKey);
+        if (accessToken == null)
+            accessToken = new AccessToken(refreshToken.getUserId(), refreshToken.getUserType(), refreshToken.getClientId());
+        String accessTokenKey = UuidUtils.simpleUuid();
+        accessTokenCacheService.save(accessTokenKey, accessToken);
+        refreshTokenKey = UuidUtils.simpleUuid();
+        refreshToken.setAccessToken(accessTokenKey);
+        refreshTokenCacheService.save(refreshTokenKey, refreshToken);
+        String clientKey = String.format("customer[%d]", refreshToken.getUserId());
+        clientCacheService.save(clientKey, new Client(refreshToken.getClientId(), refreshTokenKey));
 
-        String token = UuidUtils.simpleUuid();
-        tokenService.save(token, client.getClientId(), customer);
-        clientService.saveClientId(client);
         Map<String, Object> result = SimpleResult.optimistic("刷新TOKEN成功");
-        result.put("token", token);
+        result.put("refreshToken", refreshTokenKey);
+        result.put("accessToken", accessTokenKey);
         return result;
     }
 
@@ -111,9 +165,9 @@ public class CustomerApi {
     @ValidateToken
     public Map<String, Object> markShop(@FormParam("shopId") Long shopId, @FormParam("remarks") String remarks, @HeaderParam("customerId") Long customerId) {
         if (shopId == null)
-            return SimpleResult.pessimistic("4004", "参数[shopId]不能为空");
+            return SimpleResult.pessimistic(4004, "参数[shopId]不能为空");
         if (customerId == null)
-            return SimpleResult.pessimistic("5000", "系统内部错误，请联系开发者");
+            return SimpleResult.pessimistic(5000, "系统内部错误，请联系开发者");
         customerService.markShop(customerId, shopId, remarks);
         return SimpleResult.optimistic();
     }
@@ -131,9 +185,9 @@ public class CustomerApi {
     @ValidateToken
     public Map<String, Object> markGoods(@FormParam("goodsId") Long goodsId, @FormParam("remarks") String remarks, @HeaderParam("customerId") Long customerId) {
         if (goodsId == null)
-            return SimpleResult.pessimistic("4004", "参数[goodsId]不能为空");
+            return SimpleResult.pessimistic(4004, "参数[goodsId]不能为空");
         if (customerId == null)
-            return SimpleResult.pessimistic("5000", "系统内部错误，请联系开发者");
+            return SimpleResult.pessimistic(5000, "系统内部错误，请联系开发者");
         customerService.markGoods(customerId, goodsId, remarks);
         return SimpleResult.optimistic();
     }
@@ -150,12 +204,12 @@ public class CustomerApi {
     @ValidateToken
     public Map<String, Object> signIn(@FormParam("shopId") Long shopId, @HeaderParam("customerId") Long customerId) {
         if (shopId == null)
-            return SimpleResult.pessimistic("4004", "参数[shopId]不能为空");
+            return SimpleResult.pessimistic(4004, "参数[shopId]不能为空");
         if (customerId == null)
-            return SimpleResult.pessimistic("5000", "系统内部错误，请联系开发者");
+            return SimpleResult.pessimistic(5000, "系统内部错误，请联系开发者");
         if (customerService.signIn(customerId, shopId))
             return SimpleResult.optimistic();
-        return SimpleResult.pessimistic("4008", "不能重复签到");
+        return SimpleResult.pessimistic(4008, "不能重复签到");
     }
 
     /**
@@ -172,9 +226,9 @@ public class CustomerApi {
     @ValidateToken
     public Map<String, Object> signInRecords(@QueryParam("shopId") Long shopId, @HeaderParam("customerId") Long customerId, @QueryParam("year") Integer year, @QueryParam("month") Integer month) {
         if (shopId == null)
-            return SimpleResult.pessimistic("4004", "参数[shopId]不能为空");
+            return SimpleResult.pessimistic(4004, "参数[shopId]不能为空");
         if (customerId == null)
-            return SimpleResult.pessimistic("5000", "系统内部错误，请联系开发者");
+            return SimpleResult.pessimistic(5000, "系统内部错误，请联系开发者");
         if (year == null)
             year = Calendar.getInstance().get(Calendar.YEAR);
         if (month == null)

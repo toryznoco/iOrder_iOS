@@ -18,7 +18,7 @@ public class SimpleResult {
     }
 
     public static Map<String, Object> optimistic(String message) {
-        return getSimpleMap("success", "2000", message);
+        return getSimpleMap(true, 2000, message);
     }
 
     public static Map<String, Object> optimistic(String message, Object... args) {
@@ -31,15 +31,15 @@ public class SimpleResult {
         return optimistic(message);
     }
 
-    public static Map<String, Object> pessimistic(String code) {
+    public static Map<String, Object> pessimistic(int code) {
         return pessimistic(code, null);
     }
 
-    public static Map<String, Object> pessimistic(String code, String message) {
-        return getSimpleMap("error", code, message);
+    public static Map<String, Object> pessimistic(int code, String message) {
+        return getSimpleMap(false, code, message);
     }
 
-    public static Map<String, Object> pessimistic(String code, String message, Object... args) {
+    public static Map<String, Object> pessimistic(int code, String message, Object... args) {
         if (args != null && args.length > 0) {
             for (Object o :
                     args) {
@@ -49,7 +49,7 @@ public class SimpleResult {
         return pessimistic(code, message);
     }
 
-    private static Map<String, Object> getSimpleMap(String result, String code, String message) {
+    private static Map<String, Object> getSimpleMap(boolean result, int code, String message) {
         Map<String, Object> map = new HashMap<>();
         map.put("result", result);
         map.put("code", code);
