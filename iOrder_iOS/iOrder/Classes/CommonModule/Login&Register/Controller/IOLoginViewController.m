@@ -16,7 +16,8 @@
 #import "YWJLoginTool.h"
 #import "YWJLoginParam.h"
 #import "YWJLoginResult.h"
-#import "MBProgressHUD.h"
+//#import "MBProgressHUD.h"
+#import "MBProgressHUD+YWJ.h"
 
 @interface IOLoginViewController ()<IOLoginViewDelegate>
 
@@ -72,8 +73,9 @@
 #pragma mark - IOLoginViewDelegate
 
 - (void)loginView:(IOLoginView *)loginView registerBtnDidPressed:(UIButton *)registerBtn {
-    IORegisterViewController *registerVc = [[IORegisterViewController alloc] init];
-    [self.navigationController pushViewController:registerVc animated:YES];
+    [MBProgressHUD showSuccess:@"hao" toView:self.view];
+//    IORegisterViewController *registerVc = [[IORegisterViewController alloc] init];
+//    [self.navigationController pushViewController:registerVc animated:YES];
 }
 
 - (void)loginView:(IOLoginView *)loginView loginBtnDidPressed:(UIButton *)loginBtn {

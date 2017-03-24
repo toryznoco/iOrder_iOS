@@ -10,7 +10,13 @@
 
 #import "IORegisterView.h"
 
+#import "IORegisterManager.h"
+#import "IORegisterParam.h"
+
 @interface IORegisterViewController ()<IORegisterViewDelegate>
+
+/** 注册视图 */
+@property (nonatomic, weak) IORegisterView *registerView;
 
 @end
 
@@ -56,12 +62,22 @@
     IORegisterView *registerView = [[IORegisterView alloc] initWithFrame:self.view.frame];
     registerView.delegate = self;
     [self.view addSubview:registerView];
+    _registerView = registerView;
+}
+
+#pragma mark - Private
+- (void)doRegister {
+//    [IORegisterManager registerWithParam:]
 }
 
 #pragma mark - IORegisterViewDelegate
 
 - (void)registerView:(IORegisterView *)registerView registerBtnDidPressed:(UIButton *)regitserBtn {
-    [self.navigationController popViewControllerAnimated:YES];
+//    [self.navigationController popViewControllerAnimated:YES];
+    
+    // 处理注册
+//    IORegisterParam *param = [IORegisterParam paramWith];
+    [self doRegister];
 }
 
 /*
