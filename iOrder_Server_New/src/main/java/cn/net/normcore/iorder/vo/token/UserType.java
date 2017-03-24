@@ -1,4 +1,4 @@
-package cn.net.normcore.iorder.vo.common;
+package cn.net.normcore.iorder.vo.token;
 
 import cn.net.normcore.iorder.entity.BaseEntity;
 import cn.net.normcore.iorder.entity.business.Shopman;
