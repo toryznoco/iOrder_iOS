@@ -21,6 +21,44 @@
 @property (strong, nonatomic) NSMutableDictionary *subtitleColors;
 @property (strong, nonatomic) NSMutableDictionary *borderColors;
 
+@property (strong, nonatomic) NSString *titleFontName;
+@property (strong, nonatomic) NSString *subtitleFontName;
+@property (strong, nonatomic) NSString *weekdayFontName;
+@property (strong, nonatomic) NSString *headerTitleFontName;
+
+@property (assign, nonatomic) CGFloat titleFontSize;
+@property (assign, nonatomic) CGFloat subtitleFontSize;
+@property (assign, nonatomic) CGFloat weekdayFontSize;
+@property (assign, nonatomic) CGFloat headerTitleFontSize;
+
+@property (assign, nonatomic) CGFloat preferredTitleFontSize;
+@property (assign, nonatomic) CGFloat preferredSubtitleFontSize;
+@property (assign, nonatomic) CGFloat preferredWeekdayFontSize;
+@property (assign, nonatomic) CGFloat preferredHeaderTitleFontSize;
+
+@property (readonly, nonatomic) UIFont *preferredTitleFont;
+@property (readonly, nonatomic) UIFont *preferredSubtitleFont;
+@property (readonly, nonatomic) UIFont *preferredWeekdayFont;
+@property (readonly, nonatomic) UIFont *preferredHeaderTitleFont;
+
+- (void)adjustTitleIfNecessary;
+
+- (void)invalidateFonts;
+- (void)invalidateTextColors;
+- (void)invalidateTitleFont;
+- (void)invalidateSubtitleFont;
+- (void)invalidateWeekdayFont;
+- (void)invalidateHeaderFont;
+- (void)invalidateTitleTextColor;
+- (void)invalidateSubtitleTextColor;
+- (void)invalidateWeekdayTextColor;
+- (void)invalidateHeaderTextColor;
+
+- (void)invalidateBorderColors;
+- (void)invalidateFillColors;
+- (void)invalidateEventColors;
+- (void)invalidateBorderRadius;
+
 @end
 
 @implementation FSCalendarAppearance
@@ -30,10 +68,17 @@
     self = [super init];
     if (self) {
         
-        _titleFont = [UIFont systemFontOfSize:FSCalendarStandardTitleTextSize];
-        _subtitleFont = [UIFont systemFontOfSize:FSCalendarStandardSubtitleTextSize];
-        _weekdayFont = [UIFont systemFontOfSize:FSCalendarStandardWeekdayTextSize];
-        _headerTitleFont = [UIFont systemFontOfSize:FSCalendarStandardHeaderTextSize];
+        _adjustsFontSizeToFitContentSize = YES;
+        
+        _titleFontSize = _preferredTitleFontSize  = FSCalendarStandardTitleTextSize;
+        _subtitleFontSize = _preferredSubtitleFontSize = FSCalendarStandardSubtitleTextSize;
+        _weekdayFontSize = _preferredWeekdayFontSize = FSCalendarStandardWeekdayTextSize;
+        _headerTitleFontSize = _preferredHeaderTitleFontSize = FSCalendarStandardHeaderTextSize;
+        
+        _titleFontName = [UIFont systemFontOfSize:1].fontName;
+        _subtitleFontName = [UIFont systemFontOfSize:1].fontName;
+        _weekdayFontName = [UIFont systemFontOfSize:1].fontName;
+        _headerTitleFontName = [UIFont systemFontOfSize:1].fontName;
         
         _headerTitleColor = FSCalendarStandardTitleTextColor;
         _headerDateFormat = @"MMMM yyyy";
@@ -81,35 +126,80 @@
 
 - (void)setTitleFont:(UIFont *)titleFont
 {
-    if (![_titleFont isEqual:titleFont]) {
-        _titleFont = titleFont;
-        self.calendar.calculator.titleHeight = -1;
-        [self.calendar setNeedsConfigureAppearance];
+    BOOL needsInvalidating = NO;
+    if (![_titleFontName isEqualToString:titleFont.fontName]) {
+        _titleFontName = titleFont.fontName;
+        needsInvalidating = YES;
     }
+    if (_titleFontSize != titleFont.pointSize) {
+        _titleFontSize = titleFont.pointSize;
+        needsInvalidating = YES;
+    }
+    if (needsInvalidating) {
+        [self invalidateTitleFont];
+    }
+}
+
+- (UIFont *)titleFont
+{
+    return [UIFont fontWithName:_titleFontName size:_titleFontSize];
 }
 
 - (void)setSubtitleFont:(UIFont *)subtitleFont
 {
-    if (![_subtitleFont isEqual:subtitleFont]) {
-        _subtitleFont = subtitleFont;
-        self.calendar.calculator.subtitleHeight = -1;
-        [self.calendar setNeedsConfigureAppearance];
+    BOOL needsInvalidating = NO;
+    if (![_subtitleFontName isEqualToString:subtitleFont.fontName]) {
+        _subtitleFontName = subtitleFont.fontName;
+        needsInvalidating = YES;
     }
+    if (_subtitleFontSize != subtitleFont.pointSize) {
+        _subtitleFontSize = subtitleFont.pointSize;
+        needsInvalidating = YES;
+    }
+    if (needsInvalidating) {
+        [self invalidateSubtitleFont];
+    }
+}
+
+- (UIFont *)subtitleFont
+{
+    return [UIFont fontWithName:_subtitleFontName size:_subtitleFontSize];
 }
 
 - (void)setWeekdayFont:(UIFont *)weekdayFont
 {
-    if (![_weekdayFont isEqual:weekdayFont]) {
-        _weekdayFont = weekdayFont;
-        [self.calendar setNeedsConfigureAppearance];
+    BOOL needsInvalidating = NO;
+    if (![_weekdayFontName isEqualToString:weekdayFont.fontName]) {
+        _weekdayFontName = weekdayFont.fontName;
+        needsInvalidating = YES;
     }
+    if (_weekdayFontSize != weekdayFont.pointSize) {
+        _weekdayFontSize = weekdayFont.pointSize;
+        needsInvalidating = YES;
+    }
+    if (needsInvalidating) {
+        [self invalidateWeekdayFont];
+    }
+}
+
+- (UIFont *)weekdayFont
+{
+    return [UIFont fontWithName:_weekdayFontName size:_weekdayFontSize];
 }
 
 - (void)setHeaderTitleFont:(UIFont *)headerTitleFont
 {
-    if (![_headerTitleFont isEqual:headerTitleFont]) {
-        _headerTitleFont = headerTitleFont;
-        [self.calendar setNeedsConfigureAppearance];
+    BOOL needsInvalidating = NO;
+    if (![_headerTitleFontName isEqualToString:headerTitleFont.fontName]) {
+        _headerTitleFontName = headerTitleFont.fontName;
+        needsInvalidating = YES;
+    }
+    if (_headerTitleFontSize != headerTitleFont.pointSize) {
+        _headerTitleFontSize = headerTitleFont.pointSize;
+        needsInvalidating = YES;
+    }
+    if (needsInvalidating) {
+        [self invalidateHeaderFont];
     }
 }
 
@@ -117,7 +207,8 @@
 {
     if (!CGPointEqualToPoint(_titleOffset, titleOffset)) {
         _titleOffset = titleOffset;
-        [_calendar.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
+        [_calendar.collectionView.visibleCells setValue:@YES forKey:@"needsAdjustingViewFrame"];
+        [_calendar.collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
     }
 }
 
@@ -125,7 +216,8 @@
 {
     if (!CGPointEqualToPoint(_subtitleOffset, subtitleOffset)) {
         _subtitleOffset = subtitleOffset;
-        [_calendar.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
+        [_calendar.collectionView.visibleCells setValue:@YES forKey:@"needsAdjustingViewFrame"];
+        [_calendar.collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
     }
 }
 
@@ -133,7 +225,8 @@
 {
     if (!CGPointEqualToPoint(_imageOffset, imageOffset)) {
         _imageOffset = imageOffset;
-        [_calendar.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
+        [_calendar.collectionView.visibleCells setValue:@YES forKey:@"needsAdjustingViewFrame"];
+        [_calendar.collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
     }
 }
 
@@ -141,8 +234,14 @@
 {
     if (!CGPointEqualToPoint(_eventOffset, eventOffset)) {
         _eventOffset = eventOffset;
-        [_calendar.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
+        [_calendar.collectionView.visibleCells setValue:@YES forKey:@"needsAdjustingViewFrame"];
+        [_calendar.collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
     }
+}
+
+- (UIFont *)headerTitleFont
+{
+    return [UIFont fontWithName:_headerTitleFontName size:_headerTitleFontSize];
 }
 
 - (void)setTitleDefaultColor:(UIColor *)color
@@ -152,7 +251,7 @@
     } else {
         [_titleColors removeObjectForKey:@(FSCalendarCellStateNormal)];
     }
-    [self.calendar setNeedsConfigureAppearance];
+    [self invalidateTitleTextColor];
 }
 
 - (UIColor *)titleDefaultColor
@@ -167,7 +266,7 @@
     } else {
         [_titleColors removeObjectForKey:@(FSCalendarCellStateSelected)];
     }
-    [self.calendar setNeedsConfigureAppearance];
+    [self invalidateTitleTextColor];
 }
 
 - (UIColor *)titleSelectionColor
@@ -182,7 +281,7 @@
     } else {
         [_titleColors removeObjectForKey:@(FSCalendarCellStateToday)];
     }
-    [self.calendar setNeedsConfigureAppearance];
+    [self invalidateTitleTextColor];
 }
 
 - (UIColor *)titleTodayColor
@@ -197,7 +296,7 @@
     } else {
         [_titleColors removeObjectForKey:@(FSCalendarCellStatePlaceholder)];
     }
-    [self.calendar setNeedsConfigureAppearance];
+    [self invalidateTitleTextColor];
 }
 
 - (UIColor *)titlePlaceholderColor
@@ -212,7 +311,7 @@
     } else {
         [_titleColors removeObjectForKey:@(FSCalendarCellStateWeekend)];
     }
-    [self.calendar setNeedsConfigureAppearance];
+    [self invalidateTitleTextColor];
 }
 
 - (UIColor *)titleWeekendColor
@@ -227,7 +326,7 @@
     } else {
         [_subtitleColors removeObjectForKey:@(FSCalendarCellStateNormal)];
     }
-    [self.calendar setNeedsConfigureAppearance];
+    [self invalidateSubtitleTextColor];
 }
 
 -(UIColor *)subtitleDefaultColor
@@ -242,7 +341,7 @@
     } else {
         [_subtitleColors removeObjectForKey:@(FSCalendarCellStateSelected)];
     }
-    [self.calendar setNeedsConfigureAppearance];
+    [self invalidateSubtitleTextColor];
 }
 
 - (UIColor *)subtitleSelectionColor
@@ -257,7 +356,7 @@
     } else {
         [_subtitleColors removeObjectForKey:@(FSCalendarCellStateToday)];
     }
-    [self.calendar setNeedsConfigureAppearance];
+    [self invalidateSubtitleTextColor];
 }
 
 - (UIColor *)subtitleTodayColor
@@ -272,7 +371,7 @@
     } else {
         [_subtitleColors removeObjectForKey:@(FSCalendarCellStatePlaceholder)];
     }
-    [self.calendar setNeedsConfigureAppearance];
+    [self invalidateSubtitleTextColor];
 }
 
 - (UIColor *)subtitlePlaceholderColor
@@ -287,7 +386,7 @@
     } else {
         [_subtitleColors removeObjectForKey:@(FSCalendarCellStateWeekend)];
     }
-    [self.calendar setNeedsConfigureAppearance];
+    [self invalidateSubtitleTextColor];
 }
 
 - (UIColor *)subtitleWeekendColor
@@ -302,7 +401,7 @@
     } else {
         [_backgroundColors removeObjectForKey:@(FSCalendarCellStateSelected)];
     }
-    [self.calendar setNeedsConfigureAppearance];
+    [self invalidateFillColors];
 }
 
 - (UIColor *)selectionColor
@@ -317,7 +416,7 @@
     } else {
         [_backgroundColors removeObjectForKey:@(FSCalendarCellStateToday)];
     }
-    [self.calendar setNeedsConfigureAppearance];
+    [self invalidateFillColors];
 }
 
 - (UIColor *)todayColor
@@ -332,7 +431,7 @@
     } else {
         [_backgroundColors removeObjectForKey:@(FSCalendarCellStateToday|FSCalendarCellStateSelected)];
     }
-    [self.calendar setNeedsConfigureAppearance];
+    [self invalidateFillColors];
 }
 
 - (UIColor *)todaySelectionColor
@@ -344,7 +443,7 @@
 {
     if (![_eventDefaultColor isEqual:eventDefaultColor]) {
         _eventDefaultColor = eventDefaultColor;
-        [self.calendar setNeedsConfigureAppearance];
+        [self invalidateEventColors];
     }
 }
 
@@ -355,7 +454,7 @@
     } else {
         [_borderColors removeObjectForKey:@(FSCalendarCellStateNormal)];
     }
-    [self.calendar setNeedsConfigureAppearance];
+    [self invalidateBorderColors];
 }
 
 - (UIColor *)borderDefaultColor
@@ -370,7 +469,7 @@
     } else {
         [_borderColors removeObjectForKey:@(FSCalendarCellStateSelected)];
     }
-    [self.calendar setNeedsConfigureAppearance];
+    [self invalidateBorderColors];
 }
 
 - (UIColor *)borderSelectionColor
@@ -384,7 +483,7 @@
     borderRadius = MIN(1.0, borderRadius);
     if (_borderRadius != borderRadius) {
         _borderRadius = borderRadius;
-        [self.calendar setNeedsConfigureAppearance];
+        [self invalidateBorderRadius];
     }
 }
 
@@ -392,7 +491,7 @@
 {
     if (![_weekdayTextColor isEqual:weekdayTextColor]) {
         _weekdayTextColor = weekdayTextColor;
-        [self.calendar setNeedsConfigureAppearance];
+        [self invalidateWeekdayTextColor];
     }
 }
 
@@ -400,7 +499,7 @@
 {
     if (![_headerTitleColor isEqual:color]) {
         _headerTitleColor = color;
-        [self.calendar setNeedsConfigureAppearance];
+        [self invalidateHeaderTextColor];
     }
 }
 
@@ -408,7 +507,8 @@
 {
     if (_headerMinimumDissolvedAlpha != headerMinimumDissolvedAlpha) {
         _headerMinimumDissolvedAlpha = headerMinimumDissolvedAlpha;
-        [self.calendar setNeedsConfigureAppearance];
+        [_calendar.header.collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
+        [_calendar.visibleStickyHeaders makeObjectsPerformSelector:@selector(setNeedsLayout)];
     }
 }
 
@@ -416,30 +516,183 @@
 {
     if (![_headerDateFormat isEqual:headerDateFormat]) {
         _headerDateFormat = headerDateFormat;
-        [self.calendar setNeedsConfigureAppearance];
+        [_calendar invalidateHeaders];
     }
+}
+
+- (void)setAdjustsFontSizeToFitContentSize:(BOOL)adjustsFontSizeToFitContentSize
+{
+    if (_adjustsFontSizeToFitContentSize != adjustsFontSizeToFitContentSize) {
+        _adjustsFontSizeToFitContentSize = adjustsFontSizeToFitContentSize;
+        if (adjustsFontSizeToFitContentSize) {
+            [self invalidateFonts];
+        }
+    }
+}
+
+- (UIFont *)preferredTitleFont
+{
+    return [UIFont fontWithName:_titleFontName size:_adjustsFontSizeToFitContentSize?_preferredTitleFontSize:_titleFontSize];
+}
+
+- (UIFont *)preferredSubtitleFont
+{
+    return [UIFont fontWithName:_subtitleFontName size:_adjustsFontSizeToFitContentSize?_preferredSubtitleFontSize:_subtitleFontSize];
+}
+
+- (UIFont *)preferredWeekdayFont
+{
+    return [UIFont fontWithName:_weekdayFontName size:_adjustsFontSizeToFitContentSize?_preferredWeekdayFontSize:_weekdayFontSize];
+}
+
+- (UIFont *)preferredHeaderTitleFont
+{
+    return [UIFont fontWithName:_headerTitleFontName size:_adjustsFontSizeToFitContentSize?_preferredHeaderTitleFontSize:_headerTitleFontSize];
+}
+
+- (void)adjustTitleIfNecessary
+{
+    if (!self.calendar.floatingMode) {
+        if (_adjustsFontSizeToFitContentSize) {
+            CGFloat factor       = (_calendar.scope==FSCalendarScopeMonth) ? 6 : 1.1;
+            _preferredTitleFontSize       = _calendar.collectionView.fs_height/3/factor;
+            _preferredTitleFontSize       -= (_preferredTitleFontSize-FSCalendarStandardTitleTextSize)*0.5;
+            _preferredSubtitleFontSize    = _calendar.collectionView.fs_height/4.5/factor;
+            _preferredSubtitleFontSize    -= (_preferredSubtitleFontSize-FSCalendarStandardSubtitleTextSize)*0.75;
+            _preferredHeaderTitleFontSize = _preferredTitleFontSize * 1.25;
+            _preferredWeekdayFontSize     = _preferredTitleFontSize;
+            
+        }
+    } else {
+        _preferredHeaderTitleFontSize = 20;
+        if (FSCalendarDeviceIsIPad) {
+            _preferredHeaderTitleFontSize = FSCalendarStandardHeaderTextSize * 1.5;
+            _preferredTitleFontSize = FSCalendarStandardTitleTextSize * 1.3;
+            _preferredSubtitleFontSize = FSCalendarStandardSubtitleTextSize * 1.15;
+            _preferredWeekdayFontSize = _preferredTitleFontSize;
+        }
+        CGFloat multiplier = 1+(_calendar.lineHeightMultiplier-1)/4;
+        _preferredHeaderTitleFontSize *= multiplier;
+        _preferredTitleFontSize *= multiplier;
+        _preferredSubtitleFontSize *= multiplier;
+        _preferredSubtitleFontSize *= multiplier;
+    }
+    
+    // reload appearance
+    [self invalidateFonts];
 }
 
 - (void)setCaseOptions:(FSCalendarCaseOptions)caseOptions
 {
     if (_caseOptions != caseOptions) {
         _caseOptions = caseOptions;
-        [self.calendar setNeedsConfigureAppearance];
+        [_calendar invalidateWeekdaySymbols];
+        [_calendar invalidateHeaders];
     }
 }
 
-- (void)setSeparators:(FSCalendarSeparators)separators
+- (void)invalidateAppearance
 {
-    if (_separators != separators) {
-        _separators = separators;
-        [_calendar.collectionView.collectionViewLayout invalidateLayout];
-    }
+    [self invalidateFonts];
+    [self invalidateTextColors];
+    [self invalidateBorderColors];
+    [self invalidateFillColors];
+}
+
+- (void)invalidateFonts
+{
+    [self invalidateTitleFont];
+    [self invalidateSubtitleFont];
+    [self invalidateWeekdayFont];
+    [self invalidateHeaderFont];
+}
+
+- (void)invalidateTextColors
+{
+    [self invalidateTitleTextColor];
+    [self invalidateSubtitleTextColor];
+    [self invalidateWeekdayTextColor];
+    [self invalidateHeaderTextColor];
+}
+
+- (void)invalidateBorderColors
+{
+    [_calendar.collectionView.visibleCells makeObjectsPerformSelector:_cmd];
+}
+
+- (void)invalidateFillColors
+{
+    [_calendar.collectionView.visibleCells makeObjectsPerformSelector:_cmd];
+}
+
+- (void)invalidateEventColors
+{
+    [_calendar.collectionView.visibleCells makeObjectsPerformSelector:_cmd];
+}
+
+- (void)invalidateBorderRadius
+{
+    [_calendar.collectionView.visibleCells makeObjectsPerformSelector:_cmd];
+}
+
+- (void)invalidateTitleFont
+{
+    [_calendar.collectionView.visibleCells makeObjectsPerformSelector:_cmd];
+}
+
+- (void)invalidateSubtitleFont
+{
+    [_calendar.collectionView.visibleCells makeObjectsPerformSelector:_cmd];
+}
+
+- (void)invalidateTitleTextColor
+{
+    [_calendar.collectionView.visibleCells makeObjectsPerformSelector:_cmd];
+}
+
+- (void)invalidateSubtitleTextColor
+{
+    [_calendar.collectionView.visibleCells makeObjectsPerformSelector:_cmd];
+}
+
+- (void)invalidateWeekdayFont
+{
+    [_calendar invalidateWeekdayFont];
+    [_calendar.visibleStickyHeaders makeObjectsPerformSelector:_cmd];
+}
+
+- (void)invalidateWeekdayTextColor
+{
+    [_calendar invalidateWeekdayTextColor];
+    [_calendar.visibleStickyHeaders makeObjectsPerformSelector:_cmd];
+}
+
+- (void)invalidateHeaderFont
+{
+    [_calendar.header.collectionView.visibleCells makeObjectsPerformSelector:_cmd];
+    [_calendar.visibleStickyHeaders makeObjectsPerformSelector:_cmd];
+}
+
+- (void)invalidateHeaderTextColor
+{
+    [_calendar.header.collectionView.visibleCells makeObjectsPerformSelector:_cmd];
+    [_calendar.visibleStickyHeaders makeObjectsPerformSelector:_cmd];
 }
 
 @end
 
 
 @implementation FSCalendarAppearance (Deprecated)
+
+- (void)setCellStyle:(FSCalendarCellStyle)cellStyle
+{
+    self.cellShape = (FSCalendarCellShape)cellStyle;
+}
+
+- (FSCalendarCellStyle)cellStyle
+{
+    return (FSCalendarCellStyle)self.cellShape;
+}
 
 - (void)setUseVeryShortWeekdaySymbols:(BOOL)useVeryShortWeekdaySymbols
 {
@@ -450,6 +703,66 @@
 - (BOOL)useVeryShortWeekdaySymbols
 {
     return (_caseOptions & (15<<4) ) == FSCalendarCaseOptionsWeekdayUsesSingleUpperCase;
+}
+
+- (void)setAutoAdjustTitleSize:(BOOL)autoAdjustTitleSize
+{
+    self.adjustsFontSizeToFitContentSize = autoAdjustTitleSize;
+}
+
+- (BOOL)autoAdjustTitleSize
+{
+    return self.adjustsFontSizeToFitContentSize;
+}
+
+- (void)setTitleTextSize:(CGFloat)titleTextSize
+{
+    self.titleFont = [UIFont fontWithName:_titleFontName size:titleTextSize];
+}
+
+- (CGFloat)titleTextSize
+{
+    return _titleFontSize;
+}
+
+- (void)setSubtitleTextSize:(CGFloat)subtitleTextSize
+{
+    self.subtitleFont = [UIFont fontWithName:_subtitleFontName size:subtitleTextSize];
+}
+
+- (CGFloat)subtitleTextSize
+{
+    return _subtitleFontSize;
+}
+
+- (void)setWeekdayTextSize:(CGFloat)weekdayTextSize
+{
+    self.weekdayFont = [UIFont fontWithName:_weekdayFontName size:weekdayTextSize];
+}
+
+- (CGFloat)weekdayTextSize
+{
+    return _weekdayFontSize;
+}
+
+- (void)setHeaderTitleTextSize:(CGFloat)headerTitleTextSize
+{
+    self.headerTitleFont = [UIFont fontWithName:_headerTitleFontName size:headerTitleTextSize];
+}
+
+- (CGFloat)headerTitleTextSize
+{
+    return _headerTitleFontSize;
+}
+
+- (void)setAdjustsFontSizeToFitCellSize:(BOOL)adjustsFontSizeToFitCellSize
+{
+    self.adjustsFontSizeToFitContentSize = adjustsFontSizeToFitCellSize;
+}
+
+- (BOOL)adjustsFontSizeToFitCellSize
+{
+    return self.adjustsFontSizeToFitContentSize;
 }
 
 - (void)setTitleVerticalOffset:(CGFloat)titleVerticalOffset
@@ -491,34 +804,6 @@
 {
     return self.borderRadius==1.0?FSCalendarCellShapeCircle:FSCalendarCellShapeRectangle;
 }
-
-- (void)setTitleTextSize:(CGFloat)titleTextSize
-{
-    self.titleFont = [UIFont fontWithName:self.titleFont.fontName size:titleTextSize];
-}
-
-- (void)setSubtitleTextSize:(CGFloat)subtitleTextSize
-{
-    self.subtitleFont = [UIFont fontWithName:self.subtitleFont.fontName size:subtitleTextSize];
-}
-
-- (void)setWeekdayTextSize:(CGFloat)weekdayTextSize
-{
-    self.weekdayFont = [UIFont fontWithName:self.weekdayFont.fontName size:weekdayTextSize];
-}
-
-- (void)setHeaderTitleTextSize:(CGFloat)headerTitleTextSize
-{
-    self.headerTitleFont = [UIFont fontWithName:self.headerTitleFont.fontName size:headerTitleTextSize];
-}
-
-- (void)invalidateAppearance
-{
-    [self.calendar setNeedsConfigureAppearance];
-}
-
-- (void)setAdjustsFontSizeToFitContentSize:(BOOL)adjustsFontSizeToFitContentSize {}
-- (BOOL)adjustsFontSizeToFitContentSize { return YES; }
 
 @end
 

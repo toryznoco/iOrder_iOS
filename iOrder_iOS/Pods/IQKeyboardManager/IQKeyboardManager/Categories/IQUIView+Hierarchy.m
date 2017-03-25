@@ -103,9 +103,9 @@
     
     while (superview)
     {
-        static Class UITableViewCellScrollViewClass = Nil;   //UITableViewCell
-        static Class UITableViewWrapperViewClass = Nil;      //UITableViewCell
-        static Class UIQueuingScrollViewClass = Nil;         //UIPageViewController
+        static Class UITableViewCellScrollViewClass;   //UITableViewCell
+        static Class UITableViewWrapperViewClass;      //UITableViewCell
+        static Class UIQueuingScrollViewClass;         //UIPageViewController
 
         static dispatch_once_t onceToken;
         dispatch_once(&onceToken, ^{
@@ -173,10 +173,8 @@
         {
             [textFields addObject:textField];
         }
-        
         //Sometimes there are hidden or disabled views and textField inside them still recorded, so we added some more validations here (Bug ID: #458)
-        //Uncommented else (Bug ID: #625)
-        if (textField.subviews.count && [textField isUserInteractionEnabled] && ![textField isHidden] && [textField alpha]!=0.0)
+        else if (textField.subviews.count && [textField isUserInteractionEnabled] && ![textField isHidden] && [textField alpha]!=0.0)
         {
             [textFields addObjectsFromArray:[textField deepResponderViews]];
         }
@@ -314,7 +312,7 @@
 
 -(BOOL)isSearchBarTextField
 {
-    static Class UISearchBarTextFieldClass = Nil;        //UISearchBar
+    static Class UISearchBarTextFieldClass;        //UISearchBar
 
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -326,8 +324,8 @@
 -(BOOL)isAlertViewTextField
 {
     //Special textFields,textViews,scrollViews
-    static Class UIAlertSheetTextFieldClass = Nil;       //UIAlertView
-    static Class UIAlertSheetTextFieldClass_iOS8 = Nil;  //UIAlertView
+    static Class UIAlertSheetTextFieldClass;       //UIAlertView
+    static Class UIAlertSheetTextFieldClass_iOS8;  //UIAlertView
 
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{

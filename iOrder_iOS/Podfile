@@ -1,18 +1,18 @@
 platform :ios, '8.0'
 
 target ‘iOrder’ do
-pod 'AFNetworking', '~> 3.1.0'
-pod 'FMDB'
-pod 'RDVTabBarController'
-pod 'SDCycleScrollView', '~> 1.65'
-pod 'MJExtension'
-pod 'MJRefresh'
-pod 'FSCalendar'
-pod 'MBProgressHUD', '~> 1.0.0'
-pod 'Masonry'
-pod 'AprilSDK'
-pod 'Reveal-SDK', '~> 4'
-pod 'IQKeyboardManager', '~> 4.0.8'
+    pod 'AFNetworking'
+    pod 'FMDB'
+    pod 'RDVTabBarController'
+    pod 'SDCycleScrollView'
+    pod 'MJExtension'
+    pod 'MJRefresh'
+    pod 'FSCalendar'
+    pod 'MBProgressHUD'
+    pod 'Masonry'
+    pod 'AprilSDK'
+    pod 'Reveal-SDK'
+    pod 'IQKeyboardManager'
 
 end
 
