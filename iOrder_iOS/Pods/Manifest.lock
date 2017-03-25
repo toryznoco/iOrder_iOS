@@ -25,7 +25,7 @@ PODS:
   - MJExtension (3.0.13)
   - MJRefresh (3.1.12)
   - RDVTabBarController (1.1.9)
-  - Reveal-SDK (2)
+  - Reveal-SDK (4)
   - SDCycleScrollView (1.65):
     - SDWebImage (~> 3.7)
   - SDWebImage (3.8.2):
@@ -43,7 +43,7 @@ DEPENDENCIES:
   - MJExtension
   - MJRefresh
   - RDVTabBarController
-  - Reveal-SDK
+  - Reveal-SDK (~> 4)
   - SDCycleScrollView
 
 SPEC CHECKSUMS:
@@ -57,10 +57,10 @@ SPEC CHECKSUMS:
   MJExtension: 5932755f451458eefa24239358817f8d291240c7
   MJRefresh: b96cdb21c4aa75a7b07654311ab2f315c497e806
   RDVTabBarController: 67794f7a7a37f8e32f046f85ac67d06ab92d624a
-  Reveal-SDK: 4d36a47c7091843eee525b72219e005b90bbac0b
+  Reveal-SDK: 178c927f1a3230648d3a92b96f6e730a35b2750a
   SDCycleScrollView: f72904c77698a7f93a41bcbbc2d78b073bf7326c
   SDWebImage: '098e97e6176540799c27e804c96653ee0833d13c'
 
-PODFILE CHECKSUM: b35bae45ba6a0e71dea661f1834f22e09a969cc5
+PODFILE CHECKSUM: 2607860dd0e5608a08398139ad94f36db7ac38a4
 
 COCOAPODS: 1.2.0

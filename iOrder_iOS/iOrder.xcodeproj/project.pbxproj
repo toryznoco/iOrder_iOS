@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3529E3B8AA6CCA0851D76EA4 /* libPods-iOrderTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE9A5F02F74FC6AF7AEC81FD /* libPods-iOrderTests.a */; };
+		51478F38E3AA8D1FDB858582 /* libPods-iOrderUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8FE323846CDF736BC72802A4 /* libPods-iOrderUITests.a */; };
 		9A17D9D11E837CFB00DCAA74 /* IOAccountTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A17D9D01E837CFB00DCAA74 /* IOAccountTool.m */; };
 		9A1BFDC31E6EA8DE00A0007F /* IONewFeatureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A1BFD521E6EA8DE00A0007F /* IONewFeatureViewController.m */; };
 		9A1BFDC41E6EA8DE00A0007F /* YWJNewFeatureScrollPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A1BFD551E6EA8DE00A0007F /* YWJNewFeatureScrollPage.m */; };
@@ -121,8 +123,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		046737E8112628DF67697179 /* Pods-iOrderTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOrderTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-iOrderTests/Pods-iOrderTests.release.xcconfig"; sourceTree = "<group>"; };
+		0D331F99D7C6DDCADA88317A /* Pods-iOrderUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOrderUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-iOrderUITests/Pods-iOrderUITests.release.xcconfig"; sourceTree = "<group>"; };
+		21F9F20A336C81FCF50685DF /* Pods-iOrderTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOrderTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iOrderTests/Pods-iOrderTests.debug.xcconfig"; sourceTree = "<group>"; };
 		3A6A169DE0BA56711B632DC4 /* Pods-iOrder.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOrder.release.xcconfig"; path = "Pods/Target Support Files/Pods-iOrder/Pods-iOrder.release.xcconfig"; sourceTree = "<group>"; };
+		54E89CECAEDAEA90A6659B29 /* Pods-iOrderUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOrderUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iOrderUITests/Pods-iOrderUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		565EF0A881111C2576CC81D4 /* libPods-iOrder.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-iOrder.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8FE323846CDF736BC72802A4 /* libPods-iOrderUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-iOrderUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A17D9CF1E837CFB00DCAA74 /* IOAccountTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOAccountTool.h; sourceTree = "<group>"; };
 		9A17D9D01E837CFB00DCAA74 /* IOAccountTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOAccountTool.m; sourceTree = "<group>"; };
 		9A1BFD511E6EA8DE00A0007F /* IONewFeatureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IONewFeatureViewController.h; sourceTree = "<group>"; };
@@ -301,6 +308,7 @@
 		9AC08D731E39F4E200D728AD /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		9AC08D741E39F4E200D728AD /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		9AC08D751E39F4E200D728AD /* IOPrefixHeader.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOPrefixHeader.pch; sourceTree = "<group>"; };
+		AE9A5F02F74FC6AF7AEC81FD /* libPods-iOrderTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-iOrderTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA41C8781D2BF0C90092921E /* UIView+Masonry_YWJ.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Masonry_YWJ.h"; sourceTree = "<group>"; };
 		CA41C8791D2BF0C90092921E /* UIView+Masonry_YWJ.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Masonry_YWJ.m"; sourceTree = "<group>"; };
 		CA7069C91CE5F564007C5F3F /* UIBarButtonItem+IOBarButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBarButtonItem+IOBarButtonItem.h"; sourceTree = "<group>"; };
@@ -332,6 +340,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3529E3B8AA6CCA0851D76EA4 /* libPods-iOrderTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -339,6 +348,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				51478F38E3AA8D1FDB858582 /* libPods-iOrderUITests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -350,6 +360,10 @@
 			children = (
 				E54237A12030477D4B151FF1 /* Pods-iOrder.debug.xcconfig */,
 				3A6A169DE0BA56711B632DC4 /* Pods-iOrder.release.xcconfig */,
+				21F9F20A336C81FCF50685DF /* Pods-iOrderTests.debug.xcconfig */,
+				046737E8112628DF67697179 /* Pods-iOrderTests.release.xcconfig */,
+				54E89CECAEDAEA90A6659B29 /* Pods-iOrderUITests.debug.xcconfig */,
+				0D331F99D7C6DDCADA88317A /* Pods-iOrderUITests.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -1011,6 +1025,8 @@
 			isa = PBXGroup;
 			children = (
 				565EF0A881111C2576CC81D4 /* libPods-iOrder.a */,
+				AE9A5F02F74FC6AF7AEC81FD /* libPods-iOrderTests.a */,
+				8FE323846CDF736BC72802A4 /* libPods-iOrderUITests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1142,9 +1158,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CAE8F03E1CB940E2005618B0 /* Build configuration list for PBXNativeTarget "iOrderTests" */;
 			buildPhases = (
+				6E6248498F1ACA3C6A027C79 /* [CP] Check Pods Manifest.lock */,
 				CAE8F0231CB940E2005618B0 /* Sources */,
 				CAE8F0241CB940E2005618B0 /* Frameworks */,
 				CAE8F0251CB940E2005618B0 /* Resources */,
+				E077CB456B383441CD412194 /* [CP] Embed Pods Frameworks */,
+				BFF7A6DDA74D2D4A38F15FD1 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1160,9 +1179,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CAE8F0411CB940E2005618B0 /* Build configuration list for PBXNativeTarget "iOrderUITests" */;
 			buildPhases = (
+				44570E31100CCBC006EFF7CA /* [CP] Check Pods Manifest.lock */,
 				CAE8F02E1CB940E2005618B0 /* Sources */,
 				CAE8F02F1CB940E2005618B0 /* Frameworks */,
 				CAE8F0301CB940E2005618B0 /* Resources */,
+				C2692F59463AA0C25A8E4B4C /* [CP] Embed Pods Frameworks */,
+				2F078BF6516F25E41F79A5C5 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1253,6 +1275,21 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		2F078BF6516F25E41F79A5C5 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-iOrderUITests/Pods-iOrderUITests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		31FACBC2E65BE306D655D47B /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1266,6 +1303,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-iOrder/Pods-iOrder-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		44570E31100CCBC006EFF7CA /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		5D569730AB2AF17D1E8CBBF0 /* [CP] Check Pods Manifest.lock */ = {
@@ -1296,6 +1348,66 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-iOrder/Pods-iOrder-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6E6248498F1ACA3C6A027C79 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		BFF7A6DDA74D2D4A38F15FD1 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-iOrderTests/Pods-iOrderTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C2692F59463AA0C25A8E4B4C /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-iOrderUITests/Pods-iOrderUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E077CB456B383441CD412194 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-iOrderTests/Pods-iOrderTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -1601,6 +1713,7 @@
 		};
 		CAE8F03F1CB940E2005618B0 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 21F9F20A336C81FCF50685DF /* Pods-iOrderTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = iOrderTests/Info.plist;
@@ -1613,6 +1726,7 @@
 		};
 		CAE8F0401CB940E2005618B0 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 046737E8112628DF67697179 /* Pods-iOrderTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = iOrderTests/Info.plist;
@@ -1625,6 +1739,7 @@
 		};
 		CAE8F0421CB940E2005618B0 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 54E89CECAEDAEA90A6659B29 /* Pods-iOrderUITests.debug.xcconfig */;
 			buildSettings = {
 				DEVELOPMENT_TEAM = CQA977E7GY;
 				INFOPLIST_FILE = iOrderUITests/Info.plist;
@@ -1638,6 +1753,7 @@
 		};
 		CAE8F0431CB940E2005618B0 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0D331F99D7C6DDCADA88317A /* Pods-iOrderUITests.release.xcconfig */;
 			buildSettings = {
 				DEVELOPMENT_TEAM = CQA977E7GY;
 				INFOPLIST_FILE = iOrderUITests/Info.plist;
