@@ -18,14 +18,14 @@ PODS:
   - FMDB (2.6.2):
     - FMDB/standard (= 2.6.2)
   - FMDB/standard (2.6.2)
-  - FSCalendar (2.7.3)
-  - IQKeyboardManager (4.0.8)
+  - FSCalendar (2.4.0)
+  - IQKeyboardManager (4.0.7)
   - Masonry (1.0.2)
   - MBProgressHUD (1.0.0)
   - MJExtension (3.0.13)
   - MJRefresh (3.1.12)
   - RDVTabBarController (1.1.9)
-  - Reveal-SDK (4)
+  - Reveal-SDK (2)
   - SDCycleScrollView (1.65):
     - SDWebImage (~> 3.7)
   - SDWebImage (3.8.2):
@@ -33,34 +33,34 @@ PODS:
   - SDWebImage/Core (3.8.2)
 
 DEPENDENCIES:
-  - AFNetworking (~> 3.1.0)
+  - AFNetworking
   - AprilSDK
   - FMDB
   - FSCalendar
-  - IQKeyboardManager (~> 4.0.8)
+  - IQKeyboardManager
   - Masonry
-  - MBProgressHUD (~> 1.0.0)
+  - MBProgressHUD
   - MJExtension
   - MJRefresh
   - RDVTabBarController
-  - Reveal-SDK (~> 4)
-  - SDCycleScrollView (~> 1.65)
+  - Reveal-SDK
+  - SDCycleScrollView
 
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
   AprilSDK: b6d2b35b7012955618e022772c0d2b202b25f277
   FMDB: 854a0341b4726e53276f2a8996f06f1b80f9259a
-  FSCalendar: 574388d70778c22719eed9341653e1743b345573
-  IQKeyboardManager: 1a8189fa153bf09044355ee0ad36826f6767e7f7
+  FSCalendar: a9a02ab39a385b5a25bae2f96b50204292154a82
+  IQKeyboardManager: 69002bb4fea60596b710e57d426abc00e5063630
   Masonry: 7c429b56da9d4ee0bbb3ed77a5ea710d6a5df39e
   MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
   MJExtension: 5932755f451458eefa24239358817f8d291240c7
   MJRefresh: b96cdb21c4aa75a7b07654311ab2f315c497e806
   RDVTabBarController: 67794f7a7a37f8e32f046f85ac67d06ab92d624a
-  Reveal-SDK: 178c927f1a3230648d3a92b96f6e730a35b2750a
+  Reveal-SDK: 4d36a47c7091843eee525b72219e005b90bbac0b
   SDCycleScrollView: f72904c77698a7f93a41bcbbc2d78b073bf7326c
   SDWebImage: '098e97e6176540799c27e804c96653ee0833d13c'
 
-PODFILE CHECKSUM: 47cd9549b4a58403fa14834830cd124d83e943b9
+PODFILE CHECKSUM: b35bae45ba6a0e71dea661f1834f22e09a969cc5
 
 COCOAPODS: 1.2.0
