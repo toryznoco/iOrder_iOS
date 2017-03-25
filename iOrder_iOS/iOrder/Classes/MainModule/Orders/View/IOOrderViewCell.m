@@ -239,25 +239,25 @@
     //  订单状态
     NSString *status = nil;
     switch (_order.status) {
-        case IOOrderStateCancel:
+        case IOOrderStatusCancel:
             status = @"订单取消";
             break;
-        case IOOrderStateSubmited:
+        case IOOrderStatusSubmited:
             status = @"待支付";
             break;
-        case IOOrderStatePaid:
+        case IOOrderStatusPaid:
             status = @"待接单";
             break;
-        case IOOrderStateCooking:
+        case IOOrderStatusCooking:
             status = @"待配餐";
             break;
-        case IOOrderStateCooked:
+        case IOOrderStatusCooked:
             status = @"待取餐";
             break;
-        case IOOrderStateDone:
+        case IOOrderStatusReceipt:
             status = @"待评价";
             break;
-        case IOOrderStateCompleted:
+        case IOOrderStatusDone:
             status = @"订单完成";
             break;
     }
@@ -303,7 +303,7 @@
     _timeLabel.textColor = kIOTextColor;
     [_timeLabel sizeToFit];
     
-    _time.text = _order.time;
+    _time.text = _order.orderTime;
     _time.font = kIOCellFont;
     _time.textColor = kIOTextColor;
     [_time sizeToFit];

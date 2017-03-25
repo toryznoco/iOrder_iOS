@@ -9,14 +9,14 @@
 #import <Foundation/Foundation.h>
 
 /// 订单状态
-typedef NS_ENUM(NSUInteger, IOOrderState){
-    IOOrderStateCancel = 0, ///<订单取消
-    IOOrderStateSubmited,   ///<待支付
-    IOOrderStatePaid,       ///<待接单
-    IOOrderStateCooking,    ///<待配餐
-    IOOrderStateCooked,     ///<待取餐
-    IOOrderStateDone,       ///<待评价
-    IOOrderStateCompleted,  ///<订单完成
+typedef NS_ENUM(NSUInteger, IOOrderStatus){
+    IOOrderStatusCancel = 0,    ///<已取消
+    IOOrderStatusSubmited,      ///<待支付
+    IOOrderStatusPaid,          ///<待接单
+    IOOrderStatusCooking,       ///<待通知取餐
+    IOOrderStatusCooked,        ///<待取餐
+    IOOrderStatusReceipt,      ///<待评价
+    IOOrderStatusDone,          ///<已完成
 };
 
 @interface IOOrder : NSObject
@@ -33,7 +33,7 @@ typedef NS_ENUM(NSUInteger, IOOrderState){
 /**
  *  订单状态
  */
-@property (nonatomic, assign) IOOrderState status;
+@property (nonatomic, assign) IOOrderStatus status;
 
 /**
  *  店铺图片url，不包含图片服务器根地址，需自行拼接
@@ -48,11 +48,11 @@ typedef NS_ENUM(NSUInteger, IOOrderState){
 /**
  *  订单金额
  */
-@property (nonatomic, assign) float price;
+@property (nonatomic, assign) double price;
 
 /**
  *  下单时间
  */
-@property (nonatomic, copy) NSString *time;
+@property (nonatomic, copy) NSString *orderTime;
 
 @end

@@ -14,7 +14,7 @@
  *************************************************************************************/
 #define kVersionKey @"version"
 #define kPictureServerPath @"http://normcore.net.cn/fileServ/picture/"
-#define kBackStageServerPath @"http://normcore.net.cn/iorder/server/"
+#define kIOHTTPBaseUrl @"https://iorder.normcore.net.cn/api/"
 
 #define kIOStringNetworkDisable               (@"您的网络貌似不可用")
 #define kIOStringServerException              (@"服务器异常，请稍后重试")

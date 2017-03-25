@@ -18,7 +18,7 @@
 @implementation YWJLoginTool
 
 + (void)loginWithLoginParam:(YWJLoginParam *)loginParam success:(void (^)(YWJLoginResult *))success failure:(void (^)(NSError *))failure {
-    NSString *urlString = [NSString stringWithFormat:@"%@user!login.action", kBackStageServerPath];
+    NSString *urlString = [NSString stringWithFormat:@"%@user!login.action", kIOHTTPBaseUrl];
     
     //先从数据库获取数据
     YWJLoginResult *loginResult = [YWJCacheTool loginResultWithLoginParam:loginParam];

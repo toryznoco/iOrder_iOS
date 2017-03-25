@@ -10,7 +10,7 @@
 
 #import "RDVTabBarController.h"
 #import "IOHomeViewController.h"
-#import "IOOrderedViewController.h"
+#import "IOOrdersVC.h"
 #import "IOProfileViewController.h"
 #import "IONavigationController.h"
 
@@ -43,7 +43,7 @@
     homeNav.navigationDelegate = self;
     
     //  订单
-    UIViewController *order = [[IOOrderedViewController alloc] init];
+    UIViewController *order = [[IOOrdersVC alloc] init];
     IONavigationController *orderNav = [[IONavigationController alloc] initWithRootViewController:order];
     orderNav.navigationDelegate = self;
     
