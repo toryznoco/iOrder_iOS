@@ -33,18 +33,18 @@ PODS:
   - SDWebImage/Core (3.8.2)
 
 DEPENDENCIES:
-  - AFNetworking
+  - AFNetworking (~> 3.1.0)
   - AprilSDK
   - FMDB
   - FSCalendar
-  - IQKeyboardManager
+  - IQKeyboardManager (~> 4.0.8)
   - Masonry
-  - MBProgressHUD
+  - MBProgressHUD (~> 1.0.0)
   - MJExtension
   - MJRefresh
   - RDVTabBarController
   - Reveal-SDK (~> 4)
-  - SDCycleScrollView
+  - SDCycleScrollView (~> 1.65)
 
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
@@ -61,6 +61,6 @@ SPEC CHECKSUMS:
   SDCycleScrollView: f72904c77698a7f93a41bcbbc2d78b073bf7326c
   SDWebImage: '098e97e6176540799c27e804c96653ee0833d13c'
 
-PODFILE CHECKSUM: 6ecc42a96c0796f760fc7e4084d389756eb232a6
+PODFILE CHECKSUM: 47cd9549b4a58403fa14834830cd124d83e943b9
 
 COCOAPODS: 1.2.0
