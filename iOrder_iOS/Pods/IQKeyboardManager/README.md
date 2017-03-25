@@ -77,7 +77,7 @@ Minimum Xcode Version: Xcode 8.0
 Installation
 ==========================
 
-#### Installation with Cocoapod:-
+#### Cocoapod Method:-
 
 [![CocoaPods](https://img.shields.io/cocoapods/v/IQKeyboardManager.svg)](http://cocoadocs.org/docsets/IQKeyboardManager)
 
@@ -126,27 +126,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 }
 ```
 
-#### Installation with Carthage
-
-[Carthage](https://github.com/Carthage/Carthage) is a decentralized dependency manager that builds your dependencies and provides you with binary frameworks.
-
-You can install Carthage with [Homebrew](http://brew.sh/) using the following command:
-
-```bash
-$ brew update
-$ brew install carthage
-```
-
-To integrate `IQKeyboardManger` or `IQKeyboardManagerSwift` into your Xcode project using Carthage, specify it in your `Cartfile`:
-
-```ogdl
-github "hackiftekhar/IQKeyboardManager"
-```
-
-Run `carthage` to build the frameworks and drag the appropriate framework (`IQKeyboardManager.framework` or `IQKeyboardManagerSwift.framework`) into your Xcode project according to your need. Make sure to add only one framework and not both.
 
 
-#### Installation with Source Code:-
+#### Source Code Method:-
 
 [![Github tag](https://img.shields.io/github/tag/hackiftekhar/iqkeyboardmanager.svg)]()
 

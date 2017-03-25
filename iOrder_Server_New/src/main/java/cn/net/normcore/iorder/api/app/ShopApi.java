@@ -40,9 +40,9 @@ public class ShopApi {
     @Path("/near")
     public Map<String, Object> near(@QueryParam("lng") Double lng, @QueryParam("lat") Double lat, @QueryParam("pageNum") @DefaultValue("1") Integer pageNum, @QueryParam("pageSize") @DefaultValue("10") Integer pageSize) {
         if (lng == null)
-            return SimpleResult.pessimistic("4004", "参数[lng]不能为空");
+            return SimpleResult.pessimistic(4004, "参数[lng]不能为空");
         if (lat == null)
-            return SimpleResult.pessimistic("4004", "参数[lat]不能为空");
+            return SimpleResult.pessimistic(4004, "参数[lat]不能为空");
         List<Shop> nearShops = shopService.findNear(lng, lat, pageNum, pageSize);
         Map<String, Object> result = SimpleResult.optimistic();
         result.put("nearShops", ShopVo.listFromShops(nearShops));
@@ -59,7 +59,7 @@ public class ShopApi {
     @Path("/goods")
     public Map<String, Object> goods(@QueryParam("shopId") Long shopId) {
         if (shopId == null)
-            return SimpleResult.pessimistic("4004", "参数[shopId]不能为空");
+            return SimpleResult.pessimistic(4004, "参数[shopId]不能为空");
         Shop shop = shopService.get(shopId);
         Map<String, Object> result = SimpleResult.optimistic();
         result.put("categories", GoodsCategoryVo.listFromCategories(shop.getGoodsCategories()));
@@ -78,7 +78,7 @@ public class ShopApi {
     @Path("/detail")
     public Map<String, Object> detail(@QueryParam("shopId") Long shopId, @HeaderParam("customerId") Long customerId) {
         if (shopId == null)
-            return SimpleResult.pessimistic("4004", "参数[shopId]不能为空");
+            return SimpleResult.pessimistic(4004, "参数[shopId]不能为空");
         Map<String, Object> result = SimpleResult.optimistic();
         result.put("shopDetail", ShopVo.fromShop(shopService.customerDetail(shopId, customerId)));
         return result;

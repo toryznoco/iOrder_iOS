@@ -4,6 +4,7 @@ import cn.net.normcore.iorder.entity.BaseEntity;
 import cn.net.normcore.iorder.entity.business.Shop;
 import cn.net.normcore.iorder.entity.customer.Customer;
 import cn.net.normcore.iorder.entity.goods.Goods;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -23,6 +24,11 @@ public class OrderItem extends BaseEntity {
     private Goods goods;  //商品
     private Order order;  //所属订单，为空时表示购物车
     private Shop shop;
+
+    public void readyInert() {
+        setPath(Character.valueOf('1'));
+        setCreateTime(new Date());
+    }
 
     @Column(name = "amount", nullable = false)
     public Integer getAmount() {

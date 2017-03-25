@@ -32,7 +32,7 @@ public class Customer extends BaseEntity {
         this.mobile = mobile;
     }
 
-    @Column(name = "nick_name", nullable = false, length = 50)
+    @Column(name = "nick_name", length = 50)
     public String getNickName() {
         return nickName;
     }

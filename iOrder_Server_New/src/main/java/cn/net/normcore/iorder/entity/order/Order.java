@@ -33,6 +33,10 @@ public class Order extends BaseEntity {
     private Shop shop;  //订单所属店铺
     private List<OrderItem> orderItems;  //订单的订单项列表
 
+    public void generateCode() {
+        this.code = String.valueOf(System.currentTimeMillis());
+    }
+
     public void bindOrderItems(List<OrderItem> items) {
         orderItems = new ArrayList<>();
         items.forEach(item -> addOrderItem(item));

@@ -27,7 +27,7 @@ public class BasicApi {
     @GET
     @Path("/token/error")
     public Map<String, Object> tokenError() {
-        return SimpleResult.pessimistic("4001", "TOKEN格式错误");
+        return SimpleResult.pessimistic(4001, "TOKEN格式错误");
     }
 
     /**
@@ -40,6 +40,6 @@ public class BasicApi {
     @GET
     @Path("/token/invalid")
     public Map<String, Object> tokenInvalid() {
-        return SimpleResult.pessimistic("4002", "TOKEN无效");
+        return SimpleResult.pessimistic(4002, "TOKEN无效");
     }
 }

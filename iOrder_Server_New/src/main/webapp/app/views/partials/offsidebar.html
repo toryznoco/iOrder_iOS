@@ -1,20 +1,20 @@
 <!-- START Off Sidebar (right)-->
 <nav>
-   <tabset justified="true">
-      <tab>
-         <tab-heading>
+   <uib-tabset justified="true">
+      <uib-tab>
+         <uib-tab-heading>
             <em class="icon-equalizer fa-lg"></em>
-         </tab-heading>
-         <div ng-include="'app/views/partials/settings.html'"></div>
-      </tab>
-      <tab>
-         <tab-heading>
-            <em class="icon-users fa-lg"></em>
-         </tab-heading>
+         </uib-tab-heading>
+         <div ng-include="'app/views/partials/offsidebar-tab1.html'"></div>
+      </uib-tab>
+      <uib-tab>
+         <uib-tab-heading>
+            <em class="icon-user fa-lg"></em>
+         </uib-tab-heading>
          <div>
-            <div ng-include="'app/views/partials/chat.html'"></div>
+            <div ng-include="'app/views/partials/offsidebar-tab2.html'"></div>
          </div>
-      </tab>
-   </tabset>
+      </uib-tab>
+   </uib-tabset>
 </nav>
 <!-- END Off Sidebar (right)-->

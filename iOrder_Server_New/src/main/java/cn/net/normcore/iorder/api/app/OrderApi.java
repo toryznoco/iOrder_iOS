@@ -8,11 +8,15 @@ import cn.net.normcore.iorder.service.order.OrderItemService;
 import cn.net.normcore.iorder.service.order.OrderService;
 import cn.net.normcore.iorder.vo.order.OrderItemVo;
 import cn.net.normcore.iorder.vo.order.OrderVo;
+import com.fasterxml.jackson.databind.JsonNode;
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -31,6 +35,27 @@ public class OrderApi {
     private OrderItemService orderItemService;
 
     /**
+     * 顾客下单
+     *
+     * @param data
+     * @param customerId
+     * @return
+     */
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Map<String, Object> order(@NotNull JsonNode data, @HeaderParam("customerId") @NotNull Long customerId) {
+        if (customerId == null)
+            return SimpleResult.pessimistic(5000, "系统内部错误，请联系开发者");
+        Order order = orderService.order(data, customerId);
+        if (order == null)
+            return SimpleResult.pessimistic(4012, "生成订单失败");
+        Map<String, Object> result = SimpleResult.optimistic("生成订单成功");
+        result.put("order", OrderVo.fromOrder(order));
+        result.put("items", OrderItemVo.listFromOrderItems(order.getOrderItems()));
+        return result;
+    }
+
+    /**
      * 顾客添加商品到购物车
      * 如果购物车中已经存在该商品，则叠加数量
      *
@@ -43,11 +68,11 @@ public class OrderApi {
     @Path("/cart/add")
     public Map<String, Object> addToCart(@HeaderParam("customerId") Long customerId, @FormParam("goodsId") Long goodsId, @FormParam("amount") @DefaultValue("1") Integer amount) {
         if (goodsId == null)
-            return SimpleResult.pessimistic("4004", "参数[goodsId]不能为空");
+            return SimpleResult.pessimistic(4004, "参数[goodsId]不能为空");
         if (customerId == null)
-            return SimpleResult.pessimistic("5000", "系统内部错误，请联系开发者");
+            return SimpleResult.pessimistic(5000, "系统内部错误，请联系开发者");
         if (amount < 1)
-            return SimpleResult.pessimistic("4009", "参数[amount]不正确：amount = {}", amount);
+            return SimpleResult.pessimistic(4009, "参数[amount]不正确：amount = {}", amount);
         orderService.addItem(customerId, goodsId, amount);
         return SimpleResult.optimistic();
     }
@@ -66,11 +91,11 @@ public class OrderApi {
     @Path("/cart/drop")
     public Map<String, Object> removeFromCart(@HeaderParam("customerId") Long customerId, @FormParam("goodsId") Long goodsId, @FormParam("amount") Integer amount) {
         if (goodsId == null)
-            return SimpleResult.pessimistic("4004", "参数[goodsId]不能为空");
+            return SimpleResult.pessimistic(4004, "参数[goodsId]不能为空");
         if (customerId == null)
-            return SimpleResult.pessimistic("5000", "系统内部错误，请联系开发者");
+            return SimpleResult.pessimistic(5000, "系统内部错误，请联系开发者");
         if (amount < 1)
-            return SimpleResult.pessimistic("4009", "参数[amount]不正确：amount = {}", amount);
+            return SimpleResult.pessimistic(4009, "参数[amount]不正确：amount = {}", amount);
         if (amount == null) {
             orderService.deleteItem(customerId, goodsId);
         } else {
@@ -90,9 +115,9 @@ public class OrderApi {
     @Path("/cart")
     public Map<String, Object> cartInfo(@HeaderParam("customerId") Long customerId, @QueryParam("shopId") Long shopId) {
         if (shopId == null)
-            return SimpleResult.pessimistic("4004", "参数[shopId]不能为空");
+            return SimpleResult.pessimistic(4004, "参数[shopId]不能为空");
         if (customerId == null)
-            return SimpleResult.pessimistic("5000", "系统内部错误，请联系开发者");
+            return SimpleResult.pessimistic(5000, "系统内部错误，请联系开发者");
         Map<String, Object> result = SimpleResult.optimistic();
         List<OrderItem> items = orderItemService.findShopUnOrder(customerId, shopId);
         result.put("totalPrice", orderService.getItemsTotalPrice(items));
@@ -112,12 +137,12 @@ public class OrderApi {
     @Path("/generate")
     public Map<String, Object> generate(@HeaderParam("customerId") Long customerId, @FormParam("shopId") Long shopId, @FormParam("couponId") Long couponId) {
         if (shopId == null)
-            return SimpleResult.pessimistic("4004", "参数[shopId]不能为空");
+            return SimpleResult.pessimistic(4004, "参数[shopId]不能为空");
         if (customerId == null)
-            return SimpleResult.pessimistic("5000", "系统内部错误，请联系开发者");
+            return SimpleResult.pessimistic(5000, "系统内部错误，请联系开发者");
         Order order = orderService.generateShopOrder(customerId, shopId, couponId);
         if (order == null)
-            return SimpleResult.pessimistic("4009", "顾客在该店铺的购物车中没有商品：shopId = {}", shopId);
+            return SimpleResult.pessimistic(4009, "顾客在该店铺的购物车中没有商品：shopId = {}", shopId);
         Map<String, Object> result = SimpleResult.optimistic();
         result.put("order", OrderVo.fromOrder(order));
         return result;
@@ -133,7 +158,7 @@ public class OrderApi {
     @Path("/list")
     public Map<String, Object> list(@HeaderParam("customerId") Long customerId) {
         if (customerId == null)
-            return SimpleResult.pessimistic("5000", "系统内部错误，请联系开发者");
+            return SimpleResult.pessimistic(5000, "系统内部错误，请联系开发者");
         Map<String, Object> result = SimpleResult.optimistic();
         result.put("orders", OrderVo.listFromOrders(orderService.customerList(customerId)));
         return result;
@@ -149,10 +174,10 @@ public class OrderApi {
     @Path("/detail")
     public Map<String, Object> detail(@QueryParam("orderId") Long orderId, @HeaderParam("customerId") Long customerId) {
         if (orderId == null)
-            return SimpleResult.pessimistic("4004", "参数[orderId]不能为空");
+            return SimpleResult.pessimistic(4004, "参数[orderId]不能为空");
         Order order = orderService.get(orderId);
         if (!order.getCustomer().getId().equals(customerId))
-            return SimpleResult.pessimistic("4009", "订单不属于当前顾客：customerId = {}, orderId = {}", customerId, orderId);
+            return SimpleResult.pessimistic(4009, "订单不属于当前顾客：customerId = {}, orderId = {}", customerId, orderId);
         Map<String, Object> result = SimpleResult.optimistic();
         result.put("order", OrderVo.fromOrder(order));
         result.put("items", OrderItemVo.listFromOrderItems(order.getOrderItems()));
@@ -170,14 +195,14 @@ public class OrderApi {
     @Path("/pay")
     public Map<String, Object> pay(@FormParam("orderId") Long orderId, @HeaderParam("customerId") Long customerId) {
         if (orderId == null)
-            return SimpleResult.pessimistic("4004", "参数[orderId]不能为空");
+            return SimpleResult.pessimistic(4004, "参数[orderId]不能为空");
         Order order = orderService.get(orderId);
         if (!order.getCustomer().getId().equals(customerId))
-            return SimpleResult.pessimistic("4009", "订单不属于当前顾客：customerId = {}, orderId = {}", customerId, orderId);
+            return SimpleResult.pessimistic(4009, "订单不属于当前顾客：customerId = {}, orderId = {}", customerId, orderId);
         if (order.getStatus().equals(Character.valueOf('0')))
-            return SimpleResult.pessimistic("4010", "订单已取消，orderId = {}", orderId);
+            return SimpleResult.pessimistic(4010, "订单已取消，orderId = {}", orderId);
         if (!order.getStatus().equals(Character.valueOf('1')))
-            return SimpleResult.pessimistic("4010", "订单已支付，orderId = {}", orderId);
+            return SimpleResult.pessimistic(4010, "订单已支付，orderId = {}", orderId);
         orderService.pay(orderId);
         return SimpleResult.optimistic();
     }

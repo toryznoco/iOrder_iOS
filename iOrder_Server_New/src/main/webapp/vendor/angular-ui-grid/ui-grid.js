@@ -1,6 +1,6 @@
 /*!
- * ui-grid - v3.0.0-rc.20 - 2015-02-24
- * Copyright (c) 2015 ; License: MIT 
+ * ui-grid - v3.1.1 - 2016-02-09
+ * Copyright (c) 2016 ; License: MIT 
  */
 
 (function () {
@@ -17,6 +17,7 @@
     CUSTOM_FILTERS: /CUSTOM_FILTERS/g,
     COL_FIELD: /COL_FIELD/g,
     MODEL_COL_FIELD: /MODEL_COL_FIELD/g,
+    TOOLTIP: /title=\"TOOLTIP\"/g,
     DISPLAY_CELL_TEMPLATE: /DISPLAY_CELL_TEMPLATE/g,
     TEMPLATE_REGEXP: /<.+>/,
     FUNC_REGEXP: /(\([^)]*\))?$/,
@@ -34,6 +35,7 @@
     keymap: {
       TAB: 9,
       STRG: 17,
+      CAPSLOCK: 20,
       CTRL: 17,
       CTRLRIGHT: 18,
       CTRLR: 18,
@@ -81,7 +83,9 @@
       GREATER_THAN_OR_EQUAL: 64,
       LESS_THAN: 128,
       LESS_THAN_OR_EQUAL: 256,
-      NOT_EQUAL: 512
+      NOT_EQUAL: 512,
+      SELECT: 'select',
+      INPUT: 'input'
     },
 
     aggregationTypes: {
@@ -208,13 +212,15 @@ angular.module('ui.grid').directive('uiGridCell', ['$compile', '$parse', 'gridUt
           };
 
           // TODO(c0bra): Turn this into a deep array watch
+/*        shouldn't be needed any more given track by col.name
           var colWatchDereg = $scope.$watch( 'col', cellChangeFunction );
+*/
           var rowWatchDereg = $scope.$watch( 'row', cellChangeFunction );
           
           
           var deregisterFunction = function() {
             dataChangeDereg();
-            colWatchDereg();
+//            colWatchDereg();
             rowWatchDereg(); 
           };
           
@@ -232,7 +238,7 @@ angular.module('ui.grid').directive('uiGridCell', ['$compile', '$parse', 'gridUt
 (function(){
 
 angular.module('ui.grid')
-.service('uiGridColumnMenuService', [ 'i18nService', 'uiGridConstants', 'gridUtil', 
+.service('uiGridColumnMenuService', [ 'i18nService', 'uiGridConstants', 'gridUtil',
 function ( i18nService, uiGridConstants, gridUtil ) {
 /**
  *  @ngdoc service
@@ -247,12 +253,12 @@ function ( i18nService, uiGridConstants, gridUtil ) {
      * @ngdoc method
      * @methodOf ui.grid.service:uiGridColumnMenuService
      * @name initialize
-     * @description  Sets defaults, puts a reference to the $scope on 
+     * @description  Sets defaults, puts a reference to the $scope on
      * the uiGridController
      * @param {$scope} $scope the $scope from the uiGridColumnMenu
      * @param {controller} uiGridCtrl the uiGridController for the grid
      * we're on
-     * 
+     *
      */
     initialize: function( $scope, uiGridCtrl ){
       $scope.grid = uiGridCtrl.grid;
@@ -260,12 +266,12 @@ function ( i18nService, uiGridConstants, gridUtil ) {
       // Store a reference to this link/controller in the main uiGrid controller
       // to allow showMenu later
       uiGridCtrl.columnMenuScope = $scope;
-      
+
       // Save whether we're shown or not so the columns can check
       $scope.menuShown = false;
     },
-    
-    
+
+
     /**
      * @ngdoc method
      * @methodOf ui.grid.service:uiGridColumnMenuService
@@ -276,10 +282,10 @@ function ( i18nService, uiGridConstants, gridUtil ) {
      * @param {$scope} $scope the $scope from the uiGridColumnMenu
      * @param {controller} uiGridCtrl the uiGridController for the grid
      * we're on
-     * 
-     */    
+     *
+     */
     setColMenuItemWatch: function ( $scope ){
-      var deregFunction = $scope.$watch('col.menuItems', function (n, o) {
+      var deregFunction = $scope.$watch('col.menuItems', function (n) {
         if (typeof(n) !== 'undefined' && n && angular.isArray(n)) {
           n.forEach(function (item) {
             if (typeof(item.context) === 'undefined' || !item.context) {
@@ -293,9 +299,9 @@ function ( i18nService, uiGridConstants, gridUtil ) {
         else {
           $scope.menuItems = $scope.defaultMenuItems;
         }
-      }); 
-      
-      $scope.$on( '$destroy', deregFunction );     
+      });
+
+      $scope.$on( '$destroy', deregFunction );
     },
 
 
@@ -312,8 +318,8 @@ function ( i18nService, uiGridConstants, gridUtil ) {
      * @name sortable
      * @description  determines whether this column is sortable
      * @param {$scope} $scope the $scope from the uiGridColumnMenu
-     * 
-     */    
+     *
+     */
     sortable: function( $scope ) {
       if ( $scope.grid.options.enableSorting && typeof($scope.col) !== 'undefined' && $scope.col && $scope.col.enableSorting) {
         return true;
@@ -322,46 +328,39 @@ function ( i18nService, uiGridConstants, gridUtil ) {
         return false;
       }
     },
-    
+
     /**
      * @ngdoc method
      * @methodOf ui.grid.service:uiGridColumnMenuService
      * @name isActiveSort
-     * @description  determines whether the requested sort direction is current active, to 
+     * @description  determines whether the requested sort direction is current active, to
      * allow highlighting in the menu
      * @param {$scope} $scope the $scope from the uiGridColumnMenu
      * @param {string} direction the direction that we'd have selected for us to be active
-     * 
-     */  
-    isActiveSort: function( $scope, direction ){
-      return (typeof($scope.col) !== 'undefined' && typeof($scope.col.sort) !== 'undefined' && 
-              typeof($scope.col.sort.direction) !== 'undefined' && $scope.col.sort.direction === direction);
-      
-    },
-    
-    /**
-     * @ngdoc boolean
-     * @name suppressRemoveSort
-     * @propertyOf ui.grid.class:GridOptions.columnDef
-     * @description (optional) False by default. When enabled, this setting hides the removeSort option
-     * in the menu.
+     *
      */
+    isActiveSort: function( $scope, direction ){
+      return (typeof($scope.col) !== 'undefined' && typeof($scope.col.sort) !== 'undefined' &&
+              typeof($scope.col.sort.direction) !== 'undefined' && $scope.col.sort.direction === direction);
+
+    },
+
     /**
      * @ngdoc method
      * @methodOf ui.grid.service:uiGridColumnMenuService
      * @name suppressRemoveSort
      * @description  determines whether we should suppress the removeSort option
      * @param {$scope} $scope the $scope from the uiGridColumnMenu
-     * 
-     */  
+     *
+     */
     suppressRemoveSort: function( $scope ) {
-      if ($scope.col && $scope.col.colDef && $scope.col.colDef.suppressRemoveSort) {
+      if ($scope.col && $scope.col.suppressRemoveSort) {
         return true;
       }
       else {
         return false;
       }
-    },       
+    },
 
 
     /**
@@ -377,8 +376,8 @@ function ( i18nService, uiGridConstants, gridUtil ) {
      * @name hideable
      * @description  determines whether a column can be hidden, by checking the enableHiding columnDef option
      * @param {$scope} $scope the $scope from the uiGridColumnMenu
-     * 
-     */  
+     *
+     */
     hideable: function( $scope ) {
       if (typeof($scope.col) !== 'undefined' && $scope.col && $scope.col.colDef && $scope.col.colDef.enableHiding === false ) {
         return false;
@@ -386,7 +385,7 @@ function ( i18nService, uiGridConstants, gridUtil ) {
       else {
         return true;
       }
-    },     
+    },
 
 
     /**
@@ -395,8 +394,8 @@ function ( i18nService, uiGridConstants, gridUtil ) {
      * @name getDefaultMenuItems
      * @description  returns the default menu items for a column menu
      * @param {$scope} $scope the $scope from the uiGridColumnMenu
-     * 
-     */     
+     *
+     */
     getDefaultMenuItems: function( $scope ){
       return [
         {
@@ -435,8 +434,8 @@ function ( i18nService, uiGridConstants, gridUtil ) {
             $scope.unsortColumn();
           },
           shown: function() {
-            return service.sortable( $scope ) && 
-                   typeof($scope.col) !== 'undefined' && (typeof($scope.col.sort) !== 'undefined' && 
+            return service.sortable( $scope ) &&
+                   typeof($scope.col) !== 'undefined' && (typeof($scope.col.sort) !== 'undefined' &&
                    typeof($scope.col.sort.direction) !== 'undefined') && $scope.col.sort.direction !== null &&
                   !service.suppressRemoveSort( $scope );
           }
@@ -454,7 +453,7 @@ function ( i18nService, uiGridConstants, gridUtil ) {
         }
       ];
     },
-    
+
 
     /**
      * @ngdoc method
@@ -466,12 +465,13 @@ function ( i18nService, uiGridConstants, gridUtil ) {
      * @param {GridCol} column the column we want to position below
      * @param {element} $columnElement the column element we want to position below
      * @returns {hash} containing left, top, offset, height, width
-     * 
-     */  
+     *
+     */
     getColumnElementPosition: function( $scope, column, $columnElement ){
       var positionData = {};
       positionData.left = $columnElement[0].offsetLeft;
       positionData.top = $columnElement[0].offsetTop;
+      positionData.parentLeft = $columnElement[0].offsetParent.offsetLeft;
 
       // Get the grid scrollLeft
       positionData.offset = 0;
@@ -481,16 +481,16 @@ function ( i18nService, uiGridConstants, gridUtil ) {
 
       positionData.height = gridUtil.elementHeight($columnElement, true);
       positionData.width = gridUtil.elementWidth($columnElement, true);
-      
+
       return positionData;
     },
-    
+
 
     /**
      * @ngdoc method
      * @methodOf ui.grid.service:uiGridColumnMenuService
      * @name repositionMenu
-     * @description  Reposition the menu below the new column.  If the menu has no child nodes 
+     * @description  Reposition the menu below the new column.  If the menu has no child nodes
      * (i.e. it's not currently visible) then we guess it's width at 100, we'll be called again
      * later to fix it
      * @param {$scope} $scope the $scope from the uiGridColumnMenu
@@ -498,15 +498,13 @@ function ( i18nService, uiGridConstants, gridUtil ) {
      * @param {hash} positionData a hash containing left, top, offset, height, width
      * @param {element} $elm the column menu element that we want to reposition
      * @param {element} $columnElement the column element that we want to reposition underneath
-     * 
-     */  
+     *
+     */
     repositionMenu: function( $scope, column, positionData, $elm, $columnElement ) {
       var menu = $elm[0].querySelectorAll('.ui-grid-menu');
-      var containerId = column.renderContainer ? column.renderContainer : 'body';
-      var renderContainer = column.grid.renderContainers[containerId];
 
-      // It's possible that the render container of the column we're attaching to is 
-      // offset from the grid (i.e. pinned containers), we need to get the difference in the offsetLeft 
+      // It's possible that the render container of the column we're attaching to is
+      // offset from the grid (i.e. pinned containers), we need to get the difference in the offsetLeft
       // between the render container and the grid
       var renderContainerElm = gridUtil.closestElm($columnElement, '.ui-grid-render-container');
       var renderContainerOffset = renderContainerElm.getBoundingClientRect().left - $scope.grid.element[0].getBoundingClientRect().left;
@@ -516,14 +514,14 @@ function ( i18nService, uiGridConstants, gridUtil ) {
       // default value the last width for _this_ column, otherwise last width for _any_ column, otherwise default to 170
       var myWidth = column.lastMenuWidth ? column.lastMenuWidth : ( $scope.lastMenuWidth ? $scope.lastMenuWidth : 170);
       var paddingRight = column.lastMenuPaddingRight ? column.lastMenuPaddingRight : ( $scope.lastMenuPaddingRight ? $scope.lastMenuPaddingRight : 10);
-      
+
       if ( menu.length !== 0 ){
-        var mid = menu[0].querySelectorAll('.ui-grid-menu-mid'); 
+        var mid = menu[0].querySelectorAll('.ui-grid-menu-mid');
         if ( mid.length !== 0 && !angular.element(mid).hasClass('ng-hide') ) {
           myWidth = gridUtil.elementWidth(menu, true);
           $scope.lastMenuWidth = myWidth;
           column.lastMenuWidth = myWidth;
-  
+
           // TODO(c0bra): use padding-left/padding-right based on document direction (ltr/rtl), place menu on proper side
           // Get the column menu right padding
           paddingRight = parseInt(gridUtil.getStyles(angular.element(menu)[0])['paddingRight'], 10);
@@ -531,40 +529,38 @@ function ( i18nService, uiGridConstants, gridUtil ) {
           column.lastMenuPaddingRight = paddingRight;
         }
       }
-      
-      var left = positionData.left + renderContainerOffset - containerScrollLeft + positionData.width - myWidth + paddingRight;
+
+      var left = positionData.left + renderContainerOffset - containerScrollLeft + positionData.parentLeft + positionData.width - myWidth + paddingRight;
       if (left < positionData.offset){
         left = positionData.offset;
       }
 
       $elm.css('left', left + 'px');
       $elm.css('top', (positionData.top + positionData.height) + 'px');
-    }    
+    }
 
   };
-  
+
   return service;
 }])
 
 
-.directive('uiGridColumnMenu', ['$timeout', 'gridUtil', 'uiGridConstants', 'uiGridColumnMenuService', 
-function ($timeout, gridUtil, uiGridConstants, uiGridColumnMenuService) {
+.directive('uiGridColumnMenu', ['$timeout', 'gridUtil', 'uiGridConstants', 'uiGridColumnMenuService', '$document',
+function ($timeout, gridUtil, uiGridConstants, uiGridColumnMenuService, $document) {
 /**
  * @ngdoc directive
  * @name ui.grid.directive:uiGridColumnMenu
  * @description  Provides the column menu framework, leverages uiGridMenu underneath
- * 
+ *
  */
 
   var uiGridColumnMenu = {
     priority: 0,
     scope: true,
-    require: '?^uiGrid',
+    require: '^uiGrid',
     templateUrl: 'ui-grid/uiGridColumnMenu',
     replace: true,
     link: function ($scope, $elm, $attrs, uiGridCtrl) {
-      var self = this;
-      
       uiGridColumnMenuService.initialize( $scope, uiGridCtrl );
 
       $scope.defaultMenuItems = uiGridColumnMenuService.getDefaultMenuItems( $scope );
@@ -573,15 +569,15 @@ function ($timeout, gridUtil, uiGridConstants, uiGridColumnMenuService) {
       $scope.menuItems = $scope.defaultMenuItems;
       uiGridColumnMenuService.setColMenuItemWatch( $scope );
 
-  
+
       /**
        * @ngdoc method
        * @methodOf ui.grid.directive:uiGridColumnMenu
        * @name showMenu
        * @description Shows the column menu.  If the menu is already displayed it
        * calls the menu to ask it to hide (it will animate), then it repositions the menu
-       * to the right place whilst hidden (it will make an assumption on menu width), 
-       * then it asks the menu to show (it will animate), then it repositions the menu again 
+       * to the right place whilst hidden (it will make an assumption on menu width),
+       * then it asks the menu to show (it will animate), then it repositions the menu again
        * once we can calculate it's size.
        * @param {GridCol} column the column we want to position below
        * @param {element} $columnElement the column element we want to position below
@@ -602,14 +598,14 @@ function ($timeout, gridUtil, uiGridConstants, uiGridColumnMenuService) {
 
           $scope.$broadcast('hide-menu', { originalEvent: event });
         } else {
-          self.shown = $scope.menuShown = true;
+          $scope.menuShown = true;
           uiGridColumnMenuService.repositionMenu( $scope, column, colElementPosition, $elm, $columnElement );
 
           $scope.colElement = $columnElement;
           $scope.colElementPosition = colElementPosition;
           $scope.$broadcast('show-menu', { originalEvent: event });
-        } 
 
+        }
       };
 
 
@@ -623,15 +619,13 @@ function ($timeout, gridUtil, uiGridConstants, uiGridColumnMenuService) {
        * an infinite loop
        */
       $scope.hideMenu = function( broadcastTrigger ) {
-        // delete $scope.col;
         $scope.menuShown = false;
-        
         if ( !broadcastTrigger ){
           $scope.$broadcast('hide-menu');
         }
       };
 
-      
+
       $scope.$on('menu-hidden', function() {
         if ( $scope.hideThenShow ){
           delete $scope.hideThenShow;
@@ -642,18 +636,25 @@ function ($timeout, gridUtil, uiGridConstants, uiGridColumnMenuService) {
           $scope.menuShown = true;
         } else {
           $scope.hideMenu( true );
+
+          if ($scope.col) {
+            //Focus on the menu button
+            gridUtil.focus.bySelector($document, '.ui-grid-header-cell.' + $scope.col.getColClass()+ ' .ui-grid-column-menu-button', $scope.col.grid, false);
+          }
         }
       });
-      
+
       $scope.$on('menu-shown', function() {
         $timeout( function() {
           uiGridColumnMenuService.repositionMenu( $scope, $scope.col, $scope.colElementPosition, $elm, $scope.colElement );
+          //Focus on the first item
+          gridUtil.focus.bySelector($document, '.ui-grid-menu-items .ui-grid-menu-item', true);
           delete $scope.colElementPosition;
           delete $scope.columnElement;
         }, 200);
       });
 
- 
+
       /* Column methods */
       $scope.sortColumn = function (event, dir) {
         event.stopPropagation();
@@ -672,22 +673,78 @@ function ($timeout, gridUtil, uiGridConstants, uiGridColumnMenuService) {
         $scope.hideMenu();
       };
 
+      //Since we are hiding this column the default hide action will fail so we need to focus somewhere else.
+      var setFocusOnHideColumn = function(){
+        $timeout(function(){
+          // Get the UID of the first
+          var focusToGridMenu = function(){
+            return gridUtil.focus.byId('grid-menu', $scope.grid);
+          };
+
+          var thisIndex;
+          $scope.grid.columns.some(function(element, index){
+            if (angular.equals(element, $scope.col)) {
+              thisIndex = index;
+              return true;
+            }
+          });
+
+          var previousVisibleCol;
+          // Try and find the next lower or nearest column to focus on
+          $scope.grid.columns.some(function(element, index){
+            if (!element.visible){
+              return false;
+            } // This columns index is below the current column index
+            else if ( index < thisIndex){
+              previousVisibleCol = element;
+            } // This elements index is above this column index and we haven't found one that is lower
+            else if ( index > thisIndex && !previousVisibleCol) {
+              // This is the next best thing
+              previousVisibleCol = element;
+              // We've found one so use it.
+              return true;
+            } // We've reached an element with an index above this column and the previousVisibleCol variable has been set
+            else if (index > thisIndex && previousVisibleCol) {
+              // We are done.
+              return true;
+            }
+          });
+          // If found then focus on it
+          if (previousVisibleCol){
+            var colClass = previousVisibleCol.getColClass();
+            gridUtil.focus.bySelector($document, '.ui-grid-header-cell.' + colClass+ ' .ui-grid-header-cell-primary-focus', true).then(angular.noop, function(reason){
+              if (reason !== 'canceled'){ // If this is canceled then don't perform the action
+                //The fallback action is to focus on the grid menu
+                return focusToGridMenu();
+              }
+            });
+          } else {
+            // Fallback action to focus on the grid menu
+            focusToGridMenu();
+          }
+        });
+      };
+
       $scope.hideColumn = function () {
         $scope.col.colDef.visible = false;
+        $scope.col.visible = false;
 
-        $scope.grid.refresh();
+        $scope.grid.queueGridRefresh();
         $scope.hideMenu();
         $scope.grid.api.core.notifyDataChange( uiGridConstants.dataChange.COLUMN );
-        $scope.grid.api.core.raise.columnVisibilityChanged( $scope.col );        
+        $scope.grid.api.core.raise.columnVisibilityChanged( $scope.col );
+
+        // We are hiding so the default action of focusing on the button that opened this menu will fail.
+        setFocusOnHideColumn();
       };
     },
-    
-    
-    
+
+
+
     controller: ['$scope', function ($scope) {
       var self = this;
-      
-      $scope.$watch('menuItems', function (n, o) {
+
+      $scope.$watch('menuItems', function (n) {
         self.menuItems = n;
       });
     }]
@@ -698,6 +755,43 @@ function ($timeout, gridUtil, uiGridConstants, uiGridColumnMenuService) {
 }]);
 
 })();
+
+(function(){
+  'use strict';
+
+  angular.module('ui.grid').directive('uiGridFilter', ['$compile', '$templateCache', 'i18nService', 'gridUtil', function ($compile, $templateCache, i18nService, gridUtil) {
+
+    return {
+      compile: function() {
+        return {
+          pre: function ($scope, $elm, $attrs, controllers) {
+            $scope.col.updateFilters = function( filterable ){
+              $elm.children().remove();
+              if ( filterable ){
+                var template = $scope.col.filterHeaderTemplate;
+
+                $elm.append($compile(template)($scope));
+              }
+            };
+
+            $scope.$on( '$destroy', function() {
+              delete $scope.col.updateFilters;
+            });
+          },
+          post: function ($scope, $elm, $attrs, controllers){
+            $scope.aria = i18nService.getSafeText('headerCell.aria');
+            $scope.removeFilter = function(colFilter, index){
+              colFilter.term = null;
+              //Set the focus to the filter input after the action disables the button
+              gridUtil.focus.bySelector($elm, '.ui-grid-filter-input-' + index);
+            };
+          }
+        };
+      }
+    };
+  }]);
+})();
+
 (function () {
   'use strict';
 
@@ -722,7 +816,8 @@ function ($timeout, gridUtil, uiGridConstants, uiGridColumnMenuService) {
             //$elm.addClass($scope.col.getColClass(false));
             $scope.grid = uiGridCtrl.grid;
 
-            $elm.addClass($scope.col.getColClass(false));
+            var initColClass = $scope.col.getColClass(false);
+            $elm.addClass(initColClass);
 
             // apply any footerCellClass
             var classAdded;
@@ -746,9 +841,29 @@ function ($timeout, gridUtil, uiGridConstants, uiGridColumnMenuService) {
               updateClass();
             }
 
+            $scope.col.updateAggregationValue();
+
+            // Watch for column changes so we can alter the col cell class properly
+/* shouldn't be needed any more, given track by col.name
+            $scope.$watch('col', function (n, o) {
+              if (n !== o) {
+                // See if the column's internal class has changed
+                var newColClass = $scope.col.getColClass(false);
+                if (newColClass !== initColClass) {
+                  $elm.removeClass(initColClass);
+                  $elm.addClass(newColClass);
+                  initColClass = newColClass;
+                }
+              }
+            });
+*/
+
+
             // Register a data change watch that would get triggered whenever someone edits a cell or modifies column defs
             var dataChangeDereg = $scope.grid.registerDataChangeCallback( updateClass, [uiGridConstants.dataChange.COLUMN]);
-
+            // listen for visible rows change and update aggregation values
+            $scope.grid.api.core.on.rowsRendered( $scope, $scope.col.updateAggregationValue );
+            $scope.grid.api.core.on.rowsRendered( $scope, updateClass );
             $scope.$on( '$destroy', dataChangeDereg );
           }
         };
@@ -764,7 +879,6 @@ function ($timeout, gridUtil, uiGridConstants, uiGridColumnMenuService) {
   'use strict';
 
   angular.module('ui.grid').directive('uiGridFooter', ['$templateCache', '$compile', 'uiGridConstants', 'gridUtil', '$timeout', function ($templateCache, $compile, uiGridConstants, gridUtil, $timeout) {
-    var defaultTemplate = 'ui-grid/ui-grid-footer';
 
     return {
       restrict: 'EA',
@@ -783,7 +897,7 @@ function ($timeout, gridUtil, uiGridConstants, uiGridColumnMenuService) {
 
             containerCtrl.footer = $elm;
 
-            var footerTemplate = ($scope.grid.options.footerTemplate) ? $scope.grid.options.footerTemplate : defaultTemplate;
+            var footerTemplate = $scope.grid.options.footerTemplate;
             gridUtil.getTemplate(footerTemplate)
               .then(function (contents) {
                 var template = angular.element(contents);
@@ -830,7 +944,6 @@ function ($timeout, gridUtil, uiGridConstants, uiGridColumnMenuService) {
   'use strict';
 
   angular.module('ui.grid').directive('uiGridGridFooter', ['$templateCache', '$compile', 'uiGridConstants', 'gridUtil', '$timeout', function ($templateCache, $compile, uiGridConstants, gridUtil, $timeout) {
-    var defaultTemplate = 'ui-grid/ui-grid-grid-footer';
 
     return {
       restrict: 'EA',
@@ -844,7 +957,9 @@ function ($timeout, gridUtil, uiGridConstants, uiGridColumnMenuService) {
 
             $scope.grid = uiGridCtrl.grid;
 
-            var footerTemplate = ($scope.grid.options.gridFooterTemplate) ? $scope.grid.options.gridFooterTemplate : defaultTemplate;
+
+
+            var footerTemplate = $scope.grid.options.gridFooterTemplate;
             gridUtil.getTemplate(footerTemplate)
               .then(function (contents) {
                 var template = angular.element(contents);
@@ -902,10 +1017,11 @@ function ($timeout, gridUtil, uiGridConstants, uiGridColumnMenuService) {
 (function(){
   'use strict';
 
-  angular.module('ui.grid').directive('uiGridHeaderCell', ['$compile', '$timeout', '$window', '$document', 'gridUtil', 'uiGridConstants', 'ScrollEvent',
-  function ($compile, $timeout, $window, $document, gridUtil, uiGridConstants, ScrollEvent) {
+  angular.module('ui.grid').directive('uiGridHeaderCell', ['$compile', '$timeout', '$window', '$document', 'gridUtil', 'uiGridConstants', 'ScrollEvent', 'i18nService',
+  function ($compile, $timeout, $window, $document, gridUtil, uiGridConstants, ScrollEvent, i18nService) {
     // Do stuff after mouse has been down this many ms on the header cell
     var mousedownTimeout = 500;
+    var changeModeTimeout = 500;    // length of time between a touch event and a mouse event being recognised again, and vice versa
 
     var uiGridHeaderCell = {
       priority: 0,
@@ -914,7 +1030,7 @@ function ($timeout, gridUtil, uiGridConstants, uiGridColumnMenuService) {
         row: '=',
         renderIndex: '='
       },
-      require: ['?^uiGrid', '^uiGridRenderContainer'],
+      require: ['^uiGrid', '^uiGridRenderContainer'],
       replace: true,
       compile: function() {
         return {
@@ -922,40 +1038,205 @@ function ($timeout, gridUtil, uiGridConstants, uiGridColumnMenuService) {
             var cellHeader = $compile($scope.col.headerCellTemplate)($scope);
             $elm.append(cellHeader);
           },
-          
+
           post: function ($scope, $elm, $attrs, controllers) {
             var uiGridCtrl = controllers[0];
             var renderContainerCtrl = controllers[1];
 
+            $scope.i18n = {
+              headerCell: i18nService.getSafeText('headerCell'),
+              sort: i18nService.getSafeText('sort')
+            };
+            $scope.isSortPriorityVisible = function() {
+              //show sort priority if column is sorted and there is at least one other sorted column
+              return angular.isNumber($scope.col.sort.priority) && $scope.grid.columns.some(function(element, index){
+                  return angular.isNumber(element.sort.priority) && element !== $scope.col;
+                });
+            };
+            $scope.getSortDirectionAriaLabel = function(){
+              var col = $scope.col;
+              //Trying to recreate this sort of thing but it was getting messy having it in the template.
+              //Sort direction {{col.sort.direction == asc ? 'ascending' : ( col.sort.direction == desc ? 'descending':'none')}}. {{col.sort.priority ? {{columnPriorityText}} {{col.sort.priority}} : ''}
+              var sortDirectionText = col.sort.direction === uiGridConstants.ASC ? $scope.i18n.sort.ascending : ( col.sort.direction === uiGridConstants.DESC ? $scope.i18n.sort.descending : $scope.i18n.sort.none);
+              var label = sortDirectionText;
+
+              if ($scope.isSortPriorityVisible()) {
+                label = label + '. ' + $scope.i18n.headerCell.priority + ' ' + col.sort.priority;
+              }
+              return label;
+            };
+
             $scope.grid = uiGridCtrl.grid;
 
             $scope.renderContainer = uiGridCtrl.grid.renderContainers[renderContainerCtrl.containerId];
-            
+
             var initColClass = $scope.col.getColClass(false);
             $elm.addClass(initColClass);
-    
+
             // Hide the menu by default
             $scope.menuShown = false;
-    
+
             // Put asc and desc sort directions in scope
             $scope.asc = uiGridConstants.ASC;
             $scope.desc = uiGridConstants.DESC;
-    
+
             // Store a reference to menu element
             var $colMenu = angular.element( $elm[0].querySelectorAll('.ui-grid-header-cell-menu') );
-    
+
             var $contentsElm = angular.element( $elm[0].querySelectorAll('.ui-grid-cell-contents') );
-    
+
 
             // apply any headerCellClass
             var classAdded;
-            var updateClass = function( grid ){
+            var previousMouseX;
+
+            // filter watchers
+            var filterDeregisters = [];
+
+
+            /*
+             * Our basic approach here for event handlers is that we listen for a down event (mousedown or touchstart).
+             * Once we have a down event, we need to work out whether we have a click, a drag, or a
+             * hold.  A click would sort the grid (if sortable).  A drag would be used by moveable, so
+             * we ignore it.  A hold would open the menu.
+             *
+             * So, on down event, we put in place handlers for move and up events, and a timer.  If the
+             * timer expires before we see a move or up, then we have a long press and hence a column menu open.
+             * If the up happens before the timer, then we have a click, and we sort if the column is sortable.
+             * If a move happens before the timer, then we are doing column move, so we do nothing, the moveable feature
+             * will handle it.
+             *
+             * To deal with touch enabled devices that also have mice, we only create our handlers when
+             * we get the down event, and we create the corresponding handlers - if we're touchstart then
+             * we get touchmove and touchend, if we're mousedown then we get mousemove and mouseup.
+             *
+             * We also suppress the click action whilst this is happening - otherwise after the mouseup there
+             * will be a click event and that can cause the column menu to close
+             *
+             */
+
+            $scope.downFn = function( event ){
+              event.stopPropagation();
+
+              if (typeof(event.originalEvent) !== 'undefined' && event.originalEvent !== undefined) {
+                event = event.originalEvent;
+              }
+
+              // Don't show the menu if it's not the left button
+              if (event.button && event.button !== 0) {
+                return;
+              }
+              previousMouseX = event.pageX;
+
+              $scope.mousedownStartTime = (new Date()).getTime();
+              $scope.mousedownTimeout = $timeout(function() { }, mousedownTimeout);
+
+              $scope.mousedownTimeout.then(function () {
+                if ( $scope.colMenu ) {
+                  uiGridCtrl.columnMenuScope.showMenu($scope.col, $elm, event);
+                }
+              });
+
+              uiGridCtrl.fireEvent(uiGridConstants.events.COLUMN_HEADER_CLICK, {event: event, columnName: $scope.col.colDef.name});
+
+              $scope.offAllEvents();
+              if ( event.type === 'touchstart'){
+                $document.on('touchend', $scope.upFn);
+                $document.on('touchmove', $scope.moveFn);
+              } else if ( event.type === 'mousedown' ){
+                $document.on('mouseup', $scope.upFn);
+                $document.on('mousemove', $scope.moveFn);
+              }
+            };
+
+            $scope.upFn = function( event ){
+              event.stopPropagation();
+              $timeout.cancel($scope.mousedownTimeout);
+              $scope.offAllEvents();
+              $scope.onDownEvents(event.type);
+
+              var mousedownEndTime = (new Date()).getTime();
+              var mousedownTime = mousedownEndTime - $scope.mousedownStartTime;
+
+              if (mousedownTime > mousedownTimeout) {
+                // long click, handled above with mousedown
+              }
+              else {
+                // short click
+                if ( $scope.sortable ){
+                  $scope.handleClick(event);
+                }
+              }
+            };
+
+            $scope.moveFn = function( event ){
+              // Chrome is known to fire some bogus move events.
+              var changeValue = event.pageX - previousMouseX;
+              if ( changeValue === 0 ){ return; }
+
+              // we're a move, so do nothing and leave for column move (if enabled) to take over
+              $timeout.cancel($scope.mousedownTimeout);
+              $scope.offAllEvents();
+              $scope.onDownEvents(event.type);
+            };
+
+            $scope.clickFn = function ( event ){
+              event.stopPropagation();
+              $contentsElm.off('click', $scope.clickFn);
+            };
+
+
+            $scope.offAllEvents = function(){
+              $contentsElm.off('touchstart', $scope.downFn);
+              $contentsElm.off('mousedown', $scope.downFn);
+
+              $document.off('touchend', $scope.upFn);
+              $document.off('mouseup', $scope.upFn);
+
+              $document.off('touchmove', $scope.moveFn);
+              $document.off('mousemove', $scope.moveFn);
+
+              $contentsElm.off('click', $scope.clickFn);
+            };
+
+            $scope.onDownEvents = function( type ){
+              // If there is a previous event, then wait a while before
+              // activating the other mode - i.e. if the last event was a touch event then
+              // don't enable mouse events for a wee while (500ms or so)
+              // Avoids problems with devices that emulate mouse events when you have touch events
+
+              switch (type){
+                case 'touchmove':
+                case 'touchend':
+                  $contentsElm.on('click', $scope.clickFn);
+                  $contentsElm.on('touchstart', $scope.downFn);
+                  $timeout(function(){
+                    $contentsElm.on('mousedown', $scope.downFn);
+                  }, changeModeTimeout);
+                  break;
+                case 'mousemove':
+                case 'mouseup':
+                  $contentsElm.on('click', $scope.clickFn);
+                  $contentsElm.on('mousedown', $scope.downFn);
+                  $timeout(function(){
+                    $contentsElm.on('touchstart', $scope.downFn);
+                  }, changeModeTimeout);
+                  break;
+                default:
+                  $contentsElm.on('click', $scope.clickFn);
+                  $contentsElm.on('touchstart', $scope.downFn);
+                  $contentsElm.on('mousedown', $scope.downFn);
+              }
+            };
+
+
+            var updateHeaderOptions = function( grid ){
               var contents = $elm;
               if ( classAdded ){
                 contents.removeClass( classAdded );
                 classAdded = null;
               }
-  
+
               if (angular.isFunction($scope.col.headerCellClass)) {
                 classAdded = $scope.col.headerCellClass($scope.grid, $scope.row, $scope.col, $scope.rowRenderIndex, $scope.colRenderIndex);
               }
@@ -963,11 +1244,97 @@ function ($timeout, gridUtil, uiGridConstants, uiGridColumnMenuService) {
                 classAdded = $scope.col.headerCellClass;
               }
               contents.addClass(classAdded);
-              
-              var rightMostContainer = $scope.grid.renderContainers['right'] ? $scope.grid.renderContainers['right'] : $scope.grid.renderContainers['body'];
-              $scope.isLastCol = ( $scope.col === rightMostContainer.visibleColumnCache[ rightMostContainer.visibleColumnCache.length - 1 ] );
+
+              $timeout(function (){
+                var rightMostContainer = $scope.grid.renderContainers['right'] ? $scope.grid.renderContainers['right'] : $scope.grid.renderContainers['body'];
+                $scope.isLastCol = ( $scope.col === rightMostContainer.visibleColumnCache[ rightMostContainer.visibleColumnCache.length - 1 ] );
+              });
+
+              // Figure out whether this column is sortable or not
+              if (uiGridCtrl.grid.options.enableSorting && $scope.col.enableSorting) {
+                $scope.sortable = true;
+              }
+              else {
+                $scope.sortable = false;
+              }
+
+              // Figure out whether this column is filterable or not
+              var oldFilterable = $scope.filterable;
+              if (uiGridCtrl.grid.options.enableFiltering && $scope.col.enableFiltering) {
+                $scope.filterable = true;
+              }
+              else {
+                $scope.filterable = false;
+              }
+
+              if ( oldFilterable !== $scope.filterable){
+                if ( typeof($scope.col.updateFilters) !== 'undefined' ){
+                  $scope.col.updateFilters($scope.filterable);
+                }
+
+                // if column is filterable add a filter watcher
+                if ($scope.filterable) {
+                  $scope.col.filters.forEach( function(filter, i) {
+                    filterDeregisters.push($scope.$watch('col.filters[' + i + '].term', function(n, o) {
+                      if (n !== o) {
+                        uiGridCtrl.grid.api.core.raise.filterChanged();
+                        uiGridCtrl.grid.api.core.notifyDataChange( uiGridConstants.dataChange.COLUMN );
+                        uiGridCtrl.grid.queueGridRefresh();
+                      }
+                    }));
+                  });
+                  $scope.$on('$destroy', function() {
+                    filterDeregisters.forEach( function(filterDeregister) {
+                      filterDeregister();
+                    });
+                  });
+                } else {
+                  filterDeregisters.forEach( function(filterDeregister) {
+                    filterDeregister();
+                  });
+                }
+
+              }
+
+              // figure out whether we support column menus
+              if ($scope.col.grid.options && $scope.col.grid.options.enableColumnMenus !== false &&
+                      $scope.col.colDef && $scope.col.colDef.enableColumnMenu !== false){
+                $scope.colMenu = true;
+              } else {
+                $scope.colMenu = false;
+              }
+
+              /**
+              * @ngdoc property
+              * @name enableColumnMenu
+              * @propertyOf ui.grid.class:GridOptions.columnDef
+              * @description if column menus are enabled, controls the column menus for this specific
+              * column (i.e. if gridOptions.enableColumnMenus, then you can control column menus
+              * using this option. If gridOptions.enableColumnMenus === false then you get no column
+              * menus irrespective of the value of this option ).  Defaults to true.
+              *
+              */
+              /**
+              * @ngdoc property
+              * @name enableColumnMenus
+              * @propertyOf ui.grid.class:GridOptions.columnDef
+              * @description Override for column menus everywhere - if set to false then you get no
+              * column menus.  Defaults to true.
+              *
+              */
+
+              $scope.offAllEvents();
+
+              if ($scope.sortable || $scope.colMenu) {
+                $scope.onDownEvents();
+
+                $scope.$on('$destroy', function () {
+                  $scope.offAllEvents();
+                });
+              }
             };
 
+/*
             $scope.$watch('col', function (n, o) {
               if (n !== o) {
                 // See if the column's internal class has changed
@@ -979,118 +1346,33 @@ function ($timeout, gridUtil, uiGridConstants, uiGridColumnMenuService) {
                 }
               }
             });
-  
-            updateClass();
-            
+*/
+            updateHeaderOptions();
+
             // Register a data change watch that would get triggered whenever someone edits a cell or modifies column defs
-            var dataChangeDereg = $scope.grid.registerDataChangeCallback( updateClass, [uiGridConstants.dataChange.COLUMN]);
+            var dataChangeDereg = $scope.grid.registerDataChangeCallback( updateHeaderOptions, [uiGridConstants.dataChange.COLUMN]);
 
-            $scope.$on( '$destroy', dataChangeDereg );            
+            $scope.$on( '$destroy', dataChangeDereg );
 
-
-            // Figure out whether this column is sortable or not
-            if (uiGridCtrl.grid.options.enableSorting && $scope.col.enableSorting) {
-              $scope.sortable = true;
-            }
-            else {
-              $scope.sortable = false;
-            }
-    
-            // Figure out whether this column is filterable or not
-            if (uiGridCtrl.grid.options.enableFiltering && $scope.col.enableFiltering) {
-              $scope.filterable = true;
-            }
-            else {
-              $scope.filterable = false;
-            }
-            
-            // figure out whether we support column menus
-            if ($scope.col.grid.options && $scope.col.grid.options.enableColumnMenus !== false && 
-                    $scope.col.colDef && $scope.col.colDef.enableColumnMenu !== false){
-              $scope.colMenu = true;
-            } else {
-              $scope.colMenu = false;
-            }
-    
-            function handleClick(event) {
+            $scope.handleClick = function(event) {
               // If the shift key is being held down, add this column to the sort
               var add = false;
               if (event.shiftKey) {
                 add = true;
               }
-    
+
               // Sort this column then rebuild the grid's rows
               uiGridCtrl.grid.sortColumn($scope.col, add)
                 .then(function () {
                   if (uiGridCtrl.columnMenuScope) { uiGridCtrl.columnMenuScope.hideMenu(); }
                   uiGridCtrl.grid.refresh();
                 });
-            }
-    
-            /**
-            * @ngdoc property
-            * @name enableColumnMenu
-            * @propertyOf ui.grid.class:GridOptions.columnDef
-            * @description if column menus are enabled, controls the column menus for this specific
-            * column (i.e. if gridOptions.enableColumnMenus, then you can control column menus
-            * using this option. If gridOptions.enableColumnMenus === false then you get no column
-            * menus irrespective of the value of this option ).  Defaults to true.
-            *
-            */
-            /**
-            * @ngdoc property
-            * @name enableColumnMenus
-            * @propertyOf ui.grid.class:GridOptions.columnDef
-            * @description Override for column menus everywhere - if set to false then you get no
-            * column menus.  Defaults to true.
-            *
-            */
-
-            if ($scope.sortable || $scope.colMenu) {
-              // Long-click (for mobile)
-              var cancelMousedownTimeout;
-              var mousedownStartTime = 0;
-
-              var downEvent = gridUtil.isTouchEnabled() ? 'touchstart' : 'mousedown';
-              $contentsElm.on(downEvent, function(event) {
-                event.stopPropagation();
-
-                if (typeof(event.originalEvent) !== 'undefined' && event.originalEvent !== undefined) {
-                  event = event.originalEvent;
-                }
-      
-                // Don't show the menu if it's not the left button
-                if (event.button && event.button !== 0) {
-                  return;
-                }
-      
-                mousedownStartTime = (new Date()).getTime();
-      
-                cancelMousedownTimeout = $timeout(function() { }, mousedownTimeout);
-      
-                cancelMousedownTimeout.then(function () {
-                  if ( $scope.colMenu ) {
-                    uiGridCtrl.columnMenuScope.showMenu($scope.col, $elm, event);
-                  }
-                });
-
-                uiGridCtrl.fireEvent(uiGridConstants.events.COLUMN_HEADER_CLICK, {event: event, columnName: $scope.col.colDef.name});
-              });
-        
-              var upEvent = gridUtil.isTouchEnabled() ? 'touchend' : 'mouseup';
-              $contentsElm.on(upEvent, function () {
-                $timeout.cancel(cancelMousedownTimeout);
-              });
-  
-              $scope.$on('$destroy', function () {
-                $contentsElm.off('mousedown touchstart');
-              });
-            }
+            };
 
 
             $scope.toggleMenu = function(event) {
               event.stopPropagation();
-    
+
               // If the menu is already showing...
               if (uiGridCtrl.columnMenuScope.menuShown) {
                 // ... and we're the column the menu is on...
@@ -1110,49 +1392,6 @@ function ($timeout, gridUtil, uiGridConstants, uiGridColumnMenuService) {
                 uiGridCtrl.columnMenuScope.showMenu($scope.col, $elm);
               }
             };
-    
-            // If this column is sortable, add a click event handler
-            if ($scope.sortable) {
-              var clickEvent = gridUtil.isTouchEnabled() ? 'touchend' : 'click';
-              $contentsElm.on(clickEvent, function(event) {
-                event.stopPropagation();
-    
-                $timeout.cancel(cancelMousedownTimeout);
-    
-                var mousedownEndTime = (new Date()).getTime();
-                var mousedownTime = mousedownEndTime - mousedownStartTime;
-    
-                if (mousedownTime > mousedownTimeout) {
-                  // long click, handled above with mousedown
-                }
-                else {
-                  // short click
-                  handleClick(event);
-                }
-              });
-    
-              $scope.$on('$destroy', function () {
-                // Cancel any pending long-click timeout
-                $timeout.cancel(cancelMousedownTimeout);
-              });
-            }
-    
-            if ($scope.filterable) {
-              var filterDeregisters = [];
-              angular.forEach($scope.col.filters, function(filter, i) {
-                filterDeregisters.push($scope.$watch('col.filters[' + i + '].term', function(n, o) {
-                  if (n !== o) {
-                    uiGridCtrl.grid.api.core.raise.filterChanged();
-                    uiGridCtrl.grid.refresh(true);
-                  }
-                }));  
-              });
-              $scope.$on('$destroy', function() {
-                angular.forEach(filterDeregisters, function(filterDeregister) {
-                  filterDeregister();
-                });
-              });
-            }
           }
         };
       }
@@ -1166,7 +1405,8 @@ function ($timeout, gridUtil, uiGridConstants, uiGridColumnMenuService) {
 (function(){
   'use strict';
 
-  angular.module('ui.grid').directive('uiGridHeader', ['$templateCache', '$compile', 'uiGridConstants', 'gridUtil', '$timeout', function($templateCache, $compile, uiGridConstants, gridUtil, $timeout) {
+  angular.module('ui.grid').directive('uiGridHeader', ['$templateCache', '$compile', 'uiGridConstants', 'gridUtil', '$timeout', 'ScrollEvent',
+    function($templateCache, $compile, uiGridConstants, gridUtil, $timeout, ScrollEvent) {
     var defaultTemplate = 'ui-grid/ui-grid-header';
     var emptyTemplate = 'ui-grid/ui-grid-no-header';
 
@@ -1212,8 +1452,13 @@ function ($timeout, gridUtil, uiGridConstants, uiGridColumnMenuService) {
                   // Inject a reference to the header viewport (if it exists) into the grid controller for use in the horizontal scroll handler below
                   var headerViewport = $elm[0].getElementsByClassName('ui-grid-header-viewport')[0];
 
+
                   if (headerViewport) {
                     containerCtrl.headerViewport = headerViewport;
+                    angular.element(headerViewport).on('scroll', scrollHandler);
+                    $scope.$on('$destroy', function () {
+                      angular.element(headerViewport).off('scroll', scrollHandler);
+                    });
                   }
                 }
 
@@ -1232,6 +1477,22 @@ function ($timeout, gridUtil, uiGridConstants, uiGridColumnMenuService) {
                 containerCtrl.headerCanvas = null;
               }
             }
+
+            function scrollHandler(evt) {
+              if (uiGridCtrl.grid.isScrollingHorizontally) {
+                return;
+              }
+              var newScrollLeft = gridUtil.normalizeScrollLeft(containerCtrl.headerViewport, uiGridCtrl.grid);
+              var horizScrollPercentage = containerCtrl.colContainer.scrollHorizontal(newScrollLeft);
+
+              var scrollEvent = new ScrollEvent(uiGridCtrl.grid, null, containerCtrl.colContainer, ScrollEvent.Sources.ViewPortScroll);
+              scrollEvent.newScrollLeft = newScrollLeft;
+              if ( horizScrollPercentage > -1 ){
+                scrollEvent.x = { percentage: horizScrollPercentage };
+              }
+
+              uiGridCtrl.grid.scrollContainers(null, scrollEvent);
+            }
           },
 
           post: function ($scope, $elm, $attrs, controllers) {
@@ -1246,118 +1507,22 @@ function ($timeout, gridUtil, uiGridConstants, uiGridColumnMenuService) {
             gridUtil.disableAnimations($elm);
 
             function updateColumnWidths() {
-              // Get the width of the viewport
-              var availableWidth = containerCtrl.colContainer.getViewportWidth() - grid.scrollbarWidth;
+              // this styleBuilder always runs after the renderContainer, so we can rely on the column widths
+              // already being populated correctly
 
-              //if (typeof(uiGridCtrl.grid.verticalScrollbarWidth) !== 'undefined' && uiGridCtrl.grid.verticalScrollbarWidth !== undefined && uiGridCtrl.grid.verticalScrollbarWidth > 0) {
-              //  availableWidth = availableWidth + uiGridCtrl.grid.verticalScrollbarWidth;
-              //}
-
-              // The total number of columns
-              // var equalWidthColumnCount = columnCount = uiGridCtrl.grid.options.columnDefs.length;
-              // var equalWidth = availableWidth / equalWidthColumnCount;
-
-              var columnCache = containerCtrl.colContainer.visibleColumnCache,
-                  canvasWidth = 0,
-                  asteriskNum = 0,
-                  oneAsterisk = 0,
-                  leftoverWidth = availableWidth,
-                  hasVariableWidth = false;
+              var columnCache = containerCtrl.colContainer.visibleColumnCache;
               
-              var getColWidth = function(column){
-                if (column.widthType === "manual"){ 
-                  return +column.width; 
-                }
-                else if (column.widthType === "percent"){ 
-                  return parseInt(column.width.replace(/%/g, ''), 10) * availableWidth / 100;
-                }
-                else if (column.widthType === "auto"){
-                  // leftOverWidth is subtracted from after each call to this
-                  // function so we need to calculate oneAsterisk size only once
-                  if (oneAsterisk === 0) {
-                    oneAsterisk = parseInt(leftoverWidth / asteriskNum, 10);
-                  }
-                  return column.width.length * oneAsterisk; 
-                }
-              };
-              
-              // Populate / determine column width types:
-              columnCache.forEach(function(column){
-                column.widthType = null;
-                if (isFinite(+column.width)){
-                  column.widthType = "manual";
-                }
-                else if (gridUtil.endsWith(column.width, "%")){
-                  column.widthType = "percent";
-                  hasVariableWidth = true;
-                }
-                else if (angular.isString(column.width) && column.width.indexOf('*') !== -1){
-                  column.widthType = "auto";
-                  asteriskNum += column.width.length;
-                  hasVariableWidth = true;
-                }
-              });
-              
-              // For sorting, calculate width from first to last:
-              var colWidthPriority = ["manual", "percent", "auto"];
-              columnCache.filter(function(column){
-                // Only draw visible items with a widthType
-                return (column.visible && column.widthType); 
-              }).sort(function(a,b){
-                // Calculate widths in order, so that manual comes first, etc.
-                return colWidthPriority.indexOf(a.widthType) - colWidthPriority.indexOf(b.widthType);
-              }).forEach(function(column){
-                // Calculate widths:
-                var colWidth = getColWidth(column);
-                if (column.minWidth){
-                  colWidth = Math.max(colWidth, column.minWidth);
-                }
-                if (column.maxWidth){
-                  colWidth = Math.min(colWidth, column.maxWidth);
-                }
-                column.drawnWidth = Math.floor(colWidth);
-                canvasWidth += column.drawnWidth;
-                leftoverWidth -= column.drawnWidth;
-              });
-
-              // If the grid width didn't divide evenly into the column widths and we have pixels left over, dole them out to the columns one by one to make everything fit
-              if (hasVariableWidth && leftoverWidth > 0 && canvasWidth > 0 && canvasWidth < availableWidth) {
-                var remFn = function (column) {
-                  if (leftoverWidth > 0 && (column.widthType === "auto" || column.widthType === "percent")) {
-                    column.drawnWidth = column.drawnWidth + 1;
-                    canvasWidth = canvasWidth + 1;
-                    leftoverWidth--;
-                  }
-                };
-                var prevLeftover = 0;
-                do {
-                  prevLeftover = leftoverWidth;
-                  columnCache.forEach(remFn);
-                } while (leftoverWidth > 0 && leftoverWidth !== prevLeftover );
-              }
-              canvasWidth = Math.max(canvasWidth, availableWidth);
-
               // Build the CSS
               // uiGridCtrl.grid.columns.forEach(function (column) {
               var ret = '';
+              var canvasWidth = 0;
               columnCache.forEach(function (column) {
                 ret = ret + column.getColClassDefinition();
+                canvasWidth += column.drawnWidth;
               });
 
-              // Add the vertical scrollbar width back in to the canvas width, it's taken out in getViewportWidth
-              //if (grid.verticalScrollbarWidth) {
-              //  canvasWidth = canvasWidth + grid.verticalScrollbarWidth;
-              //}
-              // canvasWidth = canvasWidth + 1;
-
-              // if we have a grid menu, then we prune the width of the last column header
-              // to allow room for the button whilst still getting to the column menu
-              if (columnCache.length > 0) { // && grid.options.enableGridMenu) {
-                columnCache[columnCache.length - 1].headerWidth = columnCache[columnCache.length - 1].drawnWidth - 30;
-              }
-
-              containerCtrl.colContainer.canvasWidth = parseInt(canvasWidth, 10);
-
+              containerCtrl.colContainer.canvasWidth = canvasWidth;
+              
               // Return the styles back to buildStyles which pops them into the `customStyles` scope variable
               return ret;
             }
@@ -1372,7 +1537,7 @@ function ($timeout, gridUtil, uiGridConstants, uiGridColumnMenuService) {
             //todo: remove this if by injecting gridCtrl into unit tests
             if (uiGridCtrl) {
               uiGridCtrl.grid.registerStyleComputation({
-                priority: 5,
+                priority: 15,
                 func: updateColumnWidths
               });
             }
@@ -1402,7 +1567,7 @@ angular.module('ui.grid')
      * @name initialize
      * @description Sets up the gridMenu. Most importantly, sets our
      * scope onto the grid object as grid.gridMenuScope, allowing us
-     * to operate when passed only the grid.  Second most importantly, 
+     * to operate when passed only the grid.  Second most importantly,
      * we register the 'addToGridMenu' and 'removeFromGridMenu' methods
      * on the core api.
      * @param {$scope} $scope the scope of this gridMenu
@@ -1412,7 +1577,7 @@ angular.module('ui.grid')
       grid.gridMenuScope = $scope;
       $scope.grid = grid;
       $scope.registeredMenuItems = [];
-      
+
       // not certain this is needed, but would be bad to create a memory leak
       $scope.$on('$destroy', function() {
         if ( $scope.grid && $scope.grid.gridMenuScope ){
@@ -1425,7 +1590,7 @@ angular.module('ui.grid')
           $scope.registeredMenuItems = null;
         }
       });
-      
+
       $scope.registeredMenuItems = [];
 
       /**
@@ -1439,13 +1604,13 @@ angular.module('ui.grid')
        * in the menu when.  (Noting that in most cases the shown and active functions
        * provide a better way to handle visibility of menu items)
        * @param {Grid} grid the grid on which we are acting
-       * @param {array} items menu items in the format as described in the tutorial, with 
+       * @param {array} items menu items in the format as described in the tutorial, with
        * the added note that if you want to use remove you must also specify an `id` field,
        * which is provided when you want to remove an item.  The id should be unique.
-       * 
+       *
        */
       grid.api.registerMethod( 'core', 'addToGridMenu', service.addToGridMenu );
-  
+
       /**
        * @ngdoc function
        * @name removeFromGridMenu
@@ -1455,16 +1620,16 @@ angular.module('ui.grid')
        * the specified id is not found
        * @param {Grid} grid the grid on which we are acting
        * @param {string} id the id we'd like to remove from the menu
-       * 
+       *
        */
       grid.api.registerMethod( 'core', 'removeFromGridMenu', service.removeFromGridMenu );
     },
- 
-    
+
+
     /**
      * @ngdoc function
      * @name addToGridMenu
-     * @propertyOf ui.grid.class:GridOptions
+     * @propertyOf ui.grid.gridMenuService
      * @description add items to the grid menu.  Used by features
      * to add their menu items if they are enabled, can also be used by
      * end users to add menu items.  This method has the advantage of allowing
@@ -1472,10 +1637,10 @@ angular.module('ui.grid')
      * in the menu when.  (Noting that in most cases the shown and active functions
      * provide a better way to handle visibility of menu items)
      * @param {Grid} grid the grid on which we are acting
-     * @param {array} items menu items in the format as described in the tutorial, with 
+     * @param {array} items menu items in the format as described in the tutorial, with
      * the added note that if you want to use remove you must also specify an `id` field,
      * which is provided when you want to remove an item.  The id should be unique.
-     * 
+     *
      */
     addToGridMenu: function( grid, menuItems ) {
       if ( !angular.isArray( menuItems ) ) {
@@ -1487,14 +1652,14 @@ angular.module('ui.grid')
         } else {
           gridUtil.logError( 'Asked to addToGridMenu, but gridMenuScope not present.  Timing issue?  Please log issue with ui-grid');
         }
-      }  
+      }
     },
-    
+
 
     /**
      * @ngdoc function
      * @name removeFromGridMenu
-     * @methodOf ui.grid.core.api:PublicApi
+     * @methodOf ui.grid.gridMenuService
      * @description Remove an item from the grid menu based on a provided id.  Assumes
      * that the id is unique, removes only the last instance of that id.  Does nothing if
      * the specified id is not found.  If there is no gridMenuScope or registeredMenuItems
@@ -1502,18 +1667,18 @@ angular.module('ui.grid')
      * aren't.
      * @param {Grid} grid the grid on which we are acting
      * @param {string} id the id we'd like to remove from the menu
-     * 
-     */    
+     *
+     */
     removeFromGridMenu: function( grid, id ){
       var foundIndex = -1;
-      
+
       if ( grid && grid.gridMenuScope ){
         grid.gridMenuScope.registeredMenuItems.forEach( function( value, index ) {
           if ( value.id === id ){
             if (foundIndex > -1) {
               gridUtil.logError( 'removeFromGridMenu: found multiple items with the same id, removing only the last' );
             } else {
-              
+
               foundIndex = index;
             }
           }
@@ -1524,19 +1689,19 @@ angular.module('ui.grid')
         grid.gridMenuScope.registeredMenuItems.splice( foundIndex, 1 );
       }
     },
-    
-        
+
+
     /**
      * @ngdoc array
      * @name gridMenuCustomItems
      * @propertyOf ui.grid.class:GridOptions
      * @description (optional) An array of menu items that should be added to
      * the gridMenu.  Follow the format documented in the tutorial for column
-     * menu customisation.  The context provided to the action function will 
-     * include context.grid.  An alternative if working with dynamic menus is to use the 
+     * menu customisation.  The context provided to the action function will
+     * include context.grid.  An alternative if working with dynamic menus is to use the
      * provided api - core.addToGridMenu and core.removeFromGridMenu, which handles
      * some of the management of items for you.
-     * 
+     *
      */
     /**
      * @ngdoc boolean
@@ -1544,7 +1709,7 @@ angular.module('ui.grid')
      * @propertyOf ui.grid.class:GridOptions
      * @description true by default, whether the grid menu should allow hide/show
      * of columns
-     * 
+     *
      */
     /**
      * @ngdoc method
@@ -1552,50 +1717,66 @@ angular.module('ui.grid')
      * @name getMenuItems
      * @description Decides the menu items to show in the menu.  This is a
      * combination of:
-     * 
-     * - the default menu items that are always included, 
+     *
+     * - the default menu items that are always included,
      * - any menu items that have been provided through the addMenuItem api. These
      *   are typically added by features within the grid
      * - any menu items included in grid.options.gridMenuCustomItems.  These can be
      *   changed dynamically, as they're always recalculated whenever we show the
      *   menu
-     * @param {$scope} $scope the scope of this gridMenu, from which we can find all 
+     * @param {$scope} $scope the scope of this gridMenu, from which we can find all
      * the information that we need
-     * @returns {array} an array of menu items that can be shown 
+     * @returns {array} an array of menu items that can be shown
      */
     getMenuItems: function( $scope ) {
       var menuItems = [
         // this is where we add any menu items we want to always include
       ];
-      
+
       if ( $scope.grid.options.gridMenuCustomItems ){
-        if ( !angular.isArray( $scope.grid.options.gridMenuCustomItems ) ){ 
-          gridUtil.logError( 'gridOptions.gridMenuCustomItems must be an array, and is not'); 
+        if ( !angular.isArray( $scope.grid.options.gridMenuCustomItems ) ){
+          gridUtil.logError( 'gridOptions.gridMenuCustomItems must be an array, and is not');
         } else {
           menuItems = menuItems.concat( $scope.grid.options.gridMenuCustomItems );
         }
       }
-  
+
+      var clearFilters = [{
+        title: i18nService.getSafeText('gridMenu.clearAllFilters'),
+        action: function ($event) {
+          $scope.grid.clearAllFilters(undefined, true, undefined);
+        },
+        shown: function() {
+          return $scope.grid.options.enableFiltering;
+        },
+        order: 100
+      }];
+      menuItems = menuItems.concat( clearFilters );
+
       menuItems = menuItems.concat( $scope.registeredMenuItems );
-      
+
       if ( $scope.grid.options.gridMenuShowHideColumns !== false ){
         menuItems = menuItems.concat( service.showHideColumns( $scope ) );
       }
-      
+
+      menuItems.sort(function(a, b){
+        return a.order - b.order;
+      });
+
       return menuItems;
     },
-    
-    
+
+
     /**
      * @ngdoc array
      * @name gridMenuTitleFilter
      * @propertyOf ui.grid.class:GridOptions
-     * @description (optional) A function that takes a title string 
+     * @description (optional) A function that takes a title string
      * (usually the col.displayName), and converts it into a display value.  The function
      * must return either a string or a promise.
-     * 
+     *
      * Used for internationalization of the grid menu column names - for angular-translate
-     * you can pass $translate as the function, for i18nService you can pass getSafeText as the 
+     * you can pass $translate as the function, for i18nService you can pass getSafeText as the
      * function
      * @example
      * <pre>
@@ -1619,14 +1800,15 @@ angular.module('ui.grid')
       if ( !$scope.grid.options.columnDefs || $scope.grid.options.columnDefs.length === 0 || $scope.grid.columns.length === 0 ) {
         return showHideColumns;
       }
-      
+
       // add header for columns
       showHideColumns.push({
-        title: i18nService.getSafeText('gridMenu.columns')
+        title: i18nService.getSafeText('gridMenu.columns'),
+        order: 300
       });
-      
-      $scope.grid.options.gridMenuTitleFilter = $scope.grid.options.gridMenuTitleFilter ? $scope.grid.options.gridMenuTitleFilter : function( title ) { return title; };  
-      
+
+      $scope.grid.options.gridMenuTitleFilter = $scope.grid.options.gridMenuTitleFilter ? $scope.grid.options.gridMenuTitleFilter : function( title ) { return title; };
+
       $scope.grid.options.columnDefs.forEach( function( colDef, index ){
         if ( colDef.enableHiding !== false ){
           // add hide menu item - shows an OK icon as we only show when column is already visible
@@ -1639,7 +1821,9 @@ angular.module('ui.grid')
             shown: function() {
               return this.context.gridCol.colDef.visible === true || this.context.gridCol.colDef.visible === undefined;
             },
-            context: { gridCol: $scope.grid.getColumn(colDef.name || colDef.field) }
+            context: { gridCol: $scope.grid.getColumn(colDef.name || colDef.field) },
+            leaveOpen: true,
+            order: 301 + index * 2
           };
           service.setMenuItemTitle( menuItem, colDef, $scope.grid );
           showHideColumns.push( menuItem );
@@ -1654,7 +1838,9 @@ angular.module('ui.grid')
             shown: function() {
               return !(this.context.gridCol.colDef.visible === true || this.context.gridCol.colDef.visible === undefined);
             },
-            context: { gridCol: $scope.grid.getColumn(colDef.name || colDef.field) }
+            context: { gridCol: $scope.grid.getColumn(colDef.name || colDef.field) },
+            leaveOpen: true,
+            order: 301 + index * 2 + 1
           };
           service.setMenuItemTitle( menuItem, colDef, $scope.grid );
           showHideColumns.push( menuItem );
@@ -1662,23 +1848,23 @@ angular.module('ui.grid')
       });
       return showHideColumns;
     },
-    
-    
+
+
     /**
      * @ngdoc method
      * @methodOf ui.grid.gridMenuService
      * @name setMenuItemTitle
      * @description Handles the response from gridMenuTitleFilter, adding it directly to the menu
      * item if it returns a string, otherwise waiting for the promise to resolve or reject then
-     * putting the result into the title 
+     * putting the result into the title
      * @param {object} menuItem the menuItem we want to put the title on
      * @param {object} colDef the colDef from which we can get displayName, name or field
      * @param {Grid} grid the grid, from which we can get the options.gridMenuTitleFilter
-     * 
+     *
      */
     setMenuItemTitle: function( menuItem, colDef, grid ){
-      var title = grid.options.gridMenuTitleFilter( colDef.displayName || colDef.name || colDef.field );
-      
+      var title = grid.options.gridMenuTitleFilter( colDef.displayName || gridUtil.readableColumnName(colDef.name) || colDef.field );
+
       if ( typeof(title) === 'string' ){
         menuItem.title = title;
       } else if ( title.then ){
@@ -1703,38 +1889,42 @@ angular.module('ui.grid')
      * provided a context that has on it a gridColumn, which is the column that
      * we'll operate upon.  We change the visibility, and refresh the grid as appropriate
      * @param {GridCol} gridCol the column that we want to toggle
-     * 
+     *
      */
     toggleColumnVisibility: function( gridCol ) {
-      gridCol.colDef.visible = !( gridCol.colDef.visible === true || gridCol.colDef.visible === undefined ); 
-      
+      gridCol.colDef.visible = !( gridCol.colDef.visible === true || gridCol.colDef.visible === undefined );
+
       gridCol.grid.refresh();
       gridCol.grid.api.core.notifyDataChange( uiGridConstants.dataChange.COLUMN );
       gridCol.grid.api.core.raise.columnVisibilityChanged( gridCol );
     }
   };
-  
+
   return service;
 }])
 
 
 
-.directive('uiGridMenuButton', ['gridUtil', 'uiGridConstants', 'uiGridGridMenuService', 
-function (gridUtil, uiGridConstants, uiGridGridMenuService) {
+.directive('uiGridMenuButton', ['gridUtil', 'uiGridConstants', 'uiGridGridMenuService', 'i18nService',
+function (gridUtil, uiGridConstants, uiGridGridMenuService, i18nService) {
 
   return {
     priority: 0,
     scope: true,
-    require: ['?^uiGrid'],
+    require: ['^uiGrid'],
     templateUrl: 'ui-grid/ui-grid-menu-button',
     replace: true,
-
 
     link: function ($scope, $elm, $attrs, controllers) {
       var uiGridCtrl = controllers[0];
 
+      // For the aria label
+      $scope.i18n = {
+        aria: i18nService.getSafeText('gridMenu.aria')
+      };
+
       uiGridGridMenuService.initialize($scope, uiGridCtrl.grid);
-      
+
       $scope.shown = false;
 
       $scope.toggleMenu = function () {
@@ -1747,9 +1937,10 @@ function (gridUtil, uiGridConstants, uiGridGridMenuService) {
           $scope.shown = true;
         }
       };
-      
+
       $scope.$on('menu-hidden', function() {
         $scope.shown = false;
+        gridUtil.focus.bySelector($elm, '.ui-grid-icon-container');
       });
     }
   };
@@ -1757,11 +1948,12 @@ function (gridUtil, uiGridConstants, uiGridGridMenuService) {
 }]);
 
 })();
+
 (function(){
 
 /**
  * @ngdoc directive
- * @name ui.grid.directive:uiGridColumnMenu
+ * @name ui.grid.directive:uiGridMenu
  * @element style
  * @restrict A
  *
@@ -1775,7 +1967,7 @@ function (gridUtil, uiGridConstants, uiGridGridMenuService) {
  var app = angular.module('app', ['ui.grid']);
 
  app.controller('MainCtrl', ['$scope', function ($scope) {
-   
+
  }]);
  </script>
 
@@ -1789,8 +1981,8 @@ function (gridUtil, uiGridConstants, uiGridGridMenuService) {
  */
 angular.module('ui.grid')
 
-.directive('uiGridMenu', ['$compile', '$timeout', '$window', '$document', 'gridUtil', 'uiGridConstants', 
-function ($compile, $timeout, $window, $document, gridUtil, uiGridConstants) {
+.directive('uiGridMenu', ['$compile', '$timeout', '$window', '$document', 'gridUtil', 'uiGridConstants', 'i18nService',
+function ($compile, $timeout, $window, $document, gridUtil, uiGridConstants, i18nService) {
   var uiGridMenu = {
     priority: 0,
     scope: {
@@ -1802,12 +1994,27 @@ function ($compile, $timeout, $window, $document, gridUtil, uiGridConstants) {
     templateUrl: 'ui-grid/uiGridMenu',
     replace: false,
     link: function ($scope, $elm, $attrs, uiGridCtrl) {
-      var self = this;
-      var menuMid;
-      var $animate;
-     
+      var gridMenuMaxHeight;
+
+      $scope.dynamicStyles = '';
+
+      if (uiGridCtrl) {
+        // magic number of 30 because the grid menu displays somewhat below
+        // the top of the grid. It is approximately 30px.
+        gridMenuMaxHeight = uiGridCtrl.grid.gridHeight - 30;
+        $scope.dynamicStyles = [
+          '.grid' + uiGridCtrl.grid.id + ' .ui-grid-menu-mid {',
+            'max-height: ' + gridMenuMaxHeight + 'px;',
+          '}'
+        ].join(' ');
+      }
+
+      $scope.i18n = {
+        close: i18nService.getSafeText('columnMenu.close')
+      };
+
     // *** Show/Hide functions ******
-      self.showMenu = $scope.showMenu = function(event, args) {
+      $scope.showMenu = function(event, args) {
         if ( !$scope.shown ){
 
           /*
@@ -1816,11 +2023,11 @@ function ($compile, $timeout, $window, $document, gridUtil, uiGridConstants) {
            * animate removal of the ng-if, as the menu items aren't there yet.  And we don't want
            * to rely on ng-show only, as that leaves elements in the DOM that are needlessly evaluated
            * on scroll events.
-           * 
+           *
            * Note when testing animation that animations don't run on the tutorials.  When debugging it looks
            * like they do, but angular has a default $animate provider that is just a stub, and that's what's
-           * being called.  ALso don't be fooled by the fact that your browser has actually loaded the 
-           * angular-translate.js, it's not using it.  You need to test animations in an external application. 
+           * being called.  ALso don't be fooled by the fact that your browser has actually loaded the
+           * angular-translate.js, it's not using it.  You need to test animations in an external application.
            */
           $scope.shown = true;
 
@@ -1841,21 +2048,28 @@ function ($compile, $timeout, $window, $document, gridUtil, uiGridConstants) {
 
         // Turn off an existing document click handler
         angular.element(document).off('click touchstart', applyHideMenu);
+        $elm.off('keyup', checkKeyUp);
+        $elm.off('keydown', checkKeyDown);
 
         // Turn on the document click handler, but in a timeout so it doesn't apply to THIS click if there is one
         $timeout(function() {
           angular.element(document).on(docEventType, applyHideMenu);
+          $elm.on('keyup', checkKeyUp);
+          $elm.on('keydown', checkKeyDown);
+
         });
+        //automatically set the focus to the first button element in the now open menu.
+        gridUtil.focus.bySelector($elm, 'button[type=button]', true);
       };
 
 
-      self.hideMenu = $scope.hideMenu = function(event, args) {
+      $scope.hideMenu = function(event) {
         if ( $scope.shown ){
           /*
            * In order to animate cleanly we animate the addition of ng-hide, then use a $timeout to
            * set the ng-if (shown = false) after the animation runs.  In theory we can cascade off the
            * callback on the addClass method, but it is very unreliable with unit tests for no discernable reason.
-           *   
+           *
            * The user may have clicked on the menu again whilst
            * we're waiting, so we check that the mid isn't shown before applying the ng-if.
            */
@@ -1869,6 +2083,8 @@ function ($compile, $timeout, $window, $document, gridUtil, uiGridConstants) {
         }
 
         angular.element(document).off('click touchstart', applyHideMenu);
+        $elm.off('keyup', checkKeyUp);
+        $elm.off('keydown', checkKeyDown);
       };
 
       $scope.$on('hide-menu', function (event, args) {
@@ -1879,7 +2095,7 @@ function ($compile, $timeout, $window, $document, gridUtil, uiGridConstants) {
         $scope.showMenu(event, args);
       });
 
-      
+
     // *** Auto hide when click elsewhere ******
       var applyHideMenu = function(){
         if ($scope.shown) {
@@ -1888,7 +2104,35 @@ function ($compile, $timeout, $window, $document, gridUtil, uiGridConstants) {
           });
         }
       };
-    
+
+      // close menu on ESC and keep tab cyclical
+      var checkKeyUp = function(event) {
+        if (event.keyCode === 27) {
+          $scope.hideMenu();
+        }
+      };
+
+      var checkKeyDown = function(event) {
+        var setFocus = function(elm) {
+          elm.focus();
+          event.preventDefault();
+          return false;
+        };
+        if (event.keyCode === 9) {
+          var firstMenuItem, lastMenuItem;
+          var menuItemButtons = $elm[0].querySelectorAll('button:not(.ng-hide)');
+          if (menuItemButtons.length > 0) {
+            firstMenuItem = menuItemButtons[0];
+            lastMenuItem = menuItemButtons[menuItemButtons.length - 1];
+            if (event.target === lastMenuItem && !event.shiftKey) {
+              setFocus(firstMenuItem);
+            } else if (event.target === firstMenuItem && event.shiftKey) {
+              setFocus(lastMenuItem);
+            }
+          }
+        }
+      };
+
       if (typeof($scope.autoHide) === 'undefined' || $scope.autoHide === undefined) {
         $scope.autoHide = true;
       }
@@ -1900,23 +2144,18 @@ function ($compile, $timeout, $window, $document, gridUtil, uiGridConstants) {
       $scope.$on('$destroy', function () {
         angular.element(document).off('click touchstart', applyHideMenu);
       });
-      
+
 
       $scope.$on('$destroy', function() {
         angular.element($window).off('resize', applyHideMenu);
       });
 
       if (uiGridCtrl) {
-       $scope.$on('$destroy', uiGridCtrl.grid.api.core.on.scrollEvent($scope, applyHideMenu ));
+       $scope.$on('$destroy', uiGridCtrl.grid.api.core.on.scrollBegin($scope, applyHideMenu ));
       }
 
       $scope.$on('$destroy', $scope.$on(uiGridConstants.events.ITEM_DRAGGING, applyHideMenu ));
-    },
-    
-    
-    controller: ['$scope', '$element', '$attrs', function ($scope, $element, $attrs) {
-      var self = this;
-    }]
+    }
   };
 
   return uiGridMenu;
@@ -1932,30 +2171,28 @@ function ($compile, $timeout, $window, $document, gridUtil, uiGridConstants) {
       icon: '=',
       shown: '=',
       context: '=',
-      templateUrl: '='
+      templateUrl: '=',
+      leaveOpen: '=',
+      screenReaderOnly: '='
     },
-    require: ['?^uiGrid', '^uiGridMenu'],
+    require: ['?^uiGrid'],
     templateUrl: 'ui-grid/uiGridMenuItem',
-    replace: true,
-    compile: function($elm, $attrs) {
+    replace: false,
+    compile: function() {
       return {
-        pre: function ($scope, $elm, $attrs, controllers) {
-          var uiGridCtrl = controllers[0],
-              uiGridMenuCtrl = controllers[1];
-          
+        pre: function ($scope, $elm) {
           if ($scope.templateUrl) {
             gridUtil.getTemplate($scope.templateUrl)
                 .then(function (contents) {
                   var template = angular.element(contents);
-                    
+
                   var newElm = $compile(template)($scope);
                   $elm.replaceWith(newElm);
                 });
           }
         },
         post: function ($scope, $elm, $attrs, controllers) {
-          var uiGridCtrl = controllers[0],
-              uiGridMenuCtrl = controllers[1];
+          var uiGridCtrl = controllers[0];
 
           // TODO(c0bra): validate that shown and active are functions if they're defined. An exception is already thrown above this though
           // if (typeof($scope.shown) !== 'undefined' && $scope.shown && typeof($scope.shown) !== 'function') {
@@ -1979,7 +2216,7 @@ function ($compile, $timeout, $window, $document, gridUtil, uiGridConstants) {
           };
 
           $scope.itemAction = function($event,title) {
-            // gridUtil.logDebug('itemAction');
+            gridUtil.logDebug('itemAction');
             $event.stopPropagation();
 
             if (typeof($scope.action) === 'function') {
@@ -1996,7 +2233,16 @@ function ($compile, $timeout, $window, $document, gridUtil, uiGridConstants) {
 
               $scope.action.call(context, $event, title);
 
-              $scope.$emit('hide-menu');
+              if ( !$scope.leaveOpen ){
+                $scope.$emit('hide-menu');
+              } else {
+                /*
+                 * XXX: Fix after column refactor
+                 * Ideally the focus would remain on the item.
+                 * However, since there are two menu items that have their 'show' property toggled instead. This is a quick fix.
+                 */
+                gridUtil.focus.bySelector(angular.element(gridUtil.closestElm($elm, ".ui-grid-menu-items")), 'button[type=button]', true);
+              }
             }
           };
 
@@ -2010,11 +2256,361 @@ function ($compile, $timeout, $window, $document, gridUtil, uiGridConstants) {
 }]);
 
 })();
+
+(function(){
+  'use strict';
+  /**
+   * @ngdoc overview
+   * @name ui.grid.directive:uiGridOneBind
+   * @summary A group of directives that provide a one time bind to a dom element.
+   * @description A group of directives that provide a one time bind to a dom element.
+   * As one time bindings are not supported in Angular 1.2.* this directive provdes this capability.
+   * This is done to reduce the number of watchers on the dom.
+   * <br/>
+   * <h2>Short Example ({@link ui.grid.directive:uiGridOneBindSrc ui-grid-one-bind-src})</h2>
+   * <pre>
+        <div ng-init="imageName = 'myImageDir.jpg'">
+          <img ui-grid-one-bind-src="imageName"></img>
+        </div>
+     </pre>
+   * Will become:
+   * <pre>
+       <div ng-init="imageName = 'myImageDir.jpg'">
+         <img ui-grid-one-bind-src="imageName" src="myImageDir.jpg"></img>
+       </div>
+     </pre>
+     </br>
+     <h2>Short Example ({@link ui.grid.directive:uiGridOneBindText ui-grid-one-bind-text})</h2>
+   * <pre>
+        <div ng-init="text='Add this text'" ui-grid-one-bind-text="text"></div>
+     </pre>
+   * Will become:
+   * <pre>
+   <div ng-init="text='Add this text'" ui-grid-one-bind-text="text">Add this text</div>
+     </pre>
+     </br>
+   * <b>Note:</b> This behavior is slightly different for the {@link ui.grid.directive:uiGridOneBindIdGrid uiGridOneBindIdGrid}
+   * and {@link ui.grid.directive:uiGridOneBindAriaLabelledbyGrid uiGridOneBindAriaLabelledbyGrid} directives.
+   *
+   */
+  //https://github.com/joshkurz/Black-Belt-AngularJS-Directives/blob/master/directives/Optimization/oneBind.js
+  var oneBinders = angular.module('ui.grid');
+  angular.forEach([
+      /**
+       * @ngdoc directive
+       * @name ui.grid.directive:uiGridOneBindSrc
+       * @memberof ui.grid.directive:uiGridOneBind
+       * @element img
+       * @restrict A
+       * @param {String} uiGridOneBindSrc The angular string you want to bind. Does not support interpolation. Don't use <code>{{scopeElt}}</code> instead use <code>scopeElt</code>.
+       * @description One time binding for the src dom tag.
+       *
+       */
+      {tag: 'Src', method: 'attr'},
+      /**
+       * @ngdoc directive
+       * @name ui.grid.directive:uiGridOneBindText
+       * @element div
+       * @restrict A
+       * @param {String} uiGridOneBindText The angular string you want to bind. Does not support interpolation. Don't use <code>{{scopeElt}}</code> instead use <code>scopeElt</code>.
+       * @description One time binding for the text dom tag.
+       */
+      {tag: 'Text', method: 'text'},
+      /**
+       * @ngdoc directive
+       * @name ui.grid.directive:uiGridOneBindHref
+       * @element div
+       * @restrict A
+       * @param {String} uiGridOneBindHref The angular string you want to bind. Does not support interpolation. Don't use <code>{{scopeElt}}</code> instead use <code>scopeElt</code>.
+       * @description One time binding for the href dom tag. For more information see {@link ui.grid.directive:uiGridOneBind}.
+       */
+      {tag: 'Href', method: 'attr'},
+      /**
+       * @ngdoc directive
+       * @name ui.grid.directive:uiGridOneBindClass
+       * @element div
+       * @restrict A
+       * @param {String} uiGridOneBindClass The angular string you want to bind. Does not support interpolation. Don't use <code>{{scopeElt}}</code> instead use <code>scopeElt</code>.
+       * @param {Object} uiGridOneBindClass The object that you want to bind. At least one of the values in the object must be something other than null or undefined for the watcher to be removed.
+       *                                    this is to prevent the watcher from being removed before the scope is initialized.
+       * @param {Array} uiGridOneBindClass An array of classes to bind to this element.
+       * @description One time binding for the class dom tag. For more information see {@link ui.grid.directive:uiGridOneBind}.
+       */
+      {tag: 'Class', method: 'addClass'},
+      /**
+       * @ngdoc directive
+       * @name ui.grid.directive:uiGridOneBindHtml
+       * @element div
+       * @restrict A
+       * @param {String} uiGridOneBindHtml The angular string you want to bind. Does not support interpolation. Don't use <code>{{scopeElt}}</code> instead use <code>scopeElt</code>.
+       * @description One time binding for the html method on a dom element. For more information see {@link ui.grid.directive:uiGridOneBind}.
+       */
+      {tag: 'Html', method: 'html'},
+      /**
+       * @ngdoc directive
+       * @name ui.grid.directive:uiGridOneBindAlt
+       * @element div
+       * @restrict A
+       * @param {String} uiGridOneBindAlt The angular string you want to bind. Does not support interpolation. Don't use <code>{{scopeElt}}</code> instead use <code>scopeElt</code>.
+       * @description One time binding for the alt dom tag. For more information see {@link ui.grid.directive:uiGridOneBind}.
+       */
+      {tag: 'Alt', method: 'attr'},
+      /**
+       * @ngdoc directive
+       * @name ui.grid.directive:uiGridOneBindStyle
+       * @element div
+       * @restrict A
+       * @param {String} uiGridOneBindStyle The angular string you want to bind. Does not support interpolation. Don't use <code>{{scopeElt}}</code> instead use <code>scopeElt</code>.
+       * @description One time binding for the style dom tag. For more information see {@link ui.grid.directive:uiGridOneBind}.
+       */
+      {tag: 'Style', method: 'css'},
+      /**
+       * @ngdoc directive
+       * @name ui.grid.directive:uiGridOneBindValue
+       * @element div
+       * @restrict A
+       * @param {String} uiGridOneBindValue The angular string you want to bind. Does not support interpolation. Don't use <code>{{scopeElt}}</code> instead use <code>scopeElt</code>.
+       * @description One time binding for the value dom tag. For more information see {@link ui.grid.directive:uiGridOneBind}.
+       */
+      {tag: 'Value', method: 'attr'},
+      /**
+       * @ngdoc directive
+       * @name ui.grid.directive:uiGridOneBindId
+       * @element div
+       * @restrict A
+       * @param {String} uiGridOneBindId The angular string you want to bind. Does not support interpolation. Don't use <code>{{scopeElt}}</code> instead use <code>scopeElt</code>.
+       * @description One time binding for the value dom tag. For more information see {@link ui.grid.directive:uiGridOneBind}.
+       */
+      {tag: 'Id', method: 'attr'},
+      /**
+       * @ngdoc directive
+       * @name ui.grid.directive:uiGridOneBindIdGrid
+       * @element div
+       * @restrict A
+       * @param {String} uiGridOneBindIdGrid The angular string you want to bind. Does not support interpolation. Don't use <code>{{scopeElt}}</code> instead use <code>scopeElt</code>.
+       * @description One time binding for the id dom tag.
+       * <h1>Important Note!</h1>
+       * If the id tag passed as a parameter does <b>not</b> contain the grid id as a substring
+       * then the directive will search the scope and the parent controller (if it is a uiGridController) for the grid.id value.
+       * If this value is found then it is appended to the begining of the id tag. If the grid is not found then the directive throws an error.
+       * This is done in order to ensure uniqueness of id tags across the grid.
+       * This is to prevent two grids in the same document having duplicate id tags.
+       */
+      {tag: 'Id', directiveName:'IdGrid', method: 'attr', appendGridId: true},
+      /**
+       * @ngdoc directive
+       * @name ui.grid.directive:uiGridOneBindTitle
+       * @element div
+       * @restrict A
+       * @param {String} uiGridOneBindTitle The angular string you want to bind. Does not support interpolation. Don't use <code>{{scopeElt}}</code> instead use <code>scopeElt</code>.
+       * @description One time binding for the title dom tag. For more information see {@link ui.grid.directive:uiGridOneBind}.
+       */
+      {tag: 'Title', method: 'attr'},
+      /**
+       * @ngdoc directive
+       * @name ui.grid.directive:uiGridOneBindAriaLabel
+       * @element div
+       * @restrict A
+       * @param {String} uiGridOneBindAriaLabel The angular string you want to bind. Does not support interpolation. Don't use <code>{{scopeElt}}</code> instead use <code>scopeElt</code>.
+       * @description One time binding for the aria-label dom tag. For more information see {@link ui.grid.directive:uiGridOneBind}.
+       *<br/>
+       * <pre>
+            <div ng-init="text='Add this text'" ui-grid-one-bind-aria-label="text"></div>
+         </pre>
+       * Will become:
+       * <pre>
+            <div ng-init="text='Add this text'" ui-grid-one-bind-aria-label="text" aria-label="Add this text"></div>
+         </pre>
+       */
+      {tag: 'Label', method: 'attr', aria:true},
+      /**
+       * @ngdoc directive
+       * @name ui.grid.directive:uiGridOneBindAriaLabelledby
+       * @element div
+       * @restrict A
+       * @param {String} uiGridOneBindAriaLabelledby The angular string you want to bind. Does not support interpolation. Don't use <code>{{scopeElt}}</code> instead use <code>scopeElt</code>.
+       * @description One time binding for the aria-labelledby dom tag. For more information see {@link ui.grid.directive:uiGridOneBind}.
+       *<br/>
+       * <pre>
+            <div ng-init="anId = 'gridID32'" ui-grid-one-bind-aria-labelledby="anId"></div>
+         </pre>
+       * Will become:
+       * <pre>
+            <div ng-init="anId = 'gridID32'" ui-grid-one-bind-aria-labelledby="anId" aria-labelledby="gridID32"></div>
+         </pre>
+       */
+      {tag: 'Labelledby', method: 'attr', aria:true},
+      /**
+       * @ngdoc directive
+       * @name ui.grid.directive:uiGridOneBindAriaLabelledbyGrid
+       * @element div
+       * @restrict A
+       * @param {String} uiGridOneBindAriaLabelledbyGrid The angular string you want to bind. Does not support interpolation. Don't use <code>{{scopeElt}}</code> instead use <code>scopeElt</code>.
+       * @description One time binding for the aria-labelledby dom tag. For more information see {@link ui.grid.directive:uiGridOneBind}.
+       * Works somewhat like {@link ui.grid.directive:uiGridOneBindIdGrid} however this one supports a list of ids (seperated by a space) and will dynamically add the
+       * grid id to each one.
+       *<br/>
+       * <pre>
+            <div ng-init="anId = 'gridID32'" ui-grid-one-bind-aria-labelledby-grid="anId"></div>
+         </pre>
+       * Will become ([grid.id] will be replaced by the actual grid id):
+       * <pre>
+            <div ng-init="anId = 'gridID32'" ui-grid-one-bind-aria-labelledby-grid="anId" aria-labelledby-Grid="[grid.id]-gridID32"></div>
+         </pre>
+       */
+      {tag: 'Labelledby', directiveName:'LabelledbyGrid', appendGridId:true, method: 'attr', aria:true},
+      /**
+       * @ngdoc directive
+       * @name ui.grid.directive:uiGridOneBindAriaDescribedby
+       * @element ANY
+       * @restrict A
+       * @param {String} uiGridOneBindAriaDescribedby The angular string you want to bind. Does not support interpolation. Don't use <code>{{scopeElt}}</code> instead use <code>scopeElt</code>.
+       * @description One time binding for the aria-describedby dom tag. For more information see {@link ui.grid.directive:uiGridOneBind}.
+       *<br/>
+       * <pre>
+            <div ng-init="anId = 'gridID32'" ui-grid-one-bind-aria-describedby="anId"></div>
+         </pre>
+       * Will become:
+       * <pre>
+            <div ng-init="anId = 'gridID32'" ui-grid-one-bind-aria-describedby="anId" aria-describedby="gridID32"></div>
+         </pre>
+       */
+      {tag: 'Describedby', method: 'attr', aria:true},
+      /**
+       * @ngdoc directive
+       * @name ui.grid.directive:uiGridOneBindAriaDescribedbyGrid
+       * @element ANY
+       * @restrict A
+       * @param {String} uiGridOneBindAriaDescribedbyGrid The angular string you want to bind. Does not support interpolation. Don't use <code>{{scopeElt}}</code> instead use <code>scopeElt</code>.
+       * @description One time binding for the aria-labelledby dom tag. For more information see {@link ui.grid.directive:uiGridOneBind}.
+       * Works somewhat like {@link ui.grid.directive:uiGridOneBindIdGrid} however this one supports a list of ids (seperated by a space) and will dynamically add the
+       * grid id to each one.
+       *<br/>
+       * <pre>
+            <div ng-init="anId = 'gridID32'" ui-grid-one-bind-aria-describedby-grid="anId"></div>
+         </pre>
+       * Will become ([grid.id] will be replaced by the actual grid id):
+       * <pre>
+            <div ng-init="anId = 'gridID32'" ui-grid-one-bind-aria-describedby-grid="anId" aria-describedby="[grid.id]-gridID32"></div>
+         </pre>
+       */
+      {tag: 'Describedby', directiveName:'DescribedbyGrid', appendGridId:true, method: 'attr', aria:true}],
+    function(v){
+
+      var baseDirectiveName = 'uiGridOneBind';
+      //If it is an aria tag then append the aria label seperately
+      //This is done because the aria tags are formatted aria-* and the directive name can't have a '-' character in it.
+      //If the diretiveName has to be overridden then it does so here. This is because the tag being modified and the directive sometimes don't match up.
+      var directiveName = (v.aria ? baseDirectiveName + 'Aria' : baseDirectiveName) + (v.directiveName ? v.directiveName : v.tag);
+      oneBinders.directive(directiveName, ['gridUtil', function(gridUtil){
+        return {
+          restrict: 'A',
+          require: ['?uiGrid','?^uiGrid'],
+          link: function(scope, iElement, iAttrs, controllers){
+            /* Appends the grid id to the beginnig of the value. */
+            var appendGridId = function(val){
+              var grid; //Get an instance of the grid if its available
+              //If its available in the scope then we don't need to try to find it elsewhere
+              if (scope.grid) {
+                grid = scope.grid;
+              }
+              //Another possible location to try to find the grid
+              else if (scope.col && scope.col.grid){
+                grid = scope.col.grid;
+              }
+              //Last ditch effort: Search through the provided controllers.
+              else if (!controllers.some( //Go through the controllers till one has the element we need
+                function(controller){
+                  if (controller && controller.grid) {
+                    grid = controller.grid;
+                    return true; //We've found the grid
+                  }
+              })){
+                //We tried our best to find it for you
+                gridUtil.logError("["+directiveName+"] A valid grid could not be found to bind id. Are you using this directive " +
+                                 "within the correct scope? Trying to generate id: [gridID]-" + val);
+                throw new Error("No valid grid could be found");
+              }
+
+              if (grid){
+                var idRegex = new RegExp(grid.id.toString());
+                //If the grid id hasn't been appended already in the template declaration
+                if (!idRegex.test(val)){
+                  val = grid.id.toString() + '-' + val;
+                }
+              }
+              return val;
+            };
+
+            // The watch returns a function to remove itself.
+            var rmWatcher = scope.$watch(iAttrs[directiveName], function(newV){
+              if (newV){
+                //If we are trying to add an id element then we also apply the grid id if it isn't already there
+                if (v.appendGridId) {
+                  var newIdString = null;
+                  //Append the id to all of the new ids.
+                  angular.forEach( newV.split(' '), function(s){
+                    newIdString = (newIdString ? (newIdString + ' ') : '') +  appendGridId(s);
+                  });
+                  newV = newIdString;
+                }
+
+                // Append this newValue to the dom element.
+                switch (v.method) {
+                  case 'attr': //The attr method takes two paraams the tag and the value
+                    if (v.aria) {
+                      //If it is an aria element then append the aria prefix
+                      iElement[v.method]('aria-' + v.tag.toLowerCase(),newV);
+                    } else {
+                      iElement[v.method](v.tag.toLowerCase(),newV);
+                    }
+                    break;
+                  case 'addClass':
+                    //Pulled from https://github.com/Pasvaz/bindonce/blob/master/bindonce.js
+                    if (angular.isObject(newV) && !angular.isArray(newV)) {
+                      var results = [];
+                      var nonNullFound = false; //We don't want to remove the binding unless the key is actually defined
+                      angular.forEach(newV, function (value, index) {
+                        if (value !== null && typeof(value) !== "undefined"){
+                          nonNullFound = true; //A non null value for a key was found so the object must have been initialized
+                          if (value) {results.push(index);}
+                        }
+                      });
+                      //A non null value for a key wasn't found so assume that the scope values haven't been fully initialized
+                      if (!nonNullFound){
+                        return; // If not initialized then the watcher should not be removed yet.
+                      }
+                      newV = results;
+                    }
+
+                    if (newV) {
+                      iElement.addClass(angular.isArray(newV) ? newV.join(' ') : newV);
+                    } else {
+                      return;
+                    }
+                    break;
+                  default:
+                    iElement[v.method](newV);
+                    break;
+                }
+
+                //Removes the watcher on itself after the bind
+                rmWatcher();
+              }
+            // True ensures that equality is determined using angular.equals instead of ===
+            }, true); //End rm watchers
+          } //End compile function
+        }; //End directive return
+      } // End directive function
+    ]); //End directive
+  }); // End angular foreach
+})();
+
 (function () {
   'use strict';
 
   var module = angular.module('ui.grid');
-  
+
   module.directive('uiGridRenderContainer', ['$timeout', '$document', 'uiGridConstants', 'gridUtil', 'ScrollEvent',
     function($timeout, $document, uiGridConstants, gridUtil, ScrollEvent) {
     return {
@@ -2035,11 +2631,9 @@ function ($compile, $timeout, $window, $document, gridUtil, uiGridConstants) {
       compile: function () {
         return {
           pre: function prelink($scope, $elm, $attrs, controllers) {
-            // gridUtil.logDebug('render container ' + $scope.containerId + ' pre-link');
 
             var uiGridCtrl = controllers[0];
             var containerCtrl = controllers[1];
-
             var grid = $scope.grid = uiGridCtrl.grid;
 
             // Verify that the render container for this element exists
@@ -2059,13 +2653,12 @@ function ($compile, $timeout, $window, $document, gridUtil, uiGridConstants) {
 
             var rowContainer = $scope.rowContainer = grid.renderContainers[$scope.rowContainerName];
             var colContainer = $scope.colContainer = grid.renderContainers[$scope.colContainerName];
-            
+
             containerCtrl.containerId = $scope.containerId;
             containerCtrl.rowContainer = rowContainer;
             containerCtrl.colContainer = colContainer;
           },
           post: function postlink($scope, $elm, $attrs, controllers) {
-            // gridUtil.logDebug('render container ' + $scope.containerId + ' post-link');
 
             var uiGridCtrl = controllers[0];
             var containerCtrl = controllers[1];
@@ -2073,63 +2666,14 @@ function ($compile, $timeout, $window, $document, gridUtil, uiGridConstants) {
             var grid = uiGridCtrl.grid;
             var rowContainer = containerCtrl.rowContainer;
             var colContainer = containerCtrl.colContainer;
+            var scrollTop = null;
+            var scrollLeft = null;
+
 
             var renderContainer = grid.renderContainers[$scope.containerId];
 
             // Put the container name on this element as a class
             $elm.addClass('ui-grid-render-container-' + $scope.containerId);
-
-            // Bind to left/right-scroll events
-            if ($scope.bindScrollHorizontal || $scope.bindScrollVertical) {
-              grid.api.core.on.scrollEvent($scope,scrollHandler);
-            }
-
-            function scrollHandler (args) {
-              // exit if not for this grid
-              if (args.grid && args.grid.id !== grid.id){
-                return;
-              }
-
-              
-              // Vertical scroll
-              if (args.y && $scope.bindScrollVertical) {
-                containerCtrl.prevScrollArgs = args;
-
-                var newScrollTop = args.getNewScrollTop(rowContainer,containerCtrl.viewport);
-
-                //only set scrollTop if we coming from something other than viewPort scrollBar or
-                //another column container
-                if (args.source !== ScrollEvent.Sources.ViewPortScroll ||
-                    args.sourceColContainer !== colContainer) {
-                  containerCtrl.viewport[0].scrollTop = newScrollTop;
-                }
-
-              }
-
-              // Horizontal scroll
-              if (args.x && $scope.bindScrollHorizontal) {
-                containerCtrl.prevScrollArgs = args;
-                var newScrollLeft = args.getNewScrollLeft(colContainer,containerCtrl.viewport);
-
-                // Make the current horizontal scroll position available in the $scope
-                $scope.newScrollLeft = newScrollLeft;
-
-                if (containerCtrl.headerViewport) {
-                  containerCtrl.headerViewport.scrollLeft = gridUtil.denormalizeScrollLeft(containerCtrl.headerViewport, newScrollLeft);
-                }
-
-                if (containerCtrl.footerViewport) {
-                  containerCtrl.footerViewport.scrollLeft = gridUtil.denormalizeScrollLeft(containerCtrl.footerViewport, newScrollLeft);
-                }
-
-                // Scroll came from somewhere else, so the viewport must be positioned
-                if (args.source !== ScrollEvent.Sources.ViewPortScroll) {
-                  containerCtrl.viewport[0].scrollLeft = newScrollLeft;
-                }
-
-                containerCtrl.prevScrollLeft = newScrollLeft;
-              }
-            }
 
             // Scroll the render container viewport when the mousewheel is used
             gridUtil.on.mousewheel($elm, function (event) {
@@ -2137,8 +2681,17 @@ function ($compile, $timeout, $window, $document, gridUtil, uiGridConstants) {
               if (event.deltaY !== 0) {
                 var scrollYAmount = event.deltaY * -1 * event.deltaFactor;
 
+                scrollTop = containerCtrl.viewport[0].scrollTop;
+
                 // Get the scroll percentage
-                var scrollYPercentage = (containerCtrl.viewport[0].scrollTop + scrollYAmount) / rowContainer.getVerticalScrollLength();
+                scrollEvent.verticalScrollLength = rowContainer.getVerticalScrollLength();
+                var scrollYPercentage = (scrollTop + scrollYAmount) / scrollEvent.verticalScrollLength;
+
+                // If we should be scrolled 100%, make sure the scrollTop matches the maximum scroll length
+                //   Viewports that have "overflow: hidden" don't let the mousewheel scroll all the way to the bottom without this check
+                if (scrollYPercentage >= 1 && scrollTop < scrollEvent.verticalScrollLength) {
+                  containerCtrl.viewport[0].scrollTop = scrollEvent.verticalScrollLength;
+                }
 
                 // Keep scrollPercentage within the range 0-1.
                 if (scrollYPercentage < 0) { scrollYPercentage = 0; }
@@ -2150,8 +2703,9 @@ function ($compile, $timeout, $window, $document, gridUtil, uiGridConstants) {
                 var scrollXAmount = event.deltaX * event.deltaFactor;
 
                 // Get the scroll percentage
-                var scrollLeft = gridUtil.normalizeScrollLeft(containerCtrl.viewport);
-                var scrollXPercentage = (scrollLeft + scrollXAmount) / (colContainer.getCanvasWidth() - colContainer.getViewportWidth());
+                scrollLeft = gridUtil.normalizeScrollLeft(containerCtrl.viewport, grid);
+                scrollEvent.horizontalScrollLength = (colContainer.getCanvasWidth() - colContainer.getViewportWidth());
+                var scrollXPercentage = (scrollLeft + scrollXAmount) / scrollEvent.horizontalScrollLength;
 
                 // Keep scrollPercentage within the range 0-1.
                 if (scrollXPercentage < 0) { scrollXPercentage = 0; }
@@ -2160,14 +2714,17 @@ function ($compile, $timeout, $window, $document, gridUtil, uiGridConstants) {
                 scrollEvent.x = { percentage: scrollXPercentage, pixels: scrollXAmount };
               }
 
-              // todo: this isn't working when scrolling down.  it works fine for up.  tested on Chrome
               // Let the parent container scroll if the grid is already at the top/bottom
-              if ((scrollEvent.y && scrollEvent.y.percentage !== 0 && scrollEvent.y.percentage !== 1) ||
-                 (scrollEvent.x && scrollEvent.x.percentage !== 0 && scrollEvent.x.percentage !== 1)) {
-
-                  event.preventDefault();
-                  scrollEvent.fireThrottledScrollingEvent();
+              if ((event.deltaY !== 0 && (scrollEvent.atTop(scrollTop) || scrollEvent.atBottom(scrollTop))) ||
+                  (event.deltaX !== 0 && (scrollEvent.atLeft(scrollLeft) || scrollEvent.atRight(scrollLeft)))) {
+                //parent controller scrolls
               }
+              else {
+                event.preventDefault();
+                event.stopPropagation();
+                scrollEvent.fireThrottledScrollingEvent('', scrollEvent);
+              }
+
             });
 
             $elm.bind('$destroy', function() {
@@ -2177,26 +2734,31 @@ function ($compile, $timeout, $window, $document, gridUtil, uiGridConstants) {
                 $elm.unbind(eventName);
               });
             });
-            
+
             // TODO(c0bra): Handle resizing the inner canvas based on the number of elements
             function update() {
               var ret = '';
 
-              var canvasWidth = colContainer.getCanvasWidth();
+              var canvasWidth = colContainer.canvasWidth;
               var viewportWidth = colContainer.getViewportWidth();
 
               var canvasHeight = rowContainer.getCanvasHeight();
 
               //add additional height for scrollbar on left and right container
-              if ($scope.containerId !== 'body') {
-                canvasHeight += grid.scrollbarHeight;
-              }
+              //if ($scope.containerId !== 'body') {
+              //  canvasHeight -= grid.scrollbarHeight;
+              //}
 
               var viewportHeight = rowContainer.getViewportHeight();
+              //shorten the height to make room for a scrollbar placeholder
+              if (colContainer.needsHScrollbarPlaceholder()) {
+                viewportHeight -= grid.scrollbarHeight;
+              }
 
-              var headerViewportWidth = colContainer.getHeaderViewportWidth();
-              var footerViewportWidth = colContainer.getHeaderViewportWidth();
-              
+              var headerViewportWidth,
+                  footerViewportWidth;
+              headerViewportWidth = footerViewportWidth = colContainer.getHeaderViewportWidth();
+
               // Set canvas dimensions
               ret += '\n .grid' + uiGridCtrl.grid.id + ' .ui-grid-render-container-' + $scope.containerId + ' .ui-grid-canvas { width: ' + canvasWidth + 'px; height: ' + canvasHeight + 'px; }';
 
@@ -2205,16 +2767,19 @@ function ($compile, $timeout, $window, $document, gridUtil, uiGridConstants) {
               if (renderContainer.explicitHeaderCanvasHeight) {
                 ret += '\n .grid' + uiGridCtrl.grid.id + ' .ui-grid-render-container-' + $scope.containerId + ' .ui-grid-header-canvas { height: ' + renderContainer.explicitHeaderCanvasHeight + 'px; }';
               }
-              
+              else {
+                ret += '\n .grid' + uiGridCtrl.grid.id + ' .ui-grid-render-container-' + $scope.containerId + ' .ui-grid-header-canvas { height: inherit; }';
+              }
+
               ret += '\n .grid' + uiGridCtrl.grid.id + ' .ui-grid-render-container-' + $scope.containerId + ' .ui-grid-viewport { width: ' + viewportWidth + 'px; height: ' + viewportHeight + 'px; }';
               ret += '\n .grid' + uiGridCtrl.grid.id + ' .ui-grid-render-container-' + $scope.containerId + ' .ui-grid-header-viewport { width: ' + headerViewportWidth + 'px; }';
 
-              ret += '\n .grid' + uiGridCtrl.grid.id + ' .ui-grid-render-container-' + $scope.containerId + ' .ui-grid-footer-canvas { width: ' + canvasWidth + grid.scrollbarWidth + 'px; }';
+              ret += '\n .grid' + uiGridCtrl.grid.id + ' .ui-grid-render-container-' + $scope.containerId + ' .ui-grid-footer-canvas { width: ' + (canvasWidth + grid.scrollbarWidth) + 'px; }';
               ret += '\n .grid' + uiGridCtrl.grid.id + ' .ui-grid-render-container-' + $scope.containerId + ' .ui-grid-footer-viewport { width: ' + footerViewportWidth + 'px; }';
 
               return ret;
             }
-            
+
             uiGridCtrl.grid.registerStyleComputation({
               priority: 6,
               func: update
@@ -2227,7 +2792,7 @@ function ($compile, $timeout, $window, $document, gridUtil, uiGridConstants) {
   }]);
 
   module.controller('uiGridRenderContainer', ['$scope', 'gridUtil', function ($scope, gridUtil) {
-    
+
   }]);
 
 })();
@@ -2331,10 +2896,10 @@ function ($compile, $timeout, $window, $document, gridUtil, uiGridConstants) {
    </div>
    </doc:source>
    <doc:scenario>
-   it('should apply the right class to the element', function () {
-        element(by.css('.blah')).getCssValue('border')
+      it('should apply the right class to the element', function () {
+        element(by.css('.blah')).getCssValue('border-top-width')
           .then(function(c) {
-            expect(c).toContain('1px solid');
+            expect(c).toContain('1px');
           });
       });
    </doc:scenario>
@@ -2382,11 +2947,12 @@ function ($compile, $timeout, $window, $document, gridUtil, uiGridConstants) {
   }]);
 
 })();
+
 (function(){
   'use strict';
 
-  angular.module('ui.grid').directive('uiGridViewport', ['gridUtil','ScrollEvent','uiGridConstants',
-    function(gridUtil, ScrollEvent, uiGridConstants) {
+  angular.module('ui.grid').directive('uiGridViewport', ['gridUtil','ScrollEvent','uiGridConstants', '$log',
+    function(gridUtil, ScrollEvent, uiGridConstants, $log) {
       return {
         replace: true,
         scope: {},
@@ -2412,65 +2978,84 @@ function ($compile, $timeout, $window, $document, gridUtil, uiGridConstants) {
           $scope.rowContainer = containerCtrl.rowContainer;
           $scope.colContainer = containerCtrl.colContainer;
 
-          // Register this viewport with its container 
+          // Register this viewport with its container
           containerCtrl.viewport = $elm;
 
-          $elm.on('scroll', function (evt) {
+
+          $elm.on('scroll', scrollHandler);
+
+          var ignoreScroll = false;
+
+          function scrollHandler(evt) {
+            //Leaving in this commented code in case it can someday be used
+            //It does improve performance, but because the horizontal scroll is normalized,
+            //  using this code will lead to the column header getting slightly out of line with columns
+            //
+            //if (ignoreScroll && (grid.isScrollingHorizontally || grid.isScrollingHorizontally)) {
+            //  //don't ask for scrollTop if we just set it
+            //  ignoreScroll = false;
+            //  return;
+            //}
+            //ignoreScroll = true;
+
             var newScrollTop = $elm[0].scrollTop;
-            // var newScrollLeft = $elm[0].scrollLeft;
-            var newScrollLeft = gridUtil.normalizeScrollLeft($elm);
-            var horizScrollPercentage = -1;
-            var vertScrollPercentage = -1;
+            var newScrollLeft = gridUtil.normalizeScrollLeft($elm, grid);
 
-            // Handle RTL here
+            var vertScrollPercentage = rowContainer.scrollVertical(newScrollTop);
+            var horizScrollPercentage = colContainer.scrollHorizontal(newScrollLeft);
 
-            if (newScrollLeft !== colContainer.prevScrollLeft) {
-              grid.flagScrollingHorizontally();
-              var xDiff = newScrollLeft - colContainer.prevScrollLeft;
-
-              if (xDiff > 0) { grid.scrollDirection = uiGridConstants.scrollDirection.RIGHT; }
-              if (xDiff < 0) { grid.scrollDirection = uiGridConstants.scrollDirection.LEFT; }
-
-              var horizScrollLength = (colContainer.getCanvasWidth() - colContainer.getViewportWidth());
-              if (horizScrollLength !== 0) {
-                horizScrollPercentage = newScrollLeft / horizScrollLength;
-              }
-              else {
-                horizScrollPercentage = 0;
-              }
-
-              colContainer.adjustScrollHorizontal(newScrollLeft, horizScrollPercentage);
+            var scrollEvent = new ScrollEvent(grid, rowContainer, colContainer, ScrollEvent.Sources.ViewPortScroll);
+            scrollEvent.newScrollLeft = newScrollLeft;
+            scrollEvent.newScrollTop = newScrollTop;
+            if ( horizScrollPercentage > -1 ){
+              scrollEvent.x = { percentage: horizScrollPercentage };
             }
 
-            if (newScrollTop !== rowContainer.prevScrollTop) {
-              grid.flagScrollingVertically();
-              var yDiff = newScrollTop - rowContainer.prevScrollTop;
-
-              if (yDiff > 0 ) { grid.scrollDirection = uiGridConstants.scrollDirection.DOWN; }
-              if (yDiff < 0 ) { grid.scrollDirection = uiGridConstants.scrollDirection.UP; }
-
-              var vertScrollLength = rowContainer.getVerticalScrollLength();
-
-              vertScrollPercentage = newScrollTop / vertScrollLength;
-
-              if (vertScrollPercentage > 1) { vertScrollPercentage = 1; }
-              if (vertScrollPercentage < 0) { vertScrollPercentage = 0; }
-              
-              rowContainer.adjustScrollVertical(newScrollTop, vertScrollPercentage);
+            if ( vertScrollPercentage > -1 ){
+              scrollEvent.y = { percentage: vertScrollPercentage };
             }
 
-              var scrollEvent = new ScrollEvent(grid, rowContainer, colContainer, ScrollEvent.Sources.ViewPortScroll);
-              scrollEvent.newScrollLeft = newScrollLeft;
-              scrollEvent.newScrollTop = newScrollTop;
-              if ( horizScrollPercentage > -1 ){
-                scrollEvent.x = { percentage: horizScrollPercentage };
-              }
+            grid.scrollContainers($scope.$parent.containerId, scrollEvent);
+          }
 
-              if ( vertScrollPercentage > -1 ){
-                scrollEvent.y = { percentage: vertScrollPercentage };
-              }
-              scrollEvent.fireScrollingEvent();
-          });
+          if ($scope.$parent.bindScrollVertical) {
+            grid.addVerticalScrollSync($scope.$parent.containerId, syncVerticalScroll);
+          }
+
+          if ($scope.$parent.bindScrollHorizontal) {
+            grid.addHorizontalScrollSync($scope.$parent.containerId, syncHorizontalScroll);
+            grid.addHorizontalScrollSync($scope.$parent.containerId + 'header', syncHorizontalHeader);
+            grid.addHorizontalScrollSync($scope.$parent.containerId + 'footer', syncHorizontalFooter);
+          }
+
+          function syncVerticalScroll(scrollEvent){
+            containerCtrl.prevScrollArgs = scrollEvent;
+            var newScrollTop = scrollEvent.getNewScrollTop(rowContainer,containerCtrl.viewport);
+            $elm[0].scrollTop = newScrollTop;
+
+          }
+
+          function syncHorizontalScroll(scrollEvent){
+            containerCtrl.prevScrollArgs = scrollEvent;
+            var newScrollLeft = scrollEvent.getNewScrollLeft(colContainer, containerCtrl.viewport);
+            $elm[0].scrollLeft =  gridUtil.denormalizeScrollLeft(containerCtrl.viewport,newScrollLeft, grid);
+          }
+
+          function syncHorizontalHeader(scrollEvent){
+            var newScrollLeft = scrollEvent.getNewScrollLeft(colContainer, containerCtrl.viewport);
+            if (containerCtrl.headerViewport) {
+              containerCtrl.headerViewport.scrollLeft = gridUtil.denormalizeScrollLeft(containerCtrl.viewport,newScrollLeft, grid);
+            }
+          }
+
+          function syncHorizontalFooter(scrollEvent){
+            var newScrollLeft = scrollEvent.getNewScrollLeft(colContainer, containerCtrl.viewport);
+            if (containerCtrl.footerViewport) {
+              containerCtrl.footerViewport.scrollLeft =  gridUtil.denormalizeScrollLeft(containerCtrl.viewport,newScrollLeft, grid);
+            }
+          }
+
+
         },
         controller: ['$scope', function ($scope) {
           this.rowStyle = function (index) {
@@ -2504,6 +3089,7 @@ function ($compile, $timeout, $window, $document, gridUtil, uiGridConstants) {
   ]);
 
 })();
+
 (function() {
 
 angular.module('ui.grid')
@@ -2521,9 +3107,9 @@ angular.module('ui.grid')
   'use strict';
 
   angular.module('ui.grid').controller('uiGridController', ['$scope', '$element', '$attrs', 'gridUtil', '$q', 'uiGridConstants',
-                    '$templateCache', 'gridClassFactory', '$timeout', '$parse', '$compile', 'ScrollEvent',
+                    '$templateCache', 'gridClassFactory', '$timeout', '$parse', '$compile',
     function ($scope, $elm, $attrs, gridUtil, $q, uiGridConstants,
-              $templateCache, gridClassFactory, $timeout, $parse, $compile, ScrollEvent) {
+              $templateCache, gridClassFactory, $timeout, $parse, $compile) {
       // gridUtil.logDebug('ui-grid controller');
 
       var self = this;
@@ -2555,19 +3141,38 @@ angular.module('ui.grid')
       }
 
 
-      var dataWatchCollectionDereg;
-      if (angular.isString($scope.uiGrid.data)) {
-        dataWatchCollectionDereg = $scope.$parent.$watchCollection($scope.uiGrid.data, dataWatchFunction);
-      }
-      else {
-        dataWatchCollectionDereg = $scope.$parent.$watchCollection(function() { return $scope.uiGrid.data; }, dataWatchFunction);
+      // if fastWatch is set we watch only the length and the reference, not every individual object
+      var deregFunctions = [];
+      if (self.grid.options.fastWatch) {
+        self.uiGrid = $scope.uiGrid;
+        if (angular.isString($scope.uiGrid.data)) {
+          deregFunctions.push( $scope.$parent.$watch($scope.uiGrid.data, dataWatchFunction) );
+          deregFunctions.push( $scope.$parent.$watch(function() {
+            if ( self.grid.appScope[$scope.uiGrid.data] ){
+              return self.grid.appScope[$scope.uiGrid.data].length;
+            } else {
+              return undefined;
+            }
+          }, dataWatchFunction) );
+        } else {
+          deregFunctions.push( $scope.$parent.$watch(function() { return $scope.uiGrid.data; }, dataWatchFunction) );
+          deregFunctions.push( $scope.$parent.$watch(function() { return $scope.uiGrid.data.length; }, function(){ dataWatchFunction($scope.uiGrid.data); }) );
+        }
+        deregFunctions.push( $scope.$parent.$watch(function() { return $scope.uiGrid.columnDefs; }, columnDefsWatchFunction) );
+        deregFunctions.push( $scope.$parent.$watch(function() { return $scope.uiGrid.columnDefs.length; }, function(){ columnDefsWatchFunction($scope.uiGrid.columnDefs); }) );
+      } else {
+        if (angular.isString($scope.uiGrid.data)) {
+          deregFunctions.push( $scope.$parent.$watchCollection($scope.uiGrid.data, dataWatchFunction) );
+        } else {
+          deregFunctions.push( $scope.$parent.$watchCollection(function() { return $scope.uiGrid.data; }, dataWatchFunction) );
+        }
+        deregFunctions.push( $scope.$parent.$watchCollection(function() { return $scope.uiGrid.columnDefs; }, columnDefsWatchFunction) );
       }
 
-      var columnDefWatchCollectionDereg = $scope.$parent.$watchCollection(function() { return $scope.uiGrid.columnDefs; }, columnDefsWatchFunction);
 
       function columnDefsWatchFunction(n, o) {
         if (n && n !== o) {
-          self.grid.options.columnDefs = n;
+          self.grid.options.columnDefs = $scope.uiGrid.columnDefs;
           self.grid.buildColumns({ orderByColumnDefs: true })
             .then(function(){
 
@@ -2578,31 +3183,29 @@ angular.module('ui.grid')
         }
       }
 
-      function adjustInfiniteScrollPosition (scrollToRow) {
-
-        var scrollEvent = new ScrollEvent(self.grid, null, null, 'ui.grid.adjustInfiniteScrollPosition');
-        var totalRows = self.grid.renderContainers.body.visibleRowCache.length;
-        var percentage = ( scrollToRow + ( scrollToRow / ( totalRows - 1 ) ) ) / totalRows;
-
-        //for infinite scroll, never allow it to be at the zero position so the up button can be active
-        if ( percentage === 0 ) {
-          scrollEvent.y = {pixels: 1};
-        }
-        else {
-          scrollEvent.y = {percentage: percentage};
-        }
-        scrollEvent.fireScrollingEvent();
-
-      }
+      var mostRecentData;
 
       function dataWatchFunction(newData) {
         // gridUtil.logDebug('dataWatch fired');
         var promises = [];
-        
+
+        if ( self.grid.options.fastWatch ){
+          if (angular.isString($scope.uiGrid.data)) {
+            newData = self.grid.appScope[$scope.uiGrid.data];
+          } else {
+            newData = $scope.uiGrid.data;
+          }
+        }
+
+        mostRecentData = newData;
+
         if (newData) {
+          // columns length is greater than the number of row header columns, which don't count because they're created automatically
+          var hasColumns = self.grid.columns.length > (self.grid.rowHeaderColumns ? self.grid.rowHeaderColumns.length : 0);
+
           if (
-            // If we have no columns (i.e. columns length is either 0 or equal to the number of row header columns, which don't count because they're created automatically)
-            self.grid.columns.length === (self.grid.rowHeaderColumns ? self.grid.rowHeaderColumns.length : 0) &&
+            // If we have no columns
+            !hasColumns &&
             // ... and we don't have a ui-grid-columns attribute, which would define columns for us
             !$attrs.uiGridColumns &&
             // ... and we have no pre-defined columns
@@ -2614,8 +3217,8 @@ angular.module('ui.grid')
             self.grid.buildColumnDefsFromData(newData);
           }
 
-          // If we either have some columns defined, or some data defined
-          if (self.grid.options.columnDefs.length > 0 || newData.length > 0) {
+          // If we haven't built columns before and either have some columns defined or some data defined
+          if (!hasColumns && (self.grid.options.columnDefs.length > 0 || newData.length > 0)) {
             // Build the column set, then pre-compile the column cell templates
             promises.push(self.grid.buildColumns()
               .then(function() {
@@ -2624,7 +3227,8 @@ angular.module('ui.grid')
           }
 
           $q.all(promises).then(function() {
-            self.grid.modifyRows(newData)
+            // use most recent data, rather than the potentially outdated data passed into watcher handler
+            self.grid.modifyRows(mostRecentData)
               .then(function () {
                 // if (self.viewport) {
                   self.grid.redrawInPlace(true);
@@ -2633,20 +3237,6 @@ angular.module('ui.grid')
                 $scope.$evalAsync(function() {
                   self.grid.refreshCanvas(true);
                   self.grid.callDataChangeCallbacks(uiGridConstants.dataChange.ROW);
-
-                  $timeout(function () {
-                    //Process post load scroll events if using infinite scroll
-                    if ( self.grid.options.enableInfiniteScroll ) {
-                      //If first load, seed the scrollbar down a little to activate the button
-                      if ( self.grid.renderContainers.body.prevRowScrollIndex === 0 ) {
-                        adjustInfiniteScrollPosition(0);
-                      }
-                      //If we are scrolling up, we need to reseed the grid.
-                      if (self.grid.scrollDirection === uiGridConstants.scrollDirection.UP) {
-                        adjustInfiniteScrollPosition(self.grid.renderContainers.body.prevRowScrollIndex + 1 + self.grid.options.excessRows);
-                      }
-                    }
-                    }, 0);
                 });
               });
           });
@@ -2658,8 +3248,7 @@ angular.module('ui.grid')
       });
 
       $scope.$on('$destroy', function() {
-        dataWatchCollectionDereg();
-        columnDefWatchCollectionDereg();
+        deregFunctions.forEach( function( deregFn ){ deregFn(); });
         styleWatchDereg();
       });
 
@@ -2710,125 +3299,160 @@ angular.module('ui.grid')
       </file>
     </example>
  */
-angular.module('ui.grid').directive('uiGrid',
-  [
-    '$compile',
-    '$templateCache',
-    'gridUtil',
-    '$window',
-    'uiGridConstants',
-    function(
-      $compile,
-      $templateCache,
-      gridUtil,
-      $window,
-      uiGridConstants
-      ) {
+angular.module('ui.grid').directive('uiGrid', uiGridDirective);
+
+uiGridDirective.$inject = ['$compile', '$templateCache', '$timeout', '$window', 'gridUtil', 'uiGridConstants'];
+function uiGridDirective($compile, $templateCache, $timeout, $window, gridUtil, uiGridConstants) {
+  return {
+    templateUrl: 'ui-grid/ui-grid',
+    scope: {
+      uiGrid: '='
+    },
+    replace: true,
+    transclude: true,
+    controller: 'uiGridController',
+    compile: function () {
       return {
-        templateUrl: 'ui-grid/ui-grid',
-        scope: {
-          uiGrid: '='
-        },
-        replace: true,
-        transclude: true,
-        controller: 'uiGridController',
-        compile: function () {
-          return {
-            post: function ($scope, $elm, $attrs, uiGridCtrl) {
-              // gridUtil.logDebug('ui-grid postlink');
-
-              var grid = uiGridCtrl.grid;
-
-              // Initialize scrollbars (TODO: move to controller??)
-              uiGridCtrl.scrollbars = [];
-
-              //todo: assume it is ok to communicate that rendering is complete??
-              grid.renderingComplete();
-
-              grid.element = $elm;
-
-              grid.gridWidth = $scope.gridWidth = gridUtil.elementWidth($elm);
-
-              // Default canvasWidth to the grid width, in case we don't get any column definitions to calculate it from
-              grid.canvasWidth = uiGridCtrl.grid.gridWidth;
-
-              grid.gridHeight = $scope.gridHeight = gridUtil.elementHeight($elm);
-
-              // If the grid isn't tall enough to fit a single row, it's kind of useless. Resize it to fit a minimum number of rows
-              if (grid.gridHeight < grid.options.rowHeight) {
-                // Figure out the new height
-                var contentHeight = grid.options.minRowsToShow * grid.options.rowHeight;
-                var headerHeight = grid.options.showHeader ? grid.options.headerRowHeight : 0;
-                var footerHeight = grid.calcFooterHeight();
-                
-                var scrollbarHeight = 0;
-                if (grid.options.enableHorizontalScrollbar === uiGridConstants.scrollbars.ALWAYS) {
-                  scrollbarHeight = gridUtil.getScrollbarWidth();
-                }
-
-                var maxNumberOfFilters = 0;
-                // Calculates the maximum number of filters in the columns
-                angular.forEach(grid.options.columnDefs, function(col) {
-                  if (col.hasOwnProperty('filter')) {
-                    if (maxNumberOfFilters < 1) {
-                        maxNumberOfFilters = 1;
-                    }
-                  }
-                  else if (col.hasOwnProperty('filters')) {
-                    if (maxNumberOfFilters < col.filters.length) {
-                        maxNumberOfFilters = col.filters.length;
-                    }
-                  }
-                });
-                var filterHeight = maxNumberOfFilters * headerHeight;
-
-                var newHeight = headerHeight + contentHeight + footerHeight + scrollbarHeight + filterHeight;
-
-                $elm.css('height', newHeight + 'px');
-
-                grid.gridHeight = $scope.gridHeight = gridUtil.elementHeight($elm);
-              }
-
-              // Run initial canvas refresh
-              grid.refreshCanvas();
-
-              //if we add a left container after render, we need to watch and react
-              $scope.$watch(function () { return grid.hasLeftContainer();}, function (newValue, oldValue) {
-                if (newValue === oldValue) {
-                  return;
-                }
-                grid.refreshCanvas(true);
-              });
-
-              //if we add a right container after render, we need to watch and react
-              $scope.$watch(function () { return grid.hasRightContainer();}, function (newValue, oldValue) {
-                if (newValue === oldValue) {
-                  return;
-                }
-                grid.refreshCanvas(true);
-              });
+        post: function ($scope, $elm, $attrs, uiGridCtrl) {
+          var grid = uiGridCtrl.grid;
+          // Initialize scrollbars (TODO: move to controller??)
+          uiGridCtrl.scrollbars = [];
+          grid.element = $elm;
 
 
-              // Resize the grid on window resize events
-              function gridResize($event) {
-                grid.gridWidth = $scope.gridWidth = gridUtil.elementWidth($elm);
-                grid.gridHeight = $scope.gridHeight = gridUtil.elementHeight($elm);
+          // See if the grid has a rendered width, if not, wait a bit and try again
+          var sizeCheckInterval = 100; // ms
+          var maxSizeChecks = 20; // 2 seconds total
+          var sizeChecks = 0;
 
-                grid.refreshCanvas(true);
-              }
+          // Setup (event listeners) the grid
+          setup();
 
-              angular.element($window).on('resize', gridResize);
+          // And initialize it
+          init();
 
-              // Unbind from window resize events when the grid is destroyed
-              $elm.on('$destroy', function () {
-                angular.element($window).off('resize', gridResize);
-              });
+          // Mark rendering complete so API events can happen
+          grid.renderingComplete();
+
+          // If the grid doesn't have size currently, wait for a bit to see if it gets size
+          checkSize();
+
+          /*-- Methods --*/
+
+          function checkSize() {
+            // If the grid has no width and we haven't checked more than <maxSizeChecks> times, check again in <sizeCheckInterval> milliseconds
+            if ($elm[0].offsetWidth <= 0 && sizeChecks < maxSizeChecks) {
+              setTimeout(checkSize, sizeCheckInterval);
+              sizeChecks++;
             }
-          };
+            else {
+              $timeout(init);
+            }
+          }
+
+          // Setup event listeners and watchers
+          function setup() {
+            // Bind to window resize events
+            angular.element($window).on('resize', gridResize);
+
+            // Unbind from window resize events when the grid is destroyed
+            $elm.on('$destroy', function () {
+              angular.element($window).off('resize', gridResize);
+            });
+
+            // If we add a left container after render, we need to watch and react
+            $scope.$watch(function () { return grid.hasLeftContainer();}, function (newValue, oldValue) {
+              if (newValue === oldValue) {
+                return;
+              }
+              grid.refreshCanvas(true);
+            });
+
+            // If we add a right container after render, we need to watch and react
+            $scope.$watch(function () { return grid.hasRightContainer();}, function (newValue, oldValue) {
+              if (newValue === oldValue) {
+                return;
+              }
+              grid.refreshCanvas(true);
+            });
+          }
+
+          // Initialize the directive
+          function init() {
+            grid.gridWidth = $scope.gridWidth = gridUtil.elementWidth($elm);
+
+            // Default canvasWidth to the grid width, in case we don't get any column definitions to calculate it from
+            grid.canvasWidth = uiGridCtrl.grid.gridWidth;
+
+            grid.gridHeight = $scope.gridHeight = gridUtil.elementHeight($elm);
+
+            // If the grid isn't tall enough to fit a single row, it's kind of useless. Resize it to fit a minimum number of rows
+            if (grid.gridHeight <= grid.options.rowHeight && grid.options.enableMinHeightCheck) {
+              autoAdjustHeight();
+            }
+
+            // Run initial canvas refresh
+            grid.refreshCanvas(true);
+          }
+
+          // Set the grid's height ourselves in the case that its height would be unusably small
+          function autoAdjustHeight() {
+            // Figure out the new height
+            var contentHeight = grid.options.minRowsToShow * grid.options.rowHeight;
+            var headerHeight = grid.options.showHeader ? grid.options.headerRowHeight : 0;
+            var footerHeight = grid.calcFooterHeight();
+
+            var scrollbarHeight = 0;
+            if (grid.options.enableHorizontalScrollbar === uiGridConstants.scrollbars.ALWAYS) {
+              scrollbarHeight = gridUtil.getScrollbarWidth();
+            }
+
+            var maxNumberOfFilters = 0;
+            // Calculates the maximum number of filters in the columns
+            angular.forEach(grid.options.columnDefs, function(col) {
+              if (col.hasOwnProperty('filter')) {
+                if (maxNumberOfFilters < 1) {
+                    maxNumberOfFilters = 1;
+                }
+              }
+              else if (col.hasOwnProperty('filters')) {
+                if (maxNumberOfFilters < col.filters.length) {
+                    maxNumberOfFilters = col.filters.length;
+                }
+              }
+            });
+
+            if (grid.options.enableFiltering  && !maxNumberOfFilters) {
+              var allColumnsHaveFilteringTurnedOff = grid.options.columnDefs.length && grid.options.columnDefs.every(function(col) {
+                return col.enableFiltering === false;
+              });
+
+              if (!allColumnsHaveFilteringTurnedOff) {
+                maxNumberOfFilters = 1;
+              }
+            }
+
+            var filterHeight = maxNumberOfFilters * headerHeight;
+
+            var newHeight = headerHeight + contentHeight + footerHeight + scrollbarHeight + filterHeight;
+
+            $elm.css('height', newHeight + 'px');
+
+            grid.gridHeight = $scope.gridHeight = gridUtil.elementHeight($elm);
+          }
+
+          // Resize the grid on window resize events
+          function gridResize($event) {
+            grid.gridWidth = $scope.gridWidth = gridUtil.elementWidth($elm);
+            grid.gridHeight = $scope.gridHeight = gridUtil.elementHeight($elm);
+
+            grid.refreshCanvas(true);
+          }
         }
       };
     }
-  ]);
+  };
+}
 
 })();
 
@@ -2857,6 +3481,27 @@ angular.module('ui.grid').directive('uiGrid',
 
             $elm.addClass('ui-grid-pinned-container-' + $scope.side);
 
+            // Monkey-patch the viewport width function
+            if ($scope.side === 'left' || $scope.side === 'right') {
+              grid.renderContainers[$scope.side].getViewportWidth = monkeyPatchedGetViewportWidth;
+            }
+
+            function monkeyPatchedGetViewportWidth() {
+              /*jshint validthis: true */
+              var self = this;
+
+              var viewportWidth = 0;
+              self.visibleColumnCache.forEach(function (column) {
+                viewportWidth += column.drawnWidth;
+              });
+
+              var adjustment = self.getViewportAdjustment();
+
+              viewportWidth = viewportWidth + adjustment.width;
+
+              return viewportWidth;
+            }
+
             function updateContainerWidth() {
               if ($scope.side === 'left' || $scope.side === 'right') {
                 var cols = grid.renderContainers[$scope.side].visibleColumnCache;
@@ -2866,38 +3511,36 @@ angular.module('ui.grid').directive('uiGrid',
                   width += col.drawnWidth || col.width || 0;
                 }
 
-                myWidth = width;
-              }              
+                return width;
+              }
             }
-            
-            function updateContainerDimensions() {
-              // gridUtil.logDebug('update ' + $scope.side + ' dimensions');
 
+            function updateContainerDimensions() {
               var ret = '';
-              
+
               // Column containers
               if ($scope.side === 'left' || $scope.side === 'right') {
-                updateContainerWidth();
+                myWidth = updateContainerWidth();
 
                 // gridUtil.logDebug('myWidth', myWidth);
 
                 // TODO(c0bra): Subtract sum of col widths from grid viewport width and update it
                 $elm.attr('style', null);
 
-                var myHeight = grid.renderContainers.body.getViewportHeight(); // + grid.horizontalScrollbarHeight;
+             //   var myHeight = grid.renderContainers.body.getViewportHeight(); // + grid.horizontalScrollbarHeight;
 
-                ret += '.grid' + grid.id + ' .ui-grid-pinned-container-' + $scope.side + ', .grid' + grid.id + ' .ui-grid-pinned-container-' + $scope.side + ' .ui-grid-render-container-' + $scope.side + ' .ui-grid-viewport { width: ' + myWidth + 'px; height: ' + myHeight + 'px; } ';
+                ret += '.grid' + grid.id + ' .ui-grid-pinned-container-' + $scope.side + ', .grid' + grid.id + ' .ui-grid-pinned-container-' + $scope.side + ' .ui-grid-render-container-' + $scope.side + ' .ui-grid-viewport { width: ' + myWidth + 'px; } ';
               }
 
               return ret;
             }
 
             grid.renderContainers.body.registerViewportAdjuster(function (adjustment) {
-              if ( myWidth === 0 || !myWidth ){
-                updateContainerWidth();
-              }
+              myWidth = updateContainerWidth();
+
               // Subtract our own width
               adjustment.width -= myWidth;
+              adjustment.side = $scope.side;
 
               return adjustment;
             });
@@ -2913,11 +3556,12 @@ angular.module('ui.grid').directive('uiGrid',
     };
   }]);
 })();
+
 (function(){
 
 angular.module('ui.grid')
-.factory('Grid', ['$q', '$compile', '$parse', 'gridUtil', 'uiGridConstants', 'GridOptions', 'GridColumn', 'GridRow', 'GridApi', 'rowSorter', 'rowSearcher', 'GridRenderContainer', '$timeout',
-    function($q, $compile, $parse, gridUtil, uiGridConstants, GridOptions, GridColumn, GridRow, GridApi, rowSorter, rowSearcher, GridRenderContainer, $timeout) {
+.factory('Grid', ['$q', '$compile', '$parse', 'gridUtil', 'uiGridConstants', 'GridOptions', 'GridColumn', 'GridRow', 'GridApi', 'rowSorter', 'rowSearcher', 'GridRenderContainer', '$timeout','ScrollEvent',
+    function($q, $compile, $parse, gridUtil, uiGridConstants, GridOptions, GridColumn, GridRow, GridApi, rowSorter, rowSearcher, GridRenderContainer, $timeout, ScrollEvent) {
 
   /**
    * @ngdoc object
@@ -2925,7 +3569,7 @@ angular.module('ui.grid')
    * @description Public Api for the core grid features
    *
    */
-  
+
   /**
    * @ngdoc function
    * @name ui.grid.class:Grid
@@ -2944,10 +3588,10 @@ angular.module('ui.grid')
     else {
       throw new Error('No ID provided. An ID must be given when creating a grid.');
     }
-  
+
     self.id = options.id;
     delete options.id;
-  
+
     // Get default options
     self.options = GridOptions.initialize( options );
 
@@ -2960,11 +3604,26 @@ angular.module('ui.grid')
      * use gridOptions.appScopeProvider to override the default assignment of $scope.$parent with any reference
      */
     self.appScope = self.options.appScopeProvider;
-  
+
     self.headerHeight = self.options.headerRowHeight;
 
 
+    /**
+     * @ngdoc object
+     * @name footerHeight
+     * @propertyOf ui.grid.class:Grid
+     * @description returns the total footer height gridFooter + columnFooter
+     */
     self.footerHeight = self.calcFooterHeight();
+
+
+    /**
+     * @ngdoc object
+     * @name columnFooterHeight
+     * @propertyOf ui.grid.class:Grid
+     * @description returns the total column footer height
+     */
+    self.columnFooterHeight = self.calcColumnFooterHeight();
 
     self.rtl = false;
     self.gridHeight = 0;
@@ -2977,28 +3636,30 @@ angular.module('ui.grid')
     self.viewportAdjusters = [];
     self.rowHeaderColumns = [];
     self.dataChangeCallbacks = {};
-  
+    self.verticalScrollSyncCallBackFns = {};
+    self.horizontalScrollSyncCallBackFns = {};
+
     // self.visibleRowCache = [];
-  
+
     // Set of 'render' containers for self grid, which can render sets of rows
     self.renderContainers = {};
-  
+
     // Create a
     self.renderContainers.body = new GridRenderContainer('body', self);
-  
+
     self.cellValueGetterCache = {};
-  
+
     // Cached function to use with custom row templates
     self.getRowTemplateFn = null;
-  
-  
+
+
     //representation of the rows on the grid.
     //these are wrapped references to the actual data rows (options.data)
     self.rows = [];
-  
+
     //represents the columns on the grid
     self.columns = [];
-  
+
     /**
      * @ngdoc boolean
      * @name isScrollingVertically
@@ -3006,7 +3667,7 @@ angular.module('ui.grid')
      * @description set to true when Grid is scrolling vertically. Set to false via debounced method
      */
     self.isScrollingVertically = false;
-  
+
     /**
      * @ngdoc boolean
      * @name isScrollingHorizontally
@@ -3024,37 +3685,65 @@ angular.module('ui.grid')
      */
     self.scrollDirection = uiGridConstants.scrollDirection.NONE;
 
-    var debouncedVertical = gridUtil.debounce(function () {
+    //if true, grid will not respond to any scroll events
+    self.disableScrolling = false;
+
+
+    function vertical (scrollEvent) {
       self.isScrollingVertically = false;
+      self.api.core.raise.scrollEnd(scrollEvent);
       self.scrollDirection = uiGridConstants.scrollDirection.NONE;
-    }, 1000);
-  
-    var debouncedHorizontal = gridUtil.debounce(function () {
+    }
+
+    var debouncedVertical = gridUtil.debounce(vertical, self.options.scrollDebounce);
+    var debouncedVerticalMinDelay = gridUtil.debounce(vertical, 0);
+
+    function horizontal (scrollEvent) {
       self.isScrollingHorizontally = false;
+      self.api.core.raise.scrollEnd(scrollEvent);
       self.scrollDirection = uiGridConstants.scrollDirection.NONE;
-    }, 1000);
-  
-  
+    }
+
+    var debouncedHorizontal = gridUtil.debounce(horizontal, self.options.scrollDebounce);
+    var debouncedHorizontalMinDelay = gridUtil.debounce(horizontal, 0);
+
+
     /**
      * @ngdoc function
      * @name flagScrollingVertically
      * @methodOf ui.grid.class:Grid
      * @description sets isScrollingVertically to true and sets it to false in a debounced function
      */
-    self.flagScrollingVertically = function() {
+    self.flagScrollingVertically = function(scrollEvent) {
+      if (!self.isScrollingVertically && !self.isScrollingHorizontally) {
+        self.api.core.raise.scrollBegin(scrollEvent);
+      }
       self.isScrollingVertically = true;
-      debouncedVertical();
+      if (self.options.scrollDebounce === 0 || !scrollEvent.withDelay) {
+        debouncedVerticalMinDelay(scrollEvent);
+      }
+      else {
+        debouncedVertical(scrollEvent);
+      }
     };
-  
+
     /**
      * @ngdoc function
      * @name flagScrollingHorizontally
      * @methodOf ui.grid.class:Grid
      * @description sets isScrollingHorizontally to true and sets it to false in a debounced function
      */
-    self.flagScrollingHorizontally = function() {
+    self.flagScrollingHorizontally = function(scrollEvent) {
+      if (!self.isScrollingVertically && !self.isScrollingHorizontally) {
+        self.api.core.raise.scrollBegin(scrollEvent);
+      }
       self.isScrollingHorizontally = true;
-      debouncedHorizontal();
+      if (self.options.scrollDebounce === 0 || !scrollEvent.withDelay) {
+        debouncedHorizontalMinDelay(scrollEvent);
+      }
+      else {
+        debouncedHorizontal(scrollEvent);
+      }
     };
 
     self.scrollbarHeight = 0;
@@ -3066,30 +3755,63 @@ angular.module('ui.grid')
     if (self.options.enableVerticalScrollbar === uiGridConstants.scrollbars.ALWAYS) {
       self.scrollbarWidth = gridUtil.getScrollbarWidth();
     }
-  
-  
-  
+
+
+
     self.api = new GridApi(self);
-  
+
     /**
      * @ngdoc function
      * @name refresh
      * @methodOf ui.grid.core.api:PublicApi
      * @description Refresh the rendered grid on screen.
-     * 
+     * The refresh method re-runs both the columnProcessors and the
+     * rowProcessors, as well as calling refreshCanvas to update all
+     * the grid sizing.  In general you should prefer to use queueGridRefresh
+     * instead, which is basically a debounced version of refresh.
+     *
+     * If you only want to resize the grid, not regenerate all the rows
+     * and columns, you should consider directly calling refreshCanvas instead.
+     *
      */
     self.api.registerMethod( 'core', 'refresh', this.refresh );
-  
+
+    /**
+     * @ngdoc function
+     * @name queueGridRefresh
+     * @methodOf ui.grid.core.api:PublicApi
+     * @description Request a refresh of the rendered grid on screen, if multiple
+     * calls to queueGridRefresh are made within a digest cycle only one will execute.
+     * The refresh method re-runs both the columnProcessors and the
+     * rowProcessors, as well as calling refreshCanvas to update all
+     * the grid sizing.  In general you should prefer to use queueGridRefresh
+     * instead, which is basically a debounced version of refresh.
+     *
+     */
+    self.api.registerMethod( 'core', 'queueGridRefresh', this.queueGridRefresh );
+
     /**
      * @ngdoc function
      * @name refreshRows
      * @methodOf ui.grid.core.api:PublicApi
-     * @description Refresh the rendered grid on screen?  Note: not functional at present
+     * @description Runs only the rowProcessors, columns remain as they were.
+     * It then calls redrawInPlace and refreshCanvas, which adjust the grid sizing.
      * @returns {promise} promise that is resolved when render completes?
-     * 
+     *
      */
     self.api.registerMethod( 'core', 'refreshRows', this.refreshRows );
-  
+
+    /**
+     * @ngdoc function
+     * @name queueRefresh
+     * @methodOf ui.grid.core.api:PublicApi
+     * @description Requests execution of refreshCanvas, if multiple requests are made
+     * during a digest cycle only one will run.  RefreshCanvas updates the grid sizing.
+     * @returns {promise} promise that is resolved when render completes?
+     *
+     */
+    self.api.registerMethod( 'core', 'queueRefresh', this.queueRefresh );
+
     /**
      * @ngdoc function
      * @name handleWindowResize
@@ -3098,22 +3820,89 @@ angular.module('ui.grid')
      * up by a watch on window size, but in some circumstances it is necessary
      * to call this manually
      * @returns {promise} promise that is resolved when render completes?
-     * 
+     *
      */
     self.api.registerMethod( 'core', 'handleWindowResize', this.handleWindowResize );
-  
-  
+
+
     /**
      * @ngdoc function
      * @name addRowHeaderColumn
      * @methodOf ui.grid.core.api:PublicApi
      * @description adds a row header column to the grid
      * @param {object} column def
-     * 
+     *
      */
     self.api.registerMethod( 'core', 'addRowHeaderColumn', this.addRowHeaderColumn );
-  
-  
+
+    /**
+     * @ngdoc function
+     * @name scrollToIfNecessary
+     * @methodOf ui.grid.core.api:PublicApi
+     * @description Scrolls the grid to make a certain row and column combo visible,
+     *   in the case that it is not completely visible on the screen already.
+     * @param {GridRow} gridRow row to make visible
+     * @param {GridCol} gridCol column to make visible
+     * @returns {promise} a promise that is resolved when scrolling is complete
+     *
+     */
+    self.api.registerMethod( 'core', 'scrollToIfNecessary', function(gridRow, gridCol) { return self.scrollToIfNecessary(gridRow, gridCol);} );
+
+    /**
+     * @ngdoc function
+     * @name scrollTo
+     * @methodOf ui.grid.core.api:PublicApi
+     * @description Scroll the grid such that the specified
+     * row and column is in view
+     * @param {object} rowEntity gridOptions.data[] array instance to make visible
+     * @param {object} colDef to make visible
+     * @returns {promise} a promise that is resolved after any scrolling is finished
+     */
+    self.api.registerMethod( 'core', 'scrollTo', function (rowEntity, colDef) { return self.scrollTo(rowEntity, colDef);}  );
+
+    /**
+     * @ngdoc function
+     * @name registerRowsProcessor
+     * @methodOf ui.grid.core.api:PublicApi
+     * @description
+     * Register a "rows processor" function. When the rows are updated,
+     * the grid calls each registered "rows processor", which has a chance
+     * to alter the set of rows (sorting, etc) as long as the count is not
+     * modified.
+     *
+     * @param {function(renderedRowsToProcess, columns )} processorFunction rows processor function, which
+     * is run in the context of the grid (i.e. this for the function will be the grid), and must
+     * return the updated rows list, which is passed to the next processor in the chain
+     * @param {number} priority the priority of this processor.  In general we try to do them in 100s to leave room
+     * for other people to inject rows processors at intermediate priorities.  Lower priority rowsProcessors run earlier.
+     *
+     * At present allRowsVisible is running at 50, sort manipulations running at 60-65, filter is running at 100,
+     * sort is at 200, grouping and treeview at 400-410, selectable rows at 500, pagination at 900 (pagination will generally want to be last)
+     */
+    self.api.registerMethod( 'core', 'registerRowsProcessor', this.registerRowsProcessor  );
+
+    /**
+     * @ngdoc function
+     * @name registerColumnsProcessor
+     * @methodOf ui.grid.core.api:PublicApi
+     * @description
+     * Register a "columns processor" function. When the columns are updated,
+     * the grid calls each registered "columns processor", which has a chance
+     * to alter the set of columns as long as the count is not
+     * modified.
+     *
+     * @param {function(renderedColumnsToProcess, rows )} processorFunction columns processor function, which
+     * is run in the context of the grid (i.e. this for the function will be the grid), and must
+     * return the updated columns list, which is passed to the next processor in the chain
+     * @param {number} priority the priority of this processor.  In general we try to do them in 100s to leave room
+     * for other people to inject columns processors at intermediate priorities.  Lower priority columnsProcessors run earlier.
+     *
+     * At present allRowsVisible is running at 50, filter is running at 100, sort is at 200, grouping at 400, selectable rows at 500, pagination at 900 (pagination will generally want to be last)
+     */
+    self.api.registerMethod( 'core', 'registerColumnsProcessor', this.registerColumnsProcessor  );
+
+
+
     /**
      * @ngdoc function
      * @name sortHandleNulls
@@ -3134,11 +3923,11 @@ angular.module('ui.grid')
      * @param {object} b sort value b
      * @returns {number} null if there were no nulls/undefineds, otherwise returns
      * a sort value that should be passed back from the sort function
-     * 
+     *
      */
     self.api.registerMethod( 'core', 'sortHandleNulls', rowSorter.handleNulls );
-  
-  
+
+
     /**
      * @ngdoc function
      * @name sortChanged
@@ -3146,28 +3935,31 @@ angular.module('ui.grid')
      * @description The sort criteria on one or more columns has
      * changed.  Provides as parameters the grid and the output of
      * getColumnSorting, which is an array of gridColumns
-     * that have sorting on them, sorted in priority order. 
-     * 
-     * @param {Grid} grid the grid
-     * @param {array} sortColumns an array of columns with 
-     * sorts on them, in priority order
-     * 
+     * that have sorting on them, sorted in priority order.
+     *
+     * @param {$scope} scope The scope of the controller. This is used to deregister this event when the scope is destroyed.
+     * @param {Function} callBack Will be called when the event is emited. The function passes back the grid and an array of 
+     * columns with sorts on them, in priority order.
+     *
      * @example
      * <pre>
-     *      gridApi.core.on.sortChanged( grid, sortColumns );
+     *      gridApi.core.on.sortChanged( $scope, function(grid, sortColumns){
+     *        // do something
+     *      });
      * </pre>
      */
     self.api.registerEvent( 'core', 'sortChanged' );
-  
+
       /**
      * @ngdoc function
      * @name columnVisibilityChanged
      * @methodOf  ui.grid.core.api:PublicApi
      * @description The visibility of a column has changed,
-     * the column itself is passed out as a parameter of the event. 
-     * 
-     * @param {GridCol} column the column that changed
-     * 
+     * the column itself is passed out as a parameter of the event.
+     *
+     * @param {$scope} scope The scope of the controller. This is used to deregister this event when the scope is destroyed.
+     * @param {Function} callBack Will be called when the event is emited. The function passes back the GridCol that has changed.
+     *
      * @example
      * <pre>
      *      gridApi.core.on.columnVisibilityChanged( $scope, function (column) {
@@ -3176,25 +3968,38 @@ angular.module('ui.grid')
      * </pre>
      */
     self.api.registerEvent( 'core', 'columnVisibilityChanged' );
-  
+
     /**
      * @ngdoc method
      * @name notifyDataChange
      * @methodOf ui.grid.core.api:PublicApi
      * @description Notify the grid that a data or config change has occurred,
-     * where that change isn't something the grid was otherwise noticing.  This 
+     * where that change isn't something the grid was otherwise noticing.  This
      * might be particularly relevant where you've changed values within the data
-     * and you'd like cell classes to be re-evaluated, or changed config within 
+     * and you'd like cell classes to be re-evaluated, or changed config within
      * the columnDef and you'd like headerCellClasses to be re-evaluated.
-     * @param {string} type one of the 
+     * @param {string} type one of the
      * uiGridConstants.dataChange values (ALL, ROW, EDIT, COLUMN), which tells
      * us which refreshes to fire.
-     * 
+     *
      */
     self.api.registerMethod( 'core', 'notifyDataChange', this.notifyDataChange );
-    
+
+    /**
+     * @ngdoc method
+     * @name clearAllFilters
+     * @methodOf ui.grid.core.api:PublicApi
+     * @description Clears all filters and optionally refreshes the visible rows.
+     * @param {object} refreshRows Defaults to true.
+     * @param {object} clearConditions Defaults to false.
+     * @param {object} clearFlags Defaults to false.
+     * @returns {promise} If `refreshRows` is true, returns a promise of the rows refreshing.
+     */
+    self.api.registerMethod('core', 'clearAllFilters', this.clearAllFilters);
+
     self.registerDataChangeCallback( self.columnRefreshCallback, [uiGridConstants.dataChange.COLUMN]);
     self.registerDataChangeCallback( self.processRowsCallback, [uiGridConstants.dataChange.EDIT]);
+    self.registerDataChangeCallback( self.updateFooterHeightCallback, [uiGridConstants.dataChange.OPTIONS]);
 
     self.registerStyleComputation({
       priority: 10,
@@ -3211,6 +4016,14 @@ angular.module('ui.grid')
      if (this.options.showGridFooter) {
        height += this.options.gridFooterHeight;
      }
+
+     height += this.calcColumnFooterHeight();
+
+     return height;
+   };
+
+   Grid.prototype.calcColumnFooterHeight = function () {
+     var height = 0;
 
      if (this.options.showColumnFooter) {
        height += this.options.columnFooterHeight;
@@ -3246,7 +4059,7 @@ angular.module('ui.grid')
    * @methodOf ui.grid.class:Grid
    * @description When the build creates columns from column definitions, the columnbuilders will be called to add
    * additional properties to the column.
-   * @param {function(colDef, col, gridOptions)} columnsProcessor function to be called
+   * @param {function(colDef, col, gridOptions)} columnBuilder function to be called
    */
   Grid.prototype.registerColumnBuilder = function registerColumnBuilder(columnBuilder) {
     this.columnBuilders.push(columnBuilder);
@@ -3282,25 +4095,25 @@ angular.module('ui.grid')
    * @methodOf ui.grid.class:Grid
    * @description When a data change occurs, the data change callbacks of the specified type
    * will be called.  The rules are:
-   * 
+   *
    * - when the data watch fires, that is considered a ROW change (the data watch only notices
    *   added or removed rows)
    * - when the api is called to inform us of a change, the declared type of that change is used
    * - when a cell edit completes, the EDIT callbacks are triggered
    * - when the columnDef watch fires, the COLUMN callbacks are triggered
    * - when the options watch fires, the OPTIONS callbacks are triggered
-   * 
+   *
    * For a given event:
    * - ALL calls ROW, EDIT, COLUMN, OPTIONS and ALL callbacks
    * - ROW calls ROW and ALL callbacks
    * - EDIT calls EDIT and ALL callbacks
    * - COLUMN calls COLUMN and ALL callbacks
    * - OPTIONS calls OPTIONS and ALL callbacks
-   * 
+   *
    * @param {function(grid)} callback function to be called
-   * @param {array} types the types of data change you want to be informed of.  Values from 
+   * @param {array} types the types of data change you want to be informed of.  Values from
    * the uiGridConstants.dataChange values ( ALL, EDIT, ROW, COLUMN, OPTIONS ).  Optional and defaults to
-   * ALL 
+   * ALL
    * @returns {function} deregister function - a function that can be called to deregister this callback
    */
   Grid.prototype.registerDataChangeCallback = function registerDataChangeCallback(callback, types, _this) {
@@ -3312,7 +4125,7 @@ angular.module('ui.grid')
       gridUtil.logError("Expected types to be an array or null in registerDataChangeCallback, value passed was: " + types );
     }
     this.dataChangeCallbacks[uid] = { callback: callback, types: types, _this:_this };
-    
+
     var self = this;
     var deregisterFunction = function() {
       delete self.dataChangeCallbacks[uid];
@@ -3325,9 +4138,9 @@ angular.module('ui.grid')
    * @name callDataChangeCallbacks
    * @methodOf ui.grid.class:Grid
    * @description Calls the callbacks based on the type of data change that
-   * has occurred. Always calls the ALL callbacks, calls the ROW, EDIT, COLUMN and OPTIONS callbacks if the 
+   * has occurred. Always calls the ALL callbacks, calls the ROW, EDIT, COLUMN and OPTIONS callbacks if the
    * event type is matching, or if the type is ALL.
-   * @param {number} type the type of event that occurred - one of the 
+   * @param {number} type the type of event that occurred - one of the
    * uiGridConstants.dataChange values (ALL, ROW, EDIT, COLUMN, OPTIONS)
    */
   Grid.prototype.callDataChangeCallbacks = function callDataChangeCallbacks(type, options) {
@@ -3344,20 +4157,20 @@ angular.module('ui.grid')
       }
     }, this);
   };
-  
+
   /**
    * @ngdoc function
    * @name notifyDataChange
    * @methodOf ui.grid.class:Grid
    * @description Notifies us that a data change has occurred, used in the public
-   * api for users to tell us when they've changed data or some other event that 
+   * api for users to tell us when they've changed data or some other event that
    * our watches cannot pick up
-   * @param {string} type the type of event that occurred - one of the 
+   * @param {string} type the type of event that occurred - one of the
    * uiGridConstants.dataChange values (ALL, ROW, EDIT, COLUMN)
    */
   Grid.prototype.notifyDataChange = function notifyDataChange(type) {
     var constants = uiGridConstants.dataChange;
-    if ( type === constants.ALL || 
+    if ( type === constants.ALL ||
          type === constants.COLUMN ||
          type === constants.EDIT ||
          type === constants.ROW ||
@@ -3367,21 +4180,21 @@ angular.module('ui.grid')
       gridUtil.logError("Notified of a data change, but the type was not recognised, so no action taken, type was: " + type);
     }
   };
-  
-  
+
+
   /**
    * @ngdoc function
    * @name columnRefreshCallback
    * @methodOf ui.grid.class:Grid
    * @description refreshes the grid when a column refresh
-   * is notified, which triggers handling of the visible flag. 
-   * This is called on uiGridConstants.dataChange.COLUMN, and is 
+   * is notified, which triggers handling of the visible flag.
+   * This is called on uiGridConstants.dataChange.COLUMN, and is
    * registered as a dataChangeCallback in grid.js
    * @param {string} name column name
    */
   Grid.prototype.columnRefreshCallback = function columnRefreshCallback( grid ){
     grid.buildColumns();
-    grid.refresh();
+    grid.queueGridRefresh();
   };
 
 
@@ -3395,9 +4208,23 @@ angular.module('ui.grid')
    * @param {string} name column name
    */
   Grid.prototype.processRowsCallback = function processRowsCallback( grid ){
-    grid.refreshRows();
+    grid.queueGridRefresh();
   };
-    
+
+
+  /**
+   * @ngdoc function
+   * @name updateFooterHeightCallback
+   * @methodOf ui.grid.class:Grid
+   * @description recalculates the footer height,
+   * registered as a dataChangeCallback on uiGridConstants.dataChange.OPTIONS
+   * @param {string} name column name
+   */
+  Grid.prototype.updateFooterHeightCallback = function updateFooterHeightCallback( grid ){
+    grid.footerHeight = grid.calcFooterHeight();
+    grid.columnFooterHeight = grid.calcColumnFooterHeight();
+  };
+
 
   /**
    * @ngdoc function
@@ -3437,10 +4264,16 @@ angular.module('ui.grid')
    * @ngdoc property
    * @name type
    * @propertyOf ui.grid.class:GridOptions.columnDef
-   * @description the type of the column, used in sorting.  If not provided then the 
+   * @description the type of the column, used in sorting.  If not provided then the
    * grid will guess the type.  Add this only if the grid guessing is not to your
-   * satisfaction.  Refer to {@link ui.grid.service:GridUtil.guessType gridUtil.guessType} for
-   * a list of values the grid knows about.
+   * satisfaction.  One of:
+   * - 'string'
+   * - 'boolean'
+   * - 'number'
+   * - 'date'
+   * - 'object'
+   * - 'numberStr'
+   * Note that if you choose date, your dates should be in a javascript date type
    *
    */
   Grid.prototype.assignTypes = function(){
@@ -3455,11 +4288,22 @@ angular.module('ui.grid')
           colDef.type = gridUtil.guessType(self.getCellValue(firstRow, col));
         }
         else {
-          gridUtil.logWarn('Unable to assign type from data, so defaulting to string');
           colDef.type = 'string';
         }
       }
     });
+  };
+
+
+  /**
+   * @ngdoc function
+   * @name isRowHeaderColumn
+   * @methodOf ui.grid.class:Grid
+   * @description returns true if the column is a row Header
+   * @param {object} column column
+   */
+  Grid.prototype.isRowHeaderColumn = function isRowHeaderColumn(column) {
+    return this.rowHeaderColumns.indexOf(column) !== -1;
   };
 
   /**
@@ -3471,8 +4315,7 @@ angular.module('ui.grid')
   */
   Grid.prototype.addRowHeaderColumn = function addRowHeaderColumn(colDef) {
     var self = this;
-    //self.createLeftContainer();
-    var rowHeaderCol = new GridColumn(colDef, self.rowHeaderColumns.length, self);
+    var rowHeaderCol = new GridColumn(colDef, gridUtil.nextUid(), self);
     rowHeaderCol.isRowHeader = true;
     if (self.isRTL()) {
       self.createRightContainer();
@@ -3494,9 +4337,26 @@ angular.module('ui.grid')
         self.buildColumns()
           .then( function() {
             self.preCompileCellTemplates();
-            self.refresh();
+            self.queueGridRefresh();
           });
       });
+  };
+
+  /**
+   * @ngdoc function
+   * @name getOnlyDataColumns
+   * @methodOf ui.grid.class:Grid
+   * @description returns all columns except for rowHeader columns
+   */
+  Grid.prototype.getOnlyDataColumns = function getOnlyDataColumns() {
+    var self = this;
+    var cols = [];
+    self.columns.forEach(function (col) {
+      if (self.rowHeaderColumns.indexOf(col) === -1) {
+        cols.push(col);
+      }
+    });
+    return cols;
   };
 
   /**
@@ -3568,8 +4428,10 @@ angular.module('ui.grid')
       // We need to allow for the "row headers" when mapping from the column defs array to the columns array
       //   If we have a row header in columns[0] and don't account for it   we'll overwrite it with the column in columnDefs[0]
 
-      // Go through all the column defs
-      for (i = 0; i < self.options.columnDefs.length; i++) {
+      // Go through all the column defs, use the shorter of columns length and colDefs.length because if a user has given two columns the same name then
+      // columns will be shorter than columnDefs.  In this situation we'll avoid an error, but the user will still get an unexpected result
+      var len = Math.min(self.options.columnDefs.length, self.columns.length);
+      for (i = 0; i < len; i++) {
         // If the column at this index has a different name than the column at the same index in the column defs...
         if (self.columns[i + headerOffset].name !== self.options.columnDefs[i].name) {
           // Replace the one in the cache with the appropriate column
@@ -3603,16 +4465,26 @@ angular.module('ui.grid')
  */
   Grid.prototype.preCompileCellTemplates = function() {
     var self = this;
-    this.columns.forEach(function (col) {
+
+    var preCompileTemplate = function( col ) {
       var html = col.cellTemplate.replace(uiGridConstants.MODEL_COL_FIELD, self.getQualifiedColField(col));
       html = html.replace(uiGridConstants.COL_FIELD, 'grid.getCellValue(row, col)');
-
 
       var compiledElementFn = $compile(html);
       col.compiledElementFn = compiledElementFn;
 
       if (col.compiledElementFnDefer) {
         col.compiledElementFnDefer.resolve(col.compiledElementFn);
+      }
+    };
+
+    this.columns.forEach(function (col) {
+      if ( col.cellTemplate ){
+        preCompileTemplate( col );
+      } else if ( col.cellTemplatePromise ){
+        col.cellTemplatePromise.then( function() {
+          preCompileTemplate( col );
+        });
       }
     });
   };
@@ -3664,7 +4536,7 @@ angular.module('ui.grid')
 
   /**
    * @ngdoc function
-   * @name hasLeftContainer
+   * @name hasRightContainer
    * @methodOf ui.grid.class:Grid
    * @description returns true if rightContainer exists
    */
@@ -3691,51 +4563,14 @@ angular.module('ui.grid')
     //field was required in 2.x.  now name is required
     if (colDef.name === undefined && colDef.field !== undefined) {
       // See if the column name already exists:
-      var foundName = self.getColumn(colDef.field);
-
-      // If a column with this name already  exists, we will add an incrementing number to the end of the new column name
-      if (foundName) {
-        // Search through the columns for names in the format: <name><1, 2 ... N>, i.e. 'Age1, Age2, Age3',
-        var nameRE = new RegExp('^' + colDef.field + '(\\d+)$', 'i');
-
-        var foundColumns = self.columns.filter(function (column) {
-          // Test against the displayName, as that's what'll have the incremented number
-          return nameRE.test(column.displayName);
-        })
-        // Sort the found columns by the end-number
-        .sort(function (a, b) {
-          if (a === b) {
-            return 0;
-          }
-          else {
-            var numA = a.displayName.match(nameRE)[1];
-            var numB = b.displayName.match(nameRE)[1];
-
-            return parseInt(numA, 10) > parseInt(numB, 10) ? 1 : -1;
-          }
-        });
-
-        // Not columns found, so start with number "2"
-        if (foundColumns.length === 0) {
-          colDef.name = colDef.field + '2';
-        }
-        else {
-          // Get the number from the final column
-          var lastNum = foundColumns[foundColumns.length-1].displayName.match(nameRE)[1];
-
-          // Make sure to parse to an int
-          lastNum = parseInt(lastNum, 10);
-
-          // Add 1 to the number from the last column and tack it on to the field to be the name for this new column 
-          colDef.name = colDef.field + (lastNum + 1);
-        }
+      var newName = colDef.field,
+        counter = 2;
+      while (self.getColumn(newName)) {
+        newName = colDef.field + counter.toString();
+        counter++;
       }
-      // ... otherwise just use the field as the column name
-      else {
-        colDef.name = colDef.field;
-      }
+      colDef.name = newName;
     }
-
   };
 
   // Return a list of items that exist in the `n` array but not the `o` array. Uses optional property accessors passed as third & fourth parameters
@@ -3745,7 +4580,7 @@ angular.module('ui.grid')
     var t = [];
     for (var i = 0; i < n.length; i++) {
       var nV = nAccessor ? n[i][nAccessor] : n[i];
-      
+
       var found = false;
       for (var j = 0; j < o.length; j++) {
         var oV = oAccessor ? o[j][oAccessor] : o[j];
@@ -3758,189 +4593,101 @@ angular.module('ui.grid')
         t.push(nV);
       }
     }
-    
+
     return t;
   };
 
-    /**
-     * @ngdoc function
-     * @name getRow
-     * @methodOf ui.grid.class:Grid
-     * @description returns the GridRow that contains the rowEntity
-     * @param {object} rowEntity the gridOptions.data array element instance
-     */
-    Grid.prototype.getRow = function getRow(rowEntity) {
-      var self = this;
-      var rows = this.rows.filter(function (row) {
-        return self.options.rowEquality(row.entity, rowEntity);
-      });
-      return rows.length > 0 ? rows[0] : null;
-    };
+  /**
+   * @ngdoc function
+   * @name getRow
+   * @methodOf ui.grid.class:Grid
+   * @description returns the GridRow that contains the rowEntity
+   * @param {object} rowEntity the gridOptions.data array element instance
+   * @param {array} rows [optional] the rows to look in - if not provided then
+   * looks in grid.rows
+   */
+  Grid.prototype.getRow = function getRow(rowEntity, lookInRows) {
+    var self = this;
+
+    lookInRows = typeof(lookInRows) === 'undefined' ? self.rows : lookInRows;
+
+    var rows = lookInRows.filter(function (row) {
+      return self.options.rowEquality(row.entity, rowEntity);
+    });
+    return rows.length > 0 ? rows[0] : null;
+  };
 
 
-      /**
+  /**
    * @ngdoc function
    * @name modifyRows
    * @methodOf ui.grid.class:Grid
    * @description creates or removes GridRow objects from the newRawData array.  Calls each registered
    * rowBuilder to further process the row
+   * @param {array} newRawData Modified set of data
    *
-   * Rows are identified using the gridOptions.rowEquality function
+   * This method aims to achieve three things:
+   * 1. the resulting rows array is in the same order as the newRawData, we'll call
+   * rowsProcessors immediately after to sort the data anyway
+   * 2. if we have row hashing available, we try to use the rowHash to find the row
+   * 3. no memory leaks - rows that are no longer in newRawData need to be garbage collected
+   *
+   * The basic logic flow makes use of the newRawData, oldRows and oldHash, and creates
+   * the newRows and newHash
+   *
+   * ```
+   * newRawData.forEach newEntity
+   *   if (hashing enabled)
+   *     check oldHash for newEntity
+   *   else
+   *     look for old row directly in oldRows
+   *   if !oldRowFound     // must be a new row
+   *     create newRow
+   *   append to the newRows and add to newHash
+   *   run the processors
+   * ```
+   *
+   * Rows are identified using the hashKey if configured.  If not configured, then rows
+   * are identified using the gridOptions.rowEquality function
+   *
+   * This method is useful when trying to select rows immediately after loading data without
+   * using a $timeout/$interval, e.g.:
+   *
+   *   $scope.gridOptions.data =  someData;
+   *   $scope.gridApi.grid.modifyRows($scope.gridOptions.data);
+   *   $scope.gridApi.selection.selectRow($scope.gridOptions.data[0]);
+   *
+   * OR to persist row selection after data update (e.g. rows selected, new data loaded, want
+   * originally selected rows to be re-selected))
    */
   Grid.prototype.modifyRows = function modifyRows(newRawData) {
-    var self = this,
-        i,
-        rowhash,
-        found,
-        newRow;
-    if ((self.options.useExternalSorting || self.getColumnSorting().length === 0) && newRawData.length > 0) {
-        var oldRowHash = self.rowHashMap;
-        if (!oldRowHash) {
-           oldRowHash = {get: function(){return null;}};
-        }
-        self.createRowHashMap();
-        rowhash = self.rowHashMap;
-        var wasEmpty = self.rows.length === 0;
-        self.rows.length = 0;
-        for (i = 0; i < newRawData.length; i++) {
-            var newRawRow = newRawData[i];
-            found = oldRowHash.get(newRawRow);
-            if (found) {
-              newRow = found.row; 
-            }
-            else {
-              newRow = self.processRowBuilders(new GridRow(newRawRow, i, self));
-            }
-            self.rows.push(newRow);
-            rowhash.put(newRawRow, {
-                i: i,
-                entity: newRawRow,
-                row:newRow
-            });
-        }
-        //now that we have data, it is save to assign types to colDefs
-//        if (wasEmpty) {
-           self.assignTypes();
-//        }
-    } else {
-    if (self.rows.length === 0 && newRawData.length > 0) {
-      if (self.options.enableRowHashing) {
-        if (!self.rowHashMap) {
-          self.createRowHashMap();
-        }
+    var self = this;
+    var oldRows = self.rows.slice(0);
+    var oldRowHash = self.rowHashMap || self.createRowHashMap();
+    self.rowHashMap = self.createRowHashMap();
+    self.rows.length = 0;
 
-        for (i = 0; i < newRawData.length; i++) {
-          newRow = newRawData[i];
-
-          self.rowHashMap.put(newRow, {
-            i: i,
-            entity: newRow
-          });
-        }
+    newRawData.forEach( function( newEntity, i ) {
+      var newRow;
+      if ( self.options.enableRowHashing ){
+        // if hashing is enabled, then this row will be in the hash if we already know about it
+        newRow = oldRowHash.get( newEntity );
+      } else {
+        // otherwise, manually search the oldRows to see if we can find this row
+        newRow = self.getRow(newEntity, oldRows);
       }
 
-      self.addRows(newRawData);
-      //now that we have data, it is save to assign types to colDefs
-      self.assignTypes();
-    }
-    else if (newRawData.length > 0) {
-      var unfoundNewRows, unfoundOldRows, unfoundNewRowsToFind;
-
-      // If row hashing is turned on
-      if (self.options.enableRowHashing) {
-        // Array of new rows that haven't been found in the old rowset
-        unfoundNewRows = [];
-        // Array of new rows that we explicitly HAVE to search for manually in the old row set. They cannot be looked up by their identity (because it doesn't exist).
-        unfoundNewRowsToFind = [];
-        // Map of rows that have been found in the new rowset
-        var foundOldRows = {};
-        // Array of old rows that have NOT been found in the new rowset
-        unfoundOldRows = [];
-
-        // Create the row HashMap if it doesn't exist already
-        if (!self.rowHashMap) {
-          self.createRowHashMap();
-        }
-        rowhash = self.rowHashMap;
-        
-        // Make sure every new row has a hash
-        for (i = 0; i < newRawData.length; i++) {
-          newRow = newRawData[i];
-
-          // Flag this row as needing to be manually found if it didn't come in with a $$hashKey
-          var mustFind = false;
-          if (!self.options.getRowIdentity(newRow)) {
-            mustFind = true;
-          }
-
-          // See if the new row is already in the rowhash
-          found = rowhash.get(newRow);
-          // If so...
-          if (found) {
-            // See if it's already being used by as GridRow
-            if (found.row) {
-              // If so, mark this new row as being found
-              foundOldRows[self.options.rowIdentity(newRow)] = true;
-            }
-          }
-          else {
-            // Put the row in the hashmap with the index it corresponds to
-            rowhash.put(newRow, {
-              i: i,
-              entity: newRow
-            });
-            
-            // This row has to be searched for manually in the old row set
-            if (mustFind) {
-              unfoundNewRowsToFind.push(newRow);
-            }
-            else {
-              unfoundNewRows.push(newRow);
-            }
-          }
-        }
-
-        // Build the list of unfound old rows
-        for (i = 0; i < self.rows.length; i++) {
-          var row = self.rows[i];
-          var hash = self.options.rowIdentity(row.entity);
-          if (!foundOldRows[hash]) {
-            unfoundOldRows.push(row);
-          }
-        }
+      // if we didn't find the row, it must be new, so create it
+      if ( !newRow ){
+        newRow = self.processRowBuilders(new GridRow(newEntity, i, self));
       }
 
-      // Look for new rows
-      var newRows = unfoundNewRows || [];
+      self.rows.push( newRow );
+      self.rowHashMap.put( newEntity, newRow );
+    });
 
-      // The unfound new rows is either `unfoundNewRowsToFind`, if row hashing is turned on, or straight `newRawData` if it isn't
-      var unfoundNew = (unfoundNewRowsToFind || newRawData);
+    self.assignTypes();
 
-      // Search for real new rows in `unfoundNew` and concat them onto `newRows`
-      newRows = newRows.concat(self.newInN(self.rows, unfoundNew, 'entity'));
-      
-      self.addRows(newRows); 
-      
-      var deletedRows = self.getDeletedRows((unfoundOldRows || self.rows), newRawData);
-
-      for (i = 0; i < deletedRows.length; i++) {
-        if (self.options.enableRowHashing) {
-          self.rowHashMap.remove(deletedRows[i].entity);
-        }
-
-        self.rows.splice( self.rows.indexOf(deletedRows[i]), 1 );
-      }
-    }
-    // Empty data set
-    else {
-      // Reset the row HashMap
-      self.createRowHashMap();
-
-      // Reset the rows length!
-      self.rows.length = 0;
-    }
-    }
-    
     var p1 = $q.when(self.processRowsProcessors(self.rows))
       .then(function (renderableRows) {
         return self.setVisibleRows(renderableRows);
@@ -3954,18 +4701,6 @@ angular.module('ui.grid')
     return $q.all([p1, p2]);
   };
 
-  Grid.prototype.getDeletedRows = function(oldRows, newRows) {
-    var self = this;
-
-    var olds = oldRows.filter(function (oldRow) {
-      return !newRows.some(function (newItem) {
-        return self.options.rowEquality(newItem, oldRow.entity);
-      });
-    });
-    // var olds = self.newInN(newRows, oldRows, null, 'entity');
-    // dump('olds', olds);
-    return olds;
-  };
 
   /**
    * Private Undocumented Method
@@ -4015,7 +4750,7 @@ angular.module('ui.grid')
    * @name registerStyleComputation
    * @methodOf ui.grid.class:Grid
    * @description registered a styleComputation function
-   * 
+   *
    * If the function returns a value it will be appended into the grid's `<style>` block
    * @param {function($scope)} styleComputation function
    */
@@ -4038,7 +4773,7 @@ angular.module('ui.grid')
   //     this.rowFilters.slice(idx, 1);
   //   }
   // };
-  
+
   // Grid.prototype.processRowFilters = function(rows) {
   //   var self = this;
   //   self.rowFilters.forEach(function (filter) {
@@ -4051,21 +4786,31 @@ angular.module('ui.grid')
    * @ngdoc function
    * @name registerRowsProcessor
    * @methodOf ui.grid.class:Grid
-   * @param {function(renderableRows)} rows processor function
-   * @returns {Array[GridRow]} Updated renderable rows
    * @description
-
-     Register a "rows processor" function. When the rows are updated,
-     the grid calls each registered "rows processor", which has a chance
-     to alter the set of rows (sorting, etc) as long as the count is not
-     modified.
+   *
+   * Register a "rows processor" function. When the rows are updated,
+   * the grid calls each registered "rows processor", which has a chance
+   * to alter the set of rows (sorting, etc) as long as the count is not
+   * modified.
+   *
+   * @param {function(renderedRowsToProcess, columns )} processorFunction rows processor function, which
+   * is run in the context of the grid (i.e. this for the function will be the grid), and must
+   * return the updated rows list, which is passed to the next processor in the chain
+   * @param {number} priority the priority of this processor.  In general we try to do them in 100s to leave room
+   * for other people to inject rows processors at intermediate priorities.  Lower priority rowsProcessors run earlier.
+   *
+   * At present all rows visible is running at 50, filter is running at 100, sort is at 200, grouping at 400, selectable rows at 500, pagination at 900 (pagination will generally want to be last)
+   *
    */
-  Grid.prototype.registerRowsProcessor = function registerRowsProcessor(processor) {
+  Grid.prototype.registerRowsProcessor = function registerRowsProcessor(processor, priority) {
     if (!angular.isFunction(processor)) {
       throw 'Attempt to register non-function rows processor: ' + processor;
     }
 
-    this.rowsProcessors.push(processor);
+    this.rowsProcessors.push({processor: processor, priority: priority});
+    this.rowsProcessors.sort(function sortByPriority( a, b ){
+      return a.priority - b.priority;
+    });
   };
 
   /**
@@ -4076,13 +4821,18 @@ angular.module('ui.grid')
    * @description Remove a registered rows processor
    */
   Grid.prototype.removeRowsProcessor = function removeRowsProcessor(processor) {
-    var idx = this.rowsProcessors.indexOf(processor);
+    var idx = -1;
+    this.rowsProcessors.forEach(function(rowsProcessor, index){
+      if ( rowsProcessor.processor === processor ){
+        idx = index;
+      }
+    });
 
-    if (typeof(idx) !== 'undefined' && idx !== undefined) {
+    if ( idx !== -1 ) {
       this.rowsProcessors.splice(idx, 1);
     }
   };
-  
+
   /**
    * Private Undocumented Method
    * @name processRowsProcessors
@@ -4096,41 +4846,27 @@ angular.module('ui.grid')
 
     // Create a shallow copy of the rows so that we can safely sort them without altering the original grid.rows sort order
     var myRenderableRows = renderableRows.slice(0);
-    
-    // self.rowsProcessors.forEach(function (processor) {
-    //   myRenderableRows = processor.call(self, myRenderableRows, self.columns);
 
-    //   if (!renderableRows) {
-    //     throw "Processor at index " + i + " did not return a set of renderable rows";
-    //   }
-
-    //   if (!angular.isArray(renderableRows)) {
-    //     throw "Processor at index " + i + " did not return an array";
-    //   }
-
-    //   i++;
-    // });
-
-    // Return myRenderableRows with no processing if we have no rows processors 
+    // Return myRenderableRows with no processing if we have no rows processors
     if (self.rowsProcessors.length === 0) {
       return $q.when(myRenderableRows);
     }
-  
+
     // Counter for iterating through rows processors
     var i = 0;
-    
+
     // Promise for when we're done with all the processors
     var finished = $q.defer();
 
     // This function will call the processor in self.rowsProcessors at index 'i', and then
     //   when done will call the next processor in the list, using the output from the processor
     //   at i as the argument for 'renderedRowsToProcess' on the next iteration.
-    //  
+    //
     //   If we're at the end of the list of processors, we resolve our 'finished' callback with
     //   the result.
     function startProcessor(i, renderedRowsToProcess) {
       // Get the processor at 'i'
-      var processor = self.rowsProcessors[i];
+      var processor = self.rowsProcessors[i].processor;
 
       // Call the processor, passing in the rows to process and the current columns
       //   (note: it's wrapped in $q.when() in case the processor does not return a promise)
@@ -4161,46 +4897,35 @@ angular.module('ui.grid')
 
     // Start on the first processor
     startProcessor(0, myRenderableRows);
-    
+
     return finished.promise;
   };
 
   Grid.prototype.setVisibleRows = function setVisibleRows(rows) {
-    // gridUtil.logDebug('setVisibleRows');
-
     var self = this;
-
-    //var newVisibleRowCache = [];
 
     // Reset all the render container row caches
     for (var i in self.renderContainers) {
       var container = self.renderContainers[i];
 
       container.canvasHeightShouldUpdate = true;
-      
+
       if ( typeof(container.visibleRowCache) === 'undefined' ){
-        container.visibleRowCache = [];  
+        container.visibleRowCache = [];
       } else {
-        container.visibleRowCache.length = 0;  
+        container.visibleRowCache.length = 0;
       }
     }
-    
+
     // rows.forEach(function (row) {
     for (var ri = 0; ri < rows.length; ri++) {
       var row = rows[ri];
 
+      var targetContainer = (typeof(row.renderContainer) !== 'undefined' && row.renderContainer) ? row.renderContainer : 'body';
+
       // If the row is visible
       if (row.visible) {
-        // newVisibleRowCache.push(row);
-
-        // If the row has a container specified
-        if (typeof(row.renderContainer) !== 'undefined' && row.renderContainer) {
-          self.renderContainers[row.renderContainer].visibleRowCache.push(row);
-        }
-        // If not, put it into the body container
-        else {
-          self.renderContainers.body.visibleRowCache.push(row);
-        }
+        self.renderContainers[targetContainer].visibleRowCache.push(row);
       }
     }
     self.api.core.raise.rowsRendered(this.api);
@@ -4210,20 +4935,29 @@ angular.module('ui.grid')
    * @ngdoc function
    * @name registerColumnsProcessor
    * @methodOf ui.grid.class:Grid
-   * @param {function(renderableColumns)} rows processor function
-   * @returns {Array[GridColumn]} Updated renderable columns
+   * @param {function(renderedColumnsToProcess, rows)} columnProcessor column processor function, which
+   * is run in the context of the grid (i.e. this for the function will be the grid), and
+   * which must return an updated renderedColumnsToProcess which can be passed to the next processor
+   * in the chain
+   * @param {number} priority the priority of this processor.  In general we try to do them in 100s to leave room
+   * for other people to inject columns processors at intermediate priorities.  Lower priority columnsProcessors run earlier.
+   *
+   * At present all rows visible is running at 50, filter is running at 100, sort is at 200, grouping at 400, selectable rows at 500, pagination at 900 (pagination will generally want to be last)
    * @description
 
      Register a "columns processor" function. When the columns are updated,
      the grid calls each registered "columns processor", which has a chance
      to alter the set of columns, as long as the count is not modified.
    */
-  Grid.prototype.registerColumnsProcessor = function registerColumnsProcessor(processor) {
+  Grid.prototype.registerColumnsProcessor = function registerColumnsProcessor(processor, priority) {
     if (!angular.isFunction(processor)) {
       throw 'Attempt to register non-function rows processor: ' + processor;
     }
 
-    this.columnsProcessors.push(processor);
+    this.columnsProcessors.push({processor: processor, priority: priority});
+    this.columnsProcessors.sort(function sortByPriority( a, b ){
+      return a.priority - b.priority;
+    });
   };
 
   Grid.prototype.removeColumnsProcessor = function removeColumnsProcessor(processor) {
@@ -4240,26 +4974,26 @@ angular.module('ui.grid')
     // Create a shallow copy of the rows so that we can safely sort them without altering the original grid.rows sort order
     var myRenderableColumns = renderableColumns.slice(0);
 
-    // Return myRenderableRows with no processing if we have no rows processors 
+    // Return myRenderableRows with no processing if we have no rows processors
     if (self.columnsProcessors.length === 0) {
       return $q.when(myRenderableColumns);
     }
-  
+
     // Counter for iterating through rows processors
     var i = 0;
-    
+
     // Promise for when we're done with all the processors
     var finished = $q.defer();
 
     // This function will call the processor in self.rowsProcessors at index 'i', and then
     //   when done will call the next processor in the list, using the output from the processor
     //   at i as the argument for 'renderedRowsToProcess' on the next iteration.
-    //  
+    //
     //   If we're at the end of the list of processors, we resolve our 'finished' callback with
     //   the result.
     function startProcessor(i, renderedColumnsToProcess) {
       // Get the processor at 'i'
-      var processor = self.columnsProcessors[i];
+      var processor = self.columnsProcessors[i].processor;
 
       // Call the processor, passing in the rows to process and the current columns
       //   (note: it's wrapped in $q.when() in case the processor does not return a promise)
@@ -4290,7 +5024,7 @@ angular.module('ui.grid')
 
     // Start on the first processor
     startProcessor(0, myRenderableColumns);
-    
+
     return finished.promise;
   };
 
@@ -4328,6 +5062,7 @@ angular.module('ui.grid')
    * @name handleWindowResize
    * @methodOf ui.grid.class:Grid
    * @description Triggered when the browser window resizes; automatically resizes the grid
+   * @returns {Promise} A resolved promise once the window resize has completed.
    */
   Grid.prototype.handleWindowResize = function handleWindowResize($event) {
     var self = this;
@@ -4335,14 +5070,14 @@ angular.module('ui.grid')
     self.gridWidth = gridUtil.elementWidth(self.element);
     self.gridHeight = gridUtil.elementHeight(self.element);
 
-    self.queueRefresh();
+    return self.queueRefresh();
   };
 
   /**
    * @ngdoc function
    * @name queueRefresh
    * @methodOf ui.grid.class:Grid
-   * @description todo: @c0bra can you document this method?
+   * @description queues a grid refreshCanvas, a way of debouncing all the refreshes we might otherwise issue
    */
   Grid.prototype.queueRefresh = function queueRefresh() {
     var self = this;
@@ -4361,6 +5096,32 @@ angular.module('ui.grid')
 
     return self.refreshCanceller;
   };
+
+
+  /**
+   * @ngdoc function
+   * @name queueGridRefresh
+   * @methodOf ui.grid.class:Grid
+   * @description queues a grid refresh, a way of debouncing all the refreshes we might otherwise issue
+   */
+  Grid.prototype.queueGridRefresh = function queueGridRefresh() {
+    var self = this;
+
+    if (self.gridRefreshCanceller) {
+      $timeout.cancel(self.gridRefreshCanceller);
+    }
+
+    self.gridRefreshCanceller = $timeout(function () {
+      self.refresh(true);
+    });
+
+    self.gridRefreshCanceller.then(function () {
+      self.gridRefreshCanceller = null;
+    });
+
+    return self.gridRefreshCanceller;
+  };
+
 
   /**
    * @ngdoc function
@@ -4390,7 +5151,7 @@ angular.module('ui.grid')
     // gridUtil.logDebug('buildStyles');
 
     var self = this;
-    
+
     self.customStyles = '';
 
     self.styleComputations
@@ -4401,7 +5162,7 @@ angular.module('ui.grid')
         return a.priority - b.priority;
       })
       .forEach(function (compInfo) {
-        // this used to provide $scope as a second parameter, but I couldn't find any 
+        // this used to provide $scope as a second parameter, but I couldn't find any
         // style builders that used it, so removed it as part of moving to grid from controller
         var ret = compInfo.func.call(self);
 
@@ -4462,7 +5223,7 @@ angular.module('ui.grid')
     //}
 
     var adjustment = self.getViewportAdjustment();
-    
+
     viewPortHeight = viewPortHeight + adjustment.height;
 
     //gridUtil.logDebug('viewPortHeight', viewPortHeight);
@@ -4480,7 +5241,7 @@ angular.module('ui.grid')
     //}
 
     var adjustment = self.getViewportAdjustment();
-    
+
     viewPortWidth = viewPortWidth + adjustment.width;
 
     //gridUtil.logDebug('getviewPortWidth', viewPortWidth);
@@ -4496,6 +5257,67 @@ angular.module('ui.grid')
     //}
 
     return viewPortWidth;
+  };
+
+  Grid.prototype.addVerticalScrollSync = function (containerId, callBackFn) {
+    this.verticalScrollSyncCallBackFns[containerId] = callBackFn;
+  };
+
+  Grid.prototype.addHorizontalScrollSync = function (containerId, callBackFn) {
+    this.horizontalScrollSyncCallBackFns[containerId] = callBackFn;
+  };
+
+/**
+ * Scroll needed containers by calling their ScrollSyncs
+ * @param sourceContainerId the containerId that has already set it's top/left.
+ *         can be empty string which means all containers need to set top/left
+ * @param scrollEvent
+ */
+  Grid.prototype.scrollContainers = function (sourceContainerId, scrollEvent) {
+
+    if (scrollEvent.y) {
+      //default for no container Id (ex. mousewheel means that all containers must set scrollTop/Left)
+      var verts = ['body','left', 'right'];
+
+      this.flagScrollingVertically(scrollEvent);
+
+      if (sourceContainerId === 'body') {
+        verts = ['left', 'right'];
+      }
+      else if (sourceContainerId === 'left') {
+        verts = ['body', 'right'];
+      }
+      else if (sourceContainerId === 'right') {
+        verts = ['body', 'left'];
+      }
+
+      for (var i = 0; i < verts.length; i++) {
+        var id = verts[i];
+        if (this.verticalScrollSyncCallBackFns[id]) {
+          this.verticalScrollSyncCallBackFns[id](scrollEvent);
+        }
+      }
+
+    }
+
+    if (scrollEvent.x) {
+      //default for no container Id (ex. mousewheel means that all containers must set scrollTop/Left)
+      var horizs = ['body','bodyheader', 'bodyfooter'];
+
+      this.flagScrollingHorizontally(scrollEvent);
+      if (sourceContainerId === 'body') {
+        horizs = ['bodyheader', 'bodyfooter'];
+      }
+
+      for (var j = 0; j < horizs.length; j++) {
+        var idh = horizs[j];
+        if (this.horizontalScrollSyncCallBackFns[idh]) {
+          this.horizontalScrollSyncCallBackFns[idh](scrollEvent);
+        }
+      }
+
+    }
+
   };
 
   Grid.prototype.registerViewportAdjuster = function registerViewportAdjuster(func) {
@@ -4570,27 +5392,55 @@ angular.module('ui.grid')
    * @param {GridColumn} col Column to access
    */
   Grid.prototype.getCellValue = function getCellValue(row, col){
-    var self = this;
+    if ( typeof(row.entity[ '$$' + col.uid ]) !== 'undefined' ) {
+      return row.entity[ '$$' + col.uid].rendered;
+    } else if (this.options.flatEntityAccess && typeof(col.field) !== 'undefined' ){
+      return row.entity[col.field];
+    } else {
+      if (!col.cellValueGetterCache) {
+        col.cellValueGetterCache = $parse(row.getEntityQualifiedColField(col));
+      }
 
-    if (!self.cellValueGetterCache[col.colDef.name]) {
-      self.cellValueGetterCache[col.colDef.name] = $parse(row.getEntityQualifiedColField(col));
+      return col.cellValueGetterCache(row);
     }
-
-    return self.cellValueGetterCache[col.colDef.name](row);
   };
 
-  
+  /**
+   * @ngdoc function
+   * @name getCellDisplayValue
+   * @methodOf ui.grid.class:Grid
+   * @description Gets the displayed value of a cell after applying any the `cellFilter`
+   * @param {GridRow} row Row to access
+   * @param {GridColumn} col Column to access
+   */
+  Grid.prototype.getCellDisplayValue = function getCellDisplayValue(row, col) {
+    if ( !col.cellDisplayGetterCache ) {
+      var custom_filter = col.cellFilter ? " | " + col.cellFilter : "";
+
+      if (typeof(row.entity['$$' + col.uid]) !== 'undefined') {
+        col.cellDisplayGetterCache = $parse(row.entity['$$' + col.uid].rendered + custom_filter);
+      } else if (this.options.flatEntityAccess && typeof(col.field) !== 'undefined') {
+        col.cellDisplayGetterCache = $parse(row.entity[col.field] + custom_filter);
+      } else {
+        col.cellDisplayGetterCache = $parse(row.getEntityQualifiedColField(col) + custom_filter);
+      }
+    }
+
+    return col.cellDisplayGetterCache(row);
+  };
+
+
   Grid.prototype.getNextColumnSortPriority = function getNextColumnSortPriority() {
     var self = this,
         p = 0;
 
     self.columns.forEach(function (col) {
-      if (col.sort && col.sort.priority && col.sort.priority > p) {
-        p = col.sort.priority;
+      if (col.sort && col.sort.priority !== undefined && col.sort.priority >= p) {
+        p = col.sort.priority + 1;
       }
     });
 
-    return p + 1;
+    return p;
   };
 
   /**
@@ -4604,7 +5454,7 @@ angular.module('ui.grid')
     var self = this;
 
     self.columns.forEach(function (col) {
-      if (col !== excludeCol && !col.colDef.suppressRemoveSort) {
+      if (col !== excludeCol && !col.suppressRemoveSort) {
         col.sort = {};
       }
     });
@@ -4643,12 +5493,13 @@ angular.module('ui.grid')
    * Emits the sortChanged event whenever the sort criteria are changed.
    * @param {GridColumn} column Column to set the sorting on
    * @param {uiGridConstants.ASC|uiGridConstants.DESC} [direction] Direction to sort by, either descending or ascending.
-   *   If not provided, the column will iterate through the sort directions: ascending, descending, unsorted.
+   *   If not provided, the column will iterate through the sort directions
+   *   specified in the {@link ui.grid.class:GridOptions.columnDef#sortDirectionCycle sortDirectionCycle} attribute.
    * @param {boolean} [add] Add this column to the sorting. If not provided or set to `false`, the Grid will reset any existing sorting and sort
    *   by this column only
    * @returns {Promise} A resolved promise that supplies the column.
    */
-  
+
   Grid.prototype.sortColumn = function sortColumn(column, directionOrAdd, add) {
     var self = this,
         direction = null;
@@ -4665,40 +5516,43 @@ angular.module('ui.grid')
     else {
       direction = directionOrAdd;
     }
-    
+
     if (!add) {
       self.resetColumnSorting(column);
-      column.sort.priority = 0;
+      column.sort.priority = undefined;
+      // Get the actual priority since there may be columns which have suppressRemoveSort set
+      column.sort.priority = self.getNextColumnSortPriority();
     }
-    else {
+    else if (!column.sort.priority){
       column.sort.priority = self.getNextColumnSortPriority();
     }
 
     if (!direction) {
-      // Figure out the sort direction
-      if (column.sort.direction && column.sort.direction === uiGridConstants.ASC) {
-        column.sort.direction = uiGridConstants.DESC;
+      // Find the current position in the cycle (or -1).
+      var i = column.sortDirectionCycle.indexOf(column.sort.direction ? column.sort.direction : null);
+      // Proceed to the next position in the cycle (or start at the beginning).
+      i = (i+1) % column.sortDirectionCycle.length;
+      // If suppressRemoveSort is set, and the next position in the cycle would
+      // remove the sort, skip it.
+      if (column.colDef && column.suppressRemoveSort && !column.sortDirectionCycle[i]) {
+        i = (i+1) % column.sortDirectionCycle.length;
       }
-      else if (column.sort.direction && column.sort.direction === uiGridConstants.DESC) {
-        if ( column.colDef && column.colDef.suppressRemoveSort ){
-          column.sort.direction = uiGridConstants.ASC;
-        } else {
-          column.sort.direction = null;
-        }
-      }
-      else {
-        column.sort.direction = uiGridConstants.ASC;
+
+      if (column.sortDirectionCycle[i]) {
+        column.sort.direction = column.sortDirectionCycle[i];
+      } else {
+        column.sort = {};
       }
     }
     else {
       column.sort.direction = direction;
     }
-    
+
     self.api.core.raise.sortChanged( self, self.getColumnSorting() );
 
     return $q.when(column);
   };
-  
+
   /**
    * communicate to outside world that we are done with initial rendering
    */
@@ -4715,20 +5569,20 @@ angular.module('ui.grid')
     var hashMap = new RowHashMap();
     hashMap.grid = self;
 
-    self.rowHashMap = hashMap;
+    return hashMap;
   };
-  
-  
+
+
   /**
    * @ngdoc function
    * @name refresh
    * @methodOf ui.grid.class:Grid
    * @description Refresh the rendered grid on screen.
-   * @params {boolean} [rowsAltered] Optional flag for refreshing when the number of rows has changed.
+   * @param {boolean} [rowsAltered] Optional flag for refreshing when the number of rows has changed.
    */
   Grid.prototype.refresh = function refresh(rowsAltered) {
     var self = this;
-    
+
     var p1 = self.processRowsProcessors(self.rows).then(function (renderableRows) {
       self.setVisibleRows(renderableRows);
     });
@@ -4743,18 +5597,18 @@ angular.module('ui.grid')
       self.refreshCanvas(true);
     });
   };
-  
+
   /**
    * @ngdoc function
    * @name refreshRows
    * @methodOf ui.grid.class:Grid
-   * @description Refresh the rendered rows on screen?  Note: not functional at present 
+   * @description Refresh the rendered rows on screen?  Note: not functional at present
    * @returns {promise} promise that is resolved when render completes?
-   * 
+   *
    */
   Grid.prototype.refreshRows = function refreshRows() {
     var self = this;
-    
+
     return self.processRowsProcessors(self.rows)
       .then(function (renderableRows) {
         self.setVisibleRows(renderableRows);
@@ -4767,13 +5621,13 @@ angular.module('ui.grid')
 
   /**
    * @ngdoc function
-   * @name redrawCanvas
+   * @name refreshCanvas
    * @methodOf ui.grid.class:Grid
-   * @description TBD
-   * @params {object} buildStyles optional parameter.  Use TBD
+   * @description Builds all styles and recalculates much of the grid sizing
+   * @param {object} buildStyles optional parameter.  Use TBD
    * @returns {promise} promise that is resolved when the canvas
    * has been refreshed
-   * 
+   *
    */
   Grid.prototype.refreshCanvas = function(buildStyles) {
     var self = this;
@@ -4796,6 +5650,9 @@ angular.module('ui.grid')
         }
 
         if (container.header || container.headerCanvas) {
+          container.explicitHeaderHeight = container.explicitHeaderHeight || null;
+          container.explicitHeaderCanvasHeight = container.explicitHeaderCanvasHeight || null;
+
           containerHeadersToRecalc.push(container);
         }
       }
@@ -4814,6 +5671,11 @@ angular.module('ui.grid')
      *
      */
     if (containerHeadersToRecalc.length > 0) {
+      // Build the styles without the explicit header heights
+      if (buildStyles) {
+        self.buildStyles();
+      }
+
       // Putting in a timeout as it's not calculating after the grid element is rendered and filled out
       $timeout(function() {
         // var oldHeaderHeight = self.grid.headerHeight;
@@ -4825,6 +5687,12 @@ angular.module('ui.grid')
         var maxHeaderHeight = 0;
         var maxHeaderCanvasHeight = 0;
         var i, container;
+        var getHeight = function(oldVal, newVal){
+          if ( oldVal !== newVal){
+            rebuildStyles = true;
+          }
+          return newVal;
+        };
         for (i = 0; i < containerHeadersToRecalc.length; i++) {
           container = containerHeadersToRecalc[i];
 
@@ -4834,14 +5702,7 @@ angular.module('ui.grid')
           }
 
           if (container.header) {
-            var oldHeaderHeight = container.headerHeight;
-            var headerHeight = gridUtil.outerElementHeight(container.header);
-
-            container.headerHeight = parseInt(headerHeight, 10);
-
-            if (oldHeaderHeight !== headerHeight) {
-              rebuildStyles = true;
-            }
+            var headerHeight = container.headerHeight = getHeight(container.headerHeight, parseInt(gridUtil.outerElementHeight(container.header), 10));
 
             // Get the "inner" header height, that is the height minus the top and bottom borders, if present. We'll use it to make sure all the headers have a consistent height
             var topBorder = gridUtil.getBorderSize(container.header, 'top');
@@ -4852,24 +5713,20 @@ angular.module('ui.grid')
 
             container.innerHeaderHeight = innerHeaderHeight;
 
-            // Save the largest header height for use later
-            if (innerHeaderHeight > maxHeaderHeight) {
+            // If the header doesn't have an explicit height set, save the largest header height for use later
+            //   Explicit header heights are based off of the max we are calculating here. We never want to base the max on something we're setting explicitly
+            if (!container.explicitHeaderHeight && innerHeaderHeight > maxHeaderHeight) {
               maxHeaderHeight = innerHeaderHeight;
             }
           }
 
           if (container.headerCanvas) {
-            var oldHeaderCanvasHeight = container.headerCanvasHeight;
-            var headerCanvasHeight = gridUtil.outerElementHeight(container.headerCanvas);
+            var headerCanvasHeight = container.headerCanvasHeight = getHeight(container.headerCanvasHeight, parseInt(gridUtil.outerElementHeight(container.headerCanvas), 10));
 
-            container.headerCanvasHeight = parseInt(headerCanvasHeight, 10);
 
-            if (oldHeaderCanvasHeight !== headerCanvasHeight) {
-              rebuildStyles = true;
-            }
-
-            // Save the largest header canvas height for use later
-            if (headerCanvasHeight > maxHeaderCanvasHeight) {
+            // If the header doesn't have an explicit canvas height, save the largest header canvas height for use later
+            //   Explicit header heights are based off of the max we are calculating here. We never want to base the max on something we're setting explicitly
+            if (!container.explicitHeaderCanvasHeight && headerCanvasHeight > maxHeaderCanvasHeight) {
               maxHeaderCanvasHeight = headerCanvasHeight;
             }
           }
@@ -4879,13 +5736,28 @@ angular.module('ui.grid')
         for (i = 0; i < containerHeadersToRecalc.length; i++) {
           container = containerHeadersToRecalc[i];
 
-          // If this header's height is less than another header's height, then explicitly set it so they're the same and one isn't all offset and weird looking
-          if (maxHeaderHeight > 0 && typeof(container.headerHeight) !== 'undefined' && container.headerHeight !== null && container.headerHeight < maxHeaderHeight) {
-            container.explicitHeaderHeight = maxHeaderHeight;
+          /* If:
+              1. We have a max header height
+              2. This container has a header height defined
+              3. And either this container has an explicit header height set, OR its header height is less than the max
+
+              then:
+
+              Give this container's header an explicit height so it will line up with the tallest header
+          */
+          if (
+            maxHeaderHeight > 0 && typeof(container.headerHeight) !== 'undefined' && container.headerHeight !== null &&
+            (container.explicitHeaderHeight || container.headerHeight < maxHeaderHeight)
+          ) {
+            container.explicitHeaderHeight = getHeight(container.explicitHeaderHeight, maxHeaderHeight);
           }
 
-          if (typeof(container.headerCanvasHeight) !== 'undefined' && container.headerCanvasHeight !== null && maxHeaderCanvasHeight > 0 && container.headerCanvasHeight < maxHeaderCanvasHeight) {
-            container.explicitHeaderCanvasHeight = maxHeaderCanvasHeight;
+          // Do the same as above except for the header canvas
+          if (
+            maxHeaderCanvasHeight > 0 && typeof(container.headerCanvasHeight) !== 'undefined' && container.headerCanvasHeight !== null &&
+            (container.explicitHeaderCanvasHeight || container.headerCanvasHeight < maxHeaderCanvasHeight)
+          ) {
+            container.explicitHeaderCanvasHeight = getHeight(container.explicitHeaderCanvasHeight, maxHeaderCanvasHeight);
           }
         }
 
@@ -4915,21 +5787,21 @@ angular.module('ui.grid')
    * @methodOf ui.grid.class:Grid
    * @description Redraw the rows and columns based on our current scroll position
    * @param {boolean} [rowsAdded] Optional to indicate rows are added and the scroll percentage must be recalculated
-   * 
+   *
    */
   Grid.prototype.redrawInPlace = function redrawInPlace(rowsAdded) {
     // gridUtil.logDebug('redrawInPlace');
-    
+
     var self = this;
 
     for (var i in self.renderContainers) {
       var container = self.renderContainers[i];
 
       // gridUtil.logDebug('redrawing container', i);
-      
+
       if (rowsAdded) {
         container.adjustRows(container.prevScrollTop, null);
-        container.adjustColumns(container.prevScrollTop, null);
+        container.adjustColumns(container.prevScrollLeft, null);
       }
       else {
         container.adjustRows(null, container.prevScrolltopPercentage);
@@ -4958,10 +5830,232 @@ angular.module('ui.grid')
       return this.hasRightContainer() && this.renderContainers.right.renderedColumns.length > 0;
     };
 
+    /**
+     * @ngdoc method
+     * @methodOf  ui.grid.class:Grid
+     * @name scrollToIfNecessary
+     * @description Scrolls the grid to make a certain row and column combo visible,
+     *   in the case that it is not completely visible on the screen already.
+     * @param {GridRow} gridRow row to make visible
+     * @param {GridCol} gridCol column to make visible
+     * @returns {promise} a promise that is resolved when scrolling is complete
+     */
+    Grid.prototype.scrollToIfNecessary = function (gridRow, gridCol) {
+      var self = this;
+
+      var scrollEvent = new ScrollEvent(self, 'uiGrid.scrollToIfNecessary');
+
+      // Alias the visible row and column caches
+      var visRowCache = self.renderContainers.body.visibleRowCache;
+      var visColCache = self.renderContainers.body.visibleColumnCache;
+
+      /*-- Get the top, left, right, and bottom "scrolled" edges of the grid --*/
+
+      // The top boundary is the current Y scroll position PLUS the header height, because the header can obscure rows when the grid is scrolled downwards
+      var topBound = self.renderContainers.body.prevScrollTop + self.headerHeight;
+
+      // Don't the let top boundary be less than 0
+      topBound = (topBound < 0) ? 0 : topBound;
+
+      // The left boundary is the current X scroll position
+      var leftBound = self.renderContainers.body.prevScrollLeft;
+
+      // The bottom boundary is the current Y scroll position, plus the height of the grid, but minus the header height.
+      //   Basically this is the viewport height added on to the scroll position
+      var bottomBound = self.renderContainers.body.prevScrollTop + self.gridHeight - self.renderContainers.body.headerHeight - self.footerHeight -  self.scrollbarWidth;
+
+      // If there's a horizontal scrollbar, remove its height from the bottom boundary, otherwise we'll be letting it obscure rows
+      //if (self.horizontalScrollbarHeight) {
+      //  bottomBound = bottomBound - self.horizontalScrollbarHeight;
+      //}
+
+      // The right position is the current X scroll position minus the grid width
+      var rightBound = self.renderContainers.body.prevScrollLeft + Math.ceil(self.renderContainers.body.getViewportWidth());
+
+      // If there's a vertical scrollbar, subtract it from the right boundary or we'll allow it to obscure cells
+      //if (self.verticalScrollbarWidth) {
+      //  rightBound = rightBound - self.verticalScrollbarWidth;
+      //}
+
+      // We were given a row to scroll to
+      if (gridRow !== null) {
+        // This is the index of the row we want to scroll to, within the list of rows that can be visible
+        var seekRowIndex = visRowCache.indexOf(gridRow);
+
+        // Total vertical scroll length of the grid
+        var scrollLength = (self.renderContainers.body.getCanvasHeight() - self.renderContainers.body.getViewportHeight());
+
+        // Add the height of the native horizontal scrollbar to the scroll length, if it's there. Otherwise it will mask over the final row
+        //if (self.horizontalScrollbarHeight && self.horizontalScrollbarHeight > 0) {
+        //  scrollLength = scrollLength + self.horizontalScrollbarHeight;
+        //}
+
+        // This is the minimum amount of pixels we need to scroll vertical in order to see this row.
+        var pixelsToSeeRow = (seekRowIndex * self.options.rowHeight + self.headerHeight);
+
+        // Don't let the pixels required to see the row be less than zero
+        pixelsToSeeRow = (pixelsToSeeRow < 0) ? 0 : pixelsToSeeRow;
+
+        var scrollPixels, percentage;
+
+        // If the scroll position we need to see the row is LESS than the top boundary, i.e. obscured above the top of the self...
+        if (pixelsToSeeRow < topBound) {
+          // Get the different between the top boundary and the required scroll position and subtract it from the current scroll position\
+          //   to get the full position we need
+          scrollPixels = self.renderContainers.body.prevScrollTop - (topBound - pixelsToSeeRow);
+
+          // Turn the scroll position into a percentage and make it an argument for a scroll event
+          percentage = scrollPixels / scrollLength;
+          scrollEvent.y = { percentage: percentage  };
+        }
+        // Otherwise if the scroll position we need to see the row is MORE than the bottom boundary, i.e. obscured below the bottom of the self...
+        else if (pixelsToSeeRow > bottomBound) {
+          // Get the different between the bottom boundary and the required scroll position and add it to the current scroll position
+          //   to get the full position we need
+          scrollPixels = pixelsToSeeRow - bottomBound + self.renderContainers.body.prevScrollTop;
+
+          // Turn the scroll position into a percentage and make it an argument for a scroll event
+          percentage = scrollPixels / scrollLength;
+          scrollEvent.y = { percentage: percentage  };
+        }
+      }
+
+      // We were given a column to scroll to
+      if (gridCol !== null) {
+        // This is the index of the row we want to scroll to, within the list of rows that can be visible
+        var seekColumnIndex = visColCache.indexOf(gridCol);
+
+        // Total vertical scroll length of the grid
+        var horizScrollLength = (self.renderContainers.body.getCanvasWidth() - self.renderContainers.body.getViewportWidth());
+
+        // Add the height of the native horizontal scrollbar to the scroll length, if it's there. Otherwise it will mask over the final row
+        // if (self.verticalScrollbarWidth && self.verticalScrollbarWidth > 0) {
+        //   horizScrollLength = horizScrollLength + self.verticalScrollbarWidth;
+        // }
+
+        // This is the minimum amount of pixels we need to scroll vertical in order to see this column
+        var columnLeftEdge = 0;
+        for (var i = 0; i < seekColumnIndex; i++) {
+          var col = visColCache[i];
+          columnLeftEdge += col.drawnWidth;
+        }
+        columnLeftEdge = (columnLeftEdge < 0) ? 0 : columnLeftEdge;
+
+        var columnRightEdge = columnLeftEdge + gridCol.drawnWidth;
+
+        // Don't let the pixels required to see the column be less than zero
+        columnRightEdge = (columnRightEdge < 0) ? 0 : columnRightEdge;
+
+        var horizScrollPixels, horizPercentage;
+
+        // If the scroll position we need to see the row is LESS than the top boundary, i.e. obscured above the top of the self...
+        if (columnLeftEdge < leftBound) {
+          // Get the different between the top boundary and the required scroll position and subtract it from the current scroll position\
+          //   to get the full position we need
+          horizScrollPixels = self.renderContainers.body.prevScrollLeft - (leftBound - columnLeftEdge);
+
+          // Turn the scroll position into a percentage and make it an argument for a scroll event
+          horizPercentage = horizScrollPixels / horizScrollLength;
+          horizPercentage = (horizPercentage > 1) ? 1 : horizPercentage;
+          scrollEvent.x = { percentage: horizPercentage  };
+        }
+        // Otherwise if the scroll position we need to see the row is MORE than the bottom boundary, i.e. obscured below the bottom of the self...
+        else if (columnRightEdge > rightBound) {
+          // Get the different between the bottom boundary and the required scroll position and add it to the current scroll position
+          //   to get the full position we need
+          horizScrollPixels = columnRightEdge - rightBound + self.renderContainers.body.prevScrollLeft;
+
+          // Turn the scroll position into a percentage and make it an argument for a scroll event
+          horizPercentage = horizScrollPixels / horizScrollLength;
+          horizPercentage = (horizPercentage > 1) ? 1 : horizPercentage;
+          scrollEvent.x = { percentage: horizPercentage  };
+        }
+      }
+
+      var deferred = $q.defer();
+
+      // If we need to scroll on either the x or y axes, fire a scroll event
+      if (scrollEvent.y || scrollEvent.x) {
+        scrollEvent.withDelay = false;
+        self.scrollContainers('',scrollEvent);
+        var dereg = self.api.core.on.scrollEnd(null,function() {
+          deferred.resolve(scrollEvent);
+          dereg();
+        });
+      }
+      else {
+        deferred.resolve();
+      }
+
+      return deferred.promise;
+    };
+
+    /**
+     * @ngdoc method
+     * @methodOf ui.grid.class:Grid
+     * @name scrollTo
+     * @description Scroll the grid such that the specified
+     * row and column is in view
+     * @param {object} rowEntity gridOptions.data[] array instance to make visible
+     * @param {object} colDef to make visible
+     * @returns {promise} a promise that is resolved after any scrolling is finished
+     */
+    Grid.prototype.scrollTo = function (rowEntity, colDef) {
+      var gridRow = null, gridCol = null;
+
+      if (rowEntity !== null && typeof(rowEntity) !== 'undefined' ) {
+        gridRow = this.getRow(rowEntity);
+      }
+
+      if (colDef !== null && typeof(colDef) !== 'undefined' ) {
+        gridCol = this.getColumn(colDef.name ? colDef.name : colDef.field);
+      }
+      return this.scrollToIfNecessary(gridRow, gridCol);
+    };
+
+  /**
+   * @ngdoc function
+   * @name clearAllFilters
+   * @methodOf ui.grid.class:Grid
+   * @description Clears all filters and optionally refreshes the visible rows.
+   * @param {object} refreshRows Defaults to true.
+   * @param {object} clearConditions Defaults to false.
+   * @param {object} clearFlags Defaults to false.
+   * @returns {promise} If `refreshRows` is true, returns a promise of the rows refreshing.
+   */
+  Grid.prototype.clearAllFilters = function clearAllFilters(refreshRows, clearConditions, clearFlags) {
+    // Default `refreshRows` to true because it will be the most commonly desired behaviour.
+    if (refreshRows === undefined) {
+      refreshRows = true;
+    }
+    if (clearConditions === undefined) {
+      clearConditions = false;
+    }
+    if (clearFlags === undefined) {
+      clearFlags = false;
+    }
+
+    this.columns.forEach(function(column) {
+      column.filters.forEach(function(filter) {
+        filter.term = undefined;
+
+        if (clearConditions) {
+          filter.condition = undefined;
+        }
+
+        if (clearFlags) {
+          filter.flags = undefined;
+        }
+      });
+    });
+
+    if (refreshRows) {
+      return this.refreshRows();
+    }
+  };
 
 
-
-  // Blatantly stolen from Angular as it isn't exposed (yet? 2.0?)
+      // Blatantly stolen from Angular as it isn't exposed (yet? 2.0?)
   function RowHashMap() {}
 
   RowHashMap.prototype = {
@@ -5122,11 +6216,19 @@ angular.module('ui.grid')
 
           /**
            * @ngdoc event
-           * @name scrollEvent
+           * @name scrollBegin
            * @eventOf  ui.grid.core.api:PublicApi
-           * @description  is raised on a scroll Event.  Called frequently so be careful what you do with it
+           * @description  is raised when scroll begins.  Is throttled, so won't be raised too frequently
            */
-          this.registerEvent( 'core', 'scrollEvent' );
+          this.registerEvent( 'core', 'scrollBegin' );
+
+          /**
+           * @ngdoc event
+           * @name scrollEnd
+           * @eventOf  ui.grid.core.api:PublicApi
+           * @description  is raised when scroll has finished.  Is throttled, so won't be raised too frequently
+           */
+          this.registerEvent( 'core', 'scrollEnd' );
 
           /**
            * @ngdoc event
@@ -5171,10 +6273,9 @@ angular.module('ui.grid')
           var listeners = angular.isArray(listenerFuncs) ? listenerFuncs : [listenerFuncs];
 
           //find all registered listeners
-          var foundListeners = [];
-          listeners.forEach(function (l) {
-            foundListeners = self.listeners.filter(function (lstnr) {
-              return l === lstnr.handler;
+          var foundListeners = self.listeners.filter(function(listener) {
+            return listeners.some(function(l) {
+              return listener.handler === l;
             });
           });
 
@@ -5204,7 +6305,8 @@ angular.module('ui.grid')
          * <br/>
          * .on.eventName(scope, callBackFn, _this)
          * <br/>
-         * scope - a scope reference to add a deregister call to the scopes .$on('destroy')
+         * scope - a scope reference to add a deregister call to the scopes .$on('destroy').  Scope is optional and can be a null value,
+         * but in this case you must deregister it yourself via the returned deregister function
          * <br/>
          * callBackFn - The function to call
          * <br/>
@@ -5236,6 +6338,10 @@ angular.module('ui.grid')
 
           // gridUtil.logDebug('Creating on event method ' + featureName + '.on.' + eventName);
           feature.on[eventName] = function (scope, handler, _this) {
+            if ( scope !== null && typeof(scope.$on) === 'undefined' ){
+              gridUtil.logError('asked to listen on ' + featureName + '.on.' + eventName + ' but scope wasn\'t passed in the input parameters.  It is legitimate to pass null, but you\'ve passed something else, so you probably forgot to provide scope rather than did it deliberately, not registering');
+              return;
+            }
             var deregAngularOn = registerEventWithAngular(eventId, handler, self.grid, _this);
 
             //track our listener so we can turn off and on
@@ -5249,9 +6355,12 @@ angular.module('ui.grid')
             };
 
             //destroy tracking when scope is destroyed
-            scope.$on('$destroy', function() {
-              removeListener();
-            });
+            if (scope) {
+              scope.$on('$destroy', function() {
+                removeListener();
+              });
+            }
+
 
             return removeListener;
           };
@@ -5366,27 +6475,17 @@ angular.module('ui.grid')
 .factory('GridColumn', ['gridUtil', 'uiGridConstants', 'i18nService', function(gridUtil, uiGridConstants, i18nService) {
 
   /**
-   * @ngdoc function
-   * @name ui.grid.class:GridColumn
-   * @description Represents the viewModel for each column.  Any state or methods needed for a Grid Column
-   * are defined on this prototype
-   * @param {ColDef} colDef Column definition.
-   * @param {number} index the current position of the column in the array
-   * @param {Grid} grid reference to the grid
-   */
-   
-  /**
    * ******************************************************************************************
-   * PaulL1: Ugly hack here in documentation.  These properties are clearly properties of GridColumn, 
+   * PaulL1: Ugly hack here in documentation.  These properties are clearly properties of GridColumn,
    * and need to be noted as such for those extending and building ui-grid itself.
    * However, from an end-developer perspective, they interact with all these through columnDefs,
    * and they really need to be documented there.  I feel like they're relatively static, and
    * I can't find an elegant way for ngDoc to reference to both....so I've duplicated each
    * comment block.  Ugh.
-   * 
+   *
    */
 
-  /** 
+  /**
    * @ngdoc property
    * @name name
    * @propertyOf ui.grid.class:GridColumn
@@ -5395,7 +6494,7 @@ angular.module('ui.grid')
    *
    */
 
-  /** 
+  /**
    * @ngdoc property
    * @name name
    * @propertyOf ui.grid.class:GridOptions.columnDef
@@ -5403,8 +6502,8 @@ angular.module('ui.grid')
    * compatibility with 2.x name can be omitted if field is present
    *
    */
-    
-  /** 
+
+  /**
    * @ngdoc property
    * @name displayName
    * @propertyOf ui.grid.class:GridColumn
@@ -5413,7 +6512,7 @@ angular.module('ui.grid')
    *
    */
 
-  /** 
+  /**
    * @ngdoc property
    * @name displayName
    * @propertyOf ui.grid.class:GridOptions.columnDef
@@ -5421,46 +6520,46 @@ angular.module('ui.grid')
    * provided then one is generated using the name.
    *
    */
-       
-  /** 
+
+  /**
    * @ngdoc property
    * @name field
    * @propertyOf ui.grid.class:GridColumn
-   * @description field must be provided if you wish to bind to a 
-   * property in the data source.  Should be an angular expression that evaluates against grid.options.data 
+   * @description field must be provided if you wish to bind to a
+   * property in the data source.  Should be an angular expression that evaluates against grid.options.data
    * array element.  Can be a complex expression: <code>employee.address.city</code>, or can be a function: <code>employee.getFullAddress()</code>.
    * See the angular docs on binding expressions.
    *
    */
-    
-  /** 
+
+  /**
    * @ngdoc property
    * @name field
    * @propertyOf ui.grid.class:GridOptions.columnDef
-   * @description field must be provided if you wish to bind to a 
-   * property in the data source.  Should be an angular expression that evaluates against grid.options.data 
+   * @description field must be provided if you wish to bind to a
+   * property in the data source.  Should be an angular expression that evaluates against grid.options.data
    * array element.  Can be a complex expression: <code>employee.address.city</code>, or can be a function: <code>employee.getFullAddress()</code>.    * See the angular docs on binding expressions.    *
    */
-    
-  /** 
+
+  /**
    * @ngdoc property
    * @name filter
    * @propertyOf ui.grid.class:GridColumn
-   * @description Filter on this column.  
+   * @description Filter on this column.
    * @example
-   * <pre>{ term: 'text', condition: uiGridConstants.filter.STARTS_WITH, placeholder: 'type to filter...', flags: { caseSensitive: false } }</pre>
+   * <pre>{ term: 'text', condition: uiGridConstants.filter.STARTS_WITH, placeholder: 'type to filter...', ariaLabel: 'Filter for text', flags: { caseSensitive: false }, type: uiGridConstants.filter.SELECT, [ { value: 1, label: 'male' }, { value: 2, label: 'female' } ] }</pre>
    *
    */
-    
+
   /**
-   * @ngdoc method
-   * @methodOf ui.grid.class:GridColumn
-   * @name GridColumn
-   * @description Initializes a gridColumn
+   * @ngdoc object
+   * @name ui.grid.class:GridColumn
+   * @description Represents the viewModel for each column.  Any state or methods needed for a Grid Column
+   * are defined on this prototype
    * @param {ColumnDef} colDef the column def to associate with this column
    * @param {number} uid the unique and immutable uid we'd like to allocate to this column
    * @param {Grid} grid the grid we'd like to create this column in
-   */ 
+   */
   function GridColumn(colDef, uid, grid) {
     var self = this;
 
@@ -5468,8 +6567,105 @@ angular.module('ui.grid')
     self.uid = uid;
 
     self.updateColumnDef(colDef, true);
+
+    self.aggregationValue = undefined;
+
+    // The footer cell registers to listen for the rowsRendered event, and calls this.  Needed to be
+    // in something with a scope so that the dereg would get called
+    self.updateAggregationValue = function() {
+
+     // gridUtil.logDebug('getAggregationValue for Column ' + self.colDef.name);
+
+      /**
+       * @ngdoc property
+       * @name aggregationType
+       * @propertyOf ui.grid.class:GridOptions.columnDef
+       * @description The aggregation that you'd like to show in the columnFooter for this
+       * column.  Valid values are in uiGridConstants, and currently include `uiGridConstants.aggregationTypes.count`,
+       * `uiGridConstants.aggregationTypes.sum`, `uiGridConstants.aggregationTypes.avg`, `uiGridConstants.aggregationTypes.min`,
+       * `uiGridConstants.aggregationTypes.max`.
+       *
+       * You can also provide a function as the aggregation type, in this case your function needs to accept the full
+       * set of visible rows, and return a value that should be shown
+       */
+      if (!self.aggregationType) {
+        self.aggregationValue = undefined;
+        return;
+      }
+
+      var result = 0;
+      var visibleRows = self.grid.getVisibleRows();
+
+      var cellValues = function(){
+        var values = [];
+        visibleRows.forEach(function (row) {
+          var cellValue = self.grid.getCellValue(row, self);
+          var cellNumber = Number(cellValue);
+          if (!isNaN(cellNumber)) {
+            values.push(cellNumber);
+          }
+        });
+        return values;
+      };
+
+      if (angular.isFunction(self.aggregationType)) {
+        self.aggregationValue = self.aggregationType(visibleRows, self);
+      }
+      else if (self.aggregationType === uiGridConstants.aggregationTypes.count) {
+        self.aggregationValue = self.grid.getVisibleRowCount();
+      }
+      else if (self.aggregationType === uiGridConstants.aggregationTypes.sum) {
+        cellValues().forEach(function (value) {
+          result += value;
+        });
+        self.aggregationValue = result;
+      }
+      else if (self.aggregationType === uiGridConstants.aggregationTypes.avg) {
+        cellValues().forEach(function (value) {
+          result += value;
+        });
+        result = result / cellValues().length;
+        self.aggregationValue = result;
+      }
+      else if (self.aggregationType === uiGridConstants.aggregationTypes.min) {
+        self.aggregationValue = Math.min.apply(null, cellValues());
+      }
+      else if (self.aggregationType === uiGridConstants.aggregationTypes.max) {
+        self.aggregationValue = Math.max.apply(null, cellValues());
+      }
+      else {
+        self.aggregationValue = '\u00A0';
+      }
+    };
+
+//     var throttledUpdateAggregationValue = gridUtil.throttle(updateAggregationValue, self.grid.options.aggregationCalcThrottle, { trailing: true, context: self.name });
+
+    /**
+     * @ngdoc function
+     * @name getAggregationValue
+     * @methodOf ui.grid.class:GridColumn
+     * @description gets the aggregation value based on the aggregation type for this column.
+     * Debounced using scrollDebounce option setting
+     */
+    this.getAggregationValue =  function() {
+//      if (!self.grid.isScrollingVertically && !self.grid.isScrollingHorizontally) {
+//        throttledUpdateAggregationValue();
+//      }
+
+      return self.aggregationValue;
+    };
   }
 
+  /**
+   * @ngdoc function
+   * @name hideColumn
+   * @methodOf ui.grid.class:GridColumn
+   * @description Hides the column by setting colDef.visible = false
+   */
+  GridColumn.prototype.hideColumn = function() {
+    this.colDef.visible = false;
+  };
+  
 
   /**
    * @ngdoc method
@@ -5480,7 +6676,7 @@ angular.module('ui.grid')
    * @param {ColumnDef} colDef the column def to look in for the property value
    * @param {string} propName the property name we'd like to set
    * @param {object} defaultValue the value to use if the colDef doesn't provide the setting
-   */ 
+   */
   GridColumn.prototype.setPropertyOrDefault = function (colDef, propName, defaultValue) {
     var self = this;
 
@@ -5498,13 +6694,13 @@ angular.module('ui.grid')
     }
   };
 
-  
-  
-  /** 
+
+
+  /**
    * @ngdoc property
    * @name width
    * @propertyOf ui.grid.class:GridOptions.columnDef
-   * @description sets the column width.  Can be either 
+   * @description sets the column width.  Can be either
    * a number or a percentage, or an * for auto.
    * @example
    * <pre>  $scope.gridOptions.columnDefs = [ { field: 'field1', width: 100},
@@ -5513,7 +6709,7 @@ angular.module('ui.grid')
    *
    */
 
-  /** 
+  /**
    * @ngdoc property
    * @name minWidth
    * @propertyOf ui.grid.class:GridOptions.columnDef
@@ -5523,7 +6719,7 @@ angular.module('ui.grid')
    *
    */
 
-  /** 
+  /**
    * @ngdoc property
    * @name maxWidth
    * @propertyOf ui.grid.class:GridOptions.columnDef
@@ -5533,63 +6729,70 @@ angular.module('ui.grid')
    *
    */
 
-  /** 
+  /**
    * @ngdoc property
    * @name visible
    * @propertyOf ui.grid.class:GridOptions.columnDef
    * @description sets whether or not the column is visible
    * </br>Default is true
    * @example
-   * <pre>  $scope.gridOptions.columnDefs = [ 
+   * <pre>  $scope.gridOptions.columnDefs = [
    *     { field: 'field1', visible: true},
    *     { field: 'field2', visible: false }
    *   ]; </pre>
    *
    */
-   
+
+ /**
+  * @ngdoc property
+  * @name sort
+  * @propertyOf ui.grid.class:GridOptions.columnDef
+  * @description An object of sort information, attributes are:
+  *
+  * - direction: values are uiGridConstants.ASC or uiGridConstants.DESC
+  * - ignoreSort: if set to true this sort is ignored (used by tree to manipulate the sort functionality)
+  * - priority: says what order to sort the columns in (lower priority gets sorted first).
+  * @example
+  * <pre>
+  *   $scope.gridOptions.columnDefs = [{
+  *     field: 'field1',
+  *     sort: {
+  *       direction: uiGridConstants.ASC,
+  *       ignoreSort: true,
+  *       priority: 0
+  *      }
+  *   }];
+  * </pre>
+  */
+
+
   /**
    * @ngdoc property
-   * @name sort
-   * @propertyOf ui.grid.class:GridOptions.columnDef
-   * @description Can be used to set the sort direction for the column, values are
-   * uiGridConstants.ASC or uiGridConstants.DESC
-   * @example
-   * <pre>  $scope.gridOptions.columnDefs = [ { field: 'field1', sort: { direction: uiGridConstants.ASC }}] </pre>
-   */
-  
-
-  /** 
-   * @ngdoc property
    * @name sortingAlgorithm
-   * @propertyOf ui.grid.class:GridColumn
-   * @description Algorithm to use for sorting this column. Takes 'a' and 'b' parameters 
-   * like any normal sorting function.
+   * @propertyOf ui.grid.class:GridOptions.columnDef
+   * @description Algorithm to use for sorting this column. Takes 'a' and 'b' parameters
+   * like any normal sorting function with additional 'rowA', 'rowB', and 'direction' parameters
+   * that are the row objects and the current direction of the sort respectively.
    *
    */
 
-  /** 
-   * @ngdoc property
-   * @name sortingAlgorithm
-   * @propertyOf ui.grid.class:GridOptions.columnDef
-   * @description Algorithm to use for sorting this column. Takes 'a' and 'b' parameters 
-   * like any normal sorting function.
-   *
-   */
-      
-  /** 
+  /**
    * @ngdoc array
    * @name filters
    * @propertyOf ui.grid.class:GridOptions.columnDef
    * @description Specify multiple filter fields.
    * @example
-   * <pre>$scope.gridOptions.columnDefs = [ 
+   * <pre>$scope.gridOptions.columnDefs = [
    *   {
    *     field: 'field1', filters: [
    *       {
    *         term: 'aa',
    *         condition: uiGridConstants.filter.STARTS_WITH,
    *         placeholder: 'starts with...',
-   *         flags: { caseSensitive: false }
+   *         ariaLabel: 'Filter for field1',
+   *         flags: { caseSensitive: false },
+   *         type: uiGridConstants.filter.SELECT,
+   *         selectOptions: [ { value: 1, label: 'male' }, { value: 2, label: 'female' } ]
    *       },
    *       {
    *         condition: uiGridConstants.filter.ENDS_WITH,
@@ -5599,10 +6802,10 @@ angular.module('ui.grid')
    *   }
    * ]; </pre>
    *
-   * 
-   */ 
-   
-  /** 
+   *
+   */
+
+  /**
    * @ngdoc array
    * @name filters
    * @propertyOf ui.grid.class:GridColumn
@@ -5613,7 +6816,10 @@ angular.module('ui.grid')
    *     term: 'foo', // ngModel for <input>
    *     condition: uiGridConstants.filter.STARTS_WITH,
    *     placeholder: 'starts with...',
-   *     flags: { caseSensitive: false }
+   *     ariaLabel: 'Filter for foo',
+   *     flags: { caseSensitive: false },
+   *     type: uiGridConstants.filter.SELECT,
+   *     selectOptions: [ { value: 1, label: 'male' }, { value: 2, label: 'female' } ]
    *   },
    *   {
    *     term: 'baz',
@@ -5622,24 +6828,25 @@ angular.module('ui.grid')
    *   }
    * ] </pre>
    *
-   * 
-   */   
+   *
+   */
 
-  /** 
+  /**
    * @ngdoc array
    * @name menuItems
    * @propertyOf ui.grid.class:GridOptions.columnDef
-   * @description used to add menu items to a column.  Refer to the tutorial on this 
+   * @description used to add menu items to a column.  Refer to the tutorial on this
    * functionality.  A number of settings are supported:
-   * 
+   *
    * - title: controls the title that is displayed in the menu
    * - icon: the icon shown alongside that title
    * - action: the method to call when the menu is clicked
    * - shown: a function to evaluate to determine whether or not to show the item
    * - active: a function to evaluate to determine whether or not the item is currently selected
-   * - context: context to pass to the action function??
+   * - context: context to pass to the action function, available in this.context in your handler
+   * - leaveOpen: if set to true, the menu should stay open after the action, defaults to false
    * @example
-   * <pre>  $scope.gridOptions.columnDefs = [ 
+   * <pre>  $scope.gridOptions.columnDefs = [
    *   { field: 'field1', menuItems: [
    *     {
    *       title: 'Outer Scope Alert',
@@ -5659,7 +6866,7 @@ angular.module('ui.grid')
    *     }
    *   ] }]; </pre>
    *
-   */   
+   */
 
   /**
    * @ngdoc method
@@ -5671,7 +6878,7 @@ angular.module('ui.grid')
    * @param {boolean} isNew whether the column is being newly created, if not
    * we're updating an existing column, and some items such as the sort shouldn't
    * be copied down
-   */ 
+   */
   GridColumn.prototype.updateColumnDef = function(colDef, isNew) {
     var self = this;
 
@@ -5682,57 +6889,69 @@ angular.module('ui.grid')
     }
 
     self.displayName = (colDef.displayName === undefined) ? gridUtil.readableColumnName(colDef.name) : colDef.displayName;
-    
-    var parseErrorMsg = "Cannot parse column width '" + colDef.width + "' for column named '" + colDef.name + "'";
 
-    // If width is not defined, set it to a single star
-    if (gridUtil.isNullOrUndefined(self.width) || !angular.isNumber(self.width)) {
-      if (gridUtil.isNullOrUndefined(colDef.width)) {
+    if (!angular.isNumber(self.width) || !self.hasCustomWidth || colDef.allowCustomWidthOverride) {
+      var colDefWidth = colDef.width;
+      var parseErrorMsg = "Cannot parse column width '" + colDefWidth + "' for column named '" + colDef.name + "'";
+      self.hasCustomWidth = false;
+
+      if (!angular.isString(colDefWidth) && !angular.isNumber(colDefWidth)) {
         self.width = '*';
-      }
-      else {
-        // If the width is not a number
-        if (!angular.isNumber(colDef.width)) {
-          // See if it ends with a percent
-          if (gridUtil.endsWith(colDef.width, '%')) {
-            // If so we should be able to parse the non-percent-sign part to a number
-            var percentStr = colDef.width.replace(/%/g, '');
-            var percent = parseInt(percentStr, 10);
-            if (isNaN(percent)) {
-              throw new Error(parseErrorMsg);
-            }
-            self.width = colDef.width;
-          }
-          // And see if it's a number string
-          else if (colDef.width.match(/^(\d+)$/)) {
-            self.width = parseInt(colDef.width.match(/^(\d+)$/)[1], 10);
-          }
-          // Otherwise it should be a string of asterisks
-          else if (colDef.width.match(/^\*+$/)) {
-            self.width = colDef.width;
-          }
-          // No idea, throw an Error
-          else {
+      } else if (angular.isString(colDefWidth)) {
+        // See if it ends with a percent
+        if (gridUtil.endsWith(colDefWidth, '%')) {
+          // If so we should be able to parse the non-percent-sign part to a number
+          var percentStr = colDefWidth.replace(/%/g, '');
+          var percent = parseInt(percentStr, 10);
+          if (isNaN(percent)) {
             throw new Error(parseErrorMsg);
           }
+          self.width = colDefWidth;
         }
-        // Is a number, use it as the width
+        // And see if it's a number string
+        else if (colDefWidth.match(/^(\d+)$/)) {
+          self.width = parseInt(colDefWidth.match(/^(\d+)$/)[1], 10);
+        }
+        // Otherwise it should be a string of asterisks
+        else if (colDefWidth.match(/^\*+$/)) {
+          self.width = colDefWidth;
+        }
+        // No idea, throw an Error
         else {
-          self.width = colDef.width;
+          throw new Error(parseErrorMsg);
         }
+      }
+      // Is a number, use it as the width
+      else {
+        self.width = colDefWidth;
       }
     }
 
-    self.minWidth = !colDef.minWidth ? 30 : colDef.minWidth;
-    self.maxWidth = !colDef.maxWidth ? 9000 : colDef.maxWidth;
+    ['minWidth', 'maxWidth'].forEach(function (name) {
+      var minOrMaxWidth = colDef[name];
+      var parseErrorMsg = "Cannot parse column " + name + " '" + minOrMaxWidth + "' for column named '" + colDef.name + "'";
+
+      if (!angular.isString(minOrMaxWidth) && !angular.isNumber(minOrMaxWidth)) {
+        //Sets default minWidth and maxWidth values
+        self[name] = ((name === 'minWidth') ? 30 : 9000);
+      } else if (angular.isString(minOrMaxWidth)) {
+        if (minOrMaxWidth.match(/^(\d+)$/)) {
+          self[name] = parseInt(minOrMaxWidth.match(/^(\d+)$/)[1], 10);
+        } else {
+          throw new Error(parseErrorMsg);
+        }
+      } else {
+        self[name] = minOrMaxWidth;
+      }
+    });
 
     //use field if it is defined; name if it is not
     self.field = (colDef.field === undefined) ? colDef.name : colDef.field;
-    
+
     if ( typeof( self.field ) !== 'string' ){
       gridUtil.logError( 'Field is not a string, this is likely to break the code, Field is: ' + self.field );
     }
-    
+
     self.name = colDef.name;
 
     // Use colDef.displayName as long as it's not undefined, otherwise default to the field name
@@ -5745,10 +6964,65 @@ angular.module('ui.grid')
 
     /**
      * @ngdoc property
+     * @name cellTooltip
+     * @propertyOf ui.grid.class:GridOptions.columnDef
+     * @description Whether or not to show a tooltip when a user hovers over the cell.
+     * If set to false, no tooltip.  If true, the cell value is shown in the tooltip (useful
+     * if you have long values in your cells), if a function then that function is called
+     * passing in the row and the col `cellTooltip( row, col )`, and the return value is shown in the tooltip,
+     * if it is a static string then displays that static string.
+     *
+     * Defaults to false
+     *
+     */
+    if ( typeof(colDef.cellTooltip) === 'undefined' || colDef.cellTooltip === false ) {
+      self.cellTooltip = false;
+    } else if ( colDef.cellTooltip === true ){
+      self.cellTooltip = function(row, col) {
+        return self.grid.getCellValue( row, col );
+      };
+    } else if (typeof(colDef.cellTooltip) === 'function' ){
+      self.cellTooltip = colDef.cellTooltip;
+    } else {
+      self.cellTooltip = function ( row, col ){
+        return col.colDef.cellTooltip;
+      };
+    }
+
+    /**
+     * @ngdoc property
+     * @name headerTooltip
+     * @propertyOf ui.grid.class:GridOptions.columnDef
+     * @description Whether or not to show a tooltip when a user hovers over the header cell.
+     * If set to false, no tooltip.  If true, the displayName is shown in the tooltip (useful
+     * if you have long values in your headers), if a function then that function is called
+     * passing in the row and the col `headerTooltip( col )`, and the return value is shown in the tooltip,
+     * if a static string then shows that static string.
+     *
+     * Defaults to false
+     *
+     */
+    if ( typeof(colDef.headerTooltip) === 'undefined' || colDef.headerTooltip === false ) {
+      self.headerTooltip = false;
+    } else if ( colDef.headerTooltip === true ){
+      self.headerTooltip = function(col) {
+        return col.displayName;
+      };
+    } else if (typeof(colDef.headerTooltip) === 'function' ){
+      self.headerTooltip = colDef.headerTooltip;
+    } else {
+      self.headerTooltip = function ( col ) {
+        return col.colDef.headerTooltip;
+      };
+    }
+
+
+    /**
+     * @ngdoc property
      * @name footerCellClass
      * @propertyOf ui.grid.class:GridOptions.columnDef
      * @description footerCellClass can be a string specifying the class to append to a cell
-     * or it can be a function(row,rowRenderIndex, col, colRenderIndex) that returns a class name
+     * or it can be a function(grid, row, col, rowRenderIndex, colRenderIndex) that returns a class name
      *
      */
     self.footerCellClass = colDef.footerCellClass;
@@ -5758,7 +7032,7 @@ angular.module('ui.grid')
      * @name cellClass
      * @propertyOf ui.grid.class:GridOptions.columnDef
      * @description cellClass can be a string specifying the class to append to a cell
-     * or it can be a function(row,rowRenderIndex, col, colRenderIndex) that returns a class name
+     * or it can be a function(grid, row, col, rowRenderIndex, colRenderIndex) that returns a class name
      *
      */
     self.cellClass = colDef.cellClass;
@@ -5768,7 +7042,7 @@ angular.module('ui.grid')
      * @name headerCellClass
      * @propertyOf ui.grid.class:GridOptions.columnDef
      * @description headerCellClass can be a string specifying the class to append to a cell
-     * or it can be a function(row,rowRenderIndex, col, colRenderIndex) that returns a class name
+     * or it can be a function(grid, row, col, rowRenderIndex, colRenderIndex) that returns a class name
      *
      */
     self.headerCellClass = colDef.headerCellClass;
@@ -5784,6 +7058,28 @@ angular.module('ui.grid')
      *
      */
     self.cellFilter = colDef.cellFilter ? colDef.cellFilter : "";
+
+    /**
+     * @ngdoc boolean
+     * @name sortCellFiltered
+     * @propertyOf ui.grid.class:GridOptions.columnDef
+     * @description (optional) False by default. When `true` uiGrid will apply the cellFilter before
+     * sorting the data. Note that when using this option uiGrid will assume that the displayed value is
+     * a string, and use the {@link ui.grid.class:RowSorter#sortAlpha sortAlpha} `sortFn`. It is possible
+     * to return a non-string value from an angularjs filter, in which case you should define a {@link ui.grid.class:GridOptions.columnDef#sortingAlgorithm sortingAlgorithm}
+     * for the column which hanldes the returned type. You may specify one of the `sortingAlgorithms`
+     * found in the {@link ui.grid.RowSorter rowSorter} service.
+     */
+    self.sortCellFiltered = colDef.sortCellFiltered ? true : false;
+
+    /**
+     * @ngdoc boolean
+     * @name filterCellFiltered
+     * @propertyOf ui.grid.class:GridOptions.columnDef
+     * @description (optional) False by default. When `true` uiGrid will apply the cellFilter before
+     * applying "search" `filters`.
+     */
+    self.filterCellFiltered = colDef.filterCellFiltered ? true : false;
 
     /**
      * @ngdoc property
@@ -5820,6 +7116,36 @@ angular.module('ui.grid')
 
     /**
      * @ngdoc property
+     * @name sortDirectionCycle
+     * @propertyOf ui.grid.class:GridOptions.columnDef
+     * @description (optional) An array of sort directions, specifying the order that they
+     * should cycle through as the user repeatedly clicks on the column heading.
+     * The default is `[null, uiGridConstants.ASC, uiGridConstants.DESC]`. Null
+     * refers to the unsorted state. This does not affect the initial sort
+     * direction; use the {@link ui.grid.class:GridOptions.columnDef#sort sort}
+     * property for that. If
+     * {@link ui.grid.class:GridOptions.columnDef#suppressRemoveSort suppressRemoveSort}
+     * is also set, the unsorted state will be skipped even if it is listed here.
+     * Each direction may not appear in the list more than once (e.g. `[ASC,
+     * DESC, DESC]` is not allowed), and the list may not be empty.
+     */
+    self.sortDirectionCycle = typeof(colDef.sortDirectionCycle) !== 'undefined' ?
+      colDef.sortDirectionCycle :
+      [null, uiGridConstants.ASC, uiGridConstants.DESC];
+
+    /**
+     * @ngdoc boolean
+     * @name suppressRemoveSort
+     * @propertyOf ui.grid.class:GridOptions.columnDef
+     * @description (optional) False by default. When enabled, this setting hides the removeSort option
+     * in the menu, and prevents users from manually removing the sort
+     */
+    if ( typeof(self.suppressRemoveSort) === 'undefined'){
+      self.suppressRemoveSort = typeof(colDef.suppressRemoveSort) !== 'undefined' ? colDef.suppressRemoveSort : false;
+    }
+
+    /**
+     * @ngdoc property
      * @name enableFiltering
      * @propertyOf ui.grid.class:GridOptions.columnDef
      * @description turn off filtering for an individual column, where
@@ -5842,57 +7168,73 @@ angular.module('ui.grid')
 
     // Set up default filters array for when one is not provided.
     //   In other words, this (in column def):
-    //   
+    //
     //       filter: { term: 'something', flags: {}, condition: [CONDITION] }
-    //       
+    //
     //   is just shorthand for this:
-    //   
+    //
     //       filters: [{ term: 'something', flags: {}, condition: [CONDITION] }]
-    //       
+    //
     var defaultFilters = [];
     if (colDef.filter) {
       defaultFilters.push(colDef.filter);
     }
-    else if (self.enableFiltering && self.grid.options.enableFiltering) {
+    else if ( colDef.filters ){
+      defaultFilters = colDef.filters;
+    } else {
       // Add an empty filter definition object, which will
       // translate to a guessed condition and no pre-populated
       // value for the filter <input>.
       defaultFilters.push({});
     }
 
-    /** 
+    /**
      * @ngdoc property
      * @name filter
      * @propertyOf ui.grid.class:GridOptions.columnDef
      * @description Specify a single filter field on this column.
-     * 
+     *
      * A filter consists of a condition, a term, and a placeholder:
-     * 
+     *
      * - condition defines how rows are chosen as matching the filter term. This can be set to
      * one of the constants in uiGridConstants.filter, or you can supply a custom filter function
      * that gets passed the following arguments: [searchTerm, cellValue, row, column].
      * - term: If set, the filter field will be pre-populated
      * with this value.
      * - placeholder: String that will be set to the `<input>.placeholder` attribute.
+     * - ariaLabel: String that will be set to the `<input>.ariaLabel` attribute. This is what is read as a label to screen reader users.
      * - noTerm: set this to true if you have defined a custom function in condition, and
      * your custom function doesn't require a term (so it can run even when the term is null)
      * - flags: only flag currently available is `caseSensitive`, set to false if you don't want
      * case sensitive matching
+     * - type: defaults to uiGridConstants.filter.INPUT, which gives a text box.  If set to uiGridConstants.filter.SELECT
+     * then a select box will be shown with options selectOptions
+     * - selectOptions: options in the format `[ { value: 1, label: 'male' }]`.  No i18n filter is provided, you need
+     * to perform the i18n on the values before you provide them
+     * - disableCancelFilterButton: defaults to false. If set to true then the 'x' button that cancels/clears the filter
+     * will not be shown.
      * @example
-     * <pre>$scope.gridOptions.columnDefs = [ 
+     * <pre>$scope.gridOptions.columnDefs = [
      *   {
      *     field: 'field1',
      *     filter: {
      *       term: 'xx',
      *       condition: uiGridConstants.filter.STARTS_WITH,
      *       placeholder: 'starts with...',
-     *       flags: { caseSensitive: false }
+     *       ariaLabel: 'Starts with filter for field1',
+     *       flags: { caseSensitive: false },
+     *       type: uiGridConstants.filter.SELECT,
+     *       selectOptions: [ { value: 1, label: 'male' }, { value: 2, label: 'female' } ],
+     *       disableCancelFilterButton: true
      *     }
      *   }
      * ]; </pre>
      *
      */
-  
+
+    /*
+
+
     /*
 
       self.filters = [
@@ -5900,6 +7242,7 @@ angular.module('ui.grid')
           term: 'search term'
           condition: uiGridConstants.filter.CONTAINS,
           placeholder: 'my placeholder',
+          ariaLabel: 'Starts with filter for field1',
           flags: {
             caseSensitive: true
           }
@@ -5911,19 +7254,40 @@ angular.module('ui.grid')
     // Only set filter if this is a newly added column, if we're updating an existing
     // column then we don't want to put the default filter back if the user may have already
     // removed it.
+    // However, we do want to keep the settings if they change, just not the term
     if ( isNew ) {
       self.setPropertyOrDefault(colDef, 'filter');
       self.setPropertyOrDefault(colDef, 'filters', defaultFilters);
+    } else if ( self.filters.length === defaultFilters.length ) {
+      self.filters.forEach( function( filter, index ){
+        if (typeof(defaultFilters[index].placeholder) !== 'undefined') {
+          filter.placeholder = defaultFilters[index].placeholder;
+        }
+        if (typeof(defaultFilters[index].ariaLabel) !== 'undefined') {
+          filter.ariaLabel = defaultFilters[index].ariaLabel;
+        }
+        if (typeof(defaultFilters[index].flags) !== 'undefined') {
+          filter.flags = defaultFilters[index].flags;
+        }
+        if (typeof(defaultFilters[index].type) !== 'undefined') {
+          filter.type = defaultFilters[index].type;
+        }
+        if (typeof(defaultFilters[index].selectOptions) !== 'undefined') {
+          filter.selectOptions = defaultFilters[index].selectOptions;
+        }
+      });
     }
+  };
 
-    // Remove this column from the grid sorting, include inside build columns so has
-    // access to self - all seems a bit dodgy but doesn't work otherwise so have left
-    // as is
-    GridColumn.prototype.unsort = function () {
-      this.sort = {};
-      self.grid.api.core.raise.sortChanged( self, self.grid.getColumnSorting() );
-    };
-  
+  /**
+   * @ngdoc function
+   * @name unsort
+   * @methodOf ui.grid.class:GridColumn
+   * @description Removes column from the grid sorting
+   */
+  GridColumn.prototype.unsort = function () {
+    this.sort = {};
+    this.grid.api.core.raise.sortChanged( this.grid, this.grid.getColumnSorting() );
   };
 
 
@@ -5940,7 +7304,28 @@ angular.module('ui.grid')
     return prefixDot ? '.' + cls : cls;
   };
 
-  /**
+    /**
+     * @ngdoc function
+     * @name isPinnedLeft
+     * @methodOf ui.grid.class:GridColumn
+     * @description Returns true if column is in the left render container
+     */
+    GridColumn.prototype.isPinnedLeft = function () {
+      return this.renderContainer === 'left';
+    };
+
+    /**
+     * @ngdoc function
+     * @name isPinnedRight
+     * @methodOf ui.grid.class:GridColumn
+     * @description Returns true if column is in the right render container
+     */
+    GridColumn.prototype.isPinnedRight = function () {
+      return this.renderContainer === 'right';
+    };
+
+
+    /**
    * @ngdoc function
    * @name getColClassDefinition
    * @methodOf ui.grid.class:GridColumn
@@ -5980,69 +7365,8 @@ angular.module('ui.grid')
       this.colDef.visible = true;
   };
 
-  /**
-   * @ngdoc function
-   * @name hideColumn
-   * @methodOf ui.grid.class:GridColumn
-   * @description Hides the column by setting colDef.visible = false
-   */
-  GridColumn.prototype.hideColumn = function() {
-      this.colDef.visible = false;
-  };
 
   /**
-   * @ngdoc function
-   * @name getAggregationValue
-   * @methodOf ui.grid.class:GridColumn
-   * @description gets the aggregation value based on the aggregation type for this column
-   */
-  GridColumn.prototype.getAggregationValue = function () {
-    var self = this;
-    var result = 0;
-    var visibleRows = self.grid.getVisibleRows();
-
-    var cellValues = function(){
-      var values = [];
-      angular.forEach(visibleRows, function (row) {
-        var cellValue = self.grid.getCellValue(row, self);
-        if (angular.isNumber(cellValue)) {
-          values.push(cellValue);
-        }
-      });
-      return values;
-    };
-
-    if (angular.isFunction(self.aggregationType)) {
-      return self.aggregationType(visibleRows, self);
-    }
-    else if (self.aggregationType === uiGridConstants.aggregationTypes.count) {
-      return self.grid.getVisibleRowCount();
-    }
-    else if (self.aggregationType === uiGridConstants.aggregationTypes.sum) {
-      angular.forEach(cellValues(), function (value) {
-        result += value;
-      });
-      return result;
-    }
-    else if (self.aggregationType === uiGridConstants.aggregationTypes.avg) {
-      angular.forEach(cellValues(), function (value) {
-        result += value;
-      });
-      result = result / cellValues().length;
-      return result;
-    }
-    else if (self.aggregationType === uiGridConstants.aggregationTypes.min) {
-      return Math.min.apply(null, cellValues());
-    }
-    else if (self.aggregationType === uiGridConstants.aggregationTypes.max) {
-      return Math.max.apply(null, cellValues());
-    }
-    else {
-      return '\u00A0';
-    }
-  };
-    
-  /** 
    * @ngdoc property
    * @name aggregationHideLabel
    * @propertyOf ui.grid.class:GridOptions.columnDef
@@ -6059,7 +7383,7 @@ angular.module('ui.grid')
    * based on colDef.aggregationHideLabel.
    *
    * @param {string} label the i18n lookup value to use for the column label
-   * 
+   *
    */
   GridColumn.prototype.getAggregationText = function () {
     var self = this;
@@ -6113,18 +7437,18 @@ angular.module('ui.grid')
    * @ngdoc function
    * @name ui.grid.class:GridOptions
    * @description Default GridOptions class.  GridOptions are defined by the application developer and overlaid
-   * over this object.  Setting gridOptions within your controller is the most common method for an application 
+   * over this object.  Setting gridOptions within your controller is the most common method for an application
    * developer to configure the behaviour of their ui-grid
-   * 
+   *
    * @example To define your gridOptions within your controller:
    * <pre>$scope.gridOptions = {
    *   data: $scope.myData,
-   *   columnDefs: [ 
+   *   columnDefs: [
    *     { name: 'field1', displayName: 'pretty display name' },
    *     { name: 'field2', visible: false }
    *  ]
    * };</pre>
-   * 
+   *
    * You can then use this within your html template, when you define your grid:
    * <pre>&lt;div ui-grid="gridOptions"&gt;&lt;/div&gt;</pre>
    *
@@ -6152,13 +7476,13 @@ angular.module('ui.grid')
        * @ngdoc function
        * @name onRegisterApi
        * @propertyOf ui.grid.class:GridOptions
-       * @description A callback that returns the gridApi once the grid is instantiated, which is 
+       * @description A callback that returns the gridApi once the grid is instantiated, which is
        * then used to interact with the grid programatically.
-       * 
-       * Note that the gridApi.core.renderingComplete event is identical to this 
+       *
+       * Note that the gridApi.core.renderingComplete event is identical to this
        * callback, but has the advantage that it can be called from multiple places
        * if needed
-       * 
+       *
        * @example
        * <pre>
        *   $scope.gridOptions.onRegisterApi = function ( gridApi ) {
@@ -6166,22 +7490,50 @@ angular.module('ui.grid')
        *     $scope.gridApi.selection.selectAllRows( $scope.gridApi.grid );
        *   };
        * </pre>
-       * 
+       *
        */
       baseOptions.onRegisterApi = baseOptions.onRegisterApi || angular.noop();
-  
+
       /**
        * @ngdoc object
        * @name data
        * @propertyOf ui.grid.class:GridOptions
-       * @description (mandatory) Array of data to be rendered into the grid, providing the data source or data binding for 
-       * the grid.  The most common case is an array of objects, where each object has a number of attributes.
+       * @description (mandatory) Array of data to be rendered into the grid, providing the data source or data binding for
+       * the grid.
+       *
+       * Most commonly the data is an array of objects, where each object has a number of attributes.
        * Each attribute automatically becomes a column in your grid.  This array could, for example, be sourced from
-       * an angularJS $resource query request.  The array can also contain complex objects.
-       * 
+       * an angularJS $resource query request.  The array can also contain complex objects, refer the binding tutorial
+       * for examples of that.
+       *
+       * The most flexible usage is to set your data on $scope:
+       *
+       * `$scope.data = data;`
+       *
+       * And then direct the grid to resolve whatever is in $scope.data:
+       *
+       * `$scope.gridOptions.data = 'data';`
+       *
+       * This is the most flexible approach as it allows you to replace $scope.data whenever you feel like it without
+       * getting pointer issues.
+       *
+       * Alternatively you can directly set the data array:
+       *
+       * `$scope.gridOptions.data = [ ];`
+       * or
+       *
+       * `$http.get('/data/100.json')
+       * .success(function(data) {
+       *   $scope.myData = data;
+       *   $scope.gridOptions.data = $scope.myData;
+       *  });`
+       *
+       * Where you do this, you need to take care in updating the data - you can't just update `$scope.myData` to some other
+       * array, you need to update $scope.gridOptions.data to point to that new array as well.
+       *
        */
       baseOptions.data = baseOptions.data || [];
-  
+
       /**
        * @ngdoc array
        * @name columnDefs
@@ -6196,7 +7548,7 @@ angular.module('ui.grid')
        *
        */
       baseOptions.columnDefs = baseOptions.columnDefs || [];
-  
+
       /**
        * @ngdoc object
        * @name ui.grid.class:GridOptions.columnDef
@@ -6206,23 +7558,23 @@ angular.module('ui.grid')
        * <pre>{name:'field1', field: 'field1', filter: { term: 'xxx' }}</pre>
        *
        */
-  
-          
+
+
       /**
        * @ngdoc array
        * @name excludeProperties
        * @propertyOf  ui.grid.class:GridOptions
        * @description Array of property names in data to ignore when auto-generating column names.  Provides the
        * inverse of columnDefs - columnDefs is a list of columns to include, excludeProperties is a list of columns
-       * to exclude. 
-       * 
+       * to exclude.
+       *
        * If columnDefs is defined, this will be ignored.
-       * 
+       *
        * Defaults to ['$$hashKey']
        */
-      
+
       baseOptions.excludeProperties = baseOptions.excludeProperties || ['$$hashKey'];
-  
+
       /**
        * @ngdoc boolean
        * @name enableRowHashing
@@ -6230,31 +7582,31 @@ angular.module('ui.grid')
        * @description True by default. When enabled, this setting allows uiGrid to add
        * `$$hashKey`-type properties (similar to Angular) to elements in the `data` array. This allows
        * the grid to maintain state while vastly speeding up the process of altering `data` by adding/moving/removing rows.
-       * 
+       *
        * Note that this DOES add properties to your data that you may not want, but they are stripped out when using `angular.toJson()`. IF
        * you do not want this at all you can disable this setting but you will take a performance hit if you are using large numbers of rows
        * and are altering the data set often.
        */
       baseOptions.enableRowHashing = baseOptions.enableRowHashing !== false;
-  
+
       /**
        * @ngdoc function
        * @name rowIdentity
        * @methodOf ui.grid.class:GridOptions
        * @description This function is used to get and, if necessary, set the value uniquely identifying this row (i.e. if an identity is not present it will set one).
-       * 
+       *
        * By default it returns the `$$hashKey` property if it exists. If it doesn't it uses gridUtil.nextUid() to generate one
        */
       baseOptions.rowIdentity = baseOptions.rowIdentity || function rowIdentity(row) {
         return gridUtil.hashKey(row);
       };
-  
+
       /**
        * @ngdoc function
        * @name getRowIdentity
        * @methodOf ui.grid.class:GridOptions
        * @description This function returns the identity value uniquely identifying this row, if one is not present it does not set it.
-       * 
+       *
        * By default it returns the `$$hashKey` property but can be overridden to use any property or set of properties you want.
        */
       baseOptions.getRowIdentity = baseOptions.getRowIdentity || function getRowIdentity(row) {
@@ -6263,16 +7615,28 @@ angular.module('ui.grid')
 
       /**
        * @ngdoc property
+       * @name flatEntityAccess
+       * @propertyOf ui.grid.class:GridOptions
+       * @description Set to true if your columns are all related directly to fields in a flat object structure - i.e.
+       * each of your columns associate directly with a property on each of the entities in your data array.
+       *
+       * In that situation we can avoid all the logic associated with complex binding to functions or to properties of sub-objects,
+       * which can provide a significant speed improvement with large data sets when filtering or sorting.
+       *
+       * By default false
+       */
+      baseOptions.flatEntityAccess = baseOptions.flatEntityAccess === true;
+
+      /**
+       * @ngdoc property
        * @name showHeader
        * @propertyOf ui.grid.class:GridOptions
        * @description True by default. When set to false, this setting will replace the
        * standard header template with '<div></div>', resulting in no header being shown.
-       *
-       * It will also set the `headerRowHeight` option to 0.
        */
       baseOptions.showHeader = typeof(baseOptions.showHeader) !== "undefined" ? baseOptions.showHeader : true;
 
-      /**
+      /* (NOTE): Don't show this in the docs. We only use it internally
        * @ngdoc property
        * @name headerRowHeight
        * @propertyOf ui.grid.class:GridOptions
@@ -6294,7 +7658,7 @@ angular.module('ui.grid')
        *
        */
       baseOptions.rowHeight = baseOptions.rowHeight || 30;
-  
+
       /**
        * @ngdoc integer
        * @name minRowsToShow
@@ -6302,7 +7666,7 @@ angular.module('ui.grid')
        * @description Minimum number of rows to show when the grid doesn't have a defined height. Defaults to "10".
        */
       baseOptions.minRowsToShow = typeof(baseOptions.minRowsToShow) !== "undefined" ? baseOptions.minRowsToShow : 10;
-  
+
       /**
        * @ngdoc property
        * @name showGridFooter
@@ -6341,7 +7705,7 @@ angular.module('ui.grid')
        *
        */
       baseOptions.maxVisibleColumnCount = typeof(baseOptions.maxVisibleColumnCount) !== "undefined" ? baseOptions.maxVisibleColumnCount : 200;
-  
+
       /**
        * @ngdoc property
        * @name virtualizationThreshold
@@ -6349,7 +7713,7 @@ angular.module('ui.grid')
        * @description Turn virtualization on when number of data elements goes over this number, defaults to 20
        */
       baseOptions.virtualizationThreshold = typeof(baseOptions.virtualizationThreshold) !== "undefined" ? baseOptions.virtualizationThreshold : 20;
-  
+
       /**
        * @ngdoc property
        * @name columnVirtualizationThreshold
@@ -6357,7 +7721,7 @@ angular.module('ui.grid')
        * @description Turn virtualization on when number of columns goes over this number, defaults to 10
        */
       baseOptions.columnVirtualizationThreshold = typeof(baseOptions.columnVirtualizationThreshold) !== "undefined" ? baseOptions.columnVirtualizationThreshold : 10;
-  
+
       /**
        * @ngdoc property
        * @name excessRows
@@ -6373,7 +7737,7 @@ angular.module('ui.grid')
        * @description Defaults to 4
        */
       baseOptions.scrollThreshold = typeof(baseOptions.scrollThreshold) !== "undefined" ? baseOptions.scrollThreshold : 4;
-  
+
       /**
        * @ngdoc property
        * @name excessColumns
@@ -6389,15 +7753,33 @@ angular.module('ui.grid')
        * @description Defaults to 4
        */
       baseOptions.horizontalScrollThreshold = typeof(baseOptions.horizontalScrollThreshold) !== "undefined" ? baseOptions.horizontalScrollThreshold : 2;
-  
+
+
       /**
        * @ngdoc property
-       * @name scrollThrottle
+       * @name aggregationCalcThrottle
        * @propertyOf ui.grid.class:GridOptions
-       * @description Default time to throttle scroll events to, defaults to 70ms
+       * @description Default time in milliseconds to throttle aggregation calcuations, defaults to 500ms
        */
-      baseOptions.scrollThrottle = typeof(baseOptions.scrollThrottle) !== "undefined" ? baseOptions.scrollThrottle : 70;
-  
+      baseOptions.aggregationCalcThrottle = typeof(baseOptions.aggregationCalcThrottle) !== "undefined" ? baseOptions.aggregationCalcThrottle : 500;
+
+      /**
+       * @ngdoc property
+       * @name wheelScrollThrottle
+       * @propertyOf ui.grid.class:GridOptions
+       * @description Default time in milliseconds to throttle scroll events to, defaults to 70ms
+       */
+      baseOptions.wheelScrollThrottle = typeof(baseOptions.wheelScrollThrottle) !== "undefined" ? baseOptions.wheelScrollThrottle : 70;
+
+
+      /**
+       * @ngdoc property
+       * @name scrollDebounce
+       * @propertyOf ui.grid.class:GridOptions
+       * @description Default time in milliseconds to debounce scroll events, defaults to 300ms
+       */
+      baseOptions.scrollDebounce = typeof(baseOptions.scrollDebounce) !== "undefined" ? baseOptions.scrollDebounce : 300;
+
       /**
        * @ngdoc boolean
        * @name enableSorting
@@ -6407,17 +7789,17 @@ angular.module('ui.grid')
        * Sorting can then be disabled on individual columns using the columnDefs.
        */
       baseOptions.enableSorting = baseOptions.enableSorting !== false;
-  
+
       /**
        * @ngdoc boolean
        * @name enableFiltering
        * @propertyOf ui.grid.class:GridOptions
-       * @description False by default. When enabled, this setting adds filter 
+       * @description False by default. When enabled, this setting adds filter
        * boxes to each column header, allowing filtering within the column for the entire grid.
-       * Filtering can then be disabled on individual columns using the columnDefs. 
+       * Filtering can then be disabled on individual columns using the columnDefs.
        */
       baseOptions.enableFiltering = baseOptions.enableFiltering === true;
-  
+
       /**
        * @ngdoc boolean
        * @name enableColumnMenus
@@ -6426,7 +7808,7 @@ angular.module('ui.grid')
        * menu within each column.
        */
       baseOptions.enableColumnMenus = baseOptions.enableColumnMenus !== false;
-  
+
       /**
        * @ngdoc boolean
        * @name enableVerticalScrollbar
@@ -6435,7 +7817,7 @@ angular.module('ui.grid')
        * Supported values: uiGridConstants.scrollbars.ALWAYS, uiGridConstants.scrollbars.NEVER
        */
       baseOptions.enableVerticalScrollbar = typeof(baseOptions.enableVerticalScrollbar) !== "undefined" ? baseOptions.enableVerticalScrollbar : uiGridConstants.scrollbars.ALWAYS;
-      
+
       /**
        * @ngdoc boolean
        * @name enableHorizontalScrollbar
@@ -6444,7 +7826,17 @@ angular.module('ui.grid')
        * Supported values: uiGridConstants.scrollbars.ALWAYS, uiGridConstants.scrollbars.NEVER
        */
       baseOptions.enableHorizontalScrollbar = typeof(baseOptions.enableHorizontalScrollbar) !== "undefined" ? baseOptions.enableHorizontalScrollbar : uiGridConstants.scrollbars.ALWAYS;
-  
+
+      /**
+       * @ngdoc boolean
+       * @name enableMinHeightCheck
+       * @propertyOf ui.grid.class:GridOptions
+       * @description True by default. When enabled, a newly initialized grid will check to see if it is tall enough to display
+       * at least one row of data.  If the grid is not tall enough, it will resize the DOM element to display minRowsToShow number
+       * of rows.
+       */
+       baseOptions.enableMinHeightCheck = baseOptions.enableMinHeightCheck !== false;
+
       /**
        * @ngdoc boolean
        * @name minimumColumnSize
@@ -6452,7 +7844,7 @@ angular.module('ui.grid')
        * @description Columns can't be smaller than this, defaults to 10 pixels
        */
       baseOptions.minimumColumnSize = typeof(baseOptions.minimumColumnSize) !== "undefined" ? baseOptions.minimumColumnSize : 10;
-  
+
       /**
        * @ngdoc function
        * @name rowEquality
@@ -6465,7 +7857,7 @@ angular.module('ui.grid')
       baseOptions.rowEquality = baseOptions.rowEquality || function(entityA, entityB) {
         return entityA === entityB;
       };
-  
+
       /**
        * @ngdoc string
        * @name headerTemplate
@@ -6473,41 +7865,51 @@ angular.module('ui.grid')
        * @description Null by default. When provided, this setting uses a custom header
        * template, rather than the default template. Can be set to either the name of a template file:
        * <pre>  $scope.gridOptions.headerTemplate = 'header_template.html';</pre>
-       * inline html 
+       * inline html
        * <pre>  $scope.gridOptions.headerTemplate = '<div class="ui-grid-top-panel" style="text-align: center">I am a Custom Grid Header</div>'</pre>
-       * or the id of a precompiled template (TBD how to use this).  
+       * or the id of a precompiled template (TBD how to use this).
        * </br>Refer to the custom header tutorial for more information.
        * If you want no header at all, you can set to an empty div:
        * <pre>  $scope.gridOptions.headerTemplate = '<div></div>';</pre>
-       * 
+       *
        * If you want to only have a static header, then you can set to static content.  If
        * you want to tailor the existing column headers, then you should look at the
        * current 'ui-grid-header.html' template in github as your starting point.
-       * 
+       *
        */
       baseOptions.headerTemplate = baseOptions.headerTemplate || null;
-  
+
       /**
        * @ngdoc string
        * @name footerTemplate
        * @propertyOf ui.grid.class:GridOptions
-       * @description (optional) Null by default. When provided, this setting uses a custom footer
-       * template. Can be set to either the name of a template file 'footer_template.html', inline html
+       * @description (optional) ui-grid/ui-grid-footer by default.  This footer shows the per-column
+       * aggregation totals.
+       * When provided, this setting uses a custom footer template. Can be set to either the name of a template file 'footer_template.html', inline html
        * <pre>'<div class="ui-grid-bottom-panel" style="text-align: center">I am a Custom Grid Footer</div>'</pre>, or the id
        * of a precompiled template (TBD how to use this).  Refer to the custom footer tutorial for more information.
        */
-      baseOptions.footerTemplate = baseOptions.footerTemplate || null;
-  
+      baseOptions.footerTemplate = baseOptions.footerTemplate || 'ui-grid/ui-grid-footer';
+
+      /**
+       * @ngdoc string
+       * @name gridFooterTemplate
+       * @propertyOf ui.grid.class:GridOptions
+       * @description (optional) ui-grid/ui-grid-grid-footer by default. This template by default shows the
+       * total items at the bottom of the grid, and the selected items if selection is enabled.
+       */
+      baseOptions.gridFooterTemplate = baseOptions.gridFooterTemplate || 'ui-grid/ui-grid-grid-footer';
+
       /**
        * @ngdoc string
        * @name rowTemplate
        * @propertyOf ui.grid.class:GridOptions
-       * @description 'ui-grid/ui-grid-row' by default. When provided, this setting uses a 
+       * @description 'ui-grid/ui-grid-row' by default. When provided, this setting uses a
        * custom row template.  Can be set to either the name of a template file:
        * <pre> $scope.gridOptions.rowTemplate = 'row_template.html';</pre>
-       * inline html 
+       * inline html
        * <pre>  $scope.gridOptions.rowTemplate = '<div style="background-color: aquamarine" ng-click="grid.appScope.fnOne(row)" ng-repeat="col in colContainer.renderedColumns track by col.colDef.name" class="ui-grid-cell" ui-grid-cell></div>';</pre>
-       * or the id of a precompiled template (TBD how to use this) can be provided.  
+       * or the id of a precompiled template (TBD how to use this) can be provided.
        * </br>Refer to the custom row template tutorial for more information.
        */
       baseOptions.rowTemplate = baseOptions.rowTemplate || 'ui-grid/ui-grid-row';
@@ -6520,9 +7922,9 @@ angular.module('ui.grid')
        * this property allows you to assign any reference you want to grid.appScope
        */
       baseOptions.appScopeProvider = baseOptions.appScopeProvider || null;
-      
+
       return baseOptions;
-    }     
+    }
   };
 
 
@@ -6533,12 +7935,12 @@ angular.module('ui.grid')
 (function(){
 
 angular.module('ui.grid')
-  
+
   /**
    * @ngdoc function
    * @name ui.grid.class:GridRenderContainer
    * @description The grid has render containers, allowing the ability to have pinned columns.  If the grid
-   * is right-to-left then there may be a right render container, if left-to-right then there may 
+   * is right-to-left then there may be a right render container, if left-to-right then there may
    * be a left render container.  There is always a body render container.
    * @param {string} name The name of the render container ('body', 'left', or 'right')
    * @param {Grid} grid the grid the render container is in
@@ -6555,7 +7957,7 @@ angular.module('ui.grid')
     self.name = name;
 
     self.grid = grid;
-    
+
     // self.rowCache = [];
     // self.columnCache = [];
 
@@ -6576,6 +7978,22 @@ angular.module('ui.grid')
     self.columnStyles = "";
 
     self.viewportAdjusters = [];
+
+    /**
+     *  @ngdoc boolean
+     *  @name hasHScrollbar
+     *  @propertyOf  ui.grid.class:GridRenderContainer
+     *  @description flag to signal that container has a horizontal scrollbar
+     */
+    self.hasHScrollbar = false;
+
+    /**
+     *  @ngdoc boolean
+     *  @name hasVScrollbar
+     *  @propertyOf  ui.grid.class:GridRenderContainer
+     *  @description flag to signal that container has a vertical scrollbar
+     */
+    self.hasVScrollbar = false;
 
     /**
      *  @ngdoc boolean
@@ -6600,14 +8018,12 @@ angular.module('ui.grid')
     grid.registerStyleComputation({
       priority: 5,
       func: function () {
+        self.updateColumnWidths();
         return self.columnStyles;
       }
     });
   }
 
-  // GridRenderContainer.prototype.addRenderable = function addRenderable(renderable) {
-  //   this.renderables.push(renderable);
-  // };
 
   GridRenderContainer.prototype.reset = function reset() {
     // this.rowCache.length = 0;
@@ -6621,6 +8037,11 @@ angular.module('ui.grid')
   };
 
   // TODO(c0bra): calculate size?? Should this be in a stackable directive?
+
+
+  GridRenderContainer.prototype.containsColumn = function (col) {
+     return this.visibleColumnCache.indexOf(col) !== -1;
+  };
 
   GridRenderContainer.prototype.minRowsToRender = function minRowsToRender() {
     var self = this;
@@ -6672,7 +8093,7 @@ angular.module('ui.grid')
    * @methodOf ui.grid.class:GridRenderContainer
    * @description Registers an adjuster to the render container's available width or height.  Adjusters are used
    * to tell the render container that there is something else consuming space, and to adjust it's size
-   * appropriately.  
+   * appropriately.
    * @param {function} func the adjuster function we want to register
    */
 
@@ -6687,10 +8108,10 @@ angular.module('ui.grid')
    * @description Removes an adjuster, should be used when your element is destroyed
    * @param {function} func the adjuster function we want to remove
    */
-  GridRenderContainer.prototype.removeViewportAdjuster = function registerViewportAdjuster(func) {
+  GridRenderContainer.prototype.removeViewportAdjuster = function removeViewportAdjuster(func) {
     var idx = this.viewportAdjusters.indexOf(func);
 
-    if (typeof(idx) !== 'undefined' && idx !== undefined) {
+    if (idx > -1) {
       this.viewportAdjusters.splice(idx, 1);
     }
   };
@@ -6699,7 +8120,7 @@ angular.module('ui.grid')
    * @ngdoc function
    * @name getViewportAdjustment
    * @methodOf ui.grid.class:GridRenderContainer
-   * @description Gets the adjustment based on the viewportAdjusters.  
+   * @description Gets the adjustment based on the viewportAdjusters.
    * @returns {object} a hash of { height: x, width: y }.  Usually the values will be negative
    */
   GridRenderContainer.prototype.getViewportAdjustment = function getViewportAdjustment() {
@@ -6714,6 +8135,22 @@ angular.module('ui.grid')
     return adjustment;
   };
 
+  GridRenderContainer.prototype.getMargin = function getMargin(side) {
+    var self = this;
+
+    var amount = 0;
+
+    self.viewportAdjusters.forEach(function (func) {
+      var adjustment = func.call(this, { height: 0, width: 0 });
+
+      if (adjustment.side && adjustment.side === side) {
+        amount += adjustment.width * -1;
+      }
+    });
+
+    return amount;
+  };
+
   GridRenderContainer.prototype.getViewportHeight = function getViewportHeight() {
     var self = this;
 
@@ -6723,7 +8160,7 @@ angular.module('ui.grid')
 
 
     var adjustment = self.getViewportAdjustment();
-    
+
     viewPortHeight = viewPortHeight + adjustment.height;
 
     return viewPortHeight;
@@ -6732,23 +8169,28 @@ angular.module('ui.grid')
   GridRenderContainer.prototype.getViewportWidth = function getViewportWidth() {
     var self = this;
 
-    var viewPortWidth = self.grid.gridWidth;
+    var viewportWidth = self.grid.gridWidth;
 
     //if (typeof(self.grid.verticalScrollbarWidth) !== 'undefined' && self.grid.verticalScrollbarWidth !== undefined && self.grid.verticalScrollbarWidth > 0) {
     //  viewPortWidth = viewPortWidth - self.grid.verticalScrollbarWidth;
     //}
 
-    var adjustment = self.getViewportAdjustment();
-    
-    viewPortWidth = viewPortWidth + adjustment.width;
+    // var viewportWidth = 0;\
+    // self.visibleColumnCache.forEach(function (column) {
+    //   viewportWidth += column.drawnWidth;
+    // });
 
-    return viewPortWidth;
+    var adjustment = self.getViewportAdjustment();
+
+    viewportWidth = viewportWidth + adjustment.width;
+
+    return viewportWidth;
   };
 
   GridRenderContainer.prototype.getHeaderViewportWidth = function getHeaderViewportWidth() {
     var self = this;
 
-    var viewPortWidth = this.getViewportWidth();
+    var viewportWidth = this.getViewportWidth();
 
     //if (typeof(self.grid.verticalScrollbarWidth) !== 'undefined' && self.grid.verticalScrollbarWidth !== undefined && self.grid.verticalScrollbarWidth > 0) {
     //  viewPortWidth = viewPortWidth + self.grid.verticalScrollbarWidth;
@@ -6757,7 +8199,7 @@ angular.module('ui.grid')
     // var adjustment = self.getViewportAdjustment();
     // viewPortWidth = viewPortWidth + adjustment.width;
 
-    return viewPortWidth;
+    return viewportWidth;
   };
 
 
@@ -6792,17 +8234,13 @@ angular.module('ui.grid')
   };
 
   GridRenderContainer.prototype.getVerticalScrollLength = function getVerticalScrollLength() {
-    return this.getCanvasHeight() - this.getViewportHeight();
+    return this.getCanvasHeight() - this.getViewportHeight() + this.grid.scrollbarHeight;
   };
 
   GridRenderContainer.prototype.getCanvasWidth = function getCanvasWidth() {
     var self = this;
 
     var ret = self.canvasWidth;
-
-    //if (typeof(self.verticalScrollbarWidth) !== 'undefined' && self.verticalScrollbarWidth !== undefined && self.verticalScrollbarWidth > 0) {
-    //  ret = ret - self.verticalScrollbarWidth;
-    //}
 
     return ret;
   };
@@ -6822,7 +8260,7 @@ angular.module('ui.grid')
     for (var i = 0; i < newColumns.length; i++) {
       this.renderedColumns[i] = newColumns[i];
     }
-    
+
     this.updateColumnOffset();
   };
 
@@ -6837,13 +8275,60 @@ angular.module('ui.grid')
     this.columnOffset = hiddenColumnsWidth;
   };
 
+  GridRenderContainer.prototype.scrollVertical = function (newScrollTop) {
+    var vertScrollPercentage = -1;
+
+    if (newScrollTop !== this.prevScrollTop) {
+      var yDiff = newScrollTop - this.prevScrollTop;
+
+      if (yDiff > 0 ) { this.grid.scrollDirection = uiGridConstants.scrollDirection.DOWN; }
+      if (yDiff < 0 ) { this.grid.scrollDirection = uiGridConstants.scrollDirection.UP; }
+
+      var vertScrollLength = this.getVerticalScrollLength();
+
+      vertScrollPercentage = newScrollTop / vertScrollLength;
+
+      // console.log('vert', vertScrollPercentage, newScrollTop, vertScrollLength);
+
+      if (vertScrollPercentage > 1) { vertScrollPercentage = 1; }
+      if (vertScrollPercentage < 0) { vertScrollPercentage = 0; }
+
+      this.adjustScrollVertical(newScrollTop, vertScrollPercentage);
+      return vertScrollPercentage;
+    }
+  };
+
+  GridRenderContainer.prototype.scrollHorizontal = function(newScrollLeft){
+    var horizScrollPercentage = -1;
+
+    // Handle RTL here
+
+    if (newScrollLeft !== this.prevScrollLeft) {
+      var xDiff = newScrollLeft - this.prevScrollLeft;
+
+      if (xDiff > 0) { this.grid.scrollDirection = uiGridConstants.scrollDirection.RIGHT; }
+      if (xDiff < 0) { this.grid.scrollDirection = uiGridConstants.scrollDirection.LEFT; }
+
+      var horizScrollLength = (this.canvasWidth - this.getViewportWidth());
+      if (horizScrollLength !== 0) {
+        horizScrollPercentage = newScrollLeft / horizScrollLength;
+      }
+      else {
+        horizScrollPercentage = 0;
+      }
+
+      this.adjustScrollHorizontal(newScrollLeft, horizScrollPercentage);
+      return horizScrollPercentage;
+    }
+  };
+
   GridRenderContainer.prototype.adjustScrollVertical = function adjustScrollVertical(scrollTop, scrollPercentage, force) {
     if (this.prevScrollTop === scrollTop && !force) {
       return;
     }
 
     if (typeof(scrollTop) === 'undefined' || scrollTop === undefined || scrollTop === null) {
-      scrollTop = (this.getCanvasHeight() - this.getCanvasWidth()) * scrollPercentage;
+      scrollTop = (this.getCanvasHeight() - this.getViewportHeight()) * scrollPercentage;
     }
 
     this.adjustRows(scrollTop, scrollPercentage, false);
@@ -6880,12 +8365,16 @@ angular.module('ui.grid')
 
     var maxRowIndex = rowCache.length - minRows;
 
+    // console.log('scroll%1', scrollPercentage);
+
     // Calculate the scroll percentage according to the scrollTop location, if no percentage was provided
     if ((typeof(scrollPercentage) === 'undefined' || scrollPercentage === null) && scrollTop) {
       scrollPercentage = scrollTop / self.getVerticalScrollLength();
     }
-    
+
     var rowIndex = Math.ceil(Math.min(maxRowIndex, maxRowIndex * scrollPercentage));
+
+    // console.log('maxRowIndex / scroll%', maxRowIndex, scrollPercentage, rowIndex);
 
     // Define a max row index that we can't scroll past
     if (rowIndex > maxRowIndex) {
@@ -6896,48 +8385,19 @@ angular.module('ui.grid')
     if (rowCache.length > self.grid.options.virtualizationThreshold) {
       if (!(typeof(scrollTop) === 'undefined' || scrollTop === null)) {
         // Have we hit the threshold going down?
-        if (!self.grid.options.enableInfiniteScroll && self.prevScrollTop < scrollTop && rowIndex < self.prevRowScrollIndex + self.grid.options.scrollThreshold && rowIndex < maxRowIndex) {
+        if ( !self.grid.suppressParentScrollDown && self.prevScrollTop < scrollTop && rowIndex < self.prevRowScrollIndex + self.grid.options.scrollThreshold && rowIndex < maxRowIndex) {
           return;
         }
         //Have we hit the threshold going up?
-        if (!self.grid.options.enableInfiniteScroll && self.prevScrollTop > scrollTop && rowIndex > self.prevRowScrollIndex - self.grid.options.scrollThreshold && rowIndex < maxRowIndex) {
+        if ( !self.grid.suppressParentScrollUp && self.prevScrollTop > scrollTop && rowIndex > self.prevRowScrollIndex - self.grid.options.scrollThreshold && rowIndex < maxRowIndex) {
           return;
         }
       }
       var rangeStart = {};
       var rangeEnd = {};
 
-      //If infinite scroll is enabled, and we loaded more data coming from redrawInPlace, then recalculate the range and set rowIndex to proper place to scroll to
-      if ( self.grid.options.enableInfiniteScroll && self.grid.scrollDirection !== uiGridConstants.scrollDirection.NONE && postDataLoaded ) {
-        var findIndex = null;
-        var i = null;
-        if ( self.grid.scrollDirection === uiGridConstants.scrollDirection.UP ) {
-          findIndex = rowIndex > 0 ? self.grid.options.excessRows : 0;
-          for ( i = 0; i < rowCache.length; i++) {
-            if (rowCache[i].entity.$$hashKey === self.renderedRows[findIndex].entity.$$hashKey) {
-              rowIndex = i;
-              break;
-            }
-          }
-          rangeStart = Math.max(0, rowIndex);
-          rangeEnd = Math.min(rowCache.length, rangeStart + self.grid.options.excessRows + minRows);
-        }
-        else if ( self.grid.scrollDirection === uiGridConstants.scrollDirection.DOWN ) {
-          findIndex = minRows;
-          for ( i = 0; i < rowCache.length; i++) {
-            if (rowCache[i].entity.$$hashKey === self.renderedRows[findIndex].entity.$$hashKey) {
-              rowIndex = i;
-              break;
-            }
-          }
-          rangeStart = Math.max(0, rowIndex - self.grid.options.excessRows - minRows);
-          rangeEnd = Math.min(rowCache.length, rowIndex + minRows + self.grid.options.excessRows);
-        }
-      }
-      else {
-        rangeStart = Math.max(0, rowIndex - self.grid.options.excessRows);
-        rangeEnd = Math.min(rowCache.length, rowIndex + minRows + self.grid.options.excessRows);
-      }
+      rangeStart = Math.max(0, rowIndex - self.grid.options.excessRows);
+      rangeEnd = Math.min(rowCache.length, rowIndex + minRows + self.grid.options.excessRows);
 
       newRange = [rangeStart, rangeEnd];
     }
@@ -6959,9 +8419,10 @@ angular.module('ui.grid')
     var columnCache = self.visibleColumnCache;
     var maxColumnIndex = columnCache.length - minCols;
 
-    // Calculate the scroll percentage according to the scrollTop location, if no percentage was provided
+    // Calculate the scroll percentage according to the scrollLeft location, if no percentage was provided
     if ((typeof(scrollPercentage) === 'undefined' || scrollPercentage === null) && scrollLeft) {
-      scrollPercentage = scrollLeft / self.getCanvasWidth();
+      var horizScrollLength = (self.getCanvasWidth() - self.getViewportWidth());
+      scrollPercentage = scrollLeft / horizScrollLength;
     }
 
     var colIndex = Math.ceil(Math.min(maxColumnIndex, maxColumnIndex * scrollPercentage));
@@ -6970,7 +8431,7 @@ angular.module('ui.grid')
     if (colIndex > maxColumnIndex) {
       colIndex = maxColumnIndex;
     }
-    
+
     var newRange = [];
     if (columnCache.length > self.grid.options.columnVirtualizationThreshold && self.getCanvasWidth() > self.getViewportWidth()) {
       /* Commented the following lines because otherwise the moved column wasn't visible immediately on the new position
@@ -6994,7 +8455,7 @@ angular.module('ui.grid')
 
       newRange = [0, Math.max(maxLen, minCols + self.grid.options.excessColumns)];
     }
-    
+
     self.updateViewableColumnRange(newRange);
 
     self.prevColumnScrollIndex = colIndex;
@@ -7009,7 +8470,6 @@ angular.module('ui.grid')
     // Define the top-most rendered row
     this.currentTopRow = renderedRange[0];
 
-    // TODO(c0bra): make this method!
     this.setRenderedRows(rowArr);
   };
 
@@ -7027,7 +8487,7 @@ angular.module('ui.grid')
 
   GridRenderContainer.prototype.headerCellWrapperStyle = function () {
     var self = this;
-    
+
     if (self.currentFirstColumn !== 0) {
       var offset = self.columnOffset;
 
@@ -7042,210 +8502,168 @@ angular.module('ui.grid')
     return null;
   };
 
+    /**
+     *  @ngdoc boolean
+     *  @name updateColumnWidths
+     *  @propertyOf  ui.grid.class:GridRenderContainer
+     *  @description Determine the appropriate column width of each column across all render containers.
+     *
+     *  Column width is easy when each column has a specified width.  When columns are variable width (i.e.
+     *  have an * or % of the viewport) then we try to calculate so that things fit in.  The problem is that
+     *  we have multiple render containers, and we don't want one render container to just take the whole viewport
+     *  when it doesn't need to - we want things to balance out across the render containers.
+     *
+     *  To do this, we use this method to calculate all the renderContainers, recognising that in a given render
+     *  cycle it'll get called once per render container, so it needs to return the same values each time.
+     *
+     *  The constraints on this method are therefore:
+     *  - must return the same value when called multiple times, to do this it needs to rely on properties of the
+     *    columns, but not properties that change when this is called (so it shouldn't rely on drawnWidth)
+     *
+     *  The general logic of this method is:
+     *  - calculate our total available width
+     *  - look at all the columns across all render containers, and work out which have widths and which have
+     *    constraints such as % or * or something else
+     *  - for those with *, count the total number of * we see and add it onto a running total, add this column to an * array
+     *  - for those with a %, allocate the % as a percentage of the viewport, having consideration of min and max
+     *  - for those with manual width (in pixels) we set the drawnWidth to the specified width
+     *  - we end up with an asterisks array still to process
+     *  - we look at our remaining width.  If it's greater than zero, we divide it up among the asterisk columns, then process
+     *    them for min and max width constraints
+     *  - if it's zero or less, we set the asterisk columns to their minimum widths
+     *  - we use parseInt quite a bit, as we try to make all our column widths integers
+     */
   GridRenderContainer.prototype.updateColumnWidths = function () {
     var self = this;
 
     var asterisksArray = [],
-        percentArray = [],
-        manualArray = [],
         asteriskNum = 0,
-        totalWidth = 0;
+        usedWidthSum = 0,
+        ret = '';
 
     // Get the width of the viewport
-    var availableWidth = self.getViewportWidth() - self.grid.scrollbarWidth;
+    var availableWidth = self.grid.getViewportWidth() - self.grid.scrollbarWidth;
 
-    //if (typeof(self.grid.verticalScrollbarWidth) !== 'undefined' && self.grid.verticalScrollbarWidth !== undefined && self.grid.verticalScrollbarWidth > 0) {
-    //  availableWidth = availableWidth + self.grid.verticalScrollbarWidth;
-    //}
+    // get all the columns across all render containers, we have to calculate them all or one render container
+    // could consume the whole viewport
+    var columnCache = [];
+    angular.forEach(self.grid.renderContainers, function( container, name){
+      columnCache = columnCache.concat(container.visibleColumnCache);
+    });
 
-    // The total number of columns
-    // var equalWidthColumnCount = columnCount = uiGridCtrl.grid.options.columnDefs.length;
-    // var equalWidth = availableWidth / equalWidthColumnCount;
-
-    // The last column we processed
-    var lastColumn;
-
-    var manualWidthSum = 0;
-
-    var canvasWidth = 0;
-
-    var ret = '';
-
-
-    // uiGridCtrl.grid.columns.forEach(function(column, i) {
-
-    var columnCache = self.visibleColumnCache;
-
+    // look at each column, process any manual values or %, put the * into an array to look at later
     columnCache.forEach(function(column, i) {
-      // ret = ret + ' .grid' + uiGridCtrl.grid.id + ' .col' + i + ' { width: ' + equalWidth + 'px; left: ' + left + 'px; }';
-      //var colWidth = (typeof(c.width) !== 'undefined' && c.width !== undefined) ? c.width : equalWidth;
-
+      var width = 0;
       // Skip hidden columns
       if (!column.visible) { return; }
 
-      var colWidth,
-          isPercent = false;
+      if (angular.isNumber(column.width)) {
+        // pixel width, set to this value
+        width = parseInt(column.width, 10);
+        usedWidthSum = usedWidthSum + width;
+        column.drawnWidth = width;
 
-      if (!angular.isNumber(column.width)) {
-        isPercent = isNaN(column.width) && gridUtil.endsWith(column.width, "%");
-      }
+      } else if (gridUtil.endsWith(column.width, "%")) {
+        // percentage width, set to percentage of the viewport
+        width = parseInt(parseInt(column.width.replace(/%/g, ''), 10) / 100 * availableWidth);
 
-      if (angular.isString(column.width) && column.width.indexOf('*') !== -1) { //  we need to save it until the end to do the calulations on the remaining width.
-        asteriskNum = parseInt(asteriskNum + column.width.length, 10);
-        
+        if ( width > column.maxWidth ){
+          width = column.maxWidth;
+        }
+
+        if ( width < column.minWidth ){
+          width = column.minWidth;
+        }
+
+        usedWidthSum = usedWidthSum + width;
+        column.drawnWidth = width;
+      } else if (angular.isString(column.width) && column.width.indexOf('*') !== -1) {
+        // is an asterisk column, the gridColumn already checked the string consists only of '****'
+        asteriskNum = asteriskNum + column.width.length;
         asterisksArray.push(column);
-      }
-      else if (isPercent) { // If the width is a percentage, save it until the very last.
-        percentArray.push(column);
-      }
-      else if (angular.isNumber(column.width)) {
-        manualWidthSum = parseInt(manualWidthSum + column.width, 10);
-        
-        canvasWidth = parseInt(canvasWidth, 10) + parseInt(column.width, 10);
-
-        column.drawnWidth = column.width;
       }
     });
 
-    // Get the remaining width (available width subtracted by the manual widths sum)
-    var remainingWidth = availableWidth - manualWidthSum;
+    // Get the remaining width (available width subtracted by the used widths sum)
+    var remainingWidth = availableWidth - usedWidthSum;
 
     var i, column, colWidth;
 
-    if (percentArray.length > 0) {
-      // Pre-process to make sure they're all within any min/max values
-      for (i = 0; i < percentArray.length; i++) {
-        column = percentArray[i];
-
-        var percent = parseInt(column.width.replace(/%/g, ''), 10) / 100;
-
-        colWidth = parseInt(percent * remainingWidth, 10);
-
-        if (column.colDef.minWidth && colWidth < column.colDef.minWidth) {
-          colWidth = column.colDef.minWidth;
-
-          remainingWidth = remainingWidth - colWidth;
-
-          canvasWidth += colWidth;
-          column.drawnWidth = colWidth;
-
-          // Remove this element from the percent array so it's not processed below
-          percentArray.splice(i, 1);
-        }
-        else if (column.colDef.maxWidth && colWidth > column.colDef.maxWidth) {
-          colWidth = column.colDef.maxWidth;
-
-          remainingWidth = remainingWidth - colWidth;
-
-          canvasWidth += colWidth;
-          column.drawnWidth = colWidth;
-
-          // Remove this element from the percent array so it's not processed below
-          percentArray.splice(i, 1);
-        }
-      }
-
-      percentArray.forEach(function(column) {
-        var percent = parseInt(column.width.replace(/%/g, ''), 10) / 100;
-        var colWidth = parseInt(percent * remainingWidth, 10);
-
-        canvasWidth += colWidth;
-
-        column.drawnWidth = colWidth;
-      });
-    }
-
     if (asterisksArray.length > 0) {
-      var asteriskVal = parseInt(remainingWidth / asteriskNum, 10);
+      // the width that each asterisk value would be assigned (this can be negative)
+      var asteriskVal = remainingWidth / asteriskNum;
 
-       // Pre-process to make sure they're all within any min/max values
-      for (i = 0; i < asterisksArray.length; i++) {
-        column = asterisksArray[i];
+      asterisksArray.forEach(function( column ){
+        var width = parseInt(column.width.length * asteriskVal, 10);
 
-        colWidth = parseInt(asteriskVal * column.width.length, 10);
-
-        if (column.colDef.minWidth && colWidth < column.colDef.minWidth) {
-          colWidth = column.colDef.minWidth;
-
-          remainingWidth = remainingWidth - colWidth;
-          asteriskNum--;
-
-          canvasWidth += colWidth;
-          column.drawnWidth = colWidth;
-
-          lastColumn = column;
-
-          // Remove this element from the percent array so it's not processed below
-          asterisksArray.splice(i, 1);
+        if ( width > column.maxWidth ){
+          width = column.maxWidth;
         }
-        else if (column.colDef.maxWidth && colWidth > column.colDef.maxWidth) {
-          colWidth = column.colDef.maxWidth;
 
-          remainingWidth = remainingWidth - colWidth;
-          asteriskNum--;
-
-          canvasWidth += colWidth;
-          column.drawnWidth = colWidth;
-
-          // Remove this element from the percent array so it's not processed below
-          asterisksArray.splice(i, 1);
+        if ( width < column.minWidth ){
+          width = column.minWidth;
         }
-      }
 
-      // Redo the asterisk value, as we may have removed columns due to width constraints
-      asteriskVal = parseInt(remainingWidth / asteriskNum, 10);
-
-      asterisksArray.forEach(function(column) {
-        var colWidth = parseInt(asteriskVal * column.width.length, 10);
-
-        canvasWidth += colWidth;
-
-        column.drawnWidth = colWidth;
+        usedWidthSum = usedWidthSum + width;
+        column.drawnWidth = width;
       });
     }
 
-    // If the grid width didn't divide evenly into the column widths and we have pixels left over, dole them out to the columns one by one to make everything fit
-    var leftoverWidth = availableWidth - parseInt(canvasWidth, 10);
-
-    if (leftoverWidth > 0 && canvasWidth > 0 && canvasWidth < availableWidth) {
-      var variableColumn = false;
-      // uiGridCtrl.grid.columns.forEach(function(col) {
-      columnCache.forEach(function(col) {
-        if (col.width && !angular.isNumber(col.width)) {
-          variableColumn = true;
-        }
-      });
-
-      if (variableColumn) {
-        var remFn = function (column) {
-          if (leftoverWidth > 0) {
-            column.drawnWidth = column.drawnWidth + 1;
-            canvasWidth = canvasWidth + 1;
-            leftoverWidth--;
-          }
-        };
-        while (leftoverWidth > 0) {
-          columnCache.forEach(remFn);
-        }
+    // If the grid width didn't divide evenly into the column widths and we have pixels left over, or our
+    // calculated widths would have the grid narrower than the available space,
+    // dole the remainder out one by one to make everything fit
+    var processColumnUpwards = function(column){
+      if ( column.drawnWidth < column.maxWidth && leftoverWidth > 0) {
+        column.drawnWidth++;
+        usedWidthSum++;
+        leftoverWidth--;
+        columnsToChange = true;
       }
+    };
+
+    var leftoverWidth = availableWidth - usedWidthSum;
+    var columnsToChange = true;
+
+    while (leftoverWidth > 0 && columnsToChange) {
+      columnsToChange = false;
+      asterisksArray.forEach(processColumnUpwards);
     }
 
-    if (canvasWidth < availableWidth) {
-      canvasWidth = availableWidth;
+    // We can end up with too much width even though some columns aren't at their max width, in this situation
+    // we can trim the columns a little
+    var processColumnDownwards = function(column){
+      if ( column.drawnWidth > column.minWidth && excessWidth > 0) {
+        column.drawnWidth--;
+        usedWidthSum--;
+        excessWidth--;
+        columnsToChange = true;
+      }
+    };
+
+    var excessWidth =  usedWidthSum - availableWidth;
+    columnsToChange = true;
+
+    while (excessWidth > 0 && columnsToChange) {
+      columnsToChange = false;
+      asterisksArray.forEach(processColumnDownwards);
     }
+
+
+    // all that was across all the renderContainers, now we need to work out what that calculation decided for
+    // our renderContainer
+    var canvasWidth = 0;
+    self.visibleColumnCache.forEach(function(column){
+      if ( column.visible ){
+        canvasWidth = canvasWidth + column.drawnWidth;
+      }
+    });
 
     // Build the CSS
     columnCache.forEach(function (column) {
       ret = ret + column.getColClassDefinition();
     });
 
-    // Add the vertical scrollbar width back in to the canvas width, it's taken out in getCanvasWidth
-    //if (self.grid.verticalScrollbarWidth) {
-    //  canvasWidth = canvasWidth + self.grid.verticalScrollbarWidth;
-    //}
-    // canvasWidth = canvasWidth + 1;
-
-    self.canvasWidth = parseInt(canvasWidth, 10);
+    self.canvasWidth = canvasWidth;
 
     // Return the styles back to buildStyles which pops them into the `customStyles` scope variable
     // return ret;
@@ -7254,37 +8672,46 @@ angular.module('ui.grid')
     this.columnStyles = ret;
   };
 
-  GridRenderContainer.prototype.getViewPortStyle = function () {
+  GridRenderContainer.prototype.needsHScrollbarPlaceholder = function () {
+    return this.grid.options.enableHorizontalScrollbar && !this.hasHScrollbar && !this.grid.disableScrolling;
+  };
+
+  GridRenderContainer.prototype.getViewportStyle = function () {
     var self = this;
     var styles = {};
 
+    self.hasHScrollbar = false;
+    self.hasVScrollbar = false;
+
+    if (self.grid.disableScrolling) {
+      styles['overflow-x'] = 'hidden';
+      styles['overflow-y'] = 'hidden';
+      return styles;
+    }
+
     if (self.name === 'body') {
-      styles['overflow-x'] = self.grid.options.enableHorizontalScrollbar === uiGridConstants.scrollbars.NEVER ? 'hidden' : 'scroll';
+      self.hasHScrollbar = self.grid.options.enableHorizontalScrollbar !== uiGridConstants.scrollbars.NEVER;
       if (!self.grid.isRTL()) {
-        if (self.grid.hasRightContainerColumns()) {
-          styles['overflow-y'] = 'hidden';
-        }
-        else {
-          styles['overflow-y'] = self.grid.options.enableVerticalScrollbar === uiGridConstants.scrollbars.NEVER ? 'hidden' : 'scroll';
+        if (!self.grid.hasRightContainerColumns()) {
+          self.hasVScrollbar = self.grid.options.enableVerticalScrollbar !== uiGridConstants.scrollbars.NEVER;
         }
       }
       else {
-        if (self.grid.hasLeftContainerColumns()) {
-          styles['overflow-y'] = 'hidden';
-        }
-        else {
-          styles['overflow-y'] = self.grid.options.enableVerticalScrollbar === uiGridConstants.scrollbars.NEVER ? 'hidden' : 'scroll';
+        if (!self.grid.hasLeftContainerColumns()) {
+          self.hasVScrollbar = self.grid.options.enableVerticalScrollbar !== uiGridConstants.scrollbars.NEVER;
         }
       }
     }
     else if (self.name === 'left') {
-      styles['overflow-x'] = 'hidden';
-      styles['overflow-y'] = self.grid.isRTL() ? (self.grid.options.enableVerticalScrollbar === uiGridConstants.scrollbars.NEVER ? 'hidden' : 'scroll') : 'hidden';
+      self.hasVScrollbar = self.grid.isRTL() ? self.grid.options.enableVerticalScrollbar !== uiGridConstants.scrollbars.NEVER : false;
     }
     else {
-      styles['overflow-x'] = 'hidden';
-      styles['overflow-y'] = !self.grid.isRTL() ? (self.grid.options.enableVerticalScrollbar === uiGridConstants.scrollbars.NEVER ? 'hidden' : 'scroll') : 'hidden';
+      self.hasVScrollbar = !self.grid.isRTL() ? self.grid.options.enableVerticalScrollbar !== uiGridConstants.scrollbars.NEVER : false;
     }
+
+    styles['overflow-x'] = self.hasHScrollbar ? 'scroll' : 'hidden';
+    styles['overflow-y'] = self.hasVScrollbar ? 'scroll' : 'hidden';
+
 
     return styles;
 
@@ -7401,52 +8828,208 @@ angular.module('ui.grid')
    * @name setRowInvisible
    * @methodOf  ui.grid.class:GridRow
    * @description Sets an override on the row that forces it to always
-   * be invisible, and if the row is currently visible then marks it
-   * as invisible and refreshes the grid.  Emits the rowsVisibleChanged
-   * event if it changed the row visibility
-   * @param {GridRow} row row to force invisible, needs to be a GridRow,
-   * which can be found from your data entity using grid.findRow
+   * be invisible. Emits the rowsVisibleChanged event if it changed the row visibility.
+   * 
+   * This method can be called from the api, passing in the gridRow we want
+   * altered.  It should really work by calling gridRow.setRowInvisible, but that's
+   * not the way I coded it, and too late to change now.  Changed to just call
+   * the internal function row.setThisRowInvisible().
+   * 
+   * @param {GridRow} row the row we want to set to invisible
+   * 
    */
-  GridRow.prototype.setRowInvisible = function (row) {
-    if (row !== null) {
-      row.forceInvisible = true;
-      
-      if ( row.visible ){
-        row.visible = false;
-        row.grid.refresh();
-        row.grid.api.core.raise.rowsVisibleChanged();
-      }
-    }        
+  GridRow.prototype.setRowInvisible = function ( row ) {
+    if (row && row.setThisRowInvisible){
+      row.setThisRowInvisible( 'user' );
+    }
   };
+  
+  
+  /**
+   * @ngdoc function
+   * @name clearRowInvisible
+   * @methodOf  ui.grid.class:GridRow
+   * @description Clears an override on the row that forces it to always
+   * be invisible. Emits the rowsVisibleChanged event if it changed the row visibility.
+   * 
+   * This method can be called from the api, passing in the gridRow we want
+   * altered.  It should really work by calling gridRow.clearRowInvisible, but that's
+   * not the way I coded it, and too late to change now.  Changed to just call
+   * the internal function row.clearThisRowInvisible().
+   * 
+   * @param {GridRow} row the row we want to clear the invisible flag
+   * 
+   */
+  GridRow.prototype.clearRowInvisible = function ( row ) {
+    if (row && row.clearThisRowInvisible){
+      row.clearThisRowInvisible( 'user' );
+    }
+  };
+  
+  
+  /**
+   * @ngdoc function
+   * @name setThisRowInvisible
+   * @methodOf  ui.grid.class:GridRow
+   * @description Sets an override on the row that forces it to always
+   * be invisible. Emits the rowsVisibleChanged event if it changed the row visibility
+   *
+   * @param {string} reason the reason (usually the module) for the row to be invisible.
+   * E.g. grouping, user, filter
+   * @param {boolean} fromRowsProcessor whether we were called from a rowsProcessor, passed through to evaluateRowVisibility
+   */
+  GridRow.prototype.setThisRowInvisible = function ( reason, fromRowsProcessor ) {
+    if ( !this.invisibleReason ){
+      this.invisibleReason = {};
+    }
+    this.invisibleReason[reason] = true;
+    this.evaluateRowVisibility( fromRowsProcessor);
+  };
+
 
   /**
    * @ngdoc function
    * @name clearRowInvisible
    * @methodOf ui.grid.class:GridRow
    * @description Clears any override on the row visibility, returning it 
-   * to normal visibility calculations.  If the row is currently invisible
-   * then sets it to visible and calls refresh and emits the rowsVisibleChanged
+   * to normal visibility calculations.  Emits the rowsVisibleChanged
    * event
-   * TODO: if filter in action, then is this right?
-   * @param {GridRow} row row clear force invisible, needs to be a GridRow,
-   * which can be found from your data entity using grid.findRow
+   * 
+   * @param {string} reason the reason (usually the module) for the row to be invisible.
+   * E.g. grouping, user, filter
+   * @param {boolean} fromRowsProcessor whether we were called from a rowsProcessor, passed through to evaluateRowVisibility
    */
-  GridRow.prototype.clearRowInvisible = function (row) {
-    if (row !== null) {
-      row.forceInvisible = false;
-      
-      if ( !row.visible ){
-        row.visible = true;
-        row.grid.refresh();
-        row.grid.api.core.raise.rowsVisibleChanged();
-      }
-    }        
+  GridRow.prototype.clearThisRowInvisible = function ( reason, fromRowsProcessor ) {
+    if (typeof(this.invisibleReason) !== 'undefined' ) {
+      delete this.invisibleReason[reason];
+    }
+    this.evaluateRowVisibility( fromRowsProcessor );
   };
+
+
+  /**
+   * @ngdoc function
+   * @name evaluateRowVisibility
+   * @methodOf ui.grid.class:GridRow
+   * @description Determines whether the row should be visible based on invisibleReason, 
+   * and if it changes the row visibility, then emits the rowsVisibleChanged event.
+   * 
+   * Queues a grid refresh, but doesn't call it directly to avoid hitting lots of grid refreshes.
+   * @param {boolean} fromRowProcessor if true, then it won't raise events or queue the refresh, the
+   * row processor does that already
+   */
+  GridRow.prototype.evaluateRowVisibility = function ( fromRowProcessor ) {
+    var newVisibility = true;
+    if ( typeof(this.invisibleReason) !== 'undefined' ){
+      angular.forEach(this.invisibleReason, function( value, key ){
+        if ( value ){
+          newVisibility = false;
+        }
+      });
+    }
+    
+    if ( typeof(this.visible) === 'undefined' || this.visible !== newVisibility ){
+      this.visible = newVisibility;
+      if ( !fromRowProcessor ){
+        this.grid.queueGridRefresh();
+        this.grid.api.core.raise.rowsVisibleChanged(this);
+      }
+    }
+  };
+  
 
   return GridRow;
 }]);
 
 })();
+
+(function(){
+  'use strict';
+  /**
+   * @ngdoc object
+   * @name ui.grid.class:GridRowColumn
+   * @param {GridRow} row The row for this pair
+   * @param {GridColumn} column The column for this pair
+   * @description A row and column pair that represents the intersection of these two entities.
+   * Must be instantiated as a constructor using the `new` keyword.
+   */
+  angular.module('ui.grid')
+  .factory('GridRowColumn', ['$parse', '$filter',
+    function GridRowColumnFactory($parse, $filter){
+      var GridRowColumn = function GridRowColumn(row, col) {
+        if ( !(this instanceof GridRowColumn)){
+          throw "Using GridRowColumn as a function insead of as a constructor. Must be called with `new` keyword";
+        }
+
+        /**
+         * @ngdoc object
+         * @name row
+         * @propertyOf ui.grid.class:GridRowColumn
+         * @description {@link ui.grid.class:GridRow }
+         */
+        this.row = row;
+        /**
+         * @ngdoc object
+         * @name col
+         * @propertyOf ui.grid.class:GridRowColumn
+         * @description {@link ui.grid.class:GridColumn }
+         */
+        this.col = col;
+      };
+
+      /**
+       * @ngdoc function
+       * @name getIntersectionValueRaw
+       * @methodOf ui.grid.class:GridRowColumn
+       * @description Gets the intersection of where the row and column meet.
+       * @returns {String|Number|Object} The value from the grid data that this GridRowColumn points too.
+       *          If the column has a cellFilter this will NOT return the filtered value.
+       */
+      GridRowColumn.prototype.getIntersectionValueRaw = function(){
+        var getter = $parse(this.row.getEntityQualifiedColField(this.col));
+        var context = this.row;
+        return getter(context);
+      };
+      /**
+       * @ngdoc function
+       * @name getIntersectionValueFiltered
+       * @methodOf ui.grid.class:GridRowColumn
+       * @description Gets the intersection of where the row and column meet.
+       * @returns {String|Number|Object} The value from the grid data that this GridRowColumn points too.
+       *          If the column has a cellFilter this will also apply the filter to it and return the value that the filter displays.
+       */
+      GridRowColumn.prototype.getIntersectionValueFiltered = function(){
+        var value = this.getIntersectionValueRaw();
+        if (this.col.cellFilter && this.col.cellFilter !== ''){
+          var getFilterIfExists = function(filterName){
+            try {
+              return $filter(filterName);
+            } catch (e){
+              return null;
+            }
+          };
+          var filter = getFilterIfExists(this.col.cellFilter);
+          if (filter) { // Check if this is filter name or a filter string
+            value = filter(value);
+          } else { // We have the template version of a filter so we need to parse it apart
+            // Get the filter params out using a regex
+            // Test out this regex here https://regex101.com/r/rC5eR5/2
+            var re = /([^:]*):([^:]*):?([\s\S]+)?/;
+            var matches;
+            if ((matches = re.exec(this.col.cellFilter)) !== null) {
+                // View your result using the matches-variable.
+                // eg matches[0] etc.
+                value = $filter(matches[1])(value, matches[2], matches[3]);
+            }
+          }
+        }
+        return value;
+      };
+      return GridRowColumn;
+    }
+  ]);
+})();
+
 (function () {
   angular.module('ui.grid')
     .factory('ScrollEvent', ['gridUtil', function (gridUtil) {
@@ -7478,11 +9061,21 @@ angular.module('ui.grid')
 
         /**
          *  @ngdoc object
-         *  @name entity
+         *  @name source
          *  @propertyOf  ui.grid.class:ScrollEvent
          *  @description the source of the scroll event. limited to values from uiGridConstants.scrollEventSources
          */
         self.source = source;
+
+
+        /**
+         *  @ngdoc object
+         *  @name noDelay
+         *  @propertyOf  ui.grid.class:ScrollEvent
+         *  @description most scroll events from the mouse or trackpad require delay to operate properly
+         *  set to false to eliminate delay.  Useful for scroll events that the grid causes, such as scrolling to make a row visible.
+         */
+        self.withDelay = true;
 
         self.sourceRowContainer = sourceRowContainer;
         self.sourceColContainer = sourceColContainer;
@@ -7492,6 +9085,9 @@ angular.module('ui.grid')
         self.x = null;
         self.y = null;
 
+        self.verticalScrollLength = -9999999;
+        self.horizontalScrollLength = -999999;
+
 
         /**
          *  @ngdoc function
@@ -7499,21 +9095,11 @@ angular.module('ui.grid')
          *  @methodOf  ui.grid.class:ScrollEvent
          *  @description fires a throttled event using grid.api.core.raise.scrollEvent
          */
-        self.fireThrottledScrollingEvent = gridUtil.throttle(function() {
-          self.grid.api.core.raise.scrollEvent(self);
-        }, self.grid.options.scrollThrottle, {trailing: true});
+        self.fireThrottledScrollingEvent = gridUtil.throttle(function(sourceContainerId) {
+          self.grid.scrollContainers(sourceContainerId, self);
+        }, self.grid.options.wheelScrollThrottle, {trailing: true});
 
       }
-
-      /**
-       *  @ngdoc function
-       *  @name fireScrollingEvent
-       *  @methodOf  ui.grid.class:ScrollEvent
-       *  @description fires an event using grid.api.core.raise.scrollEvent
-       */
-      ScrollEvent.prototype.fireScrollingEvent = function() {
-        this.grid.api.core.raise.scrollEvent(this);
-      };
 
 
       /**
@@ -7528,7 +9114,7 @@ angular.module('ui.grid')
         if (!self.newScrollLeft){
           var scrollWidth = (colContainer.getCanvasWidth() - colContainer.getViewportWidth());
 
-          var oldScrollLeft = gridUtil.normalizeScrollLeft(viewport);
+          var oldScrollLeft = gridUtil.normalizeScrollLeft(viewport, self.grid);
 
           var scrollXPercentage;
           if (typeof(self.x.percentage) !== 'undefined' && self.x.percentage !== undefined) {
@@ -7580,6 +9166,22 @@ angular.module('ui.grid')
         return self.newScrollTop;
       };
 
+      ScrollEvent.prototype.atTop = function(scrollTop) {
+        return (this.y && (this.y.percentage === 0 || this.verticalScrollLength < 0) && scrollTop === 0);
+      };
+
+      ScrollEvent.prototype.atBottom = function(scrollTop) {
+        return (this.y && (this.y.percentage === 1 || this.verticalScrollLength === 0) && scrollTop > 0);
+      };
+
+      ScrollEvent.prototype.atLeft = function(scrollLeft) {
+        return (this.x && (this.x.percentage === 0 || this.horizontalScrollLength < 0) && scrollLeft === 0);
+      };
+
+      ScrollEvent.prototype.atRight = function(scrollLeft) {
+        return (this.x && (this.x.percentage === 1 || this.horizontalScrollLength ===0) && scrollLeft > 0);
+      };
+
 
       ScrollEvent.Sources = {
         ViewPortScroll: 'ViewPortScroll',
@@ -7594,6 +9196,7 @@ angular.module('ui.grid')
 
 
 })();
+
 (function () {
   'use strict';
   /**
@@ -7645,8 +9248,8 @@ angular.module('ui.grid')
           // Reset all rows to visible initially
           grid.registerRowsProcessor(function allRowsVisible(rows) {
             rows.forEach(function (row) {
-              row.visible = !row.forceInvisible;
-            });
+              row.evaluateRowVisibility( true );
+            }, 50);
 
             return rows;
           });
@@ -7657,7 +9260,7 @@ angular.module('ui.grid')
             });
 
             return columns;
-          });
+          }, 50);
 
           grid.registerColumnsProcessor(function(renderableColumns) {
               renderableColumns.forEach(function (column) {
@@ -7667,20 +9270,17 @@ angular.module('ui.grid')
               });
 
               return renderableColumns;
-          });
+          }, 50);
 
 
-
-          if (grid.options.enableFiltering) {
-            grid.registerRowsProcessor(grid.searchRows);
-          }
+          grid.registerRowsProcessor(grid.searchRows, 100);
 
           // Register the default row processor, it sorts rows by selected columns
           if (grid.options.externalSort && angular.isFunction(grid.options.externalSort)) {
-            grid.registerRowsProcessor(grid.options.externalSort);
+            grid.registerRowsProcessor(grid.options.externalSort, 200);
           }
           else {
-            grid.registerRowsProcessor(grid.sortByColumn);
+            grid.registerRowsProcessor(grid.sortByColumn, 200);
           }
 
           return grid;
@@ -7700,19 +9300,40 @@ angular.module('ui.grid')
 
           var templateGetPromises = [];
 
-          /**
-           * @ngdoc property
-           * @name headerCellTemplate
-           * @propertyOf ui.grid.class:GridOptions.columnDef
-           * @description a custom template for the header for this column.  The default
-           * is ui-grid/uiGridHeaderCell
-           *
-           */
-          if (!colDef.headerCellTemplate) {
-            col.providedHeaderCellTemplate = 'ui-grid/uiGridHeaderCell';
-          } else {
-            col.providedHeaderCellTemplate = colDef.headerCellTemplate;
-          }
+          // Abstracts the standard template processing we do for every template type.
+          var processTemplate = function( templateType, providedType, defaultTemplate, filterType, tooltipType ) {
+            if ( !colDef[templateType] ){
+              col[providedType] = defaultTemplate;
+            } else {
+              col[providedType] = colDef[templateType];
+            }
+ 
+             templateGetPromises.push(gridUtil.getTemplate(col[providedType])
+                .then(
+                function (template) {
+                  if ( angular.isFunction(template) ) { template = template(); }
+                  var tooltipCall = ( tooltipType === 'cellTooltip' ) ? 'col.cellTooltip(row,col)' : 'col.headerTooltip(col)';
+                  if ( tooltipType && col[tooltipType] === false ){
+                    template = template.replace(uiGridConstants.TOOLTIP, '');
+                  } else if ( tooltipType && col[tooltipType] ){
+                    template = template.replace(uiGridConstants.TOOLTIP, 'title="{{' + tooltipCall + ' CUSTOM_FILTERS }}"');
+                  }
+
+                  if ( filterType ){
+                    col[templateType] = template.replace(uiGridConstants.CUSTOM_FILTERS, function() {
+                      return col[filterType] ? "|" + col[filterType] : "";
+                    });
+                  } else {
+                    col[templateType] = template;
+                  }
+                },
+                function (res) {
+                  throw new Error("Couldn't fetch/use colDef." + templateType + " '" + colDef[templateType] + "'");
+                })
+            );
+
+          };
+
 
           /**
            * @ngdoc property
@@ -7723,11 +9344,18 @@ angular.module('ui.grid')
            * must contain a div that can receive focus.
            *
            */
-          if (!colDef.cellTemplate) {
-            col.providedCellTemplate = 'ui-grid/uiGridCell';
-          } else {
-            col.providedCellTemplate = colDef.cellTemplate;
-          }
+          processTemplate( 'cellTemplate', 'providedCellTemplate', 'ui-grid/uiGridCell', 'cellFilter', 'cellTooltip' );
+          col.cellTemplatePromise = templateGetPromises[0];
+
+          /**
+           * @ngdoc property
+           * @name headerCellTemplate
+           * @propertyOf ui.grid.class:GridOptions.columnDef
+           * @description a custom template for the header for this column.  The default
+           * is ui-grid/uiGridHeaderCell
+           *
+           */
+          processTemplate( 'headerCellTemplate', 'providedHeaderCellTemplate', 'ui-grid/uiGridHeaderCell', 'headerCellFilter', 'headerTooltip' );
 
           /**
            * @ngdoc property
@@ -7737,48 +9365,23 @@ angular.module('ui.grid')
            * is ui-grid/uiGridFooterCell
            *
            */
-          if (!colDef.footerCellTemplate) {
-            col.providedFooterCellTemplate = 'ui-grid/uiGridFooterCell';
-          } else {
-            col.providedFooterCellTemplate = colDef.footerCellTemplate;
-          }
+          processTemplate( 'footerCellTemplate', 'providedFooterCellTemplate', 'ui-grid/uiGridFooterCell', 'footerCellFilter' );
 
-          col.cellTemplatePromise = gridUtil.getTemplate(col.providedCellTemplate);
-          templateGetPromises.push(col.cellTemplatePromise
-            .then(
-              function (template) {
-                col.cellTemplate = template.replace(uiGridConstants.CUSTOM_FILTERS, col.cellFilter ? "|" + col.cellFilter : "");
-              },
-              function (res) {
-                throw new Error("Couldn't fetch/use colDef.cellTemplate '" + colDef.cellTemplate + "'");
-              })
-          );
-
-          templateGetPromises.push(gridUtil.getTemplate(col.providedHeaderCellTemplate)
-              .then(
-              function (template) {
-                col.headerCellTemplate = template.replace(uiGridConstants.CUSTOM_FILTERS, col.headerCellFilter ? "|" + col.headerCellFilter : "");
-              },
-              function (res) {
-                throw new Error("Couldn't fetch/use colDef.headerCellTemplate '" + colDef.headerCellTemplate + "'");
-              })
-          );
-
-          templateGetPromises.push(gridUtil.getTemplate(col.providedFooterCellTemplate)
-              .then(
-              function (template) {
-                col.footerCellTemplate = template.replace(uiGridConstants.CUSTOM_FILTERS, col.footerCellFilter ? "|" + col.footerCellFilter : "");
-              },
-              function (res) {
-                throw new Error("Couldn't fetch/use colDef.footerCellTemplate '" + colDef.footerCellTemplate + "'");
-              })
-          );
+          /**
+           * @ngdoc property
+           * @name filterHeaderTemplate
+           * @propertyOf ui.grid.class:GridOptions.columnDef
+           * @description a custom template for the filter input.  The default is ui-grid/ui-grid-filter
+           *
+           */
+          processTemplate( 'filterHeaderTemplate', 'providedFilterHeaderTemplate', 'ui-grid/ui-grid-filter' );
 
           // Create a promise for the compiled element function
           col.compiledElementFnDefer = $q.defer();
 
           return $q.all(templateGetPromises);
         },
+        
 
         rowTemplateAssigner: function rowTemplateAssigner(row) {
           var grid = this;
@@ -7822,6 +9425,7 @@ angular.module('ui.grid')
     }]);
 
 })();
+
 (function() {
 
 var module = angular.module('ui.grid');
@@ -7838,7 +9442,7 @@ function escapeRegExp(str) {
  *  @description Service for searching/filtering rows based on column value conditions.
  */
 module.service('rowSearcher', ['gridUtil', 'uiGridConstants', function (gridUtil, uiGridConstants) {
-  var defaultCondition = uiGridConstants.filter.STARTS_WITH;
+  var defaultCondition = uiGridConstants.filter.CONTAINS;
 
   var rowSearcher = {};
 
@@ -7938,7 +9542,8 @@ module.service('rowSearcher', ['gridUtil', 'uiGridConstants', function (gridUtil
     var filtersLength = filters.length;
     for ( var i = 0; i < filtersLength; i++ ){
       var filter = filters[i];
-      if ( filter.noTerm || filter.term ){
+      
+      if ( filter.noTerm || !gridUtil.isNullOrUndefined(filter.term) ){
         var newFilter = {};
         
         var regexpFlags = '';
@@ -7946,7 +9551,7 @@ module.service('rowSearcher', ['gridUtil', 'uiGridConstants', function (gridUtil
           regexpFlags += 'i';
         }
     
-        if ( filter.term ){
+        if ( !gridUtil.isNullOrUndefined(filter.term) ){
           // it is possible to have noTerm.  We don't need to copy that across, it was just a flag to avoid
           // getting the filter ignored if the filter was a function that didn't use a term
           newFilter.term = rowSearcher.stripTerm(filter);
@@ -8004,8 +9609,14 @@ module.service('rowSearcher', ['gridUtil', 'uiGridConstants', function (gridUtil
     var term = filter.term;
 
     // Get the column value for this row
-    var value = grid.getCellValue(row, column);
-    
+    var value;
+    if ( column.filterCellFiltered ){
+      value = grid.getCellDisplayValue(row, column);
+    } else {
+      value = grid.getCellValue(row, column);
+    }
+
+
     // If the filter's condition is a RegExp, then use it
     if (filter.condition instanceof RegExp) {
       return filter.condition.test(value);
@@ -8015,19 +9626,19 @@ module.service('rowSearcher', ['gridUtil', 'uiGridConstants', function (gridUtil
     if (conditionType === 'function') {
       return filter.condition(term, value, row, column);
     }
-    
+
     if (filter.startswithRE) {
       return filter.startswithRE.test(value);
     }
-    
+
     if (filter.endswithRE) {
       return filter.endswithRE.test(value);
     }
-    
+
     if (filter.containsRE) {
       return filter.containsRE.test(value);
     }
-    
+
     if (filter.exactRE) {
       return filter.exactRE.test(value);
     }
@@ -8037,9 +9648,11 @@ module.service('rowSearcher', ['gridUtil', 'uiGridConstants', function (gridUtil
       return !regex.exec(value);
     }
 
-    if (typeof(value) === 'number'){
+    if (typeof(value) === 'number' && typeof(term) === 'string' ){
       // if the term has a decimal in it, it comes through as '9\.4', we need to take out the \
-      var tempFloat = parseFloat(term.replace(/\\./,'.'));
+      // the same for negative numbers
+      // TODO: I suspect the right answer is to look at escapeRegExp at the top of this code file, maybe it's not needed?
+      var tempFloat = parseFloat(term.replace(/\\\./,'.').replace(/\\\-/,'-'));
       if (!isNaN(tempFloat)) {
         term = tempFloat;
       }
@@ -8062,11 +9675,11 @@ module.service('rowSearcher', ['gridUtil', 'uiGridConstants', function (gridUtil
     if (filter.condition === uiGridConstants.filter.LESS_THAN) {
       return (value < term);
     }
-    
+
     if (filter.condition === uiGridConstants.filter.LESS_THAN_OR_EQUAL) {
       return (value <= term);
     }
-    
+
     return true;
   };
 
@@ -8097,11 +9710,11 @@ module.service('rowSearcher', ['gridUtil', 'uiGridConstants', function (gridUtil
     if (grid.options.useExternalFiltering) {
       return true;
     }
-    
+
     var filtersLength = filters.length;
     for (var i = 0; i < filtersLength; i++) {
       var filter = filters[i];
-      
+
       var ret = rowSearcher.runColumnFilter(grid, row, column, filter);
       if (!ret) {
         return false;
@@ -8128,35 +9741,50 @@ module.service('rowSearcher', ['gridUtil', 'uiGridConstants', function (gridUtil
      * loops and is therefore very performance sensitive.  In particular, avoiding forEach as
      * this impacts some browser optimisers (particularly Chrome), using iterators instead
      */
-    
+
     // Don't do anything if we weren't passed any rows
     if (!rows) {
       return;
+    }
+
+    // don't filter if filtering currently disabled
+    if (!grid.options.enableFiltering){
+      return rows;
     }
 
     // Build list of filters to apply
     var filterData = [];
 
     var colsLength = columns.length;
+
+    var hasTerm = function( filters ) {
+      var hasTerm = false;
+
+      filters.forEach( function (filter) {
+        if ( !gridUtil.isNullOrUndefined(filter.term) && filter.term !== '' || filter.noTerm ){
+          hasTerm = true;
+        }
+      });
+
+      return hasTerm;
+    };
+
     for (var i = 0; i < colsLength; i++) {
       var col = columns[i];
-      
-      if (typeof(col.filters) !== 'undefined' && ( col.filters.length > 1 || col.filters.length === 1 && ( typeof(col.filters[0].term) !== 'undefined' && col.filters[0].term || col.filters[0].noTerm ) ) ) {
+
+      if (typeof(col.filters) !== 'undefined' && hasTerm(col.filters) ) {
         filterData.push( { col: col, filters: rowSearcher.setupFilters(col.filters) } );
       }
-      else if (typeof(col.filter) !== 'undefined' && col.filter && ( typeof(col.filter.term) !== 'undefined' && col.filter.term || col.filter.noTerm ) ) {
-        filterData.push( { col: col, filters: rowSearcher.setupFilters([col.filter]) } );
-      }
     }
-    
+
     if (filterData.length > 0) {
       // define functions outside the loop, performance optimisation
       var foreachRow = function(grid, row, col, filters){
-        if (row.forceInvisible || !rowSearcher.searchColumn(grid, row, col, filters)) {
+        if ( row.visible && !rowSearcher.searchColumn(grid, row, col, filters) ) {
           row.visible = false;
         }
       };
-      
+
       var foreachFilterCol = function(grid, filterData){
         var rowsLength = rows.length;
         for ( var i = 0; i < rowsLength; i++){
@@ -8173,6 +9801,11 @@ module.service('rowSearcher', ['gridUtil', 'uiGridConstants', function (gridUtil
       if (grid.api.core.raise.rowsVisibleChanged) {
         grid.api.core.raise.rowsVisibleChanged();
       }
+
+      // drop any invisible rows
+      // keeping these, as needed with filtering for trees - we have to come back and make parent nodes visible if child nodes are selected in the filter
+      // rows = rows.filter(function(row){ return row.visible; });
+
     }
 
     return rows;
@@ -8182,6 +9815,7 @@ module.service('rowSearcher', ['gridUtil', 'uiGridConstants', function (gridUtil
 }]);
 
 })();
+
 (function() {
 
 var module = angular.module('ui.grid');
@@ -8189,14 +9823,14 @@ var module = angular.module('ui.grid');
 /**
  * @ngdoc object
  * @name ui.grid.class:RowSorter
- * @description RowSorter provides the default sorting mechanisms, 
- * including guessing column types and applying appropriate sort 
+ * @description RowSorter provides the default sorting mechanisms,
+ * including guessing column types and applying appropriate sort
  * algorithms
- * 
- */ 
+ *
+ */
 
 module.service('rowSorter', ['$parse', 'uiGridConstants', function ($parse, uiGridConstants) {
-  var currencyRegexStr = 
+  var currencyRegexStr =
     '(' +
     uiGridConstants.CURRENCY_SYMBOLS
       .map(function (a) { return '\\' + a; }) // Escape all the currency symbols ($ at least will jack up this regex)
@@ -8210,7 +9844,7 @@ module.service('rowSorter', ['$parse', 'uiGridConstants', function ($parse, uiGr
     // Cache of sorting functions. Once we create them, we don't want to keep re-doing it
     //   this takes a piece of data from the cell and tries to determine its type and what sorting
     //   function to use for it
-    colSortFnCache: []
+    colSortFnCache: {}
   };
 
 
@@ -8227,6 +9861,8 @@ module.service('rowSorter', ['$parse', 'uiGridConstants', function ($parse, uiGr
     switch (itemType) {
       case "number":
         return rowSorter.sortNumber;
+      case "numberStr":
+        return rowSorter.sortNumberStr;
       case "boolean":
         return rowSorter.sortBool;
       case "string":
@@ -8277,7 +9913,7 @@ module.service('rowSorter', ['$parse', 'uiGridConstants', function ($parse, uiGr
    * @methodOf ui.grid.class:RowSorter
    * @name basicSort
    * @description Sorts any values that provide the < method, including strings
-   * or numbers.  Handles nulls and undefined through calling handleNulls 
+   * or numbers.  Handles nulls and undefined through calling handleNulls
    * @param {object} a sort value a
    * @param {object} b sort value b
    * @returns {number} normal sort function, returns -ve, 0, +ve
@@ -8302,7 +9938,7 @@ module.service('rowSorter', ['$parse', 'uiGridConstants', function ($parse, uiGr
    * @ngdoc method
    * @methodOf ui.grid.class:RowSorter
    * @name sortNumber
-   * @description Sorts numerical values.  Handles nulls and undefined through calling handleNulls 
+   * @description Sorts numerical values.  Handles nulls and undefined through calling handleNulls
    * @param {object} a sort value a
    * @param {object} b sort value b
    * @returns {number} normal sort function, returns -ve, 0, +ve
@@ -8321,8 +9957,8 @@ module.service('rowSorter', ['$parse', 'uiGridConstants', function ($parse, uiGr
    * @ngdoc method
    * @methodOf ui.grid.class:RowSorter
    * @name sortNumberStr
-   * @description Sorts numerical values that are stored in a string (i.e. parses them to numbers first).  
-   * Handles nulls and undefined through calling handleNulls 
+   * @description Sorts numerical values that are stored in a string (i.e. parses them to numbers first).
+   * Handles nulls and undefined through calling handleNulls
    * @param {object} a sort value a
    * @param {object} b sort value b
    * @returns {number} normal sort function, returns -ve, 0, +ve
@@ -8336,36 +9972,36 @@ module.service('rowSorter', ['$parse', 'uiGridConstants', function ($parse, uiGr
           numB, // The parsed number form of 'b'
           badA = false,
           badB = false;
-  
+
       // Try to parse 'a' to a float
       numA = parseFloat(a.replace(/[^0-9.-]/g, ''));
-  
+
       // If 'a' couldn't be parsed to float, flag it as bad
       if (isNaN(numA)) {
           badA = true;
       }
-  
+
       // Try to parse 'b' to a float
       numB = parseFloat(b.replace(/[^0-9.-]/g, ''));
-  
+
       // If 'b' couldn't be parsed to float, flag it as bad
       if (isNaN(numB)) {
           badB = true;
       }
-  
+
       // We want bad ones to get pushed to the bottom... which effectively is "greater than"
       if (badA && badB) {
           return 0;
       }
-  
+
       if (badA) {
           return 1;
       }
-  
+
       if (badB) {
           return -1;
       }
-  
+
       return numA - numB;
     }
   };
@@ -8375,7 +10011,7 @@ module.service('rowSorter', ['$parse', 'uiGridConstants', function ($parse, uiGr
    * @ngdoc method
    * @methodOf ui.grid.class:RowSorter
    * @name sortAlpha
-   * @description Sorts string values. Handles nulls and undefined through calling handleNulls 
+   * @description Sorts string values. Handles nulls and undefined through calling handleNulls
    * @param {object} a sort value a
    * @param {object} b sort value b
    * @returns {number} normal sort function, returns -ve, 0, +ve
@@ -8387,8 +10023,8 @@ module.service('rowSorter', ['$parse', 'uiGridConstants', function ($parse, uiGr
     } else {
       var strA = a.toString().toLowerCase(),
           strB = b.toString().toLowerCase();
-  
-      return strA === strB ? 0 : (strA < strB ? -1 : 1);
+
+      return strA === strB ? 0 : strA.localeCompare(strB);
     }
   };
 
@@ -8397,7 +10033,8 @@ module.service('rowSorter', ['$parse', 'uiGridConstants', function ($parse, uiGr
    * @ngdoc method
    * @methodOf ui.grid.class:RowSorter
    * @name sortDate
-   * @description Sorts date values. Handles nulls and undefined through calling handleNulls 
+   * @description Sorts date values. Handles nulls and undefined through calling handleNulls.
+   * Handles date strings by converting to Date object if not already an instance of Date
    * @param {object} a sort value a
    * @param {object} b sort value b
    * @returns {number} normal sort function, returns -ve, 0, +ve
@@ -8407,9 +10044,15 @@ module.service('rowSorter', ['$parse', 'uiGridConstants', function ($parse, uiGr
     if ( nulls !== null ){
       return nulls;
     } else {
+      if (!(a instanceof Date)) {
+        a = new Date(a);
+      }
+      if (!(b instanceof Date)){
+        b = new Date(b);
+      }
       var timeA = a.getTime(),
           timeB = b.getTime();
-  
+
       return timeA === timeB ? 0 : (timeA < timeB ? -1 : 1);
     }
   };
@@ -8419,8 +10062,8 @@ module.service('rowSorter', ['$parse', 'uiGridConstants', function ($parse, uiGr
    * @ngdoc method
    * @methodOf ui.grid.class:RowSorter
    * @name sortBool
-   * @description Sorts boolean values, true is considered larger than false. 
-   * Handles nulls and undefined through calling handleNulls 
+   * @description Sorts boolean values, true is considered larger than false.
+   * Handles nulls and undefined through calling handleNulls
    * @param {object} a sort value a
    * @param {object} b sort value b
    * @returns {number} normal sort function, returns -ve, 0, +ve
@@ -8433,7 +10076,7 @@ module.service('rowSorter', ['$parse', 'uiGridConstants', function ($parse, uiGr
       if (a && b) {
         return 0;
       }
-  
+
       if (!a && !b) {
         return 0;
       }
@@ -8448,17 +10091,17 @@ module.service('rowSorter', ['$parse', 'uiGridConstants', function ($parse, uiGr
    * @ngdoc method
    * @methodOf ui.grid.class:RowSorter
    * @name getSortFn
-   * @description Get the sort function for the column.  Looks first in 
+   * @description Get the sort function for the column.  Looks first in
    * rowSorter.colSortFnCache using the column name, failing that it
    * looks at col.sortingAlgorithm (and puts it in the cache), failing that
    * it guesses the sort algorithm based on the data type.
-   * 
+   *
    * The cache currently seems a bit pointless, as none of the work we do is
    * processor intensive enough to need caching.  Presumably in future we might
    * inspect the row data itself to guess the sort function, and in that case
    * it would make sense to have a cache, the infrastructure is in place to allow
    * that.
-   * 
+   *
    * @param {Grid} grid the grid to consider
    * @param {GridCol} col the column to find a function for
    * @param {array} rows an array of grid rows.  Currently unused, but presumably in future
@@ -8476,6 +10119,11 @@ module.service('rowSorter', ['$parse', 'uiGridConstants', function ($parse, uiGr
     else if (col.sortingAlgorithm !== undefined) {
       sortFn = col.sortingAlgorithm;
       rowSorter.colSortFnCache[col.colDef.name] = col.sortingAlgorithm;
+    }
+    // Always default to sortAlpha when sorting after a cellFilter
+    else if ( col.sortCellFiltered && col.cellFilter ){
+      sortFn = rowSorter.sortAlpha;
+      rowSorter.colSortFnCache[col.colDef.name] = sortFn;
     }
     // Try and guess what sort function to use
     else {
@@ -8506,7 +10154,7 @@ module.service('rowSorter', ['$parse', 'uiGridConstants', function ($parse, uiGr
    * @description Used where multiple columns are present in the sort criteria,
    * we determine which column should take precedence in the sort by sorting
    * the columns based on their sort.priority
-   * 
+   *
    * @param {gridColumn} a column a
    * @param {gridColumn} b column b
    * @returns {number} normal sort function, returns -ve, 0, +ve
@@ -8528,11 +10176,11 @@ module.service('rowSorter', ['$parse', 'uiGridConstants', function ($parse, uiGr
       }
     }
     // Only A has a priority
-    else if (a.sort.priority || a.sort.priority === 0) {
+    else if (a.sort.priority || a.sort.priority === undefined) {
       return -1;
     }
     // Only B has a priority
-    else if (b.sort.priority || b.sort.priority === 0) {
+    else if (b.sort.priority || b.sort.priority === undefined) {
       return 1;
     }
     // Neither has a priority
@@ -8549,25 +10197,26 @@ module.service('rowSorter', ['$parse', 'uiGridConstants', function ($parse, uiGr
    * @description Prevents the internal sorting from executing.  Events will
    * still be fired when the sort changes, and the sort information on
    * the columns will be updated, allowing an external sorter (for example,
-   * server sorting) to be implemented.  Defaults to false. 
-   * 
+   * server sorting) to be implemented.  Defaults to false.
+   *
    */
   /**
    * @ngdoc method
    * @methodOf ui.grid.class:RowSorter
    * @name sort
-   * @description sorts the grid 
+   * @description sorts the grid
    * @param {Object} grid the grid itself
-   * @param {Object} rows the rows to be sorted
-   * @param {Object} columns the columns in which to look
+   * @param {array} rows the rows to be sorted
+   * @param {array} columns the columns in which to look
    * for sort criteria
+   * @returns {array} sorted rows
    */
   rowSorter.sort = function rowSorterSort(grid, rows, columns) {
     // first make sure we are even supposed to do work
     if (!rows) {
       return;
     }
-    
+
     if (grid.options.useExternalSorting){
       return rows;
     }
@@ -8575,7 +10224,7 @@ module.service('rowSorter', ['$parse', 'uiGridConstants', function ($parse, uiGr
     // Build the list of columns to sort by
     var sortCols = [];
     columns.forEach(function (col) {
-      if (col.sort && col.sort.direction && (col.sort.direction === uiGridConstants.ASC || col.sort.direction === uiGridConstants.DESC)) {
+      if (col.sort && !col.sort.ignoreSort && col.sort.direction && (col.sort.direction === uiGridConstants.ASC || col.sort.direction === uiGridConstants.DESC)) {
         sortCols.push(col);
       }
     });
@@ -8587,21 +10236,22 @@ module.service('rowSorter', ['$parse', 'uiGridConstants', function ($parse, uiGr
     if (sortCols.length === 0) {
       return rows;
     }
-    
+
     // Re-usable variables
     var col, direction;
+
+    // put a custom index field on each row, used to make a stable sort out of unstable sorts (e.g. Chrome)
+    var setIndex = function( row, idx ){
+      row.entity.$$uiGridIndex = idx;
+    };
+    rows.forEach(setIndex);
 
     // IE9-11 HACK.... the 'rows' variable would be empty where we call rowSorter.getSortFn(...) below. We have to use a separate reference
     // var d = data.slice(0);
     var r = rows.slice(0);
-    
-    // put a custom index field on each row, used to make a stable sort out of unstable sorts (e.g. Chrome)
-    angular.forEach( rows, function ( row, idx ) {
-      row.entity.$uiGridIndex = idx;
-    });
 
     // Now actually sort the data
-    var newRows = rows.sort(function rowSortFn(rowA, rowB) {
+    var rowSortFn = function (rowA, rowB) {
       var tem = 0,
           idx = 0,
           sortFn;
@@ -8612,35 +10262,46 @@ module.service('rowSorter', ['$parse', 'uiGridConstants', function ($parse, uiGr
         direction = sortCols[idx].sort.direction;
 
         sortFn = rowSorter.getSortFn(grid, col, r);
-        
-        var propA = grid.getCellValue(rowA, col);
-        var propB = grid.getCellValue(rowB, col);
 
-        tem = sortFn(propA, propB);
+        var propA, propB;
+
+        if ( col.sortCellFiltered ){
+          propA = grid.getCellDisplayValue(rowA, col);
+          propB = grid.getCellDisplayValue(rowB, col);
+        } else {
+          propA = grid.getCellValue(rowA, col);
+          propB = grid.getCellValue(rowB, col);
+        }
+
+        tem = sortFn(propA, propB, rowA, rowB, direction);
 
         idx++;
       }
 
-      // Chrome doesn't implement a stable sort function.  If our sort returns 0 
-      // (i.e. the items are equal), then return the previous order using our custom
+      // Chrome doesn't implement a stable sort function.  If our sort returns 0
+      // (i.e. the items are equal), and we're at the last sort column in the list,
+      // then return the previous order using our custom
       // index variable
       if (tem === 0 ) {
-        return rowA.entity.$uiGridIndex - rowB.entity.$uiGridIndex;
+        return rowA.entity.$$uiGridIndex - rowB.entity.$$uiGridIndex;
       }
-      
+
       // Made it this far, we don't have to worry about null & undefined
       if (direction === uiGridConstants.ASC) {
         return tem;
       } else {
         return 0 - tem;
       }
-    });
-    
+    };
+
+    var newRows = rows.sort(rowSortFn);
+
     // remove the custom index field on each row, used to make a stable sort out of unstable sorts (e.g. Chrome)
-    angular.forEach( newRows, function ( row, idx ) {
-      delete row.entity.$uiGridIndex;
-    });
-    
+    var clearIndex = function( row, idx ){
+       delete row.entity.$$uiGridIndex;
+    };
+    rows.forEach(clearIndex);
+
     return newRows;
   };
 
@@ -8648,6 +10309,7 @@ module.service('rowSorter', ['$parse', 'uiGridConstants', function ($parse, uiGr
 }]);
 
 })();
+
 (function() {
 
 var module = angular.module('ui.grid');
@@ -8671,7 +10333,7 @@ if (typeof Function.prototype.bind !== "function") {
   };
 }
 
-function getStyles (elem) {
+function  getStyles (elem) {
   var e = elem;
   if (typeof(e.length) !== 'undefined' && e.length) {
     e = elem[0];
@@ -8696,7 +10358,7 @@ function augmentWidthOrHeight( elem, name, extra, isBorderBox, styles ) {
           val = 0;
 
   var sides = ['Top', 'Right', 'Bottom', 'Left'];
-  
+
   for ( ; i < 4; i += 2 ) {
     var side = sides[i];
     // dump('side', side);
@@ -8756,7 +10418,7 @@ function augmentWidthOrHeight( elem, name, extra, isBorderBox, styles ) {
 function getWidthOrHeight( elem, name, extra ) {
   // Start with offset property, which is equivalent to the border-box value
   var valueIsBorderBox = true,
-          val,
+          val, // = name === 'width' ? elem.offsetWidth : elem.offsetHeight,
           styles = getStyles(elem),
           isBorderBox = styles['boxSizing'] === 'border-box';
 
@@ -8801,7 +10463,7 @@ function getWidthOrHeight( elem, name, extra ) {
 
 function getLineHeight(elm) {
   elm = angular.element(elm)[0];
-  var parent = elm.offsetParent;
+  var parent = elm.parentElement;
 
   if (!parent) {
     parent = document.getElementsByTagName('body')[0];
@@ -8810,18 +10472,20 @@ function getLineHeight(elm) {
   return parseInt( getStyles(parent).fontSize ) || parseInt( getStyles(elm).fontSize ) || 16;
 }
 
-var uid = ['0', '0', '0'];
+var uid = ['0', '0', '0', '0'];
 var uidPrefix = 'uiGrid-';
 
 /**
  *  @ngdoc service
  *  @name ui.grid.service:GridUtil
- *  
+ *
  *  @description Grid utility functions
  */
-module.service('gridUtil', ['$log', '$window', '$document', '$http', '$templateCache', '$timeout', '$injector', '$q', '$interpolate', 'uiGridConstants',
-  function ($log, $window, $document, $http, $templateCache, $timeout, $injector, $q, $interpolate, uiGridConstants) {
+module.service('gridUtil', ['$log', '$window', '$document', '$http', '$templateCache', '$timeout', '$interval', '$injector', '$q', '$interpolate', 'uiGridConstants',
+  function ($log, $window, $document, $http, $templateCache, $timeout, $interval, $injector, $q, $interpolate, uiGridConstants) {
   var s = {
+
+    augmentWidthOrHeight: augmentWidthOrHeight,
 
     getStyles: getStyles,
 
@@ -8894,7 +10558,7 @@ module.service('gridUtil', ['$log', '$window', '$document', '$http', '$templateC
           return angular.lowercase(angular.uppercase(match.charAt(0)) + match.slice(1));
         })
         // Capitalize the first letter of words
-        .replace(/(\w+)/g, function (match) {
+        .replace(/([\w\u00C0-\u017F]+)/g, function (match) {
           return angular.uppercase(match.charAt(0)) + match.slice(1);
         })
         // Put a space in between words that have partial capilizations (i.e. 'firstName' becomes 'First Name')
@@ -8940,7 +10604,7 @@ module.service('gridUtil', ['$log', '$window', '$document', '$http', '$templateC
       if (angular.isUndefined(excludeProperties)) { excludeProperties = []; }
 
       var item = data[0];
-      
+
       angular.forEach(item,function (prop, propName) {
         if ( excludeProperties.indexOf(propName) === -1){
           columnDefs.push({
@@ -9031,7 +10695,7 @@ module.service('gridUtil', ['$log', '$window', '$document', '$http', '$templateC
         .then(s.postProcessTemplate);
     },
 
-    // 
+    //
     postProcessTemplate: function (template) {
       var startSym = $interpolate.startSymbol(),
           endSym = $interpolate.endSymbol();
@@ -9053,11 +10717,11 @@ module.service('gridUtil', ['$log', '$window', '$document', '$http', '$templateC
      *
      * @param {string/number/bool/object} item variable to examine
      * @returns {string} one of the following
-     * 'string'
-     * 'boolean'
-     * 'number'
-     * 'date'
-     * 'object'
+     * - 'string'
+     * - 'boolean'
+     * - 'number'
+     * - 'date'
+     * - 'object'
      */
     guessType : function (item) {
       var itemType = typeof(item);
@@ -9088,7 +10752,7 @@ module.service('gridUtil', ['$log', '$window', '$document', '$http', '$templateC
     * @returns {number} Element width in pixels, accounting for any borders, etc.
     */
     elementWidth: function (elem) {
-      
+
     },
 
     /**
@@ -9102,7 +10766,7 @@ module.service('gridUtil', ['$log', '$window', '$document', '$http', '$templateC
     * @returns {number} Element height in pixels, accounting for any borders, etc.
     */
     elementHeight: function (elem) {
-      
+
     },
 
     // Thanks to http://stackoverflow.com/a/13382873/888165
@@ -9121,7 +10785,7 @@ module.service('gridUtil', ['$log', '$window', '$document', '$http', '$templateC
         // add innerdiv
         var inner = document.createElement("div");
         inner.style.width = "100%";
-        outer.appendChild(inner);        
+        outer.appendChild(inner);
 
         var widthWithScroll = inner.offsetWidth;
 
@@ -9189,7 +10853,7 @@ module.service('gridUtil', ['$log', '$window', '$document', '$http', '$templateC
       // var toFix = ['wheel', 'mousewheel', 'DOMMouseScroll', 'MozMousePixelScroll'];
       // var toBind = 'onwheel' in document || document.documentMode >= 9 ? ['wheel'] : ['mousewheel', 'DomMouseScroll', 'MozMousePixelScroll'];
       var lowestDelta, lowestDeltaXY;
-      
+
       var orgEvent   = event || window.event,
           args       = [].slice.call(arguments, 1),
           delta      = 0,
@@ -9290,12 +10954,12 @@ module.service('gridUtil', ['$log', '$window', '$document', '$http', '$templateC
         return found;
     },
 
-    // Shim requestAnimationFrame
-    requestAnimationFrame: $window.requestAnimationFrame && $window.requestAnimationFrame.bind($window) ||
-                           $window.webkitRequestAnimationFrame && $window.webkitRequestAnimationFrame.bind($window) ||
-                           function(fn) {
-                             return $timeout(fn, 10, false);
-                           },
+    //// Shim requestAnimationFrame
+    //requestAnimationFrame: $window.requestAnimationFrame && $window.requestAnimationFrame.bind($window) ||
+    //                       $window.webkitRequestAnimationFrame && $window.webkitRequestAnimationFrame.bind($window) ||
+    //                       function(fn) {
+    //                         return $timeout(fn, 10, false);
+    //                       },
 
     numericAndNullSort: function (a, b) {
       if (a === null) { return 1; }
@@ -9309,7 +10973,12 @@ module.service('gridUtil', ['$log', '$window', '$document', '$http', '$templateC
       var $animate;
       try {
         $animate = $injector.get('$animate');
-        $animate.enabled(false, element);
+        // See: http://brianhann.com/angular-1-4-breaking-changes-to-be-aware-of/#animate
+        if (angular.version.major > 1 || (angular.version.major === 1 && angular.version.minor >= 4)) {
+          $animate.enabled(element, false);
+        } else {
+          $animate.enabled(false, element);
+        }
       }
       catch (e) {}
     },
@@ -9318,7 +10987,12 @@ module.service('gridUtil', ['$log', '$window', '$document', '$http', '$templateC
       var $animate;
       try {
         $animate = $injector.get('$animate');
-        $animate.enabled(true, element);
+        // See: http://brianhann.com/angular-1-4-breaking-changes-to-be-aware-of/#animate
+        if (angular.version.major > 1 || (angular.version.major === 1 && angular.version.minor >= 4)) {
+          $animate.enabled(element, true);
+        } else {
+          $animate.enabled(true, element);
+        }
         return $animate;
       }
       catch (e) {}
@@ -9375,7 +11049,7 @@ module.service('gridUtil', ['$log', '$window', '$document', '$http', '$templateC
     resetUids: function () {
       uid = ['0', '0', '0'];
     },
-    
+
     /**
      * @ngdoc method
      * @methodOf ui.grid.service:GridUtil
@@ -9384,7 +11058,7 @@ module.service('gridUtil', ['$log', '$window', '$document', '$http', '$templateC
      * treatment within ui-grid if we so desired.  At present we only log
      * error messages if uiGridConstants.LOG_ERROR_MESSAGES is set to true
      * @param {string} logMessage message to be logged to the console
-     * 
+     *
      */
     logError: function( logMessage ){
       if ( uiGridConstants.LOG_ERROR_MESSAGES ){
@@ -9400,7 +11074,7 @@ module.service('gridUtil', ['$log', '$window', '$document', '$http', '$templateC
      * treatment within ui-grid if we so desired.  At present we only log
      * warning messages if uiGridConstants.LOG_WARN_MESSAGES is set to true
      * @param {string} logMessage message to be logged to the console
-     * 
+     *
      */
     logWarn: function( logMessage ){
       if ( uiGridConstants.LOG_WARN_MESSAGES ){
@@ -9415,7 +11089,7 @@ module.service('gridUtil', ['$log', '$window', '$document', '$http', '$templateC
      * @description wraps the $log method, allowing us to choose different
      * treatment within ui-grid if we so desired.  At present we only log
      * debug messages if uiGridConstants.LOG_DEBUG_MESSAGES is set to true
-     * 
+     *
      */
     logDebug: function() {
       if ( uiGridConstants.LOG_DEBUG_MESSAGES ){
@@ -9424,6 +11098,121 @@ module.service('gridUtil', ['$log', '$window', '$document', '$http', '$templateC
     }
 
   };
+
+  /**
+   * @ngdoc object
+   * @name focus
+   * @propertyOf ui.grid.service:GridUtil
+   * @description Provies a set of methods to set the document focus inside the grid.
+   * See {@link ui.grid.service:GridUtil.focus} for more information.
+   */
+
+  /**
+   * @ngdoc object
+   * @name ui.grid.service:GridUtil.focus
+   * @description Provies a set of methods to set the document focus inside the grid.
+   * Timeouts are utilized to ensure that the focus is invoked after any other event has been triggered.
+   * e.g. click events that need to run before the focus or
+   * inputs elements that are in a disabled state but are enabled when those events
+   * are triggered.
+   */
+  s.focus = {
+    queue: [],
+    //http://stackoverflow.com/questions/25596399/set-element-focus-in-angular-way
+    /**
+     * @ngdoc method
+     * @methodOf ui.grid.service:GridUtil.focus
+     * @name byId
+     * @description Sets the focus of the document to the given id value.
+     * If provided with the grid object it will automatically append the grid id.
+     * This is done to encourage unique dom id's as it allows for multiple grids on a
+     * page.
+     * @param {String} id the id of the dom element to set the focus on
+     * @param {Object=} Grid the grid object for this grid instance. See: {@link ui.grid.class:Grid}
+     * @param {Number} Grid.id the unique id for this grid. Already set on an initialized grid object.
+     * @returns {Promise} The `$timeout` promise that will be resolved once focus is set. If another focus is requested before this request is evaluated.
+     * then the promise will fail with the `'canceled'` reason.
+     */
+    byId: function (id, Grid) {
+      this._purgeQueue();
+      var promise = $timeout(function() {
+        var elementID = (Grid && Grid.id ? Grid.id + '-' : '') + id;
+        var element = $window.document.getElementById(elementID);
+        if (element) {
+          element.focus();
+        } else {
+          s.logWarn('[focus.byId] Element id ' + elementID + ' was not found.');
+        }
+      });
+      this.queue.push(promise);
+      return promise;
+    },
+
+    /**
+     * @ngdoc method
+     * @methodOf ui.grid.service:GridUtil.focus
+     * @name byElement
+     * @description Sets the focus of the document to the given dom element.
+     * @param {(element|angular.element)} element the DOM element to set the focus on
+     * @returns {Promise} The `$timeout` promise that will be resolved once focus is set. If another focus is requested before this request is evaluated.
+     * then the promise will fail with the `'canceled'` reason.
+     */
+    byElement: function(element){
+      if (!angular.isElement(element)){
+        s.logWarn("Trying to focus on an element that isn\'t an element.");
+        return $q.reject('not-element');
+      }
+      element = angular.element(element);
+      this._purgeQueue();
+      var promise = $timeout(function(){
+        if (element){
+          element[0].focus();
+        }
+      });
+      this.queue.push(promise);
+      return promise;
+    },
+    /**
+     * @ngdoc method
+     * @methodOf ui.grid.service:GridUtil.focus
+     * @name bySelector
+     * @description Sets the focus of the document to the given dom element.
+     * @param {(element|angular.element)} parentElement the parent/ancestor of the dom element that you are selecting using the query selector
+     * @param {String} querySelector finds the dom element using the {@link http://www.w3schools.com/jsref/met_document_queryselector.asp querySelector}
+     * @param {boolean} [aSync=false] If true then the selector will be querried inside of a timeout. Otherwise the selector will be querried imidately
+     * then the focus will be called.
+     * @returns {Promise} The `$timeout` promise that will be resolved once focus is set. If another focus is requested before this request is evaluated.
+     * then the promise will fail with the `'canceled'` reason.
+     */
+    bySelector: function(parentElement, querySelector, aSync){
+      var self = this;
+      if (!angular.isElement(parentElement)){
+        throw new Error("The parent element is not an element.");
+      }
+      // Ensure that this is an angular element.
+      // It is fine if this is already an angular element.
+      parentElement = angular.element(parentElement);
+      var focusBySelector = function(){
+        var element = parentElement[0].querySelector(querySelector);
+        return self.byElement(element);
+      };
+      this._purgeQueue();
+      if (aSync){ //Do this asynchronysly
+        var promise = $timeout(focusBySelector);
+        this.queue.push($timeout(focusBySelector));
+        return promise;
+      } else {
+        return focusBySelector();
+      }
+    },
+    _purgeQueue: function(){
+      this.queue.forEach(function(element){
+        $timeout.cancel(element);
+      });
+      this.queue = [];
+    }
+  };
+
 
   ['width', 'height'].forEach(function (name) {
     var capsName = angular.uppercase(name.charAt(0)) + name.substr(1);
@@ -9436,8 +11225,8 @@ module.service('gridUtil', ['$log', '$window', '$document', '$http', '$templateC
       if (e) {
         var styles = getStyles(e);
         return e.offsetWidth === 0 && rdisplayswap.test(styles.display) ?
-                  s.fakeElement(e, cssShow, function(newElm) {
-                    return getWidthOrHeight( newElm, name, extra );
+                  s.swap(e, cssShow, function() {
+                    return getWidthOrHeight(e, name, extra );
                   }) :
                   getWidthOrHeight( e, name, extra );
       }
@@ -9529,108 +11318,103 @@ module.service('gridUtil', ['$log', '$window', '$document', '$http', '$templateC
     return 'unknown';
   };
 
-  /**
-    * @ngdoc method
-    * @name normalizeScrollLeft
-    * @methodOf ui.grid.service:GridUtil
-    *
-    * @param {element} element The element to get the `scrollLeft` from.
-    *
-    * @returns {int} A normalized scrollLeft value for the current browser.
-    *
-    * @description
-    * Browsers currently handle RTL in different ways, resulting in inconsistent scrollLeft values. This method normalizes them
-    */
-  s.normalizeScrollLeft = function normalizeScrollLeft(element) {
+  // Borrowed from https://github.com/othree/jquery.rtl-scroll-type
+  // Determine the scroll "type" this browser is using for RTL
+  s.rtlScrollType = function rtlScrollType() {
+    if (rtlScrollType.type) {
+      return rtlScrollType.type;
+    }
+
+    var definer = angular.element('<div dir="rtl" style="font-size: 14px; width: 1px; height: 1px; position: absolute; top: -1000px; overflow: scroll">A</div>')[0],
+        type = 'reverse';
+
+    document.body.appendChild(definer);
+
+    if (definer.scrollLeft > 0) {
+      type = 'default';
+    }
+    else {
+      definer.scrollLeft = 1;
+      if (definer.scrollLeft === 0) {
+        type = 'negative';
+      }
+    }
+
+    angular.element(definer).remove();
+    rtlScrollType.type = type;
+
+    return type;
+  };
+
+    /**
+     * @ngdoc method
+     * @name normalizeScrollLeft
+     * @methodOf ui.grid.service:GridUtil
+     *
+     * @param {element} element The element to get the `scrollLeft` from.
+     * @param {grid} grid -  grid used to normalize (uses the rtl property)
+     *
+     * @returns {number} A normalized scrollLeft value for the current browser.
+     *
+     * @description
+     * Browsers currently handle RTL in different ways, resulting in inconsistent scrollLeft values. This method normalizes them
+     */
+  s.normalizeScrollLeft = function normalizeScrollLeft(element, grid) {
     if (typeof(element.length) !== 'undefined' && element.length) {
       element = element[0];
     }
 
-    var browser = s.detectBrowser();
-
     var scrollLeft = element.scrollLeft;
-    
-    var dir = s.getStyles(element)['direction'];
 
-    // IE stays normal in RTL
-    if (browser === 'ie') {
-      return scrollLeft;
-    }
-    // Chrome doesn't alter the scrollLeft value. So with RTL on a 400px-wide grid, the right-most position will still be 400 and the left-most will still be 0;
-    else if (browser === 'chrome') {
-      if (dir === 'rtl') {
-        // Get the max scroll for the element
-        var maxScrollLeft = element.scrollWidth - element.clientWidth;
-
-        // Subtract the current scroll amount from the max scroll
-        return maxScrollLeft - scrollLeft;
-      }
-      else {
-        return scrollLeft;
+    if (grid.isRTL()) {
+      switch (s.rtlScrollType()) {
+        case 'default':
+          return element.scrollWidth - scrollLeft - element.clientWidth;
+        case 'negative':
+          return Math.abs(scrollLeft);
+        case 'reverse':
+          return scrollLeft;
       }
     }
-    // Firefox goes negative!
-    else if (browser === 'firefox') {
-      return Math.abs(scrollLeft);
-    }
-    else {
-      // TODO(c0bra): Handle other browsers? Android? iOS? Opera?
-      return scrollLeft;
-    }
+
+    return scrollLeft;
   };
 
   /**
   * @ngdoc method
-  * @name normalizeScrollLeft
+  * @name denormalizeScrollLeft
   * @methodOf ui.grid.service:GridUtil
   *
   * @param {element} element The element to normalize the `scrollLeft` value for
-  * @param {int} scrollLeft The `scrollLeft` value to denormalize.
+  * @param {number} scrollLeft The `scrollLeft` value to denormalize.
+  * @param {grid} grid The grid that owns the scroll event.
   *
-  * @returns {int} A normalized scrollLeft value for the current browser.
+  * @returns {number} A normalized scrollLeft value for the current browser.
   *
   * @description
   * Browsers currently handle RTL in different ways, resulting in inconsistent scrollLeft values. This method denormalizes a value for the current browser.
   */
-  s.denormalizeScrollLeft = function denormalizeScrollLeft(element, scrollLeft) {
+  s.denormalizeScrollLeft = function denormalizeScrollLeft(element, scrollLeft, grid) {
     if (typeof(element.length) !== 'undefined' && element.length) {
       element = element[0];
     }
 
-    var browser = s.detectBrowser();
+    if (grid.isRTL()) {
+      switch (s.rtlScrollType()) {
+        case 'default':
+          // Get the max scroll for the element
+          var maxScrollLeft = element.scrollWidth - element.clientWidth;
 
-    var dir = s.getStyles(element)['direction'];
+          // Subtract the current scroll amount from the max scroll
+          return maxScrollLeft - scrollLeft;
+        case 'negative':
+          return scrollLeft * -1;
+        case 'reverse':
+          return scrollLeft;
+      }
+    }
 
-    // IE stays normal in RTL
-    if (browser === 'ie') {
-      return scrollLeft;
-    }
-    // Chrome doesn't alter the scrollLeft value. So with RTL on a 400px-wide grid, the right-most position will still be 400 and the left-most will still be 0;
-    else if (browser === 'chrome') {
-      if (dir === 'rtl') {
-        // Get the max scroll for the element
-        var maxScrollLeft = element.scrollWidth - element.clientWidth;
-
-        // Subtract the current scroll amount from the max scroll
-        return maxScrollLeft - scrollLeft;
-      }
-      else {
-        return scrollLeft;
-      }
-    }
-    // Firefox goes negative!
-    else if (browser === 'firefox') {
-      if (dir === 'rtl') {
-        return scrollLeft * -1;
-      }
-      else {
-        return scrollLeft;
-      }
-    }
-    else {
-      // TODO(c0bra): Handle other browsers? Android? iOS? Opera?
-      return scrollLeft;
-    }
+    return scrollLeft;
   };
 
     /**
@@ -9672,7 +11456,7 @@ module.service('gridUtil', ['$log', '$window', '$document', '$http', '$templateC
    *
    * @param {function} func function to debounce
    * @param {number} wait milliseconds to delay
-   * @param {bool} immediate execute before delay
+   * @param {boolean} immediate execute before delay
    *
    * @returns {function} A function that can be executed as debounced function
    *
@@ -9703,7 +11487,7 @@ module.service('gridUtil', ['$log', '$window', '$document', '$http', '$templateC
       if (timeout) {
         $timeout.cancel(timeout);
       }
-      timeout = $timeout(later, wait);
+      timeout = $timeout(later, wait, false);
       if (callNow) {
         result = func.apply(context, args);
       }
@@ -9731,6 +11515,13 @@ module.service('gridUtil', ['$log', '$window', '$document', '$http', '$templateC
    * Adapted from debounce function (above)
    * Potential keys for Params Object are:
    *    trailing (bool) - whether to trigger after throttle time ends if called multiple times
+   * Updated to use $interval rather than $timeout, as protractor (e2e tests) is able to work with $interval,
+   * but not with $timeout
+   *
+   * Note that when using throttle, you need to use throttle to create a new function upfront, then use the function
+   * return from that call each time you need to call throttle.  If you call throttle itself repeatedly, the lastCall
+   * variable will get overwritten and the throttling won't work
+   *
    * @example
    * <pre>
    * var throttledFunc =  gridUtil.throttle(function(){console.log('throttled');}, 500, {trailing: true});
@@ -9746,7 +11537,7 @@ module.service('gridUtil', ['$log', '$window', '$document', '$http', '$templateC
     function runFunc(endDate){
       lastCall = +new Date();
       func.apply(context, args);
-      $timeout(function(){ queued = null; }, 0);
+      $interval(function(){ queued = null; }, 0, 1, false);
     }
 
     return function(){
@@ -9759,7 +11550,7 @@ module.service('gridUtil', ['$log', '$window', '$document', '$http', '$templateC
           runFunc();
         }
         else if (options.trailing){
-          queued = $timeout(runFunc, wait - sinceLast);
+          queued = $interval(runFunc, wait - sinceLast, 1, false);
         }
       }
     };
@@ -9801,7 +11592,7 @@ module.service('gridUtil', ['$log', '$window', '$document', '$http', '$templateC
     }
   };
   s.off.mousewheel = function (elm, fn) {
-    var $elm = angular.element(this);
+    var $elm = angular.element(elm);
 
     var cbs = $elm.data('mousewheel-callbacks');
     var handler = cbs[fn];
@@ -9904,7 +11695,7 @@ module.service('gridUtil', ['$log', '$window', '$document', '$http', '$templateC
     //   offsetX = event.clientX - boundingRect.left;
     //   offsetY = event.clientY - boundingRect.top;
     // }
-    
+
     // event.deltaX = deltaX;
     // event.deltaY = deltaY;
     // event.deltaFactor = lowestDelta;
@@ -9914,7 +11705,8 @@ module.service('gridUtil', ['$log', '$window', '$document', '$http', '$templateC
       deltaX: deltaX,
       deltaY: deltaY,
       deltaFactor: lowestDelta,
-      preventDefault: function () { event.preventDefault(); }
+      preventDefault: function () { event.preventDefault(); },
+      stopPropagation: function () { event.stopPropagation(); }
     };
 
     // Clearout lowestDelta after sometime to better
@@ -9959,6 +11751,94 @@ module.filter('px', function() {
 
 })();
 
+(function () {
+  angular.module('ui.grid').config(['$provide', function($provide) {
+    $provide.decorator('i18nService', ['$delegate', function($delegate) {
+      var lang = {
+              aggregate: {
+                  label: 'položky'
+              },
+              groupPanel: {
+                  description: 'Přesuňte záhlaví zde pro vytvoření skupiny dle sloupce.'
+              },
+              search: {
+                  placeholder: 'Hledat...',
+                  showingItems: 'Zobrazuji položky:',
+                  selectedItems: 'Vybrané položky:',
+                  totalItems: 'Celkem položek:',
+                  size: 'Velikost strany:',
+                  first: 'První strana',
+                  next: 'Další strana',
+                  previous: 'Předchozí strana',
+                  last: 'Poslední strana'
+              },
+              menu: {
+                  text: 'Vyberte sloupec:'
+              },
+              sort: {
+                  ascending: 'Seřadit od A-Z',
+                  descending: 'Seřadit od Z-A',
+                  remove: 'Odebrat seřazení'
+              },
+              column: {
+                  hide: 'Schovat sloupec'
+              },
+              aggregation: {
+                  count: 'celkem řádků: ',
+                  sum: 'celkem: ',
+                  avg: 'avg: ',
+                  min: 'min.: ',
+                  max: 'max.: '
+              },
+              pinning: {
+                  pinLeft: 'Zamknout vlevo',
+                  pinRight: 'Zamknout vpravo',
+                  unpin: 'Odemknout'
+              },
+              gridMenu: {
+                  columns: 'Sloupce:',
+                  importerTitle: 'Importovat soubor',
+                  exporterAllAsCsv: 'Exportovat všechna data do csv',
+                  exporterVisibleAsCsv: 'Exportovat viditelná data do csv',
+                  exporterSelectedAsCsv: 'Exportovat vybraná data do csv',
+                  exporterAllAsPdf: 'Exportovat všechna data do pdf',
+                  exporterVisibleAsPdf: 'Exportovat viditelná data do pdf',
+                  exporterSelectedAsPdf: 'Exportovat vybraná data do pdf',
+                  clearAllFilters: 'Odstranit všechny filtry'
+              },
+              importer: {
+                  noHeaders: 'Názvy sloupců se nepodařilo získat, obsahuje soubor záhlaví?',
+                  noObjects: 'Data se nepodařilo zpracovat, obsahuje soubor řádky mimo záhlaví?',
+                  invalidCsv: 'Soubor nelze zpracovat, jedná se o CSV?',
+                  invalidJson: 'Soubor nelze zpracovat, je to JSON?',
+                  jsonNotArray: 'Soubor musí obsahovat json. Ukončuji..'
+              },
+              pagination: {
+                  sizes: 'položek na stránku',
+                  totalItems: 'položek'
+              },
+              grouping: {
+                  group: 'Seskupit',
+                  ungroup: 'Odebrat seskupení',
+                  aggregate_count: 'Agregace: Count',
+                  aggregate_sum: 'Agregace: Sum',
+                  aggregate_max: 'Agregace: Max',
+                  aggregate_min: 'Agregace: Min',
+                  aggregate_avg: 'Agregace: Avg',
+                  aggregate_remove: 'Agregace: Odebrat'
+              }
+          };
+
+          // support varianty of different czech keys.
+          $delegate.add('cs', lang);
+          $delegate.add('cz', lang);
+          $delegate.add('cs-cz', lang);
+          $delegate.add('cs-CZ', lang);
+      return $delegate;
+    }]);
+  }]);
+})();
+
 (function(){
   angular.module('ui.grid').config(['$provide', function($provide) {
     $provide.decorator('i18nService', ['$delegate', function($delegate) {
@@ -9983,12 +11863,18 @@ module.filter('px', function() {
         menu:{
           text: 'Vælg kolonner:'
         },
+        sort: {
+          ascending: 'Sorter stigende',
+          descending: 'Sorter faldende',
+          none: 'Sorter ingen',
+          remove: 'Fjern sortering'
+        },
         column: {
           hide: 'Skjul kolonne'
         },
         aggregation: {
-          count: 'samlede rækker: ',
-          sum: 'smalede: ',
+          count: 'antal rækker: ',
+          sum: 'sum: ',
           avg: 'gns: ',
           min: 'min: ',
           max: 'max: '
@@ -10001,7 +11887,8 @@ module.filter('px', function() {
           exporterSelectedAsCsv: 'Export selected data as csv',
           exporterAllAsPdf: 'Export all data as pdf',
           exporterVisibleAsPdf: 'Export visible data as pdf',
-          exporterSelectedAsPdf: 'Export selected data as pdf'
+          exporterSelectedAsPdf: 'Export selected data as pdf',
+          clearAllFilters: 'Clear all filters'
         },
         importer: {
           noHeaders: 'Column names were unable to be derived, does the file have a header?',
@@ -10015,10 +11902,20 @@ module.filter('px', function() {
     }]);
   }]);
 })();
+
 (function () {
   angular.module('ui.grid').config(['$provide', function ($provide) {
     $provide.decorator('i18nService', ['$delegate', function ($delegate) {
       $delegate.add('de', {
+        headerCell: {
+          aria: {
+            defaultFilterLabel: 'Filter für Spalte',
+            removeFilter: 'Filter löschen',
+            columnMenuButtonLabel: 'Spaltenmenü'
+          },
+          priority: 'Priorität:',
+          filterLabel: "Filter für Spalte: "
+        },
         aggregate: {
           label: 'Eintrag'
         },
@@ -10042,6 +11939,7 @@ module.filter('px', function() {
         sort: {
           ascending: 'aufsteigend sortieren',
           descending: 'absteigend sortieren',
+          none: 'keine Sortierung',
           remove: 'Sortierung zurücksetzen'
         },
         column: {
@@ -10059,7 +11957,13 @@ module.filter('px', function() {
             pinRight: 'Rechts anheften',
             unpin: 'Lösen'
         },
+        columnMenu: {
+          close: 'Schließen'
+        },
         gridMenu: {
+          aria: {
+            buttonLabel: 'Tabellenmenü'
+          },
           columns: 'Spalten:',
           importerTitle: 'Datei importieren',
           exporterAllAsCsv: 'Alle Daten als CSV exportieren',
@@ -10067,7 +11971,8 @@ module.filter('px', function() {
           exporterSelectedAsCsv: 'markierte Daten als CSV exportieren',
           exporterAllAsPdf: 'Alle Daten als PDF exportieren',
           exporterVisibleAsPdf: 'sichtbare Daten als PDF exportieren',
-          exporterSelectedAsPdf: 'markierte Daten als CSV exportieren'
+          exporterSelectedAsPdf: 'markierte Daten als CSV exportieren',
+          clearAllFilters: 'Alle Filter zurücksetzen'
         },
         importer: {
           noHeaders: 'Es konnten keine Spaltennamen ermittelt werden. Sind in der Datei Spaltendefinitionen enthalten?',
@@ -10077,8 +11982,27 @@ module.filter('px', function() {
           jsonNotArray: 'Die importierte JSON-Datei muß ein Array enthalten. Breche Import ab.'
         },
         pagination: {
-            sizes: 'Einträge pro Seite',
-            totalItems: 'Einträge'
+          aria: {
+            pageToFirst: 'Zum Anfang',
+            pageBack: 'Seite zurück',
+            pageSelected: 'Ausgwählte Seite',
+            pageForward: 'Seite vor',
+            pageToLast: 'Zum Ende'
+          },
+          sizes: 'Einträge pro Seite',
+          totalItems: 'Einträge',
+          through: 'bis',
+          of: 'von'
+        },
+        grouping: {
+            group: 'Gruppieren',
+            ungroup: 'Gruppierung aufheben',
+            aggregate_count: 'Agg: Anzahl',
+            aggregate_sum: 'Agg: Summe',
+            aggregate_max: 'Agg: Maximum',
+            aggregate_min: 'Agg: Minimum',
+            aggregate_avg: 'Agg: Mittelwert',
+            aggregate_remove: 'Aggregation entfernen'
         }
       });
       return $delegate;
@@ -10090,6 +12014,15 @@ module.filter('px', function() {
   angular.module('ui.grid').config(['$provide', function($provide) {
     $provide.decorator('i18nService', ['$delegate', function($delegate) {
       $delegate.add('en', {
+        headerCell: {
+          aria: {
+            defaultFilterLabel: 'Filter for column',
+            removeFilter: 'Remove Filter',
+            columnMenuButtonLabel: 'Column Menu'
+          },
+          priority: 'Priority:',
+          filterLabel: "Filter for column: "
+        },
         aggregate: {
           label: 'items'
         },
@@ -10113,6 +12046,7 @@ module.filter('px', function() {
         sort: {
           ascending: 'Sort Ascending',
           descending: 'Sort Descending',
+          none: 'Sort None',
           remove: 'Remove Sort'
         },
         column: {
@@ -10126,11 +12060,17 @@ module.filter('px', function() {
           max: 'max: '
         },
         pinning: {
-         pinLeft: 'Pin Left',
+          pinLeft: 'Pin Left',
           pinRight: 'Pin Right',
           unpin: 'Unpin'
         },
+        columnMenu: {
+          close: 'Close'
+        },
         gridMenu: {
+          aria: {
+            buttonLabel: 'Grid Menu'
+          },
           columns: 'Columns:',
           importerTitle: 'Import file',
           exporterAllAsCsv: 'Export all data as csv',
@@ -10138,7 +12078,8 @@ module.filter('px', function() {
           exporterSelectedAsCsv: 'Export selected data as csv',
           exporterAllAsPdf: 'Export all data as pdf',
           exporterVisibleAsPdf: 'Export visible data as pdf',
-          exporterSelectedAsPdf: 'Export selected data as pdf'
+          exporterSelectedAsPdf: 'Export selected data as pdf',
+          clearAllFilters: 'Clear all filters'
         },
         importer: {
           noHeaders: 'Column names were unable to be derived, does the file have a header?',
@@ -10148,8 +12089,33 @@ module.filter('px', function() {
           jsonNotArray: 'Imported json file must contain an array, aborting.'
         },
         pagination: {
+          aria: {
+            pageToFirst: 'Page to first',
+            pageBack: 'Page back',
+            pageSelected: 'Selected page',
+            pageForward: 'Page forward',
+            pageToLast: 'Page to last'
+          },
           sizes: 'items per page',
-          totalItems: 'items'
+          totalItems: 'items',
+          through: 'through',
+          of: 'of'
+        },
+        grouping: {
+          group: 'Group',
+          ungroup: 'Ungroup',
+          aggregate_count: 'Agg: Count',
+          aggregate_sum: 'Agg: Sum',
+          aggregate_max: 'Agg: Max',
+          aggregate_min: 'Agg: Min',
+          aggregate_avg: 'Agg: Avg',
+          aggregate_remove: 'Agg: Remove'
+        },
+        validate: {
+          error: 'Error:',
+          minLength: 'Value should be at least THRESHOLD characters long.',
+          maxLength: 'Value should be at most THRESHOLD characters long.',
+          required: 'A value is needed.'
         }
       });
       return $delegate;
@@ -10209,7 +12175,8 @@ module.filter('px', function() {
           exporterSelectedAsCsv: 'Exportar selección como csv',
           exporterAllAsPdf: 'Exportar todo como pdf',
           exporterVisibleAsPdf: 'Exportar vista como pdf',
-          exporterSelectedAsPdf: 'Exportar selección como pdf'
+          exporterSelectedAsPdf: 'Exportar selección como pdf',
+          clearAllFilters: 'Limpiar todos los filtros'
         },
         importer: {
           noHeaders: 'No fue posible derivar los nombres de las columnas, ¿tiene encabezados el archivo?',
@@ -10217,6 +12184,21 @@ module.filter('px', function() {
           invalidCsv: 'No fue posible procesar el archivo, ¿es un CSV válido?',
           invalidJson: 'No fue posible procesar el archivo, ¿es un Json válido?',
           jsonNotArray: 'El archivo json importado debe contener un array, abortando.'
+        },
+        pagination: {
+          sizes: 'registros por página',
+          totalItems: 'registros',
+          of: 'de'
+        },
+        grouping: {
+          group: 'Agrupar',
+          ungroup: 'Desagrupar',
+          aggregate_count: 'Agr: Cont',
+          aggregate_sum: 'Agr: Sum',
+          aggregate_max: 'Agr: Máx',
+          aggregate_min: 'Agr: Min',
+          aggregate_avg: 'Agr: Prom',
+          aggregate_remove: 'Agr: Quitar'
         }
       });
       return $delegate;
@@ -10224,62 +12206,94 @@ module.filter('px', function() {
 }]);
 })();
 
+/**
+ * Translated by: R. Salarmehr
+ *                M. Hosseynzade
+ *                Using Vajje.com online dictionary.
+ */
 (function () {
-  angular.module('ui.grid').config(['$provide', function($provide) {
-    $provide.decorator('i18nService', ['$delegate', function($delegate) {
+  angular.module('ui.grid').config(['$provide', function ($provide) {
+    $provide.decorator('i18nService', ['$delegate', function ($delegate) {
       $delegate.add('fa', {
         aggregate: {
-          label: 'موردها'
+          label: 'قلم'
         },
         groupPanel: {
-          description: 'یک عنوان ستون اینجا را بردار و به گروهی از آن ستون بیانداز.'
+          description: 'عنوان یک ستون را بگیر و به گروهی از آن ستون رها کن.'
         },
         search: {
           placeholder: 'جستجو...',
-          showingItems: 'نمایش موردها:',
-          selectedItems: 'موردهای انتخاب\u200cشده:',
-          totalItems: 'همهٔ موردها:',
-          size: 'اندازهٔ صفحه:',
-          first: 'صفحهٔ اول',
-          next: 'صفحهٔ بعد',
-          previous: 'صفحهٔ قبل',
+          showingItems: 'نمایش اقلام:',
+          selectedItems: 'قلم\u200cهای انتخاب شده:',
+          totalItems: 'مجموع اقلام:',
+          size: 'اندازه\u200cی صفحه:',
+          first: 'اولین صفحه',
+          next: 'صفحه\u200cی\u200cبعدی',
+          previous: 'صفحه\u200cی\u200c قبلی',
           last: 'آخرین صفحه'
         },
         menu: {
-          text: 'انتخاب ستون\u200cها:'
+          text: 'ستون\u200cهای انتخابی:'
+        },
+        sort: {
+          ascending: 'ترتیب صعودی',
+          descending: 'ترتیب نزولی',
+          remove: 'حذف مرتب کردن'
         },
         column: {
-          hide: 'ستون پنهان کن'
+          hide: 'پنهان\u200cکردن ستون'
         },
         aggregation: {
-          count: 'total rows: ',
-          sum: 'total: ',
-          avg: 'avg: ',
-          min: 'min: ',
-          max: 'max: '
+          count: 'تعداد: ',
+          sum: 'مجموع: ',
+          avg: 'میانگین: ',
+          min: 'کمترین: ',
+          max: 'بیشترین: '
+        },
+        pinning: {
+          pinLeft: 'پین کردن سمت چپ',
+          pinRight: 'پین کردن سمت راست',
+          unpin: 'حذف پین'
         },
         gridMenu: {
-          columns: 'Columns:',
-          importerTitle: 'Import file',
-          exporterAllAsCsv: 'Export all data as csv',
-          exporterVisibleAsCsv: 'Export visible data as csv',
-          exporterSelectedAsCsv: 'Export selected data as csv',
-          exporterAllAsPdf: 'Export all data as pdf',
-          exporterVisibleAsPdf: 'Export visible data as pdf',
-          exporterSelectedAsPdf: 'Export selected data as pdf'
+          columns: 'ستون\u200cها:',
+          importerTitle: 'وارد کردن فایل',
+          exporterAllAsCsv: 'خروجی تمام داده\u200cها در فایل csv',
+          exporterVisibleAsCsv: 'خروجی داده\u200cهای قابل مشاهده در فایل csv',
+          exporterSelectedAsCsv: 'خروجی داده\u200cهای انتخاب\u200cشده در فایل csv',
+          exporterAllAsPdf: 'خروجی تمام داده\u200cها در فایل pdf',
+          exporterVisibleAsPdf: 'خروجی داده\u200cهای قابل مشاهده در فایل pdf',
+          exporterSelectedAsPdf: 'خروجی داده\u200cهای انتخاب\u200cشده در فایل pdf',
+          clearAllFilters: 'پاک کردن تمام فیلتر'
         },
         importer: {
-          noHeaders: 'Column names were unable to be derived, does the file have a header?',
-          noObjects: 'Objects were not able to be derived, was there data in the file other than headers?',
-          invalidCsv: 'File was unable to be processed, is it valid CSV?',
-          invalidJson: 'File was unable to be processed, is it valid Json?',
-          jsonNotArray: 'Imported json file must contain an array, aborting.'
+          noHeaders: 'نام ستون قابل استخراج نیست. آیا فایل عنوان دارد؟',
+          noObjects: 'اشیا قابل استخراج نیستند. آیا به جز عنوان\u200cها در فایل داده وجود دارد؟',
+          invalidCsv: 'فایل قابل پردازش نیست. آیا فرمت  csv  معتبر است؟',
+          invalidJson: 'فایل قابل پردازش نیست. آیا فرمت json   معتبر است؟',
+          jsonNotArray: 'فایل json وارد شده باید حاوی آرایه باشد. عملیات ساقط شد.'
+        },
+        pagination: {
+          sizes: 'اقلام در هر صفحه',
+          totalItems: 'اقلام',
+          of: 'از'
+        },
+        grouping: {
+          group: 'گروه\u200cبندی',
+          ungroup: 'حذف گروه\u200cبندی',
+          aggregate_count: 'Agg: تعداد',
+          aggregate_sum: 'Agg: جمع',
+          aggregate_max: 'Agg: بیشینه',
+          aggregate_min: 'Agg: کمینه',
+          aggregate_avg: 'Agg: میانگین',
+          aggregate_remove: 'Agg: حذف'
         }
       });
       return $delegate;
     }]);
-}]);
+  }]);
 })();
+
 (function () {
   angular.module('ui.grid').config(['$provide', function($provide) {
     $provide.decorator('i18nService', ['$delegate', function($delegate) {
@@ -10332,7 +12346,8 @@ module.filter('px', function() {
           exporterSelectedAsCsv: 'Vie valittu tieto csv-muodossa',
           exporterAllAsPdf: 'Vie tiedot pdf-muodossa',
           exporterVisibleAsPdf: 'Vie näkyvä tieto pdf-muodossa',
-          exporterSelectedAsPdf: 'Vie valittu tieto pdf-muodossa'
+          exporterSelectedAsPdf: 'Vie valittu tieto pdf-muodossa',
+          clearAllFilters: 'Puhdista kaikki suodattimet'
         },
         importer: {
           noHeaders: 'Sarakkeen nimiä ei voitu päätellä, onko tiedostossa otsikkoriviä?',
@@ -10352,16 +12367,16 @@ module.filter('px', function() {
     $provide.decorator('i18nService', ['$delegate', function($delegate) {
       $delegate.add('fr', {
         aggregate: {
-          label: 'articles'
+          label: 'éléments'
         },
         groupPanel: {
-          description: 'Faites glisser un en-tête de colonne ici et déposez-le vers un groupe par cette colonne.'
+          description: 'Faites glisser une en-tête de colonne ici pour créer un groupe de colonnes.'
         },
         search: {
           placeholder: 'Recherche...',
-          showingItems: 'Articles Affichage des:',
-          selectedItems: 'Éléments Articles:',
-          totalItems: 'Nombre total d\'articles:',
+          showingItems: 'Affichage des éléments :',
+          selectedItems: 'Éléments sélectionnés :',
+          totalItems: 'Nombre total d\'éléments:',
           size: 'Taille de page:',
           first: 'Première page',
           next: 'Page Suivante',
@@ -10369,7 +12384,7 @@ module.filter('px', function() {
           last: 'Dernière page'
         },
         menu: {
-          text: 'Choisir des colonnes:'
+          text: 'Choisir des colonnes :'
         },
         sort: {
           ascending: 'Trier par ordre croissant',
@@ -10380,7 +12395,7 @@ module.filter('px', function() {
           hide: 'Cacher la colonne'
         },
         aggregation: {
-          count: 'total lignes: ',
+          count: 'lignes totales: ',
           sum: 'total: ',
           avg: 'moy: ',
           min: 'min: ',
@@ -10399,24 +12414,37 @@ module.filter('px', function() {
           exporterSelectedAsCsv: 'Exporter les données sélectionnées en CSV',
           exporterAllAsPdf: 'Exporter toutes les données en PDF',
           exporterVisibleAsPdf: 'Exporter les données visibles en PDF',
-          exporterSelectedAsPdf: 'Exporter les données sélectionnées en PDF'
+          exporterSelectedAsPdf: 'Exporter les données sélectionnées en PDF',
+          clearAllFilters: 'Nettoyez tous les filtres'
         },
         importer: {
-          noHeaders: 'Impossible de déterminer le nom des colonnes, le fichier possède-t-il un en-tête ?',
+          noHeaders: 'Impossible de déterminer le nom des colonnes, le fichier possède-t-il une en-tête ?',
           noObjects: 'Aucun objet trouvé, le fichier possède-t-il des données autres que l\'en-tête ?',
           invalidCsv: 'Le fichier n\'a pas pu être traité, le CSV est-il valide ?',
           invalidJson: 'Le fichier n\'a pas pu être traité, le JSON est-il valide ?',
-          jsonNotArray: 'Le fichier JSON importé doit contenir un tableau. Abandon.'
+          jsonNotArray: 'Le fichier JSON importé doit contenir un tableau, abandon.'
         },
         pagination: {
-          sizes: 'articles par page',
-          totalItems: 'articles'
+          sizes: 'éléments par page',
+          totalItems: 'éléments',
+          of: 'sur'
+        },
+        grouping: {
+          group: 'Grouper',
+          ungroup: 'Dégrouper',
+          aggregate_count: 'Agg: Compte',
+          aggregate_sum: 'Agg: Somme',
+          aggregate_max: 'Agg: Max',
+          aggregate_min: 'Agg: Min',
+          aggregate_avg: 'Agg: Moy',
+          aggregate_remove: 'Agg: Retirer'
         }
       });
       return $delegate;
     }]);
-}]);
+  }]);
 })();
+
 (function () {
   angular.module('ui.grid').config(['$provide', function ($provide) {
     $provide.decorator('i18nService', ['$delegate', function ($delegate) {
@@ -10464,7 +12492,8 @@ module.filter('px', function() {
           exporterSelectedAsCsv: 'Export selected data as csv',
           exporterAllAsPdf: 'Export all data as pdf',
           exporterVisibleAsPdf: 'Export visible data as pdf',
-          exporterSelectedAsPdf: 'Export selected data as pdf'
+          exporterSelectedAsPdf: 'Export selected data as pdf',
+          clearAllFilters: 'Clean all filters'
         },
         importer: {
           noHeaders: 'Column names were unable to be derived, does the file have a header?',
@@ -10478,6 +12507,75 @@ module.filter('px', function() {
     }]);
   }]);
 })();
+
+(function () {
+  angular.module('ui.grid').config(['$provide', function($provide) {
+    $provide.decorator('i18nService', ['$delegate', function($delegate) {
+      $delegate.add('hy', {
+        aggregate: {
+          label: 'տվյալներ'
+        },
+        groupPanel: {
+          description: 'Ըստ սյան խմբավորելու համար քաշեք և գցեք վերնագիրն այստեղ։'
+        },
+        search: {
+          placeholder: 'Փնտրում...',
+          showingItems: 'Ցուցադրված տվյալներ՝',
+          selectedItems: 'Ընտրված:',
+          totalItems: 'Ընդամենը՝',
+          size: 'Տողերի քանակը էջում՝',
+          first: 'Առաջին էջ',
+          next: 'Հաջորդ էջ',
+          previous: 'Նախորդ էջ',
+          last: 'Վերջին էջ'
+        },
+        menu: {
+          text: 'Ընտրել սյուները:'
+        },
+        sort: {
+          ascending: 'Աճման կարգով',
+          descending: 'Նվազման կարգով',
+          remove: 'Հանել '
+        },
+        column: {
+          hide: 'Թաքցնել սյունը'
+        },
+        aggregation: {
+          count: 'ընդամենը տող՝ ',
+          sum: 'ընդամենը՝ ',
+          avg: 'միջին՝ ',
+          min: 'մին՝ ',
+          max: 'մաքս՝ '
+        },
+        pinning: {
+          pinLeft: 'Կպցնել ձախ կողմում',
+          pinRight: 'Կպցնել աջ կողմում',
+          unpin: 'Արձակել'
+        },
+        gridMenu: {
+          columns: 'Սյուներ:',
+          importerTitle: 'Ներմուծել ֆայլ',
+          exporterAllAsCsv: 'Արտահանել ամբողջը CSV',
+          exporterVisibleAsCsv: 'Արտահանել երևացող տվյալները CSV',
+          exporterSelectedAsCsv: 'Արտահանել ընտրված տվյալները CSV',
+          exporterAllAsPdf: 'Արտահանել PDF',
+          exporterVisibleAsPdf: 'Արտահանել երևացող տվյալները PDF',
+          exporterSelectedAsPdf: 'Արտահանել ընտրված տվյալները PDF',
+          clearAllFilters: 'Մաքրել բոլոր ֆիլտրերը'
+        },
+        importer: {
+          noHeaders: 'Հնարավոր չեղավ որոշել սյան վերնագրերը։ Արդյո՞ք ֆայլը ունի վերնագրեր։',
+          noObjects: 'Հնարավոր չեղավ կարդալ տվյալները։ Արդյո՞ք ֆայլում կան տվյալներ։',
+          invalidCsv: 'Հնարավոր չեղավ մշակել ֆայլը։ Արդյո՞ք այն վավեր CSV է։',
+          invalidJson: 'Հնարավոր չեղավ մշակել ֆայլը։ Արդյո՞ք այն վավեր Json է։',
+          jsonNotArray: 'Ներմուծված json ֆայլը պետք է պարունակի զանգված, կասեցվում է։'
+        }
+      });
+      return $delegate;
+    }]);
+  }]);
+})();
+
 (function () {
   angular.module('ui.grid').config(['$provide', function($provide) {
     $provide.decorator('i18nService', ['$delegate', function($delegate) {
@@ -10530,7 +12628,8 @@ module.filter('px', function() {
           exporterSelectedAsCsv: 'Esporta i dati selezionati in CSV',
           exporterAllAsPdf: 'Esporta tutti i dati in PDF',
           exporterVisibleAsPdf: 'Esporta i dati visibili in PDF',
-          exporterSelectedAsPdf: 'Esporta i dati selezionati in PDF'
+          exporterSelectedAsPdf: 'Esporta i dati selezionati in PDF',
+          clearAllFilters: 'Pulire tutti i filtri'
         },
         importer: {
           noHeaders: 'Impossibile reperire i nomi delle colonne, sicuro che siano indicati all\'interno del file?',
@@ -10538,76 +12637,175 @@ module.filter('px', function() {
           invalidCsv: 'Impossibile elaborare il file, sicuro che sia un CSV?',
           invalidJson: 'Impossibile elaborare il file, sicuro che sia un JSON valido?',
           jsonNotArray: 'Errore! Il file JSON da importare deve contenere un array.'
+        },
+        grouping: {
+          group: 'Raggruppa',
+          ungroup: 'Separa',
+          aggregate_count: 'Agg: N. Elem.',
+          aggregate_sum: 'Agg: Somma',
+          aggregate_max: 'Agg: Massimo',
+          aggregate_min: 'Agg: Minimo',
+          aggregate_avg: 'Agg: Media',
+          aggregate_remove: 'Agg: Rimuovi'
+        },
+        validate: {
+          error: 'Errore:',
+          minLength: 'Lunghezza minima pari a THRESHOLD caratteri.',
+          maxLength: 'Lunghezza massima pari a THRESHOLD caratteri.',
+          required: 'Necessario inserire un valore.'
         }
       });
       return $delegate;
     }]);
   }]);
 })();
+
 (function() {
   angular.module('ui.grid').config(['$provide', function($provide) {
     $provide.decorator('i18nService', ['$delegate', function($delegate) {
       $delegate.add('ja', {
         aggregate: {
-          label: '件'
+          label: '項目'
         },
         groupPanel: {
-          description: '列名部分をここにドラッグアンドドロップすることで列ごとにグループ分けを行うことができます。'
+          description: 'ここに列ヘッダをドラッグアンドドロップして、その列でグループ化します。'
         },
         search: {
           placeholder: '検索...',
-          showingItems: '絞込み件数:',
-          selectedItems: '選択件数:',
-          totalItems: '全件数:',
-          size: 'ページサイズ: ',
+          showingItems: '表示中の項目:',
+          selectedItems: '選択した項目:',
+          totalItems: '項目の総数:',
+          size: 'ページサイズ:',
           first: '最初のページ',
           next: '次のページ',
           previous: '前のページ',
-          last: '最後のページ'
+          last: '前のページ'
         },
         menu: {
-          text: '列選択:'
+          text: '列の選択:'
         },
         sort: {
-          ascending: '昇順ソート',
-          descending: '降順ソート',
-          remove: 'ソート取消'
+          ascending: '昇順に並べ替え',
+          descending: '降順に並べ替え',
+          remove: '並べ替えの解除'
         },
         column: {
-          hide: '列を隠す'
+          hide: '列の非表示'
         },
         aggregation: {
-          count: '合計件数: ',
+          count: '合計行数: ',
           sum: '合計: ',
           avg: '平均: ',
-          min: '最小値: ',
-          max: '最大値: '
+          min: '最小: ',
+          max: '最大: '
         },
         pinning: {
-          pinLeft: '左にピン留め',
-          pinRight: '右にピン留め',
-          unpin: 'ピン留め取消'
+          pinLeft: '左に固定',
+          pinRight: '右に固定',
+          unpin: '固定解除'
         },
         gridMenu: {
           columns: '列:',
-          importerTitle: 'インポートファイル',
-          exporterAllAsCsv: '全てのデータをCSV形式でエクスポート',
-          exporterVisibleAsCsv: '絞込み済みデータをCSV形式でエクスポート',
-          exporterSelectedAsCsv: '選択しているデータをCSV形式でエクスポート',
-          exporterAllAsPdf: '全てのデータをPDFでエクスポート',
-          exporterVisibleAsPdf: '絞込み済みデータをPDFでエクスポート',
-          exporterSelectedAsPdf: '選択しているデータをPDFでエクスポート'
+          importerTitle: 'ファイルのインポート',
+          exporterAllAsCsv: 'すべてのデータをCSV形式でエクスポート',
+          exporterVisibleAsCsv: '表示中のデータをCSV形式でエクスポート',
+          exporterSelectedAsCsv: '選択したデータをCSV形式でエクスポート',
+          exporterAllAsPdf: 'すべてのデータをPDF形式でエクスポート',
+          exporterVisibleAsPdf: '表示中のデータをPDF形式でエクスポート',
+          exporterSelectedAsPdf: '選択したデータをPDF形式でエクスポート',
+          clearAllFilters: 'すべてのフィルタを清掃してください'
         },
         importer: {
-          noHeaders: '列名が抽出できません。ヘッダーは設定されていますか？',
-          noObjects: 'データが抽出できません。ファイルにデータは含まれていますか？',
-          invalidCsv: '処理を行うことができません。ファイルは有効なCSVファイルですか？',
-          invalidJson: '処理を行うことができません。ファイルは有効なJSONファイルですか？',
-          jsonNotArray: 'JSONファイルは配列を含んでいる必要があります。処理を中断します。'
+          noHeaders: '列名を取得できません。ファイルにヘッダが含まれていることを確認してください。',
+          noObjects: 'オブジェクトを取得できません。ファイルにヘッダ以外のデータが含まれていることを確認してください。',
+          invalidCsv: 'ファイルを処理できません。ファイルが有効なCSV形式であることを確認してください。',
+          invalidJson: 'ファイルを処理できません。ファイルが有効なJSON形式であることを確認してください。',
+          jsonNotArray: 'インポートしたJSONファイルには配列が含まれている必要があります。処理を中止します。'
         },
         pagination: {
-          sizes: '件 / ページ',
-          totalItems: '件'
+          aria: {
+            pageToFirst: '最初のページ',
+            pageBack: '前のページ',
+            pageSelected: '現在のページ',
+            pageForward: '次のページ',
+            pageToLast: '最後のページ'
+          },
+          sizes: '項目/ページ',
+          totalItems: '項目',
+          through: 'から',
+          of: '項目/全'
+        }
+      });
+      return $delegate;
+    }]);
+  }]);
+})();
+
+(function () {
+  angular.module('ui.grid').config(['$provide', function($provide) {
+    $provide.decorator('i18nService', ['$delegate', function($delegate) {
+      $delegate.add('ko', {
+        aggregate: {
+          label: '아이템'
+        },
+        groupPanel: {
+          description: '컬럼으로 그룹핑하기 위해서는 컬럼 헤더를 끌어 떨어뜨려 주세요.'
+        },
+        search: {
+          placeholder: '검색...',
+          showingItems: '항목 보여주기:',
+          selectedItems: '선택 항목:',
+          totalItems: '전체 항목:',
+          size: '페이지 크기:',
+          first: '첫번째 페이지',
+          next: '다음 페이지',
+          previous: '이전 페이지',
+          last: '마지막 페이지'
+        },
+        menu: {
+          text: '컬럼을 선택하세요:'
+        },
+        sort: {
+          ascending: '오름차순 정렬',
+          descending: '내림차순 정렬',
+          remove: '소팅 제거'
+        },
+        column: {
+          hide: '컬럼 제거'
+        },
+        aggregation: {
+          count: '전체 갯수: ',
+          sum: '전체: ',
+          avg: '평균: ',
+          min: '최소: ',
+          max: '최대: '
+        },
+        pinning: {
+         pinLeft: '왼쪽 핀',
+          pinRight: '오른쪽 핀',
+          unpin: '핀 제거'
+        },
+        gridMenu: {
+          columns: '컬럼:',
+          importerTitle: '파일 가져오기',
+          exporterAllAsCsv: 'csv로 모든 데이터 내보내기',
+          exporterVisibleAsCsv: 'csv로 보이는 데이터 내보내기',
+          exporterSelectedAsCsv: 'csv로 선택된 데이터 내보내기',
+          exporterAllAsPdf: 'pdf로 모든 데이터 내보내기',
+          exporterVisibleAsPdf: 'pdf로 보이는 데이터 내보내기',
+          exporterSelectedAsPdf: 'pdf로 선택 데이터 내보내기',
+          clearAllFilters: '모든 필터를 청소'
+        },
+        importer: {
+          noHeaders: '컬럼명이 지정되어 있지 않습니다. 파일에 헤더가 명시되어 있는지 확인해 주세요.',
+          noObjects: '데이터가 지정되어 있지 않습니다. 데이터가 파일에 있는지 확인해 주세요.',
+          invalidCsv: '파일을 처리할 수 없습니다. 올바른 csv인지 확인해 주세요.',
+          invalidJson: '파일을 처리할 수 없습니다. 올바른 json인지 확인해 주세요.',
+          jsonNotArray: 'json 파일은 배열을 포함해야 합니다.'
+        },
+        pagination: {
+          sizes: '페이지당 항목',
+          totalItems: '전체 항목'
         }
       });
       return $delegate;
@@ -10667,7 +12865,8 @@ module.filter('px', function() {
           exporterSelectedAsCsv: 'Exporteer geselecteerde data als csv',
           exporterAllAsPdf: 'Exporteer alle data als pdf',
           exporterVisibleAsPdf: 'Exporteer zichtbare data als pdf',
-          exporterSelectedAsPdf: 'Exporteer geselecteerde data als pdf'
+          exporterSelectedAsPdf: 'Exporteer geselecteerde data als pdf',
+          clearAllFilters: 'Reinig alle filters'
         },
         importer: {
           noHeaders: 'Kolomnamen kunnen niet worden afgeleid. Heeft het bestand een header?',
@@ -10675,16 +12874,148 @@ module.filter('px', function() {
           invalidCsv: 'Het bestand kan niet verwerkt worden. Is het een valide csv bestand?',
           invalidJson: 'Het bestand kan niet verwerkt worden. Is het valide json?',
           jsonNotArray: 'Het json bestand moet een array bevatten. De actie wordt geannuleerd.'
+        },
+        pagination: {
+            sizes: 'items per pagina',
+            totalItems: 'items',
+            of: 'van de'
+        },
+        grouping: {
+            group: 'Groepeer',
+            ungroup: 'Groepering opheffen',
+            aggregate_count: 'Agg: Aantal',
+            aggregate_sum: 'Agg: Som',
+            aggregate_max: 'Agg: Max',
+            aggregate_min: 'Agg: Min',
+            aggregate_avg: 'Agg: Gem',
+            aggregate_remove: 'Agg: Verwijder'
         }
       });
       return $delegate;
     }]);
   }]);
 })();
+
+(function () {
+  angular.module('ui.grid').config(['$provide', function($provide) {
+    $provide.decorator('i18nService', ['$delegate', function($delegate) {
+      $delegate.add('pl', {
+        headerCell: {
+          aria: {
+            defaultFilterLabel: 'Filter dla kolumny',
+            removeFilter: 'Usuń filter',
+            columnMenuButtonLabel: 'Menu kolumny'
+          },
+          priority: 'Prioritet:',
+          filterLabel: "Filtr dla kolumny: "
+        },
+        aggregate: {
+          label: 'pozycji'
+        },
+        groupPanel: {
+          description: 'Przeciągnij nagłówek kolumny tutaj, aby pogrupować według niej.'
+        },
+        search: {
+          placeholder: 'Szukaj...',
+          showingItems: 'Widoczne pozycje:',
+          selectedItems: 'Zaznaczone pozycje:',
+          totalItems: 'Wszystkich pozycji:',
+          size: 'Rozmiar strony:',
+          first: 'Pierwsza strona',
+          next: 'Następna strona',
+          previous: 'Poprzednia strona',
+          last: 'Ostatnia strona'
+        },
+        menu: {
+          text: 'Wybierz kolumny:'
+        },
+        sort: {
+          ascending: 'Sortuj rosnąco',
+          descending: 'Sortuj malejąco',
+          none: 'Brak sortowania',
+          remove: 'Wyłącz sortowanie'
+        },
+        column: {
+          hide: 'Ukryj kolumne'
+        },
+        aggregation: {
+          count: 'Razem pozycji: ',
+            sum: 'Razem: ',
+            avg: 'Średnia: ',
+            min: 'Min: ',
+            max: 'Max: '
+        },
+        pinning: {
+          pinLeft: 'Przypnij do lewej',
+          pinRight: 'Przypnij do prawej',
+          unpin: 'Odepnij'
+        },
+        columnMenu: {
+          close: 'Zamknij'
+        },
+        gridMenu: {
+          aria: {
+            buttonLabel: 'Menu Grida'
+          },
+          columns: 'Kolumny:',
+          importerTitle: 'Importuj plik',
+          exporterAllAsCsv: 'Eksportuj wszystkie dane do csv',
+          exporterVisibleAsCsv: 'Eksportuj widoczne dane do csv',
+          exporterSelectedAsCsv: 'Eksportuj zaznaczone dane do csv',
+          exporterAllAsPdf: 'Eksportuj wszystkie dane do pdf',
+          exporterVisibleAsPdf: 'Eksportuj widoczne dane do pdf',
+          exporterSelectedAsPdf: 'Eksportuj zaznaczone dane do pdf',
+          clearAllFilters: 'Wyczyść filtry'
+        },
+        importer: {
+          noHeaders: 'Nie udało się wczytać nazw kolumn. Czy plik posiada nagłówek?',
+          noObjects: 'Nie udalo się wczytać pozycji. Czy plik zawiera dane??',
+          invalidCsv: 'Nie udało się przetworzyć pliku, jest to prawidlowy plik CSV??',
+          invalidJson: 'Nie udało się przetworzyć pliku, jest to prawidlowy plik Json?',
+          jsonNotArray: 'Importowany plik json musi zawierać tablicę, importowanie przerwane.'
+        },
+        pagination: {
+          aria: {
+            pageToFirst: 'Pierwsza strona',
+            pageBack: 'Poprzednia strona',
+            pageSelected: 'Wybrana strona',
+            pageForward: 'Następna strona',
+            pageToLast: 'Ostatnia strona'
+          },
+          sizes: 'pozycji na stronę',
+          totalItems: 'pozycji',
+          through: 'do',
+          of: 'z'
+        },
+        grouping: {
+          group: 'Grupuj',
+          ungroup: 'Rozgrupuj',
+          aggregate_count: 'Zbiorczo: Razem',
+          aggregate_sum: 'Zbiorczo: Suma',
+          aggregate_max: 'Zbiorczo: Max',
+          aggregate_min: 'Zbiorczo: Min',
+          aggregate_avg: 'Zbiorczo: Średnia',
+          aggregate_remove: 'Zbiorczo: Usuń'
+        }
+      });
+      return $delegate;
+    }]);
+  }]);
+})();
+
 (function () {
   angular.module('ui.grid').config(['$provide', function($provide) {
     $provide.decorator('i18nService', ['$delegate', function($delegate) {
       $delegate.add('pt-br', {
+        headerCell: {
+          aria: {
+            defaultFilterLabel: 'Filtro por coluna',
+            removeFilter: 'Remover filtro',
+            columnMenuButtonLabel: 'Menu coluna'
+          },
+          priority: 'Prioridade:',
+          filterLabel: "Filtro por coluna: "
+        },
         aggregate: {
           label: 'itens'
         },
@@ -10708,6 +13039,7 @@ module.filter('px', function() {
         sort: {
           ascending: 'Ordenar Ascendente',
           descending: 'Ordenar Descendente',
+          none: 'Nenhuma Ordem',
           remove: 'Remover Ordenação'
         },
         column: {
@@ -10725,14 +13057,22 @@ module.filter('px', function() {
           pinRight: 'Fixar Direita',
           unpin: 'Desprender'
         },
+        columnMenu: {
+          close: 'Fechar'
+        },
         gridMenu: {
+          aria: {
+            buttonLabel: 'Menu Grid'
+          },
           columns: 'Colunas:',
+          importerTitle: 'Importar arquivo',
           exporterAllAsCsv: 'Exportar todos os dados como csv',
           exporterVisibleAsCsv: 'Exportar dados visíveis como csv',
           exporterSelectedAsCsv: 'Exportar dados selecionados como csv',
           exporterAllAsPdf: 'Exportar todos os dados como pdf',
           exporterVisibleAsPdf: 'Exportar dados visíveis como pdf',
-          exporterSelectedAsPdf: 'Exportar dados selecionados como pdf'
+          exporterSelectedAsPdf: 'Exportar dados selecionados como pdf',
+          clearAllFilters: 'Limpar todos os filtros'
         },
         importer: {
           noHeaders: 'Nomes de colunas não puderam ser derivados. O arquivo tem um cabeçalho?',
@@ -10740,16 +13080,263 @@ module.filter('px', function() {
           invalidCsv: 'Arquivo não pode ser processado. É um CSV válido?',
           invalidJson: 'Arquivo não pode ser processado. É um Json válido?',
           jsonNotArray: 'Arquivo json importado tem que conter um array. Abortando.'
+        },
+        pagination: {
+          aria: {
+            pageToFirst: 'Primeira página',
+            pageBack: 'Página anterior',
+            pageSelected: 'Página Selecionada',
+            pageForward: 'Proxima',
+            pageToLast: 'Anterior'
+          },
+          sizes: 'itens por página',
+          totalItems: 'itens',
+          through: 'através dos',
+          of: 'de'
+        },
+        grouping: {
+          group: 'Agrupar',
+          ungroup: 'Desagrupar',
+          aggregate_count: 'Agr: Contar',
+          aggregate_sum: 'Agr: Soma',
+          aggregate_max: 'Agr: Max',
+          aggregate_min: 'Agr: Min',
+          aggregate_avg: 'Agr: Med',
+          aggregate_remove: 'Agr: Remover'
         }
       });
       return $delegate;
     }]);
 }]);
 })();
+
+(function () {
+  angular.module('ui.grid').config(['$provide', function($provide) {
+    $provide.decorator('i18nService', ['$delegate', function($delegate) {
+      $delegate.add('pt', {
+        headerCell: {
+          aria: {
+            defaultFilterLabel: 'Filtro por coluna',
+            removeFilter: 'Remover filtro',
+            columnMenuButtonLabel: 'Menu coluna'
+          },
+          priority: 'Prioridade:',
+          filterLabel: "Filtro por coluna: "
+        },
+        aggregate: {
+          label: 'itens'
+        },
+        groupPanel: {
+          description: 'Arraste e solte uma coluna aqui para agrupar por essa coluna'
+        },
+        search: {
+          placeholder: 'Procurar...',
+          showingItems: 'Mostrando os Itens:',
+          selectedItems: 'Itens Selecionados:',
+          totalItems: 'Total de Itens:',
+          size: 'Tamanho da Página:',
+          first: 'Primeira Página',
+          next: 'Próxima Página',
+          previous: 'Página Anterior',
+          last: 'Última Página'
+        },
+        menu: {
+          text: 'Selecione as colunas:'
+        },
+        sort: {
+          ascending: 'Ordenar Ascendente',
+          descending: 'Ordenar Descendente',
+          none: 'Nenhuma Ordem',
+          remove: 'Remover Ordenação'
+        },
+        column: {
+          hide: 'Esconder coluna'
+        },
+        aggregation: {
+          count: 'total de linhas: ',
+          sum: 'total: ',
+          avg: 'med: ',
+          min: 'min: ',
+          max: 'max: '
+        },
+        pinning: {
+          pinLeft: 'Fixar Esquerda',
+          pinRight: 'Fixar Direita',
+          unpin: 'Desprender'
+        },
+        columnMenu: {
+          close: 'Fechar'
+        },
+        gridMenu: {
+          aria: {
+            buttonLabel: 'Menu Grid'
+          },
+          columns: 'Colunas:',
+          importerTitle: 'Importar ficheiro',
+          exporterAllAsCsv: 'Exportar todos os dados como csv',
+          exporterVisibleAsCsv: 'Exportar dados visíveis como csv',
+          exporterSelectedAsCsv: 'Exportar dados selecionados como csv',
+          exporterAllAsPdf: 'Exportar todos os dados como pdf',
+          exporterVisibleAsPdf: 'Exportar dados visíveis como pdf',
+          exporterSelectedAsPdf: 'Exportar dados selecionados como pdf',
+          clearAllFilters: 'Limpar todos os filtros'
+        },
+        importer: {
+          noHeaders: 'Nomes de colunas não puderam ser derivados. O ficheiro tem um cabeçalho?',
+          noObjects: 'Objetos não puderam ser derivados. Havia dados no ficheiro, além dos cabeçalhos?',
+          invalidCsv: 'Ficheiro não pode ser processado. É um CSV válido?',
+          invalidJson: 'Ficheiro não pode ser processado. É um Json válido?',
+          jsonNotArray: 'Ficheiro json importado tem que conter um array. Interrompendo.'
+        },
+        pagination: {
+          aria: {
+            pageToFirst: 'Primeira página',
+            pageBack: 'Página anterior',
+            pageSelected: 'Página Selecionada',
+            pageForward: 'Próxima',
+            pageToLast: 'Anterior'
+          },
+          sizes: 'itens por página',
+          totalItems: 'itens',
+          through: 'através dos',
+          of: 'de'
+        },
+        grouping: {
+          group: 'Agrupar',
+          ungroup: 'Desagrupar',
+          aggregate_count: 'Agr: Contar',
+          aggregate_sum: 'Agr: Soma',
+          aggregate_max: 'Agr: Max',
+          aggregate_min: 'Agr: Min',
+          aggregate_avg: 'Agr: Med',
+          aggregate_remove: 'Agr: Remover'
+        }
+      });
+      return $delegate;
+    }]);
+}]);
+})();
+
+(function () {
+  angular.module('ui.grid').config(['$provide', function($provide) {
+    $provide.decorator('i18nService', ['$delegate', function($delegate) {
+      $delegate.add('ro', {
+        headerCell: {
+          aria: {
+            defaultFilterLabel: 'Filtru pentru coloana',
+            removeFilter: 'Sterge filtru',
+            columnMenuButtonLabel: 'Column Menu'
+          },
+          priority: 'Prioritate:',
+          filterLabel: "Filtru pentru coloana:"
+        },
+        aggregate: {
+          label: 'Elemente'
+        },
+        groupPanel: {
+          description: 'Trage un cap de coloana aici pentru a grupa elementele dupa coloana respectiva'
+        },
+        search: {
+          placeholder: 'Cauta...',
+          showingItems: 'Arata elementele:',
+          selectedItems: 'Elementele selectate:',
+          totalItems: 'Total elemente:',
+          size: 'Marime pagina:',
+          first: 'Prima pagina',
+          next: 'Pagina urmatoare',
+          previous: 'Pagina anterioara',
+          last: 'Ultima pagina'
+        },
+        menu: {
+          text: 'Alege coloane:'
+        },
+        sort: {
+          ascending: 'Ordoneaza crescator',
+          descending: 'Ordoneaza descrescator',
+          none: 'Fara ordonare',
+          remove: 'Sterge ordonarea'
+        },
+        column: {
+          hide: 'Ascunde coloana'
+        },
+        aggregation: {
+          count: 'total linii: ',
+          sum: 'total: ',
+          avg: 'medie: ',
+          min: 'min: ',
+          max: 'max: '
+        },
+        pinning: {
+          pinLeft: 'Pin la stanga',
+          pinRight: 'Pin la dreapta',
+          unpin: 'Sterge pinul'
+        },
+        columnMenu: {
+          close: 'Inchide'
+        },
+        gridMenu: {
+          aria: {
+            buttonLabel: 'Grid Menu'
+          },
+          columns: 'Coloane:',
+          importerTitle: 'Incarca fisier',
+          exporterAllAsCsv: 'Exporta toate datele ca csv',
+          exporterVisibleAsCsv: 'Exporta datele vizibile ca csv',
+          exporterSelectedAsCsv: 'Exporta datele selectate ca csv',
+          exporterAllAsPdf: 'Exporta toate datele ca pdf',
+          exporterVisibleAsPdf: 'Exporta datele vizibile ca pdf',
+          exporterSelectedAsPdf: 'Exporta datele selectate ca csv pdf',
+          clearAllFilters: 'Sterge toate filtrele'
+        },
+        importer: {
+          noHeaders: 'Numele coloanelor nu a putut fi incarcat, acest fisier are un header?',
+          noObjects: 'Datele nu au putut fi incarcate, exista date in fisier in afara numelor de coloane?',
+          invalidCsv: 'Fisierul nu a putut fi procesat, ati incarcat un CSV valid ?',
+          invalidJson: 'Fisierul nu a putut fi procesat, ati incarcat un Json valid?',
+          jsonNotArray: 'Json-ul incarcat trebuie sa contina un array, inchidere.'
+        },
+        pagination: {
+          aria: {
+            pageToFirst: 'Prima pagina',
+            pageBack: 'O pagina inapoi',
+            pageSelected: 'Pagina selectata',
+            pageForward: 'O pagina inainte',
+            pageToLast: 'Ultima pagina'
+          },
+          sizes: 'Elemente per pagina',
+          totalItems: 'elemente',
+          through: 'prin',
+          of: 'of'
+        },
+        grouping: {
+          group: 'Grupeaza',
+          ungroup: 'Opreste gruparea',
+          aggregate_count: 'Agg: Count',
+          aggregate_sum: 'Agg: Sum',
+          aggregate_max: 'Agg: Max',
+          aggregate_min: 'Agg: Min',
+          aggregate_avg: 'Agg: Avg',
+          aggregate_remove: 'Agg: Remove'
+        }
+      });
+      return $delegate;
+    }]);
+  }]);
+})();
+
 (function () {
   angular.module('ui.grid').config(['$provide', function($provide) {
     $provide.decorator('i18nService', ['$delegate', function($delegate) {
       $delegate.add('ru', {
+        headerCell: {
+          aria: {
+            defaultFilterLabel: 'Фильтр столбца',
+            removeFilter: 'Удалить фильтр',
+            columnMenuButtonLabel: 'Меню столбца'
+          },
+          priority: 'Приоритет:',
+          filterLabel: "Фильтр столбца: "
+        },
         aggregate: {
           label: 'элементы'
         },
@@ -10773,10 +13360,11 @@ module.filter('px', function() {
         sort: {
           ascending: 'По возрастанию',
           descending: 'По убыванию',
+          none: 'Без сортировки',
           remove: 'Убрать сортировку'
         },
         column: {
-          hide: 'спрятать столбец'
+          hide: 'Спрятать столбец'
         },
         aggregation: {
           count: 'всего строк: ',
@@ -10785,22 +13373,57 @@ module.filter('px', function() {
           min: 'мин: ',
           max: 'макс: '
         },
+				pinning: {
+					pinLeft: 'Закрепить слева',
+					pinRight: 'Закрепить справа',
+					unpin: 'Открепить'
+				},
+        columnMenu: {
+          close: 'Закрыть'
+        },
         gridMenu: {
+          aria: {
+            buttonLabel: 'Меню'
+          },
           columns: 'Столбцы:',
-          importerTitle: 'Import file',
+          importerTitle: 'Импортировать файл',
           exporterAllAsCsv: 'Экспортировать всё в CSV',
           exporterVisibleAsCsv: 'Экспортировать видимые данные в CSV',
           exporterSelectedAsCsv: 'Экспортировать выбранные данные в CSV',
           exporterAllAsPdf: 'Экспортировать всё в PDF',
           exporterVisibleAsPdf: 'Экспортировать видимые данные в PDF',
-          exporterSelectedAsPdf: 'Экспортировать выбранные данные в PDF'
+          exporterSelectedAsPdf: 'Экспортировать выбранные данные в PDF',
+          clearAllFilters: 'Очистите все фильтры'
         },
         importer: {
-          noHeaders: 'Column names were unable to be derived, does the file have a header?',
-          noObjects: 'Objects were not able to be derived, was there data in the file other than headers?',
-          invalidCsv: 'File was unable to be processed, is it valid CSV?',
-          invalidJson: 'File was unable to be processed, is it valid Json?',
-          jsonNotArray: 'Imported json file must contain an array, aborting.'
+          noHeaders: 'Не удалось получить названия столбцов, есть ли в файле заголовок?',
+          noObjects: 'Не удалось получить данные, есть ли в файле строки кроме заголовка?',
+          invalidCsv: 'Не удалось обработать файл, это правильный CSV-файл?',
+          invalidJson: 'Не удалось обработать файл, это правильный JSON?',
+          jsonNotArray: 'Импортируемый JSON-файл должен содержать массив, операция отменена.'
+        },
+        pagination: {
+          aria: {
+            pageToFirst: 'Первая страница',
+            pageBack: 'Предыдущая страница',
+            pageSelected: 'Выбранная страница',
+            pageForward: 'Следующая страница',
+            pageToLast: 'Последняя страница'
+          },
+          sizes: 'строк на страницу',
+          totalItems: 'строк',
+          through: 'по',
+          of: 'из'
+        },
+        grouping: {
+          group: 'Группировать',
+          ungroup: 'Разгруппировать',
+          aggregate_count: 'Группировать: Count',
+          aggregate_sum: 'Для группы: Сумма',
+          aggregate_max: 'Для группы: Максимум',
+          aggregate_min: 'Для группы: Минимум',
+          aggregate_avg: 'Для группы: Среднее',
+          aggregate_remove: 'Для группы: Пусто'
         }
       });
       return $delegate;
@@ -10852,7 +13475,8 @@ module.filter('px', function() {
           exporterSelectedAsCsv: 'Export selected data as csv',
           exporterAllAsPdf: 'Export all data as pdf',
           exporterVisibleAsPdf: 'Export visible data as pdf',
-          exporterSelectedAsPdf: 'Export selected data as pdf'
+          exporterSelectedAsPdf: 'Export selected data as pdf',
+          clearAllFilters: 'Clear all filters'
         },
         importer: {
           noHeaders: 'Column names were unable to be derived, does the file have a header?',
@@ -10919,7 +13543,8 @@ module.filter('px', function() {
           exporterSelectedAsCsv: 'Exportera markerad data som CSV',
           exporterAllAsPdf: 'Exportera all data som PDF',
           exporterVisibleAsPdf: 'Exportera synlig data som PDF',
-          exporterSelectedAsPdf: 'Exportera markerad data som PDF'
+          exporterSelectedAsPdf: 'Exportera markerad data som PDF',
+          clearAllFilters: 'Rengör alla filter'
         },
         importer: {
           noHeaders: 'Kolumnnamn kunde inte härledas. Har filen ett sidhuvud?',
@@ -10938,6 +13563,194 @@ module.filter('px', function() {
   }]);
 })();
 
+(function () {
+  angular.module('ui.grid').config(['$provide', function($provide) {
+    $provide.decorator('i18nService', ['$delegate', function($delegate) {
+      $delegate.add('ta', {
+        aggregate: {
+          label: 'உருப்படிகள்'
+        },
+        groupPanel: {
+          description: 'ஒரு பத்தியை குழுவாக அமைக்க அப்பத்தியின் தலைப்பை இங்கே  இழுத்து வரவும் '
+        },
+        search: {
+          placeholder: 'தேடல் ...',
+          showingItems: 'உருப்படிகளை காண்பித்தல்:',
+          selectedItems: 'தேர்ந்தெடுக்கப்பட்ட  உருப்படிகள்:',
+          totalItems: 'மொத்த உருப்படிகள்:',
+          size: 'பக்க அளவு: ',
+          first: 'முதல் பக்கம்',
+          next: 'அடுத்த பக்கம்',
+          previous: 'முந்தைய பக்கம் ',
+          last: 'இறுதி பக்கம்'
+        },
+        menu: {
+          text: 'பத்திகளை தேர்ந்தெடு:'
+        },
+        sort: {
+          ascending: 'மேலிருந்து கீழாக',
+          descending: 'கீழிருந்து மேலாக',
+          remove: 'வரிசையை நீக்கு'
+        },
+        column: {
+          hide: 'பத்தியை மறைத்து வை '
+        },
+        aggregation: {
+          count: 'மொத்த வரிகள்:',
+          sum: 'மொத்தம்: ',
+          avg: 'சராசரி: ',
+          min: 'குறைந்தபட்ச: ',
+          max: 'அதிகபட்ச: '
+        },
+        pinning: {
+         pinLeft: 'இடதுபுறமாக தைக்க ',
+          pinRight: 'வலதுபுறமாக தைக்க',
+          unpin: 'பிரி'
+        },
+        gridMenu: {
+          columns: 'பத்திகள்:',
+          importerTitle: 'கோப்பு : படித்தல்',
+          exporterAllAsCsv: 'எல்லா தரவுகளையும் கோப்பாக்கு: csv',
+          exporterVisibleAsCsv: 'இருக்கும் தரவுகளை கோப்பாக்கு: csv',
+          exporterSelectedAsCsv: 'தேர்ந்தெடுத்த தரவுகளை கோப்பாக்கு: csv',
+          exporterAllAsPdf: 'எல்லா தரவுகளையும் கோப்பாக்கு: pdf',
+          exporterVisibleAsPdf: 'இருக்கும் தரவுகளை கோப்பாக்கு: pdf',
+          exporterSelectedAsPdf: 'தேர்ந்தெடுத்த தரவுகளை கோப்பாக்கு: pdf',
+          clearAllFilters: 'Clear all filters'
+        },
+        importer: {
+          noHeaders: 'பத்தியின் தலைப்புகளை பெற இயலவில்லை, கோப்பிற்கு தலைப்பு உள்ளதா?',
+          noObjects: 'இலக்குகளை உருவாக்க முடியவில்லை, கோப்பில் தலைப்புகளை தவிர தரவு ஏதேனும் உள்ளதா? ',
+          invalidCsv:	'சரிவர நடைமுறை படுத்த இயலவில்லை, கோப்பு சரிதானா? - csv',
+          invalidJson: 'சரிவர நடைமுறை படுத்த இயலவில்லை, கோப்பு சரிதானா? - json',
+          jsonNotArray: 'படித்த கோப்பில் வரிசைகள் உள்ளது, நடைமுறை ரத்து செய் : json'
+        },
+        pagination: {
+          sizes		: 'உருப்படிகள் / பக்கம்',
+          totalItems	: 'உருப்படிகள் '
+        },
+        grouping: {
+          group	: 'குழு',
+          ungroup : 'பிரி',
+          aggregate_count	: 'மதிப்பீட்டு : எண்ணு',
+          aggregate_sum : 'மதிப்பீட்டு : கூட்டல்',
+          aggregate_max	: 'மதிப்பீட்டு : அதிகபட்சம்',
+          aggregate_min	: 'மதிப்பீட்டு : குறைந்தபட்சம்',
+          aggregate_avg	: 'மதிப்பீட்டு : சராசரி',
+          aggregate_remove : 'மதிப்பீட்டு : நீக்கு'
+        }
+      });
+      return $delegate;
+    }]);
+  }]);
+})();
+
+(function () {
+  angular.module('ui.grid').config(['$provide', function($provide) {
+    $provide.decorator('i18nService', ['$delegate', function($delegate) {
+      $delegate.add('tr', {
+        headerCell: {
+          aria: {
+            defaultFilterLabel: 'Sütun için filtre',
+            removeFilter: 'Filtreyi Kaldır',
+            columnMenuButtonLabel: 'Sütun Menüsü'
+          },
+          priority: 'Öncelik:',
+          filterLabel: "Sütun için filtre: "
+        },
+        aggregate: {
+          label: 'kayıtlar'
+        },
+        groupPanel: {
+          description: 'Sütuna göre gruplamak için sütun başlığını buraya sürükleyin ve bırakın.'
+        },
+        search: {
+          placeholder: 'Arama...',
+          showingItems: 'Gösterilen Kayıt:',
+          selectedItems: 'Seçili Kayıt:',
+          totalItems: 'Toplam Kayıt:',
+          size: 'Sayfa Boyutu:',
+          first: 'İlk Sayfa',
+          next: 'Sonraki Sayfa',
+          previous: 'Önceki Sayfa',
+          last: 'Son Sayfa'
+        },
+        menu: {
+          text: 'Sütunları Seç:'
+        },
+        sort: {
+          ascending: 'Artan Sırada Sırala',
+          descending: 'Azalan Sırada Sırala',
+          none: 'Sıralama Yapma',
+          remove: 'Sıralamayı Kaldır'
+        },
+        column: {
+          hide: 'Sütunu Gizle'
+        },
+        aggregation: {
+          count: 'toplam satır: ',
+          sum: 'toplam: ',
+          avg: 'ort: ',
+          min: 'min: ',
+          max: 'maks: '
+        },
+        pinning: {
+          pinLeft: 'Sola Sabitle',
+          pinRight: 'Sağa Sabitle',
+          unpin: 'Sabitlemeyi Kaldır'
+        },
+        columnMenu: {
+          close: 'Kapat'
+        },
+        gridMenu: {
+          aria: {
+            buttonLabel: 'Tablo Menü'
+          },
+          columns: 'Sütunlar:',
+          importerTitle: 'Dosya içeri aktar',
+          exporterAllAsCsv: 'Bütün veriyi CSV olarak dışarı aktar',
+          exporterVisibleAsCsv: 'Görünen veriyi CSV olarak dışarı aktar',
+          exporterSelectedAsCsv: 'Seçili veriyi CSV olarak dışarı aktar',
+          exporterAllAsPdf: 'Bütün veriyi PDF olarak dışarı aktar',
+          exporterVisibleAsPdf: 'Görünen veriyi PDF olarak dışarı aktar',
+          exporterSelectedAsPdf: 'Seçili veriyi PDF olarak dışarı aktar',
+          clearAllFilters: 'Bütün filtreleri kaldır'
+        },
+        importer: {
+          noHeaders: 'Sütun isimleri üretilemiyor, dosyanın bir başlığı var mı?',
+          noObjects: 'Nesneler üretilemiyor, dosyada başlıktan başka bir veri var mı?',
+          invalidCsv: 'Dosya işlenemedi, geçerli bir CSV dosyası mı?',
+          invalidJson: 'Dosya işlenemedi, geçerli bir Json dosyası mı?',
+          jsonNotArray: 'Alınan Json dosyasında bir dizi bulunmalıdır, işlem iptal ediliyor.'
+        },
+        pagination: {
+          aria: {
+            pageToFirst: 'İlk sayfaya',
+            pageBack: 'Geri git',
+            pageSelected: 'Seçili sayfa',
+            pageForward: 'İleri git',
+            pageToLast: 'Sona git'
+          },
+          sizes: 'Sayfadaki nesne sayısı',
+          totalItems: 'kayıtlar',
+          through: '', //note(fsw) : turkish dont have this preposition 
+          of: '' //note(fsw) : turkish dont have this preposition
+        },
+        grouping: {
+          group: 'Grupla',
+          ungroup: 'Gruplama',
+          aggregate_count: 'Yekun: Sayı',
+          aggregate_sum: 'Yekun: Toplam',
+          aggregate_max: 'Yekun: Maks',
+          aggregate_min: 'Yekun: Min',
+          aggregate_avg: 'Yekun: Ort',
+          aggregate_remove: 'Yekun: Sil'
+        }
+      });
+      return $delegate;
+    }]);
+  }]);
+})();
 /**
  * @ngdoc overview
  * @name ui.grid.i18n
@@ -11240,6 +14053,15 @@ module.filter('px', function() {
   angular.module('ui.grid').config(['$provide', function($provide) {
     $provide.decorator('i18nService', ['$delegate', function($delegate) {
       $delegate.add('zh-cn', {
+        headerCell: {
+          aria: {
+            defaultFilterLabel: '列过滤器',
+            removeFilter: '移除过滤器',
+            columnMenuButtonLabel: '列菜单'
+          },
+          priority: '优先级:',
+          filterLabel: "列过滤器: "
+        },
         aggregate: {
           label: '行'
         },
@@ -11263,6 +14085,7 @@ module.filter('px', function() {
         sort: {
           ascending: '升序',
           descending: '降序',
+          none: '无序',
           remove: '取消排序'
         },
         column: {
@@ -11280,7 +14103,13 @@ module.filter('px', function() {
           pinRight: '右侧固定',
           unpin: '取消固定'
         },
+        columnMenu: {
+          close: '关闭'
+        },
         gridMenu: {
+          aria: {
+            buttonLabel: '表格菜单'
+          },
           columns: '列：',
           importerTitle: '导入文件',
           exporterAllAsCsv: '导出全部数据到CSV',
@@ -11288,7 +14117,8 @@ module.filter('px', function() {
           exporterSelectedAsCsv: '导出已选数据到CSV',
           exporterAllAsPdf: '导出全部数据到PDF',
           exporterVisibleAsPdf: '导出可见数据到PDF',
-          exporterSelectedAsPdf: '导出已选数据到PDF'
+          exporterSelectedAsPdf: '导出已选数据到PDF',
+          clearAllFilters: '清除所有过滤器'
         },
         importer: {
           noHeaders: '无法获取列名，确定文件包含表头？',
@@ -11298,8 +14128,27 @@ module.filter('px', function() {
           jsonNotArray: '导入的文件不是JSON数组！'
         },
         pagination: {
+          aria: {
+            pageToFirst: '第一页',
+            pageBack: '上一页',
+            pageSelected: '当前页',
+            pageForward: '下一页',
+            pageToLast: '最后一页'
+          },
           sizes: '行每页',
-          totalItems: '行'
+          totalItems: '行',
+          through: '至',
+          of: '共'
+        },
+        grouping: {
+          group: '分组',
+          ungroup: '取消分组',
+          aggregate_count: '合计: 计数',
+          aggregate_sum: '合计: 求和',
+          aggregate_max: '合计: 最大',
+          aggregate_min: '合计: 最小',
+          aggregate_avg: '合计: 平均',
+          aggregate_remove: '合计: 移除'
         }
       });
       return $delegate;
@@ -11359,7 +14208,8 @@ module.filter('px', function() {
           exporterSelectedAsCsv: '導出已選數據到CSV',
           exporterAllAsPdf: '導出全部數據到PDF',
           exporterVisibleAsPdf: '導出可見數據到PDF',
-          exporterSelectedAsPdf: '導出已選數據到PDF'
+          exporterSelectedAsPdf: '導出已選數據到PDF',
+          clearAllFilters: '清除所有过滤器'
         },
         importer: {
           noHeaders: '無法獲取列名，確定文件包含表頭？',
@@ -11384,14 +14234,16 @@ module.filter('px', function() {
    *  @ngdoc overview
    *  @name ui.grid.autoResize
    *
-   *  @description 
+   *  @description
    *
    *  #ui.grid.autoResize
-   *  This module provides auto-resizing functionality to ui-grid
    *
+   *  <div class="alert alert-warning" role="alert"><strong>Beta</strong> This feature is ready for testing, but it either hasn't seen a lot of use or has some known bugs.</div>
+   *
+   *  This module provides auto-resizing functionality to UI-Grid.
    */
   var module = angular.module('ui.grid.autoResize', ['ui.grid']);
-  
+
 
   module.directive('uiGridAutoResize', ['$timeout', 'gridUtil', function ($timeout, gridUtil) {
     return {
@@ -11444,14 +14296,23 @@ module.filter('px', function() {
     };
   }]);
 })();
+
 (function () {
   'use strict';
-  var module = angular.module('ui.grid.cellNav', ['ui.grid']);
 
-  function RowCol(row, col) {
-    this.row = row;
-    this.col = col;
-  }
+  /**
+   *  @ngdoc overview
+   *  @name ui.grid.cellNav
+   *
+   *  @description
+
+      #ui.grid.cellNav
+
+      <div class="alert alert-success" role="alert"><strong>Stable</strong> This feature is stable. There should no longer be breaking api changes without a deprecation warning.</div>
+
+      This module provides auto-resizing functionality to UI-Grid.
+   */
+  var module = angular.module('ui.grid.cellNav', ['ui.grid']);
 
   /**
    *  @ngdoc object
@@ -11471,8 +14332,8 @@ module.filter('px', function() {
   });
 
 
-  module.factory('uiGridCellNavFactory', ['gridUtil', 'uiGridConstants', 'uiGridCellNavConstants', '$q',
-    function (gridUtil, uiGridConstants, uiGridCellNavConstants, $q) {
+  module.factory('uiGridCellNavFactory', ['gridUtil', 'uiGridConstants', 'uiGridCellNavConstants', 'GridRowColumn', '$q',
+    function (gridUtil, uiGridConstants, uiGridCellNavConstants, GridRowColumn, $q) {
       /**
        *  @ngdoc object
        *  @name ui.grid.cellNav.object:CellNav
@@ -11540,6 +14401,18 @@ module.filter('px', function() {
 
       };
 
+      UiGridCellNav.prototype.initializeSelection = function () {
+        var focusableCols = this.getFocusableCols();
+        var focusableRows = this.getFocusableRows();
+        if (focusableCols.length === 0 || focusableRows.length === 0) {
+          return null;
+        }
+
+        var curRowIndex = 0;
+        var curColIndex = 0;
+        return new GridRowColumn(focusableRows[0], focusableCols[0]); //return same row
+      };
+
       UiGridCellNav.prototype.getRowColLeft = function (curRow, curCol) {
         var focusableCols = this.getFocusableCols();
         var focusableRows = this.getFocusableRows();
@@ -11560,17 +14433,19 @@ module.filter('px', function() {
           //   return null;
           // }
           if (curRowIndex === 0) {
-            return new RowCol(curRow, focusableCols[nextColIndex]); //return same row
+            return new GridRowColumn(curRow, focusableCols[nextColIndex]); //return same row
           }
           else {
             //up one row and far right column
-            return new RowCol(focusableRows[curRowIndex - 1], focusableCols[nextColIndex]);
+            return new GridRowColumn(focusableRows[curRowIndex - 1], focusableCols[nextColIndex]);
           }
         }
         else {
-          return new RowCol(curRow, focusableCols[nextColIndex]);
+          return new GridRowColumn(curRow, focusableCols[nextColIndex]);
         }
       };
+
+
 
       UiGridCellNav.prototype.getRowColRight = function (curRow, curCol) {
         var focusableCols = this.getFocusableCols();
@@ -11586,15 +14461,15 @@ module.filter('px', function() {
 
         if (nextColIndex < curColIndex) {
           if (curRowIndex === focusableRows.length - 1) {
-            return new RowCol(curRow, focusableCols[nextColIndex]); //return same row
+            return new GridRowColumn(curRow, focusableCols[nextColIndex]); //return same row
           }
           else {
             //down one row and far left column
-            return new RowCol(focusableRows[curRowIndex + 1], focusableCols[nextColIndex]);
+            return new GridRowColumn(focusableRows[curRowIndex + 1], focusableCols[nextColIndex]);
           }
         }
         else {
-          return new RowCol(curRow, focusableCols[nextColIndex]);
+          return new GridRowColumn(curRow, focusableCols[nextColIndex]);
         }
       };
 
@@ -11610,11 +14485,11 @@ module.filter('px', function() {
         }
 
         if (curRowIndex === focusableRows.length - 1) {
-          return new RowCol(curRow, focusableCols[curColIndex]); //return same row
+          return new GridRowColumn(curRow, focusableCols[curColIndex]); //return same row
         }
         else {
           //down one row
-          return new RowCol(focusableRows[curRowIndex + 1], focusableCols[curColIndex]);
+          return new GridRowColumn(focusableRows[curRowIndex + 1], focusableCols[curColIndex]);
         }
       };
 
@@ -11631,11 +14506,11 @@ module.filter('px', function() {
 
         var pageSize = this.bodyContainer.minRowsToRender();
         if (curRowIndex >= focusableRows.length - pageSize) {
-          return new RowCol(focusableRows[focusableRows.length - 1], focusableCols[curColIndex]); //return last row
+          return new GridRowColumn(focusableRows[focusableRows.length - 1], focusableCols[curColIndex]); //return last row
         }
         else {
           //down one page
-          return new RowCol(focusableRows[curRowIndex + pageSize], focusableCols[curColIndex]);
+          return new GridRowColumn(focusableRows[curRowIndex + pageSize], focusableCols[curColIndex]);
         }
       };
 
@@ -11651,11 +14526,11 @@ module.filter('px', function() {
         }
 
         if (curRowIndex === 0) {
-          return new RowCol(curRow, focusableCols[curColIndex]); //return same row
+          return new GridRowColumn(curRow, focusableCols[curColIndex]); //return same row
         }
         else {
           //up one row
-          return new RowCol(focusableRows[curRowIndex - 1], focusableCols[curColIndex]);
+          return new GridRowColumn(focusableRows[curRowIndex - 1], focusableCols[curColIndex]);
         }
       };
 
@@ -11672,11 +14547,11 @@ module.filter('px', function() {
 
         var pageSize = this.bodyContainer.minRowsToRender();
         if (curRowIndex - pageSize < 0) {
-          return new RowCol(focusableRows[0], focusableCols[curColIndex]); //return first row
+          return new GridRowColumn(focusableRows[0], focusableCols[curColIndex]); //return first row
         }
         else {
           //up one page
-          return new RowCol(focusableRows[curRowIndex - pageSize], focusableCols[curColIndex]);
+          return new GridRowColumn(focusableRows[curRowIndex - pageSize], focusableCols[curColIndex]);
         }
       };
       return UiGridCellNav;
@@ -11689,15 +14564,20 @@ module.filter('px', function() {
    *  @description Services for cell navigation features. If you don't like the key maps we use,
    *  or the direction cells navigation, override with a service decorator (see angular docs)
    */
-  module.service('uiGridCellNavService', ['gridUtil', 'uiGridConstants', 'uiGridCellNavConstants', '$q', 'uiGridCellNavFactory', 'ScrollEvent',
-    function (gridUtil, uiGridConstants, uiGridCellNavConstants, $q, UiGridCellNav, ScrollEvent) {
+  module.service('uiGridCellNavService', ['gridUtil', 'uiGridConstants', 'uiGridCellNavConstants', '$q', 'uiGridCellNavFactory', 'GridRowColumn', 'ScrollEvent',
+    function (gridUtil, uiGridConstants, uiGridCellNavConstants, $q, UiGridCellNav, GridRowColumn, ScrollEvent) {
 
       var service = {
 
         initializeGrid: function (grid) {
           grid.registerColumnBuilder(service.cellNavColumnBuilder);
 
-          //create variables for state
+
+          /**
+           *  @ngdoc object
+           *  @name ui.grid.cellNav:Grid.cellNav
+           * @description cellNav properties added to grid class
+           */
           grid.cellNav = {};
           grid.cellNav.lastRowCol = null;
           grid.cellNav.focusedCells = [];
@@ -11724,24 +14604,36 @@ module.filter('px', function() {
                  * @param {object} newRowCol new position
                  * @param {object} oldRowCol old position
                  */
-                navigate: function (newRowCol, oldRowCol) {
-                }
+                navigate: function (newRowCol, oldRowCol) {},
+                /**
+                 * @ngdoc event
+                 * @name viewPortKeyDown
+                 * @eventOf  ui.grid.cellNav.api:PublicApi
+                 * @description  is raised when the viewPort receives a keyDown event. Cells never get focus in uiGrid
+                 * due to the difficulties of setting focus on a cell that is not visible in the viewport.  Use this
+                 * event whenever you need a keydown event on a cell
+                 * <br/>
+                 * @param {object} event keydown event
+                 * @param {object} rowCol current rowCol position
+                 */
+                viewPortKeyDown: function (event, rowCol) {},
+
+                /**
+                 * @ngdoc event
+                 * @name viewPortKeyPress
+                 * @eventOf  ui.grid.cellNav.api:PublicApi
+                 * @description  is raised when the viewPort receives a keyPress event. Cells never get focus in uiGrid
+                 * due to the difficulties of setting focus on a cell that is not visible in the viewport.  Use this
+                 * event whenever you need a keypress event on a cell
+                 * <br/>
+                 * @param {object} event keypress event
+                 * @param {object} rowCol current rowCol position
+                 */
+                viewPortKeyPress: function (event, rowCol) {}
               }
             },
             methods: {
               cellNav: {
-                /**
-                 * @ngdoc function
-                 * @name scrollTo
-                 * @methodOf  ui.grid.cellNav.api:PublicApi
-                 * @description brings the specified row and column into view
-                 * @param {object} rowEntity gridOptions.data[] array instance to make visible
-                 * @param {object} colDef to make visible
-                 */
-                scrollTo: function (rowEntity, colDef) {
-                  service.scrollTo(grid, rowEntity, colDef);
-                },
-
                 /**
                  * @ngdoc function
                  * @name scrollToFocus
@@ -11750,21 +14642,10 @@ module.filter('px', function() {
                  * to that cell
                  * @param {object} rowEntity gridOptions.data[] array instance to make visible and set focus
                  * @param {object} colDef to make visible and set focus
+                 * @returns {promise} a promise that is resolved after any scrolling is finished
                  */
                 scrollToFocus: function (rowEntity, colDef) {
-                  service.scrollToFocus(grid, rowEntity, colDef);
-                },
-
-                /**
-                 * @ngdoc function
-                 * @name scrollToFocus
-                 * @methodOf  ui.grid.cellNav.api:PublicApi
-                 * @description brings the specified row and column fully into view if it isn't already
-                 * @param {GridRow} row grid row that we should make fully visible
-                 * @param {GridCol} col grid col to make fully visible
-                 */
-                scrollToIfNecessary: function (row, col) {
-                  service.scrollToIfNecessary(grid, row, col);
+                  return service.scrollToFocus(grid, rowEntity, colDef);
                 },
 
                 /**
@@ -11793,7 +14674,7 @@ module.filter('px', function() {
                  * @ngdoc function
                  * @name rowColSelectIndex
                  * @methodOf  ui.grid.cellNav.api:PublicApi
-                 * @description returns the index in the order in which the RowCol was selected, returns -1 if the RowCol
+                 * @description returns the index in the order in which the GridRowColumn was selected, returns -1 if the GridRowColumn
                  * isn't selected
                  * @param {object} rowCol the rowCol to evaluate
                  */
@@ -11887,7 +14768,7 @@ module.filter('px', function() {
           }
 
           if (evt.keyCode === uiGridConstants.keymap.DOWN ||
-            evt.keyCode === uiGridConstants.keymap.ENTER) {
+            evt.keyCode === uiGridConstants.keymap.ENTER && !(evt.ctrlKey || evt.altKey)) {
             return uiGridCellNavConstants.direction.DOWN;
           }
 
@@ -11931,30 +14812,6 @@ module.filter('px', function() {
         /**
          * @ngdoc method
          * @methodOf ui.grid.cellNav.service:uiGridCellNavService
-         * @name scrollTo
-         * @description Scroll the grid such that the specified
-         * row and column is in view
-         * @param {Grid} grid the grid you'd like to act upon, usually available
-         * from gridApi.grid
-         * @param {object} rowEntity gridOptions.data[] array instance to make visible
-         * @param {object} colDef to make visible
-         */
-        scrollTo: function (grid, rowEntity, colDef) {
-          var gridRow = null, gridCol = null;
-
-          if (rowEntity !== null && typeof(rowEntity) !== 'undefined' ) {
-            gridRow = grid.getRow(rowEntity);
-          }
-
-          if (colDef !== null && typeof(colDef) !== 'undefined' ) {
-            gridCol = grid.getColumn(colDef.name ? colDef.name : colDef.field);
-          }
-          this.scrollToInternal(grid, gridRow, gridCol);
-        },
-
-        /**
-         * @ngdoc method
-         * @methodOf ui.grid.cellNav.service:uiGridCellNavService
          * @name scrollToFocus
          * @description Scroll the grid such that the specified
          * row and column is in view, and set focus to the cell in that row and column
@@ -11962,221 +14819,31 @@ module.filter('px', function() {
          * from gridApi.grid
          * @param {object} rowEntity gridOptions.data[] array instance to make visible and set focus to
          * @param {object} colDef to make visible and set focus to
+         * @returns {promise} a promise that is resolved after any scrolling is finished
          */
         scrollToFocus: function (grid, rowEntity, colDef) {
           var gridRow = null, gridCol = null;
 
-          if (rowEntity !== null) {
+          if (typeof(rowEntity) !== 'undefined' && rowEntity !== null) {
             gridRow = grid.getRow(rowEntity);
           }
 
-          if (colDef !== null) {
+          if (typeof(colDef) !== 'undefined' && colDef !== null) {
             gridCol = grid.getColumn(colDef.name ? colDef.name : colDef.field);
           }
-          this.scrollToInternal(grid, gridRow, gridCol);
+          return grid.api.core.scrollToIfNecessary(gridRow, gridCol).then(function () {
+            var rowCol = { row: gridRow, col: gridCol };
 
-          var rowCol = { row: gridRow, col: gridCol };
+            // Broadcast the navigation
+            if (gridRow !== null && gridCol !== null) {
+              grid.cellNav.broadcastCellNav(rowCol);
+            }
+          });
 
-          // Broadcast the navigation
-          grid.cellNav.broadcastCellNav(rowCol);
+
 
         },
 
-        /**
-         * @ngdoc method
-         * @methodOf ui.grid.cellNav.service:uiGridCellNavService
-         * @name scrollToInternal
-         * @description Like scrollTo, but takes gridRow and gridCol.
-         * In calculating the scroll height we have to deal with wanting
-         * 0% for the first row, and 100% for the last row.  Normal maths
-         * for a 10 row list would return 1/10 = 10% for the first row, so
-         * we need to tweak the numbers to add an extra 10% somewhere.  The
-         * formula if we're trying to get to row 0 in a 10 row list (assuming our
-         * index is zero based, so the last row is row 9) is:
-         * <pre>
-         *   0 + 0 / 10 = 0%
-         * </pre>
-         *
-         * To get to row 9 (i.e. the last row) in the same list, we want to
-         * go to:
-         * <pre>
-         *  ( 9 + 1 ) / 10 = 100%
-         * </pre>
-         * So we need to apportion one whole row within the overall grid scroll,
-         * the formula is:
-         * <pre>
-         *   ( index + ( index / (total rows - 1) ) / total rows
-         * </pre>
-         * @param {Grid} grid the grid you'd like to act upon, usually available
-         * from gridApi.grid
-         * @param {GridRow} gridRow row to make visible
-         * @param {GridCol} gridCol column to make visible
-         */
-        scrollToInternal: function (grid, gridRow, gridCol) {
-          var scrollEvent = new ScrollEvent(grid,null,null,'uiGridCellNavService.scrollToInternal');
-
-          if (gridRow !== null) {
-            var seekRowIndex = grid.renderContainers.body.visibleRowCache.indexOf(gridRow);
-            var totalRows = grid.renderContainers.body.visibleRowCache.length;
-            var percentage = ( seekRowIndex + ( seekRowIndex / ( totalRows - 1 ) ) ) / totalRows;
-            scrollEvent.y = { percentage:  percentage  };
-          }
-
-          if (gridCol !== null) {
-            scrollEvent.x = { percentage: this.getLeftWidth(grid, gridCol) / this.getLeftWidth(grid, grid.renderContainers.body.visibleColumnCache[grid.renderContainers.body.visibleColumnCache.length - 1] ) };
-          }
-
-          if (scrollEvent.y || scrollEvent.x) {
-            scrollEvent.fireScrollingEvent();
-          }
-        },
-
-        /**
-         * @ngdoc method
-         * @methodOf ui.grid.cellNav.service:uiGridCellNavService
-         * @name scrollToIfNecessary
-         * @description Scrolls the grid to make a certain row and column combo visible,
-         *   in the case that it is not completely visible on the screen already.
-         * @param {Grid} grid the grid you'd like to act upon, usually available
-         * from gridApi.grid
-         * @param {GridRow} gridRow row to make visible
-         * @param {GridCol} gridCol column to make visible
-         */
-        scrollToIfNecessary: function (grid, gridRow, gridCol) {
-          var scrollEvent = new ScrollEvent(grid, 'uiGridCellNavService.scrollToIfNecessary');
-
-          // Alias the visible row and column caches
-          var visRowCache = grid.renderContainers.body.visibleRowCache;
-          var visColCache = grid.renderContainers.body.visibleColumnCache;
-
-          /*-- Get the top, left, right, and bottom "scrolled" edges of the grid --*/
-
-          // The top boundary is the current Y scroll position PLUS the header height, because the header can obscure rows when the grid is scrolled downwards
-          var topBound = grid.renderContainers.body.prevScrollTop + grid.headerHeight;
-
-          // Don't the let top boundary be less than 0
-          topBound = (topBound < 0) ? 0 : topBound;
-
-          // The left boundary is the current X scroll position
-          var leftBound = grid.renderContainers.body.prevScrollLeft;
-
-          // The bottom boundary is the current Y scroll position, plus the height of the grid, but minus the header height.
-          //   Basically this is the viewport height added on to the scroll position
-          var bottomBound = grid.renderContainers.body.prevScrollTop + grid.gridHeight - grid.headerHeight;
-
-          // If there's a horizontal scrollbar, remove its height from the bottom boundary, otherwise we'll be letting it obscure rows
-          //if (grid.horizontalScrollbarHeight) {
-          //  bottomBound = bottomBound - grid.horizontalScrollbarHeight;
-          //}
-
-          // The right position is the current X scroll position minus the grid width
-          var rightBound = grid.renderContainers.body.prevScrollLeft + Math.ceil(grid.gridWidth);
-
-          // If there's a vertical scrollbar, subtract it from the right boundary or we'll allow it to obscure cells
-          //if (grid.verticalScrollbarWidth) {
-          //  rightBound = rightBound - grid.verticalScrollbarWidth;
-          //}
-
-          // We were given a row to scroll to
-          if (gridRow !== null) {
-            // This is the index of the row we want to scroll to, within the list of rows that can be visible
-            var seekRowIndex = visRowCache.indexOf(gridRow);
-
-            // Total vertical scroll length of the grid
-            var scrollLength = (grid.renderContainers.body.getCanvasHeight() - grid.renderContainers.body.getViewportHeight());
-
-            // Add the height of the native horizontal scrollbar to the scroll length, if it's there. Otherwise it will mask over the final row
-            //if (grid.horizontalScrollbarHeight && grid.horizontalScrollbarHeight > 0) {
-            //  scrollLength = scrollLength + grid.horizontalScrollbarHeight;
-            //}
-
-            // This is the minimum amount of pixels we need to scroll vertical in order to see this row.
-            var pixelsToSeeRow = ((seekRowIndex + 1) * grid.options.rowHeight);
-
-            // Don't let the pixels required to see the row be less than zero
-            pixelsToSeeRow = (pixelsToSeeRow < 0) ? 0 : pixelsToSeeRow;
-
-            var scrollPixels, percentage;
-
-            // If the scroll position we need to see the row is LESS than the top boundary, i.e. obscured above the top of the grid...
-            if (pixelsToSeeRow < topBound) {
-              // Get the different between the top boundary and the required scroll position and subtract it from the current scroll position\
-              //   to get the full position we need
-              scrollPixels = grid.renderContainers.body.prevScrollTop - (topBound - pixelsToSeeRow);
-
-              // Turn the scroll position into a percentage and make it an argument for a scroll event
-              percentage = scrollPixels / scrollLength;
-              scrollEvent.y = { percentage: percentage  };
-            }
-            // Otherwise if the scroll position we need to see the row is MORE than the bottom boundary, i.e. obscured below the bottom of the grid...
-            else if (pixelsToSeeRow > bottomBound) {
-              // Get the different between the bottom boundary and the required scroll position and add it to the current scroll position
-              //   to get the full position we need
-              scrollPixels = pixelsToSeeRow - bottomBound + grid.renderContainers.body.prevScrollTop;
-
-              // Turn the scroll position into a percentage and make it an argument for a scroll event
-              percentage = scrollPixels / scrollLength;
-              scrollEvent.y = { percentage: percentage  };
-            }
-          }
-
-          // We were given a column to scroll to
-          if (gridCol !== null) {
-            // This is the index of the row we want to scroll to, within the list of rows that can be visible
-            var seekColumnIndex = visColCache.indexOf(gridCol);
-
-            // Total vertical scroll length of the grid
-            var horizScrollLength = (grid.renderContainers.body.getCanvasWidth() - grid.renderContainers.body.getViewportWidth());
-
-            // Add the height of the native horizontal scrollbar to the scroll length, if it's there. Otherwise it will mask over the final row
-            // if (grid.verticalScrollbarWidth && grid.verticalScrollbarWidth > 0) {
-            //   horizScrollLength = horizScrollLength + grid.verticalScrollbarWidth;
-            // }
-
-            // This is the minimum amount of pixels we need to scroll vertical in order to see this column
-            var columnLeftEdge = 0;
-            for (var i = 0; i < seekColumnIndex; i++) {
-              var col = visColCache[i];
-              columnLeftEdge += col.drawnWidth;
-            }
-            columnLeftEdge = (columnLeftEdge < 0) ? 0 : columnLeftEdge;
-
-            var columnRightEdge = columnLeftEdge + gridCol.drawnWidth;
-
-            // Don't let the pixels required to see the column be less than zero
-            columnRightEdge = (columnRightEdge < 0) ? 0 : columnRightEdge;
-
-            var horizScrollPixels, horizPercentage;
-
-            // If the scroll position we need to see the row is LESS than the top boundary, i.e. obscured above the top of the grid...
-            if (columnLeftEdge < leftBound) {
-              // Get the different between the top boundary and the required scroll position and subtract it from the current scroll position\
-              //   to get the full position we need
-              horizScrollPixels = grid.renderContainers.body.prevScrollLeft - (leftBound - columnLeftEdge);
-
-              // Turn the scroll position into a percentage and make it an argument for a scroll event
-              horizPercentage = horizScrollPixels / horizScrollLength;
-              horizPercentage = (horizPercentage > 1) ? 1 : horizPercentage;
-              scrollEvent.x = { percentage: horizPercentage  };
-            }
-            // Otherwise if the scroll position we need to see the row is MORE than the bottom boundary, i.e. obscured below the bottom of the grid...
-            else if (columnRightEdge > rightBound) {
-              // Get the different between the bottom boundary and the required scroll position and add it to the current scroll position
-              //   to get the full position we need
-              horizScrollPixels = columnRightEdge - rightBound + grid.renderContainers.body.prevScrollLeft;
-
-              // Turn the scroll position into a percentage and make it an argument for a scroll event
-              horizPercentage = horizScrollPixels / horizScrollLength;
-              horizPercentage = (horizPercentage > 1) ? 1 : horizPercentage;
-              scrollEvent.x = { percentage: horizPercentage  };
-            }
-          }
-
-          // If we need to scroll on either the x or y axes, fire a scroll event
-          if (scrollEvent.y || scrollEvent.x) {
-            scrollEvent.fireScrollingEvent();
-          }
-        },
 
         /**
          * @ngdoc method
@@ -12251,8 +14918,8 @@ module.filter('px', function() {
    </file>
    </example>
    */
-  module.directive('uiGridCellnav', ['gridUtil', 'uiGridCellNavService', 'uiGridCellNavConstants', 'uiGridConstants',
-    function (gridUtil, uiGridCellNavService, uiGridCellNavConstants, uiGridConstants) {
+  module.directive('uiGridCellnav', ['gridUtil', 'uiGridCellNavService', 'uiGridCellNavConstants', 'uiGridConstants', 'GridRowColumn', '$timeout', '$compile',
+    function (gridUtil, uiGridCellNavService, uiGridCellNavConstants, uiGridConstants, GridRowColumn, $timeout, $compile) {
       return {
         replace: true,
         priority: -150,
@@ -12269,23 +14936,41 @@ module.filter('px', function() {
 
               uiGridCtrl.cellNav = {};
 
-              uiGridCtrl.cellNav.focusCell = function (row, col) {
-                uiGridCtrl.cellNav.broadcastCellNav({ row: row, col: col });
+              //Ensure that the object has all of the methods we expect it to
+              uiGridCtrl.cellNav.makeRowCol = function (obj) {
+                if (!(obj instanceof GridRowColumn)) {
+                  obj = new GridRowColumn(obj.row, obj.col);
+                }
+                return obj;
               };
 
-              //  gridUtil.logDebug('uiGridEdit preLink');
-              uiGridCtrl.cellNav.broadcastCellNav = grid.cellNav.broadcastCellNav = function (newRowCol, modifierDown) {
+              uiGridCtrl.cellNav.getActiveCell = function () {
+                var elms = $elm[0].getElementsByClassName('ui-grid-cell-focus');
+                if (elms.length > 0){
+                  return elms[0];
+                }
+
+                return undefined;
+              };
+
+              uiGridCtrl.cellNav.broadcastCellNav = grid.cellNav.broadcastCellNav = function (newRowCol, modifierDown, originEvt) {
                 modifierDown = !(modifierDown === undefined || !modifierDown);
-                uiGridCtrl.cellNav.broadcastFocus(newRowCol, modifierDown);
-                _scope.$broadcast(uiGridCellNavConstants.CELL_NAV_EVENT, newRowCol, modifierDown);
+
+                newRowCol = uiGridCtrl.cellNav.makeRowCol(newRowCol);
+
+                uiGridCtrl.cellNav.broadcastFocus(newRowCol, modifierDown, originEvt);
+                _scope.$broadcast(uiGridCellNavConstants.CELL_NAV_EVENT, newRowCol, modifierDown, originEvt);
               };
 
               uiGridCtrl.cellNav.clearFocus = grid.cellNav.clearFocus = function () {
-                _scope.$broadcast(uiGridCellNavConstants.CELL_NAV_EVENT, { eventType: uiGridCellNavConstants.EVENT_TYPE.CLEAR });
+                grid.cellNav.focusedCells = [];
+                _scope.$broadcast(uiGridCellNavConstants.CELL_NAV_EVENT);
               };
 
-              uiGridCtrl.cellNav.broadcastFocus = function (rowCol, modifierDown) {
+              uiGridCtrl.cellNav.broadcastFocus = function (rowCol, modifierDown, originEvt) {
                 modifierDown = !(modifierDown === undefined || !modifierDown);
+
+                rowCol = uiGridCtrl.cellNav.makeRowCol(rowCol);
 
                 var row = rowCol.row,
                   col = rowCol.col;
@@ -12293,9 +14978,12 @@ module.filter('px', function() {
                 var rowColSelectIndex = uiGridCtrl.grid.api.cellNav.rowColSelectIndex(rowCol);
 
                 if (grid.cellNav.lastRowCol === null || rowColSelectIndex === -1) {
-                  var newRowCol = new RowCol(row, col);
-                  grid.api.cellNav.raise.navigate(newRowCol, grid.cellNav.lastRowCol);
-                  grid.cellNav.lastRowCol = newRowCol;
+                  var newRowCol = new GridRowColumn(row, col);
+
+                  if (grid.cellNav.lastRowCol === null || grid.cellNav.lastRowCol.row !== newRowCol.row || grid.cellNav.lastRowCol.col !== newRowCol.col){
+                    grid.api.cellNav.raise.navigate(newRowCol, grid.cellNav.lastRowCol);
+                    grid.cellNav.lastRowCol = newRowCol;  
+                  }
                   if (uiGridCtrl.grid.options.modifierKeysToMultiSelectCells && modifierDown) {
                     grid.cellNav.focusedCells.push(rowCol);
                   } else {
@@ -12311,7 +14999,7 @@ module.filter('px', function() {
               uiGridCtrl.cellNav.handleKeyDown = function (evt) {
                 var direction = uiGridCellNavService.getDirection(evt);
                 if (direction === null) {
-                  return true;
+                  return null;
                 }
 
                 var containerId = 'body';
@@ -12324,38 +15012,43 @@ module.filter('px', function() {
                 if (lastRowCol) {
                   // Figure out which new row+combo we're navigating to
                   var rowCol = uiGridCtrl.grid.renderContainers[containerId].cellNav.getNextRowCol(direction, lastRowCol.row, lastRowCol.col);
-
+                  var focusableCols = uiGridCtrl.grid.renderContainers[containerId].cellNav.getFocusableCols();
+                  var rowColSelectIndex = uiGridCtrl.grid.api.cellNav.rowColSelectIndex(rowCol);
                   // Shift+tab on top-left cell should exit cellnav on render container
                   if (
                     // Navigating left
                     direction === uiGridCellNavConstants.direction.LEFT &&
-                    // Trying to stay on same row
+                    // New col is last col (i.e. wrap around)
+                    rowCol.col === focusableCols[focusableCols.length - 1] &&
+                    // Staying on same row, which means we're at first row
                     rowCol.row === lastRowCol.row &&
                     evt.keyCode === uiGridConstants.keymap.TAB &&
                     evt.shiftKey
                   ) {
+                    grid.cellNav.focusedCells.splice(rowColSelectIndex, 1);
                     uiGridCtrl.cellNav.clearFocus();
                     return true;
                   }
                   // Tab on bottom-right cell should exit cellnav on render container
                   else if (
                     direction === uiGridCellNavConstants.direction.RIGHT &&
+                    // New col is first col (i.e. wrap around)
+                    rowCol.col === focusableCols[0] &&
+                    // Staying on same row, which means we're at first row
                     rowCol.row === lastRowCol.row &&
                     evt.keyCode === uiGridConstants.keymap.TAB &&
                     !evt.shiftKey
                   ) {
+                    grid.cellNav.focusedCells.splice(rowColSelectIndex, 1);
                     uiGridCtrl.cellNav.clearFocus();
                     return true;
                   }
 
-
-                  rowCol.eventType = uiGridCellNavConstants.EVENT_TYPE.KEYDOWN;
-
-                  // Broadcast the navigation
-                  uiGridCtrl.cellNav.broadcastCellNav(rowCol);
-
                   // Scroll to the new cell, if it's not completely visible within the render container's viewport
-                  uiGridCellNavService.scrollToIfNecessary(grid, rowCol.row, rowCol.col);
+                  grid.scrollToIfNecessary(rowCol.row, rowCol.col).then(function () {
+                    uiGridCtrl.cellNav.broadcastCellNav(rowCol);
+                  });
+
 
                   evt.stopPropagation();
                   evt.preventDefault();
@@ -12365,14 +15058,78 @@ module.filter('px', function() {
               };
             },
             post: function ($scope, $elm, $attrs, uiGridCtrl) {
+              var _scope = $scope;
+              var grid = uiGridCtrl.grid;
+
+              function addAriaLiveRegion(){
+                // Thanks to google docs for the inspiration behind how to do this
+                // XXX: Why is this entire mess nessasary?
+                // Because browsers take a lot of coercing to get them to read out live regions
+                //http://www.paciellogroup.com/blog/2012/06/html5-accessibility-chops-aria-rolealert-browser-support/
+                var ariaNotifierDomElt = '<div ' +
+                                           'id="' + grid.id +'-aria-speakable" ' +
+                                           'class="ui-grid-a11y-ariascreenreader-speakable ui-grid-offscreen" ' +
+                                           'aria-live="assertive" ' +
+                                           'role="region" ' +
+                                           'aria-atomic="true" ' +
+                                           'aria-hidden="false" ' +
+                                           'aria-relevant="additions" ' +
+                                           '>' +
+                                           '&nbsp;' +
+                                         '</div>';
+
+                var ariaNotifier = $compile(ariaNotifierDomElt)($scope);
+                $elm.prepend(ariaNotifier);
+                $scope.$on(uiGridCellNavConstants.CELL_NAV_EVENT, function (evt, rowCol, modifierDown, originEvt) {
+                  /*
+                   * If the cell nav event was because of a focus event then we don't want to
+                   * change the notifier text.
+                   * Reasoning: Voice Over fires a focus events when moving arround the grid.
+                   * If the screen reader is handing the grid nav properly then we don't need to
+                   * use the alert to notify the user of the movement.
+                   * In all other cases we do want a notification event.
+                   */
+                  if (originEvt && originEvt.type === 'focus'){return;}
+
+                  function setNotifyText(text){
+                    if (text === ariaNotifier.text()){return;}
+                    ariaNotifier[0].style.clip = 'rect(0px,0px,0px,0px)';
+                    /*
+                     * This is how google docs handles clearing the div. Seems to work better than setting the text of the div to ''
+                     */
+                    ariaNotifier[0].innerHTML = "";
+                    ariaNotifier[0].style.visibility = 'hidden';
+                    ariaNotifier[0].style.visibility = 'visible';
+                    if (text !== ''){
+                      ariaNotifier[0].style.clip = 'auto';
+                      /*
+                       * The space after the text is something that google docs does.
+                       */
+                      ariaNotifier[0].appendChild(document.createTextNode(text + " "));
+                      ariaNotifier[0].style.visibility = 'hidden';
+                      ariaNotifier[0].style.visibility = 'visible';
+                    }
+                  }
+
+                  var values = [];
+                  var currentSelection = grid.api.cellNav.getCurrentSelection();
+                  for (var i = 0; i < currentSelection.length; i++) {
+                    values.push(currentSelection[i].getIntersectionValueFiltered());
+                  }
+                  var cellText = values.toString();
+                  setNotifyText(cellText);
+
+                });
+              }
+              addAriaLiveRegion();
             }
           };
         }
       };
     }]);
 
-  module.directive('uiGridRenderContainer', ['$timeout', '$document', 'gridUtil', 'uiGridConstants', 'uiGridCellNavService', 'uiGridCellNavConstants',
-    function ($timeout, $document, gridUtil, uiGridConstants, uiGridCellNavService, uiGridCellNavConstants) {
+  module.directive('uiGridRenderContainer', ['$timeout', '$document', 'gridUtil', 'uiGridConstants', 'uiGridCellNavService', '$compile','uiGridCellNavConstants',
+    function ($timeout, $document, gridUtil, uiGridConstants, uiGridCellNavService, $compile, uiGridCellNavConstants) {
       return {
         replace: true,
         priority: -99999, //this needs to run very last
@@ -12382,7 +15139,8 @@ module.filter('px', function() {
           return {
             post: function ($scope, $elm, $attrs, controllers) {
               var uiGridCtrl = controllers[0],
-                 renderContainerCtrl = controllers[1];
+                 renderContainerCtrl = controllers[1],
+                 uiGridCellnavCtrl = controllers[2];
 
               // Skip attaching cell-nav specific logic if the directive is not attached above us
               if (!uiGridCtrl.grid.api.cellNav) { return; }
@@ -12391,102 +15149,156 @@ module.filter('px', function() {
 
               var grid = uiGridCtrl.grid;
 
-              // Needs to run last after all renderContainers are built
+              //run each time a render container is created
               uiGridCellNavService.decorateRenderContainers(grid);
 
-              // Let the render container be focus-able
-              $elm.attr("tabindex", -1);
+              // focusser only created for body
+              if (containerId !== 'body') {
+                return;
+              }
 
-              // Bind to keydown events in the render container
-              $elm.on('keydown', function (evt) {
+
+
+              if (uiGridCtrl.grid.options.modifierKeysToMultiSelectCells){
+                $elm.attr('aria-multiselectable', true);
+              } else {
+                $elm.attr('aria-multiselectable', false);
+              }
+
+              //add an element with no dimensions that can be used to set focus and capture keystrokes
+              var focuser = $compile('<div class="ui-grid-focuser" role="region" aria-live="assertive" aria-atomic="false" tabindex="0" aria-controls="' + grid.id +'-aria-speakable '+ grid.id + '-grid-container' +'" aria-owns="' + grid.id + '-grid-container' + '"></div>')($scope);
+              $elm.append(focuser);
+
+              focuser.on('focus', function (evt) {
                 evt.uiGridTargetRenderContainerId = containerId;
-                return uiGridCtrl.cellNav.handleKeyDown(evt);
-              });
-
-              var needFocus = false;
-              
-              // When there's a scroll event we need to make sure to re-focus the right row, because the cell contents may have changed
-              grid.api.core.on.scrollEvent($scope, function (args) {
-                // Skip if not this grid that the event was broadcast for
-                if (args.grid && args.grid.id !== uiGridCtrl.grid.id) {
-                  return;
-                }
-
-                // Skip if there's no currently-focused cell
-                if (uiGridCtrl.grid.api.cellNav.getFocusedCell() == null) {
-                  return;
-                }
-                
-                /*
-                 * If we have scrolled due to cellNav, we want to set the focus to the new cell after the 
-                 * virtualisation has run, and after scroll.  If we scrolled through the browser scroll
-                 * bar or other user action, we're going to discard the focus, because it will no longer 
-                 * be valid (and, noting #2423, trying to keep it causes problems)
-                 * 
-                 * If cellNav triggers the scroll, we get a scrollToIfNecessary, then a viewport scroll. We
-                 * want to wait for the viewport scroll to finish, then do a refocus.  
-                 * 
-                 * If someone manually scrolls we get just the viewport scroll, no scrollToIfNecessary.  We
-                 * want to just clear the focus
-                 * 
-                 * Logic is:
-                 *  - if cellNav scroll, set a flag that will be resolved in the native scroll
-                 *  - if native scroll, look for the cellNav promise and resolve it
-                 *    - if not present, then use a timeout to clear focus
-                 *    - if it is present, then instead use a timeout to set focus
-                 */ 
-                
-                // We have to wrap in TWO timeouts so that we run AFTER the scroll event is resolved.
-                if ( args.source === 'uiGridCellNavService.scrollToIfNecessary'){
-                  needFocus = true;
-/*
-                  focusTimeout = $timeout(function () {
-                    if ( clearFocusTimeout ){
-                      $timeout.cancel(clearFocusTimeout);
-                    }
-                    focusTimeout = $timeout(function () {
-                      if ( clearFocusTimeout ){
-                        $timeout.cancel(clearFocusTimeout);
-                      }
-                      // Get the last row+col combo
-                      var lastRowCol = uiGridCtrl.grid.api.cellNav.getFocusedCell();
-  
-                      // If the body element becomes active, re-focus on the render container so we can capture cellNav events again.
-                      //   NOTE: this happens when we navigate LET from the left-most cell (RIGHT from the right-most) and have to re-render a new
-                      //   set of cells. The cell element we are navigating to doesn't exist and focus gets lost. This will re-capture it, imperfectly...
-                      if ($document.activeElement === $document.body) {
-                        $elm[0].focus();
-                      }
-  
-                      // broadcast a cellNav event so we clear the focus on all cells
-                      uiGridCtrl.cellNav.broadcastCellNav(lastRowCol);
-                    });
-                  });
-                  */
-                } else {
-                  if ( needFocus ){
-                    $timeout(function () {
-                      $timeout(function () {
-                        // Get the last row+col combo
-                        var lastRowCol = uiGridCtrl.grid.api.cellNav.getFocusedCell();
-    
-                        // If the body element becomes active, re-focus on the render container so we can capture cellNav events again.
-                        //   NOTE: this happens when we navigate LET from the left-most cell (RIGHT from the right-most) and have to re-render a new
-                        //   set of cells. The cell element we are navigating to doesn't exist and focus gets lost. This will re-capture it, imperfectly...
-                        if ($document.activeElement === $document.body) {
-                          $elm[0].focus();
-                        }
-    
-                        // broadcast a cellNav event so we clear the focus on all cells
-                        uiGridCtrl.cellNav.broadcastCellNav(lastRowCol);
-                        
-                        needFocus = false;
-                      });
-                    });
+                var rowCol = uiGridCtrl.grid.api.cellNav.getFocusedCell();
+                if (rowCol === null) {
+                  rowCol = uiGridCtrl.grid.renderContainers[containerId].cellNav.getNextRowCol(uiGridCellNavConstants.direction.DOWN, null, null);
+                  if (rowCol.row && rowCol.col) {
+                    uiGridCtrl.cellNav.broadcastCellNav(rowCol);
                   }
                 }
-              });  
-             
+              });
+
+              uiGridCellnavCtrl.setAriaActivedescendant = function(id){
+                $elm.attr('aria-activedescendant', id);
+              };
+
+              uiGridCellnavCtrl.removeAriaActivedescendant = function(id){
+                if ($elm.attr('aria-activedescendant') === id){
+                  $elm.attr('aria-activedescendant', '');
+                }
+              };
+
+
+              uiGridCtrl.focus = function () {
+                gridUtil.focus.byElement(focuser[0]);
+                //allow for first time grid focus
+              };
+
+              var viewPortKeyDownWasRaisedForRowCol = null;
+              // Bind to keydown events in the render container
+              focuser.on('keydown', function (evt) {
+                evt.uiGridTargetRenderContainerId = containerId;
+                var rowCol = uiGridCtrl.grid.api.cellNav.getFocusedCell();
+                var result = uiGridCtrl.cellNav.handleKeyDown(evt);
+                if (result === null) {
+                  uiGridCtrl.grid.api.cellNav.raise.viewPortKeyDown(evt, rowCol);
+                  viewPortKeyDownWasRaisedForRowCol = rowCol;
+                }
+              });
+              //Bind to keypress events in the render container
+              //keypress events are needed by edit function so the key press
+              //that initiated an edit is not lost
+              //must fire the event in a timeout so the editor can
+              //initialize and subscribe to the event on another event loop
+              focuser.on('keypress', function (evt) {
+                if (viewPortKeyDownWasRaisedForRowCol) {
+                  $timeout(function () {
+                    uiGridCtrl.grid.api.cellNav.raise.viewPortKeyPress(evt, viewPortKeyDownWasRaisedForRowCol);
+                  },4);
+
+                  viewPortKeyDownWasRaisedForRowCol = null;
+                }
+              });
+
+              $scope.$on('$destroy', function(){
+                //Remove all event handlers associated with this focuser.
+                focuser.off();
+              });
+
+            }
+          };
+        }
+      };
+    }]);
+
+  module.directive('uiGridViewport', ['$timeout', '$document', 'gridUtil', 'uiGridConstants', 'uiGridCellNavService', 'uiGridCellNavConstants','$log','$compile',
+    function ($timeout, $document, gridUtil, uiGridConstants, uiGridCellNavService, uiGridCellNavConstants, $log, $compile) {
+      return {
+        replace: true,
+        priority: -99999, //this needs to run very last
+        require: ['^uiGrid', '^uiGridRenderContainer', '?^uiGridCellnav'],
+        scope: false,
+        compile: function () {
+          return {
+            pre: function ($scope, $elm, $attrs, uiGridCtrl) {
+            },
+            post: function ($scope, $elm, $attrs, controllers) {
+              var uiGridCtrl = controllers[0],
+                renderContainerCtrl = controllers[1];
+
+              // Skip attaching cell-nav specific logic if the directive is not attached above us
+              if (!uiGridCtrl.grid.api.cellNav) { return; }
+
+              var containerId = renderContainerCtrl.containerId;
+              //no need to process for other containers
+              if (containerId !== 'body') {
+                return;
+              }
+
+              var grid = uiGridCtrl.grid;
+
+              grid.api.core.on.scrollBegin($scope, function (args) {
+
+                // Skip if there's no currently-focused cell
+                var lastRowCol = uiGridCtrl.grid.api.cellNav.getFocusedCell();
+                if (lastRowCol === null) {
+                  return;
+                }
+
+                //if not in my container, move on
+                //todo: worry about horiz scroll
+                if (!renderContainerCtrl.colContainer.containsColumn(lastRowCol.col)) {
+                  return;
+                }
+
+                uiGridCtrl.cellNav.clearFocus();
+
+              });
+
+              grid.api.core.on.scrollEnd($scope, function (args) {
+                // Skip if there's no currently-focused cell
+                var lastRowCol = uiGridCtrl.grid.api.cellNav.getFocusedCell();
+                if (lastRowCol === null) {
+                  return;
+                }
+
+                //if not in my container, move on
+                //todo: worry about horiz scroll
+                if (!renderContainerCtrl.colContainer.containsColumn(lastRowCol.col)) {
+                  return;
+                }
+
+                uiGridCtrl.cellNav.broadcastCellNav(lastRowCol);
+
+              });
+
+              grid.api.cellNav.on.navigate($scope, function () {
+                //focus again because it can be lost
+                 uiGridCtrl.focus();
+              });
+
             }
           };
         }
@@ -12500,14 +15312,16 @@ module.filter('px', function() {
    *  @restrict A
    *  @description Stacks on top of ui.grid.uiGridCell to provide cell navigation
    */
-  module.directive('uiGridCell', ['$timeout', '$document', 'uiGridCellNavService', 'gridUtil', 'uiGridCellNavConstants', 'uiGridConstants',
-    function ($timeout, $document, uiGridCellNavService, gridUtil, uiGridCellNavConstants, uiGridConstants) {
+  module.directive('uiGridCell', ['$timeout', '$document', 'uiGridCellNavService', 'gridUtil', 'uiGridCellNavConstants', 'uiGridConstants', 'GridRowColumn',
+    function ($timeout, $document, uiGridCellNavService, gridUtil, uiGridCellNavConstants, uiGridConstants, GridRowColumn) {
       return {
         priority: -150, // run after default uiGridCell directive and ui.grid.edit uiGridCell
         restrict: 'A',
-        require: '^uiGrid',
+        require: ['^uiGrid', '?^uiGridCellnav'],
         scope: false,
-        link: function ($scope, $elm, $attrs, uiGridCtrl) {
+        link: function ($scope, $elm, $attrs, controllers) {
+          var uiGridCtrl = controllers[0],
+              uiGridCellnavCtrl = controllers[1];
           // Skip attaching cell-nav specific logic if the directive is not attached above us
           if (!uiGridCtrl.grid.api.cellNav) { return; }
 
@@ -12515,63 +15329,94 @@ module.filter('px', function() {
             return;
           }
 
-          setTabEnabled();
+          //Convinience local variables
+          var grid = uiGridCtrl.grid;
+          $scope.focused = false;
+
+          // Make this cell focusable but only with javascript/a mouse click
+          $elm.attr('tabindex', -1);
 
           // When a cell is clicked, broadcast a cellNav event saying that this row+col combo is now focused
           $elm.find('div').on('click', function (evt) {
-            uiGridCtrl.cellNav.broadcastCellNav(new RowCol($scope.row, $scope.col), evt.ctrlKey || evt.metaKey);
+            uiGridCtrl.cellNav.broadcastCellNav(new GridRowColumn($scope.row, $scope.col), evt.ctrlKey || evt.metaKey, evt);
 
             evt.stopPropagation();
+            $scope.$apply();
           });
 
-          $elm.find('div').on('focus', function (evt) {
-            console.log('cellNav focus');
-            uiGridCtrl.cellNav.broadcastCellNav(new RowCol($scope.row, $scope.col), evt.ctrlKey || evt.metaKey);
+
+          /*
+           * XXX Hack for screen readers.
+           * This allows the grid to focus using only the screen reader cursor.
+           * Since the focus event doesn't include key press information we can't use it
+           * as our primary source of the event.
+           */
+          $elm.on('mousedown', preventMouseDown);
+
+          //turn on and off for edit events
+          if (uiGridCtrl.grid.api.edit) {
+            uiGridCtrl.grid.api.edit.on.beginCellEdit($scope, function () {
+              $elm.off('mousedown', preventMouseDown);
+            });
+
+            uiGridCtrl.grid.api.edit.on.afterCellEdit($scope, function () {
+              $elm.on('mousedown', preventMouseDown);
+            });
+
+            uiGridCtrl.grid.api.edit.on.cancelCellEdit($scope, function () {
+              $elm.on('mousedown', preventMouseDown);
+            });
+          }
+
+          function preventMouseDown(evt) {
+            //Prevents the foucus event from firing if the click event is already going to fire.
+            //If both events fire it will cause bouncing behavior.
+            evt.preventDefault();
+          }
+
+          //You can only focus on elements with a tabindex value
+          $elm.on('focus', function (evt) {
+            uiGridCtrl.cellNav.broadcastCellNav(new GridRowColumn($scope.row, $scope.col), false, evt);
+            evt.stopPropagation();
+            $scope.$apply();
           });
 
           // This event is fired for all cells.  If the cell matches, then focus is set
           $scope.$on(uiGridCellNavConstants.CELL_NAV_EVENT, function (evt, rowCol, modifierDown) {
-            if (evt.eventType === uiGridCellNavConstants.EVENT_TYPE.CLEAR) {
-              clearFocus();
-              return;
-            }
-
-            if (rowCol.row === $scope.row &&
-              rowCol.col === $scope.col) {
-              if (uiGridCtrl.grid.options.modifierKeysToMultiSelectCells && modifierDown &&
-                uiGridCtrl.grid.api.cellNav.rowColSelectIndex(rowCol) === -1) {
-                clearFocus();
-              } else {
-                setFocused();
-              }
-
-              // This cellNav event came from a keydown event so we can safely refocus
-              if (rowCol.hasOwnProperty('eventType') && rowCol.eventType === uiGridCellNavConstants.EVENT_TYPE.KEYDOWN) {
-                console.log('focus from navEvent');
-                $elm.find('div')[0].focus();
-              }
-            }
-            else if (!(uiGridCtrl.grid.options.modifierKeysToMultiSelectCells && modifierDown)) {
+            var isFocused = grid.cellNav.focusedCells.some(function(focusedRowCol, index){
+              return (focusedRowCol.row === $scope.row && focusedRowCol.col === $scope.col);
+            });
+            if (isFocused){
+              setFocused();
+            } else {
               clearFocus();
             }
           });
 
-          function setTabEnabled() {
-            $elm.find('div').attr("tabindex", 0);
-          }
-
           function setFocused() {
-            var div = $elm.find('div');
-            div.addClass('ui-grid-cell-focus');
+            if (!$scope.focused){
+              var div = $elm.find('div');
+              div.addClass('ui-grid-cell-focus');
+              $elm.attr('aria-selected', true);
+              uiGridCellnavCtrl.setAriaActivedescendant($elm.attr('id'));
+              $scope.focused = true;
+            }
           }
 
           function clearFocus() {
-            var div = $elm.find('div');
-            div.removeClass('ui-grid-cell-focus');
+            if ($scope.focused){
+              var div = $elm.find('div');
+              div.removeClass('ui-grid-cell-focus');
+              $elm.attr('aria-selected', false);
+              uiGridCellnavCtrl.removeAriaActivedescendant($elm.attr('id'));
+              $scope.focused = false;
+            }
           }
 
           $scope.$on('$destroy', function () {
-            $elm.find('div').off('click');
+            //.off withouth paramaters removes all handlers
+            $elm.find('div').off();
+            $elm.off();
           });
         }
       };
@@ -12587,7 +15432,10 @@ module.filter('px', function() {
    * @name ui.grid.edit
    * @description
    *
-   *  # ui.grid.edit
+   * # ui.grid.edit
+   *
+   * <div class="alert alert-success" role="alert"><strong>Stable</strong> This feature is stable. There should no longer be breaking api changes without a deprecation warning.</div>
+   *
    * This module provides cell editing capability to ui.grid. The goal was to emulate keying data in a spreadsheet via
    * a keyboard.
    * <br/>
@@ -12623,8 +15471,8 @@ module.filter('px', function() {
    *
    *  @description Services for editing features
    */
-  module.service('uiGridEditService', ['$q', '$templateCache', 'uiGridConstants', 'gridUtil',
-    function ($q, $templateCache, uiGridConstants, gridUtil) {
+  module.service('uiGridEditService', ['$q', 'uiGridConstants', 'gridUtil',
+    function ($q, uiGridConstants, gridUtil) {
 
       var service = {
 
@@ -12633,6 +15481,7 @@ module.filter('px', function() {
           service.defaultGridOptions(grid.options);
 
           grid.registerColumnBuilder(service.editColumnBuilder);
+          grid.edit = {};
 
           /**
            *  @ngdoc object
@@ -12668,8 +15517,10 @@ module.filter('px', function() {
                  * </pre>
                  * @param {object} rowEntity the options.data element that was edited
                  * @param {object} colDef the column that was edited
+                 * @param {object} triggerEvent the event that triggered the edit.  Useful to prevent losing keystrokes on some
+                 *                 complex editors
                  */
-                beginCellEdit: function (rowEntity, colDef) {
+                beginCellEdit: function (rowEntity, colDef, triggerEvent) {
                 },
                 /**
                  * @ngdoc event
@@ -12824,6 +15675,20 @@ module.filter('px', function() {
             //enableCellEditOnFocus can only be used if cellnav module is used
           colDef.enableCellEditOnFocus = colDef.enableCellEditOnFocus === undefined ? gridOptions.enableCellEditOnFocus : colDef.enableCellEditOnFocus;
 
+
+          /**
+           *  @ngdoc string
+           *  @name editModelField
+           *  @propertyOf  ui.grid.edit.api:ColumnDef
+           *  @description a bindable string value that is used when binding to edit controls instead of colDef.field
+           *  <br/> example: You have a complex property on and object like state:{abbrev:'MS',name:'Mississippi'}.  The
+           *  grid should display state.name in the cell and sort/filter based on the state.name property but the editor
+           *  requires the full state object.
+           *  <br/>colDef.field = 'state.name'
+           *  <br/>colDef.editModelField = 'state'
+           */
+          //colDef.editModelField
+
           return $q.all(promises);
         },
 
@@ -12837,7 +15702,15 @@ module.filter('px', function() {
          * @returns {boolean} true if an edit should start
          */
         isStartEditKey: function (evt) {
-          if (evt.keyCode === uiGridConstants.keymap.LEFT ||
+          if (evt.metaKey ||
+              evt.keyCode === uiGridConstants.keymap.ESC ||
+              evt.keyCode === uiGridConstants.keymap.SHIFT ||
+              evt.keyCode === uiGridConstants.keymap.CTRL ||
+              evt.keyCode === uiGridConstants.keymap.ALT ||
+              evt.keyCode === uiGridConstants.keymap.WIN ||
+              evt.keyCode === uiGridConstants.keymap.CAPSLOCK ||
+
+             evt.keyCode === uiGridConstants.keymap.LEFT ||
             (evt.keyCode === uiGridConstants.keymap.TAB && evt.shiftKey) ||
 
             evt.keyCode === uiGridConstants.keymap.RIGHT ||
@@ -12913,6 +15786,50 @@ module.filter('px', function() {
 
   /**
    *  @ngdoc directive
+   *  @name ui.grid.edit.directive:uiGridRenderContainer
+   *  @element div
+   *  @restrict A
+   *
+   *  @description Adds keydown listeners to renderContainer element so we can capture when to begin edits
+   *
+   */
+  module.directive('uiGridViewport', [ 'uiGridEditConstants',
+    function ( uiGridEditConstants) {
+      return {
+        replace: true,
+        priority: -99998, //run before cellNav
+        require: ['^uiGrid', '^uiGridRenderContainer'],
+        scope: false,
+        compile: function () {
+          return {
+            post: function ($scope, $elm, $attrs, controllers) {
+              var uiGridCtrl = controllers[0];
+
+              // Skip attaching if edit and cellNav is not enabled
+              if (!uiGridCtrl.grid.api.edit || !uiGridCtrl.grid.api.cellNav) { return; }
+
+              var containerId =  controllers[1].containerId;
+              //no need to process for other containers
+              if (containerId !== 'body') {
+                return;
+              }
+
+              //refocus on the grid
+              $scope.$on(uiGridEditConstants.events.CANCEL_CELL_EDIT, function () {
+                uiGridCtrl.focus();
+              });
+              $scope.$on(uiGridEditConstants.events.END_CELL_EDIT, function () {
+                uiGridCtrl.focus();
+              });
+
+            }
+          };
+        }
+      };
+    }]);
+
+  /**
+   *  @ngdoc directive
    *  @name ui.grid.edit.directive:uiGridCell
    *  @element div
    *  @restrict A
@@ -12966,9 +15883,12 @@ module.filter('px', function() {
    */
 
   module.directive('uiGridCell',
-    ['$compile', '$injector', '$timeout', 'uiGridConstants', 'uiGridEditConstants', 'gridUtil', '$parse', 'uiGridEditService',
-      function ($compile, $injector, $timeout, uiGridConstants, uiGridEditConstants, gridUtil, $parse, uiGridEditService) {
+    ['$compile', '$injector', '$timeout', 'uiGridConstants', 'uiGridEditConstants', 'gridUtil', '$parse', 'uiGridEditService', '$rootScope', '$q',
+      function ($compile, $injector, $timeout, uiGridConstants, uiGridEditConstants, gridUtil, $parse, uiGridEditService, $rootScope, $q) {
         var touchstartTimeout = 500;
+        if ($injector.has('uiGridCellNavService')) {
+          var uiGridCellNavService = $injector.get('uiGridCellNavService');
+        }
 
         return {
           priority: -100, // run after default uiGridCell directive
@@ -12976,30 +15896,79 @@ module.filter('px', function() {
           scope: false,
           require: '?^uiGrid',
           link: function ($scope, $elm, $attrs, uiGridCtrl) {
-            if (!$scope.col.colDef.enableCellEdit || $scope.row.enableCellEdit === false) {
-              return;
-            }
-
             var html;
             var origCellValue;
             var inEdit = false;
-            var isFocusedBeforeEdit = false;
             var cellModel;
             var cancelTouchstartTimeout;
 
             var editCellScope;
 
-            registerBeginEditEvents();
+            if (!$scope.col.colDef.enableCellEdit) {
+              return;
+            }
+
+            var cellNavNavigateDereg = function() {};
+            var viewPortKeyDownDereg = function() {};
+
+
+            var setEditable = function() {
+              if ($scope.col.colDef.enableCellEdit && $scope.row.enableCellEdit !== false) {
+                if (!$scope.beginEditEventsWired) { //prevent multiple attachments
+                  registerBeginEditEvents();
+                }
+              } else {
+                if ($scope.beginEditEventsWired) {
+                  cancelBeginEditEvents();
+                }
+              }
+            };
+
+            setEditable();
+
+            var rowWatchDereg = $scope.$watch('row', function (n, o) {
+              if (n !== o) {
+                setEditable();
+              }
+            });
+
+
+            $scope.$on( '$destroy', rowWatchDereg );
 
             function registerBeginEditEvents() {
               $elm.on('dblclick', beginEdit);
-              $elm.on('keydown', beginEditKeyDown);
-              if ($scope.col.colDef.enableCellEditOnFocus) {
-                $elm.find('div').on('focus', beginEditFocus);
-              }
 
               // Add touchstart handling. If the users starts a touch and it doesn't end after X milliseconds, then start the edit
               $elm.on('touchstart', touchStart);
+
+              if (uiGridCtrl && uiGridCtrl.grid.api.cellNav) {
+
+                viewPortKeyDownDereg = uiGridCtrl.grid.api.cellNav.on.viewPortKeyDown($scope, function (evt, rowCol) {
+                  if (rowCol === null) {
+                    return;
+                  }
+
+                  if (rowCol.row === $scope.row && rowCol.col === $scope.col && !$scope.col.colDef.enableCellEditOnFocus) {
+                    //important to do this before scrollToIfNecessary
+                    beginEditKeyDown(evt);
+                  }
+                });
+
+                cellNavNavigateDereg = uiGridCtrl.grid.api.cellNav.on.navigate($scope, function (newRowCol, oldRowCol) {
+                  if ($scope.col.colDef.enableCellEditOnFocus) {
+                    // Don't begin edit if the cell hasn't changed
+                    if ((!oldRowCol || newRowCol.row !== oldRowCol.row || newRowCol.col !== oldRowCol.col) &&
+                      newRowCol.row === $scope.row && newRowCol.col === $scope.col) {
+                      $timeout(function () {
+                        beginEdit();
+                      });
+                    }
+                  }
+                });
+              }
+
+              $scope.beginEditEventsWired = true;
+
             }
 
             function touchStart(event) {
@@ -13033,45 +16002,15 @@ module.filter('px', function() {
             function cancelBeginEditEvents() {
               $elm.off('dblclick', beginEdit);
               $elm.off('keydown', beginEditKeyDown);
-              if ($scope.col.colDef.enableCellEditOnFocus) {
-                $elm.find('div').off('focus', beginEditFocus);
-              }
               $elm.off('touchstart', touchStart);
+              cellNavNavigateDereg();
+              viewPortKeyDownDereg();
+              $scope.beginEditEventsWired = false;
             }
-
-            function beginEditFocus(evt) {
-              // gridUtil.logDebug('begin edit');
-              if (uiGridCtrl && uiGridCtrl.cellNav) {
-                // NOTE(c0bra): This is causing a loop where focusCell causes beginEditFocus to be called....
-                uiGridCtrl.cellNav.focusCell($scope.row, $scope.col);
-              }
-
-              evt.stopPropagation();
-              beginEdit();
-            }
-
-            // If the cellNagv module is installed and we can get the uiGridCellNavConstants value injected,
-            //   then if the column has enableCellEditOnFocus set to true, we need to listen for cellNav events
-            //   to this cell and start editing when the "focus" reaches us
-            try {
-              var uiGridCellNavConstants = $injector.get('uiGridCellNavConstants');
-
-              if ($scope.col.colDef.enableCellEditOnFocus) {
-                $scope.$on(uiGridCellNavConstants.CELL_NAV_EVENT, function (evt, rowCol) {
-                  if (rowCol.row === $scope.row && rowCol.col === $scope.col) {
-                    beginEdit();
-                  }
-                  else {
-                    endEdit();
-                  }
-                });
-              }
-            }
-            catch (e) {}
 
             function beginEditKeyDown(evt) {
               if (uiGridEditService.isStartEditKey(evt)) {
-                beginEdit();
+                beginEdit(evt);
               }
             }
 
@@ -13082,6 +16021,14 @@ module.filter('px', function() {
                     col.colDef.cellEditableCondition );
             }
 
+
+            function beginEdit(triggerEvent) {
+              //we need to scroll the cell into focus before invoking the editor
+              $scope.grid.api.core.scrollToIfNecessary($scope.row, $scope.col)
+                .then(function () {
+                  beginEditAfterScroll(triggerEvent);
+                });
+            }
 
             /**
              *  @ngdoc property
@@ -13132,6 +16079,40 @@ module.filter('px', function() {
              *
              */
             /**
+             *  @ngdoc service
+             *  @name editDropdownOptionsFunction
+             *  @methodOf ui.grid.edit.api:ColumnDef
+             *  @description a function returning an array of values in the format
+             *  [ {id: xxx, value: xxx} ], which will be used to populate
+             *  the edit dropdown.  This can be used when the dropdown values are dependent on
+             *  the backing row entity with some kind of algorithm.
+             *  If this property is set then both editDropdownOptionsArray and 
+             *  editDropdownRowEntityOptionsArrayPath will be ignored.
+             *  @param {object} rowEntity the options.data element that the returned array refers to
+             *  @param {object} colDef the column that implements this dropdown
+             *  @returns {object} an array of values in the format
+             *  [ {id: xxx, value: xxx} ] used to populate the edit dropdown
+             *  @example
+             *  <pre>
+             *    $scope.gridOptions = {
+             *      columnDefs: [
+             *        {name: 'status', editableCellTemplate: 'ui-grid/dropdownEditor',
+             *          editDropdownOptionsFunction: function(rowEntity, colDef) {
+             *            if (rowEntity.foo === 'bar') {
+             *              return [{id: 'bar1', value: 'BAR 1'},
+             *                      {id: 'bar2', value: 'BAR 2'},
+             *                      {id: 'bar3', value: 'BAR 3'}];
+             *            } else {
+             *              return [{id: 'foo1', value: 'FOO 1'},
+             *                      {id: 'foo2', value: 'FOO 2'}];
+             *            }
+             *          },
+             *          editDropdownIdLabel: 'code', editDropdownValueLabel: 'status' }
+             *      ],
+             *  </pre>
+             *
+             */
+            /**
              *  @ngdoc property
              *  @name editDropdownValueLabel
              *  @propertyOf ui.grid.edit.api:ColumnDef
@@ -13167,7 +16148,7 @@ module.filter('px', function() {
              *  </pre>
              *
              */
-            function beginEdit() {
+            function beginEditAfterScroll(triggerEvent) {
               // If we are already editing, then just skip this so we don't try editing twice...
               if (inEdit) {
                 return;
@@ -13177,17 +16158,21 @@ module.filter('px', function() {
                 return;
               }
 
-              // if the cell isn't fully visible, and cellNav is present, scroll it to be fully visible before we start
-              if ( $scope.grid.api.cellNav ){
-                $scope.grid.api.cellNav.scrollToIfNecessary( $scope.row, $scope.col );
-              }
-              
+
               cellModel = $parse($scope.row.getQualifiedColField($scope.col));
               //get original value from the cell
               origCellValue = cellModel($scope);
 
               html = $scope.col.editableCellTemplate;
-              html = html.replace(uiGridConstants.MODEL_COL_FIELD, $scope.row.getQualifiedColField($scope.col));
+
+              if ($scope.col.colDef.editModelField) {
+                html = html.replace(uiGridConstants.MODEL_COL_FIELD, gridUtil.preEval('row.entity.' + $scope.col.colDef.editModelField));
+              }
+              else {
+                html = html.replace(uiGridConstants.MODEL_COL_FIELD, $scope.row.getQualifiedColField($scope.col));
+              }
+
+              html = html.replace(uiGridConstants.COL_FIELD, 'grid.getCellValue(row, col)');
 
               var optionFilter = $scope.col.colDef.editDropdownFilter ? '|' + $scope.col.colDef.editDropdownFilter : '';
               html = html.replace(uiGridConstants.CUSTOM_FILTERS, optionFilter);
@@ -13206,18 +16191,30 @@ module.filter('px', function() {
               }
               html = html.replace('INPUT_TYPE', inputType);
 
-              var editDropdownRowEntityOptionsArrayPath = $scope.col.colDef.editDropdownRowEntityOptionsArrayPath;
-              if (editDropdownRowEntityOptionsArrayPath) {
-                $scope.editDropdownOptionsArray =  resolveObjectFromPath($scope.row.entity, editDropdownRowEntityOptionsArrayPath);
-              }
-              else {
-                $scope.editDropdownOptionsArray = $scope.col.colDef.editDropdownOptionsArray;
+              // In order to fill dropdown options we use:
+              // - A function/promise or
+              // - An array inside of row entity if no function exists or
+              // - A single array for the whole column if none of the previous exists.
+              var editDropdownOptionsFunction = $scope.col.colDef.editDropdownOptionsFunction;
+              if (editDropdownOptionsFunction) {
+                $q.when(editDropdownOptionsFunction($scope.row.entity, $scope.col.colDef))
+                        .then(function(result) {
+                  $scope.editDropdownOptionsArray = result;
+                });
+              } else {
+                var editDropdownRowEntityOptionsArrayPath = $scope.col.colDef.editDropdownRowEntityOptionsArrayPath;
+                if (editDropdownRowEntityOptionsArrayPath) {
+                  $scope.editDropdownOptionsArray =  resolveObjectFromPath($scope.row.entity, editDropdownRowEntityOptionsArrayPath);
+                }
+                else {
+                  $scope.editDropdownOptionsArray = $scope.col.colDef.editDropdownOptionsArray;
+                }
               }
               $scope.editDropdownIdLabel = $scope.col.colDef.editDropdownIdLabel ? $scope.col.colDef.editDropdownIdLabel : 'id';
               $scope.editDropdownValueLabel = $scope.col.colDef.editDropdownValueLabel ? $scope.col.colDef.editDropdownValueLabel : 'value';
 
               var cellElement;
-              $scope.$apply(function () {
+              var createEditor = function(){
                 inEdit = true;
                 cancelBeginEditEvents();
                 var cellElement = angular.element(html);
@@ -13225,13 +16222,20 @@ module.filter('px', function() {
                 editCellScope = $scope.$new();
                 $compile(cellElement)(editCellScope);
                 var gridCellContentsEl = angular.element($elm.children()[0]);
-                isFocusedBeforeEdit = gridCellContentsEl.hasClass('ui-grid-cell-focus');
                 gridCellContentsEl.addClass('ui-grid-cell-contents-hidden');
-              });
+              };
+              if (!$rootScope.$$phase) {
+                $scope.$apply(createEditor);
+              } else {
+                createEditor();
+              }
 
               //stop editing when grid is scrolled
-              var deregOnGridScroll = $scope.col.grid.api.core.on.scrollEvent($scope, function () {
-                endEdit(true);
+              var deregOnGridScroll = $scope.col.grid.api.core.on.scrollBegin($scope, function () {
+                if ($scope.grid.disableScrolling) {
+                  return;
+                }
+                endEdit();
                 $scope.grid.api.edit.raise.afterCellEdit($scope.row.entity, $scope.col.colDef, cellModel($scope), origCellValue);
                 deregOnGridScroll();
                 deregOnEndCellEdit();
@@ -13239,8 +16243,8 @@ module.filter('px', function() {
               });
 
               //end editing
-              var deregOnEndCellEdit = $scope.$on(uiGridEditConstants.events.END_CELL_EDIT, function (evt, retainFocus) {
-                endEdit(retainFocus);
+              var deregOnEndCellEdit = $scope.$on(uiGridEditConstants.events.END_CELL_EDIT, function () {
+                endEdit();
                 $scope.grid.api.edit.raise.afterCellEdit($scope.row.entity, $scope.col.colDef, cellModel($scope), origCellValue);
                 deregOnEndCellEdit();
                 deregOnGridScroll();
@@ -13255,29 +16259,38 @@ module.filter('px', function() {
                 deregOnEndCellEdit();
               });
 
-              $scope.$broadcast(uiGridEditConstants.events.BEGIN_CELL_EDIT);
-              $scope.grid.api.edit.raise.beginCellEdit($scope.row.entity, $scope.col.colDef);
+              $scope.$broadcast(uiGridEditConstants.events.BEGIN_CELL_EDIT, triggerEvent);
+              $timeout(function () {
+                //execute in a timeout to give any complex editor templates a cycle to completely render
+                $scope.grid.api.edit.raise.beginCellEdit($scope.row.entity, $scope.col.colDef, triggerEvent);
+              });
             }
 
-            function endEdit(retainFocus) {
+            function endEdit() {
+              $scope.grid.disableScrolling = false;
               if (!inEdit) {
                 return;
               }
+
+              //sometimes the events can't keep up with the keyboard and grid focus is lost, so always focus
+              //back to grid here. The focus call needs to be before the $destroy and removal of the control,
+              //otherwise ng-model-options of UpdateOn: 'blur' will not work.
+              if (uiGridCtrl && uiGridCtrl.grid.api.cellNav) {
+                uiGridCtrl.focus();
+              }
+
               var gridCellContentsEl = angular.element($elm.children()[0]);
               //remove edit element
               editCellScope.$destroy();
               angular.element($elm.children()[1]).remove();
               gridCellContentsEl.removeClass('ui-grid-cell-contents-hidden');
-              if (retainFocus && isFocusedBeforeEdit) {
-                gridCellContentsEl[0].focus();
-              }
-              isFocusedBeforeEdit = false;
               inEdit = false;
               registerBeginEditEvents();
               $scope.grid.api.core.notifyDataChange( uiGridConstants.dataChange.EDIT );
             }
 
             function cancelEdit() {
+              $scope.grid.disableScrolling = false;
               if (!inEdit) {
                 return;
               }
@@ -13285,7 +16298,7 @@ module.filter('px', function() {
               $scope.$apply();
 
               $scope.grid.api.edit.raise.cancelCellEdit($scope.row.entity, $scope.col.colDef);
-              endEdit(true);
+              endEdit();
             }
 
             // resolves a string path against the given object
@@ -13327,34 +16340,66 @@ module.filter('px', function() {
    *
    */
   module.directive('uiGridEditor',
-    ['gridUtil', 'uiGridConstants', 'uiGridEditConstants',
-      function (gridUtil, uiGridConstants, uiGridEditConstants) {
+    ['gridUtil', 'uiGridConstants', 'uiGridEditConstants','$timeout', 'uiGridEditService',
+      function (gridUtil, uiGridConstants, uiGridEditConstants, $timeout, uiGridEditService) {
         return {
           scope: true,
-          require: ['?^uiGrid', '?^uiGridRenderContainer'],
+          require: ['?^uiGrid', '?^uiGridRenderContainer', 'ngModel'],
           compile: function () {
             return {
               pre: function ($scope, $elm, $attrs) {
 
               },
               post: function ($scope, $elm, $attrs, controllers) {
-                var uiGridCtrl, renderContainerCtrl;
+                var uiGridCtrl, renderContainerCtrl, ngModel;
                 if (controllers[0]) { uiGridCtrl = controllers[0]; }
                 if (controllers[1]) { renderContainerCtrl = controllers[1]; }
+                if (controllers[2]) { ngModel = controllers[2]; }
 
                 //set focus at start of edit
-                $scope.$on(uiGridEditConstants.events.BEGIN_CELL_EDIT, function () {
-                  $elm[0].focus();
-                  $elm[0].select();
+                $scope.$on(uiGridEditConstants.events.BEGIN_CELL_EDIT, function (evt,triggerEvent) {
+                  $timeout(function () {
+                    $elm[0].focus();
+                    //only select text if it is not being replaced below in the cellNav viewPortKeyPress
+                    if ($elm[0].select && $scope.col.colDef.enableCellEditOnFocus || !(uiGridCtrl && uiGridCtrl.grid.api.cellNav)) {
+                      $elm[0].select();
+                    }
+                    else {
+                      //some browsers (Chrome) stupidly, imo, support the w3 standard that number, email, ...
+                      //fields should not allow setSelectionRange.  We ignore the error for those browsers
+                      //https://www.w3.org/Bugs/Public/show_bug.cgi?id=24796
+                      try {
+                        $elm[0].setSelectionRange($elm[0].value.length, $elm[0].value.length);
+                      }
+                      catch (ex) {
+                        //ignore
+                      }
+                    }
+                  });
+
+                  //set the keystroke that started the edit event
+                  //we must do this because the BeginEdit is done in a different event loop than the intitial
+                  //keydown event
+                  //fire this event for the keypress that is received
+                  if (uiGridCtrl && uiGridCtrl.grid.api.cellNav) {
+                    var viewPortKeyDownUnregister = uiGridCtrl.grid.api.cellNav.on.viewPortKeyPress($scope, function (evt, rowCol) {
+                      if (uiGridEditService.isStartEditKey(evt)) {
+                        ngModel.$setViewValue(String.fromCharCode( typeof evt.which === 'number' ? evt.which : evt.keyCode), evt);
+                        ngModel.$render();
+                      }
+                      viewPortKeyDownUnregister();
+                    });
+                  }
+
                   $elm.on('blur', function (evt) {
                     $scope.stopEdit(evt);
                   });
                 });
 
 
-               $scope.deepEdit = false;
+                $scope.deepEdit = false;
 
-               $scope.stopEdit = function (evt) {
+                $scope.stopEdit = function (evt) {
                   if ($scope.inputForm && !$scope.inputForm.$valid) {
                     evt.stopPropagation();
                     $scope.$emit(uiGridEditConstants.events.CANCEL_CELL_EDIT);
@@ -13365,8 +16410,14 @@ module.filter('px', function() {
                   $scope.deepEdit = false;
                 };
 
+
                 $elm.on('click', function (evt) {
-                  $scope.deepEdit = true;
+                  if ($elm[0].type !== 'checkbox') {
+                    $scope.deepEdit = true;
+                    $timeout(function () {
+                      $scope.grid.disableScrolling = true;
+                    });
+                  }
                 });
 
                 $elm.on('keydown', function (evt) {
@@ -13375,34 +16426,32 @@ module.filter('px', function() {
                       evt.stopPropagation();
                       $scope.$emit(uiGridEditConstants.events.CANCEL_CELL_EDIT);
                       break;
-                    case uiGridConstants.keymap.ENTER: // Enter (Leave Field)
-                      $scope.stopEdit(evt);
-                      break;
-                    case uiGridConstants.keymap.TAB:
-                      $scope.stopEdit(evt);
-                      break;
                   }
 
-                  if ($scope.deepEdit) {
-                    switch (evt.keyCode) {
-                      case uiGridConstants.keymap.LEFT:
-                        evt.stopPropagation();
-                        break;
-                      case uiGridConstants.keymap.RIGHT:
-                        evt.stopPropagation();
-                        break;
-                      case uiGridConstants.keymap.UP:
-                        evt.stopPropagation();
-                        break;
-                      case uiGridConstants.keymap.DOWN:
-                        evt.stopPropagation();
-                        break;
-                    }
+                  if ($scope.deepEdit &&
+                    (evt.keyCode === uiGridConstants.keymap.LEFT ||
+                     evt.keyCode === uiGridConstants.keymap.RIGHT ||
+                     evt.keyCode === uiGridConstants.keymap.UP ||
+                     evt.keyCode === uiGridConstants.keymap.DOWN)) {
+                    evt.stopPropagation();
                   }
                   // Pass the keydown event off to the cellNav service, if it exists
-                  else if (uiGridCtrl && uiGridCtrl.hasOwnProperty('cellNav') && renderContainerCtrl) {
+                  else if (uiGridCtrl && uiGridCtrl.grid.api.cellNav) {
                     evt.uiGridTargetRenderContainerId = renderContainerCtrl.containerId;
-                    uiGridCtrl.cellNav.handleKeyDown(evt);
+                    if (uiGridCtrl.cellNav.handleKeyDown(evt) !== null) {
+                      $scope.stopEdit(evt);
+                    }
+                  }
+                  else {
+                    //handle enter and tab for editing not using cellNav
+                    switch (evt.keyCode) {
+                      case uiGridConstants.keymap.ENTER: // Enter (Leave Field)
+                      case uiGridConstants.keymap.TAB:
+                        evt.stopPropagation();
+                        evt.preventDefault();
+                        $scope.stopEdit(evt);
+                        break;
+                    }
                   }
 
                   return true;
@@ -13494,13 +16543,16 @@ module.filter('px', function() {
     ['uiGridConstants', 'uiGridEditConstants',
       function (uiGridConstants, uiGridEditConstants) {
         return {
+          require: ['?^uiGrid', '?^uiGridRenderContainer'],
           scope: true,
           compile: function () {
             return {
               pre: function ($scope, $elm, $attrs) {
 
               },
-              post: function ($scope, $elm, $attrs) {
+              post: function ($scope, $elm, $attrs, controllers) {
+                var uiGridCtrl = controllers[0];
+                var renderContainerCtrl = controllers[1];
 
                 //set focus at start of edit
                 $scope.$on(uiGridEditConstants.events.BEGIN_CELL_EDIT, function () {
@@ -13524,24 +16576,23 @@ module.filter('px', function() {
                       evt.stopPropagation();
                       $scope.$emit(uiGridEditConstants.events.CANCEL_CELL_EDIT);
                       break;
-                    case uiGridConstants.keymap.ENTER: // Enter (Leave Field)
+                  }
+                  if (uiGridCtrl && uiGridCtrl.grid.api.cellNav) {
+                    evt.uiGridTargetRenderContainerId = renderContainerCtrl.containerId;
+                    if (uiGridCtrl.cellNav.handleKeyDown(evt) !== null) {
                       $scope.stopEdit(evt);
-                      break;
-                    case uiGridConstants.keymap.LEFT:
-                      $scope.stopEdit(evt);
-                      break;
-                    case uiGridConstants.keymap.RIGHT:
-                      $scope.stopEdit(evt);
-                      break;
-                    case uiGridConstants.keymap.UP:
-                      evt.stopPropagation();
-                      break;
-                    case uiGridConstants.keymap.DOWN:
-                      evt.stopPropagation();
-                      break;
-                    case uiGridConstants.keymap.TAB:
-                      $scope.stopEdit(evt);
-                      break;
+                    }
+                  }
+                  else {
+                    //handle enter and tab for editing not using cellNav
+                    switch (evt.keyCode) {
+                      case uiGridConstants.keymap.ENTER: // Enter (Leave Field)
+                      case uiGridConstants.keymap.TAB:
+                        evt.stopPropagation();
+                        evt.preventDefault();
+                        $scope.stopEdit(evt);
+                        break;
+                    }
                   }
                   return true;
                 });
@@ -13550,6 +16601,109 @@ module.filter('px', function() {
           }
         };
       }]);
+
+  /**
+   *  @ngdoc directive
+   *  @name ui.grid.edit.directive:uiGridEditFileChooser
+   *  @element div
+   *  @restrict A
+   *
+   *  @description input editor directive for editable fields.
+   *  Provides EndEdit and CancelEdit events
+   *
+   *  Events that end editing:
+   *     blur and enter keydown
+   *
+   *  Events that cancel editing:
+   *    - Esc keydown
+   *
+   */
+  module.directive('uiGridEditFileChooser',
+    ['gridUtil', 'uiGridConstants', 'uiGridEditConstants','$timeout',
+      function (gridUtil, uiGridConstants, uiGridEditConstants, $timeout) {
+        return {
+          scope: true,
+          require: ['?^uiGrid', '?^uiGridRenderContainer'],
+          compile: function () {
+            return {
+              pre: function ($scope, $elm, $attrs) {
+
+              },
+              post: function ($scope, $elm, $attrs, controllers) {
+                var uiGridCtrl, renderContainerCtrl;
+                if (controllers[0]) { uiGridCtrl = controllers[0]; }
+                if (controllers[1]) { renderContainerCtrl = controllers[1]; }
+                var grid = uiGridCtrl.grid;
+
+                var handleFileSelect = function( event ){
+                  var target = event.srcElement || event.target;
+
+                  if (target && target.files && target.files.length > 0) {
+                    /**
+                     *  @ngdoc property
+                     *  @name editFileChooserCallback
+                     *  @propertyOf  ui.grid.edit.api:ColumnDef
+                     *  @description A function that should be called when any files have been chosen
+                     *  by the user.  You should use this to process the files appropriately for your
+                     *  application.
+                     *
+                     *  It passes the gridCol, the gridRow (from which you can get gridRow.entity),
+                     *  and the files.  The files are in the format as returned from the file chooser,
+                     *  an array of files, with each having useful information such as:
+                     *  - `files[0].lastModifiedDate`
+                     *  - `files[0].name`
+                     *  - `files[0].size`  (appears to be in bytes)
+                     *  - `files[0].type`  (MIME type by the looks)
+                     *
+                     *  Typically you would do something with these files - most commonly you would
+                     *  use the filename or read the file itself in.  The example function does both.
+                     *
+                     *  @example
+                     *  <pre>
+                     *  editFileChooserCallBack: function(gridRow, gridCol, files ){
+                     *    // ignore all but the first file, it can only choose one anyway
+                     *    // set the filename into this column
+                     *    gridRow.entity.filename = file[0].name;
+                     *
+                     *    // read the file and set it into a hidden column, which we may do stuff with later
+                     *    var setFile = function(fileContent){
+                     *      gridRow.entity.file = fileContent.currentTarget.result;
+                     *    };
+                     *    var reader = new FileReader();
+                     *    reader.onload = setFile;
+                     *    reader.readAsText( files[0] );
+                     *  }
+                     *  </pre>
+                     */
+                    if ( typeof($scope.col.colDef.editFileChooserCallback) === 'function' ) {
+                      $scope.col.colDef.editFileChooserCallback($scope.row, $scope.col, target.files);
+                    } else {
+                      gridUtil.logError('You need to set colDef.editFileChooserCallback to use the file chooser');
+                    }
+
+                    target.form.reset();
+                    $scope.$emit(uiGridEditConstants.events.END_CELL_EDIT);
+                  } else {
+                    $scope.$emit(uiGridEditConstants.events.CANCEL_CELL_EDIT);
+                  }
+                };
+
+                $elm[0].addEventListener('change', handleFileSelect, false);  // TODO: why the false on the end?  Google
+
+                $scope.$on(uiGridEditConstants.events.BEGIN_CELL_EDIT, function () {
+                  $elm[0].focus();
+                  $elm[0].select();
+
+                  $elm.on('blur', function (evt) {
+                    $scope.$emit(uiGridEditConstants.events.END_CELL_EDIT);
+                  });
+                });
+              }
+            };
+          }
+        };
+      }]);
+
 
 })();
 
@@ -13561,7 +16715,10 @@ module.filter('px', function() {
    * @name ui.grid.expandable
    * @description
    *
-   *  # ui.grid.expandable
+   * # ui.grid.expandable
+   *
+   * <div class="alert alert-warning" role="alert"><strong>Alpha</strong> This feature is in development. There will almost certainly be breaking api changes, or there are major outstanding bugs.</div>
+   *
    * This module provides the ability to create subgrids with the ability to expand a row
    * to show the subgrid.
    *
@@ -13578,7 +16735,7 @@ module.filter('px', function() {
   module.service('uiGridExpandableService', ['gridUtil', '$compile', function (gridUtil, $compile) {
     var service = {
       initializeGrid: function (grid) {
-        
+
         grid.expandable = {};
         grid.expandable.expandedAll = false;
 
@@ -13587,16 +16744,16 @@ module.filter('px', function() {
          *  @name enableExpandable
          *  @propertyOf  ui.grid.expandable.api:GridOptions
          *  @description Whether or not to use expandable feature, allows you to turn off expandable on specific grids
-         *  within your application, or in specific modes on _this_ grid. Defaults to true.  
+         *  within your application, or in specific modes on _this_ grid. Defaults to true.
          *  @example
          *  <pre>
          *    $scope.gridOptions = {
          *      enableExpandable: false
          *    }
-         *  </pre>  
+         *  </pre>
          */
         grid.options.enableExpandable = grid.options.enableExpandable !== false;
-        
+
         /**
          *  @ngdoc object
          *  @name expandableRowHeight
@@ -13608,13 +16765,13 @@ module.filter('px', function() {
          *    $scope.gridOptions = {
          *      expandableRowHeight: 150
          *    }
-         *  </pre>  
+         *  </pre>
          */
         grid.options.expandableRowHeight = grid.options.expandableRowHeight || 150;
 
         /**
          *  @ngdoc object
-         *  @name 
+         *  @name
          *  @propertyOf  ui.grid.expandable.api:GridOptions
          *  @description Width in pixels of the expandable column. Defaults to 40
          *  @example
@@ -13622,7 +16779,7 @@ module.filter('px', function() {
          *    $scope.gridOptions = {
          *      expandableRowHeaderWidth: 40
          *    }
-         *  </pre>  
+         *  </pre>
          */
         grid.options.expandableRowHeaderWidth = grid.options.expandableRowHeaderWidth || 40;
 
@@ -13636,7 +16793,7 @@ module.filter('px', function() {
          *    $scope.gridOptions = {
          *      expandableRowTemplate: 'expandableRowTemplate.html'
          *    }
-         *  </pre>  
+         *  </pre>
          */
         if ( grid.options.enableExpandable && !grid.options.expandableRowTemplate ){
           gridUtil.logError( 'You have not set the expandableRowTemplate, disabling expandable module' );
@@ -13651,9 +16808,15 @@ module.filter('px', function() {
          */
         /**
          *  @ngdoc object
+         *  @name ui.grid.expandable.api:GridRow
+         *
+         *  @description Additional properties added to GridRow when using the expandable module
+         */
+        /**
+         *  @ngdoc object
          *  @name ui.grid.expandable.api:GridOptions
          *
-         *  @description Options for configuring the expandable feature, these are available to be  
+         *  @description Options for configuring the expandable feature, these are available to be
          *  set using the ui-grid {@link ui.grid.class:GridOptions gridOptions}
          */
         var publicApi = {
@@ -13669,11 +16832,13 @@ module.filter('px', function() {
                * </pre>
                * @param {GridRow} row the row that was expanded
                */
+              rowExpandedBeforeStateChanged: function(scope,row){
+              },
               rowExpandedStateChanged: function (scope, row) {
               }
             }
           },
-          
+
           methods: {
             expandable: {
               /**
@@ -13685,7 +16850,7 @@ module.filter('px', function() {
                *      gridApi.expandable.toggleRowExpansion(rowEntity);
                * </pre>
                * @param {object} rowEntity the data entity for the row you want to expand
-               */              
+               */
               toggleRowExpansion: function (rowEntity) {
                 var row = grid.getRow(rowEntity);
                 if (row !== null) {
@@ -13701,7 +16866,7 @@ module.filter('px', function() {
                * <pre>
                *      gridApi.expandable.expandAllRows();
                * </pre>
-               */              
+               */
               expandAllRows: function() {
                 service.expandAllRows(grid);
               },
@@ -13714,7 +16879,7 @@ module.filter('px', function() {
                * <pre>
                *      gridApi.expandable.collapseAllRows();
                * </pre>
-               */              
+               */
               collapseAllRows: function() {
                 service.collapseAllRows(grid);
               },
@@ -13727,9 +16892,46 @@ module.filter('px', function() {
                * <pre>
                *      gridApi.expandable.toggleAllRows();
                * </pre>
-               */              
+               */
               toggleAllRows: function() {
                 service.toggleAllRows(grid);
+              },
+              /**
+               * @ngdoc function
+               * @name expandRow
+               * @methodOf  ui.grid.expandable.api:PublicApi
+               * @description Expand the data row
+               * @param {object} rowEntity gridOptions.data[] array instance
+               */
+              expandRow: function (rowEntity) {
+                var row = grid.getRow(rowEntity);
+                if (row !== null && !row.isExpanded) {
+                  service.toggleRowExpansion(grid, row);
+                }
+              },
+              /**
+               * @ngdoc function
+               * @name collapseRow
+               * @methodOf  ui.grid.expandable.api:PublicApi
+               * @description Collapse the data row
+               * @param {object} rowEntity gridOptions.data[] array instance
+               */
+              collapseRow: function (rowEntity) {
+                var row = grid.getRow(rowEntity);
+                if (row !== null && row.isExpanded) {
+                  service.toggleRowExpansion(grid, row);
+                }
+              },
+              /**
+               * @ngdoc function
+               * @name getExpandedRows
+               * @methodOf  ui.grid.expandable.api:PublicApi
+               * @description returns all expandedRow's entity references
+               */
+              getExpandedRows: function () {
+                return service.getExpandedRows(grid).map(function (gridRow) {
+                  return gridRow.entity;
+                });
               }
             }
           }
@@ -13737,11 +16939,31 @@ module.filter('px', function() {
         grid.api.registerEventsFromObject(publicApi.events);
         grid.api.registerMethodsFromObject(publicApi.methods);
       },
-      
+
       toggleRowExpansion: function (grid, row) {
+        // trigger the "before change" event. Can change row height dynamically this way.
+        grid.api.expandable.raise.rowExpandedBeforeStateChanged(row);
+        /**
+         *  @ngdoc object
+         *  @name isExpanded
+         *  @propertyOf  ui.grid.expandable.api:GridRow
+         *  @description Whether or not the row is currently expanded.
+         *  @example
+         *  <pre>
+         *    $scope.api.expandable.on.rowExpandedStateChanged($scope, function (row) {
+         *      if (row.isExpanded) {
+         *        //...
+         *      }
+         *    });
+         *  </pre>
+         */
         row.isExpanded = !row.isExpanded;
+        if (angular.isUndefined(row.expandedRowHeight)){
+          row.expandedRowHeight = grid.options.expandableRowHeight;
+        }
+
         if (row.isExpanded) {
-          row.height = row.grid.options.rowHeight + grid.options.expandableRowHeight;
+          row.height = row.grid.options.rowHeight + row.expandedRowHeight;
         }
         else {
           row.height = row.grid.options.rowHeight;
@@ -13749,25 +16971,25 @@ module.filter('px', function() {
         }
         grid.api.expandable.raise.rowExpandedStateChanged(row);
       },
-      
+
       expandAllRows: function(grid, $scope) {
-        angular.forEach(grid.renderContainers.body.visibleRowCache, function(row) {
+        grid.renderContainers.body.visibleRowCache.forEach( function(row) {
           if (!row.isExpanded) {
             service.toggleRowExpansion(grid, row);
           }
         });
         grid.expandable.expandedAll = true;
-        grid.refresh();
+        grid.queueGridRefresh();
       },
-      
+
       collapseAllRows: function(grid) {
-        angular.forEach(grid.renderContainers.body.visibleRowCache, function(row) {
+        grid.renderContainers.body.visibleRowCache.forEach( function(row) {
           if (row.isExpanded) {
             service.toggleRowExpansion(grid, row);
           }
         });
         grid.expandable.expandedAll = false;
-        grid.refresh();
+        grid.queueGridRefresh();
       },
 
       toggleAllRows: function(grid) {
@@ -13777,6 +16999,12 @@ module.filter('px', function() {
         else {
           service.expandAllRows(grid);
         }
+      },
+
+      getExpandedRows: function (grid) {
+        return grid.rows.filter(function (row) {
+          return row.isExpanded;
+        });
       }
     };
     return service;
@@ -13793,7 +17021,7 @@ module.filter('px', function() {
    *    $scope.gridOptions = {
    *      enableExpandableRowHeader: false
    *    }
-   *  </pre>  
+   *  </pre>
    */
   module.directive('uiGridExpandable', ['uiGridExpandableService', '$templateCache',
     function (uiGridExpandableService, $templateCache) {
@@ -13807,10 +17035,10 @@ module.filter('px', function() {
             pre: function ($scope, $elm, $attrs, uiGridCtrl) {
               if ( uiGridCtrl.grid.options.enableExpandableRowHeader !== false ) {
                 var expandableRowHeaderColDef = {
-                  name: 'expandableButtons', 
-                  displayName: '', 
-                  exporterSuppressExport: true, 
-                  enableColumnResizing: false, 
+                  name: 'expandableButtons',
+                  displayName: '',
+                  exporterSuppressExport: true,
+                  enableColumnResizing: false,
                   enableColumnMenu: false,
                   width: uiGridCtrl.grid.options.expandableRowHeaderWidth || 40
                 };
@@ -13836,7 +17064,7 @@ module.filter('px', function() {
     function (uiGridExpandableService, $templateCache) {
       return {
         replace: true,
-        priority: 1000,
+        priority: 599,
         require: '^uiGrid',
         scope: false,
         compile: function () {
@@ -13947,10 +17175,14 @@ module.filter('px', function() {
                   return ret;
                 };
 
+ /*
+  * Commented out @PaulL1.  This has no purpose that I can see, and causes #2964.  If this code needs to be reinstated for some
+  * reason it needs to use drawnWidth, not width, and needs to check column visibility.  It should really use render container
+  * visible column cache also instead of checking column.renderContainer.
                   function updateRowContainerWidth() {
                       var grid = $scope.grid;
                       var colWidth = 0;
-                      angular.forEach(grid.columns, function (column) {
+                      grid.columns.forEach( function (column) {
                           if (column.renderContainer === 'left') {
                             colWidth += column.width;
                           }
@@ -13966,7 +17198,7 @@ module.filter('px', function() {
                           priority: 15,
                           func: updateRowContainerWidth
                       });
-                  }
+                  }*/
 
               },
               post: function ($scope, $elm, $attrs, controllers) {
@@ -14016,16 +17248,19 @@ module.filter('px', function() {
    * @name ui.grid.exporter
    * @description
    *
-   *  # ui.grid.exporter
-   * This module provides the ability to exporter data from the grid.  
-   * 
-   * Data can be exported in a range of formats, and all data, visible 
+   * # ui.grid.exporter
+   *
+   * <div class="alert alert-success" role="alert"><strong>Stable</strong> This feature is stable. There should no longer be breaking api changes without a deprecation warning.</div>
+   *
+   * This module provides the ability to export data from the grid.
+   *
+   * Data can be exported in a range of formats, and all data, visible
    * data, or selected rows can be exported, with all columns or visible
    * columns.
-   * 
-   * No UI is provided, the caller should provide their own UI/buttons 
+   *
+   * No UI is provided, the caller should provide their own UI/buttons
    * as appropriate, or enable the gridMenu
-   * 
+   *
    * <br/>
    * <br/>
    *
@@ -14059,7 +17294,7 @@ module.filter('px', function() {
    * @propertyOf ui.grid.exporter.constant:uiGridExporterConstants
    * @name SELECTED
    * @description export all data, including data not visible.  Can
-   * be set only for rowTypes, selection of only some columns is 
+   * be set only for rowTypes, selection of only some columns is
    * not supported
    */
   module.constant('uiGridExporterConstants', {
@@ -14078,10 +17313,12 @@ module.filter('px', function() {
    *
    *  @description Services for exporter feature
    */
-  module.service('uiGridExporterService', ['$q', 'uiGridExporterConstants', 'uiGridSelectionConstants', 'gridUtil', '$compile', '$interval', 'i18nService',
-    function ($q, uiGridExporterConstants, uiGridSelectionConstants, gridUtil, $compile, $interval, i18nService) {
+  module.service('uiGridExporterService', ['$q', 'uiGridExporterConstants', 'gridUtil', '$compile', '$interval', 'i18nService',
+    function ($q, uiGridExporterConstants, gridUtil, $compile, $interval, i18nService) {
 
       var service = {
+
+        delay: 100,
 
         initializeGrid: function (grid) {
 
@@ -14106,7 +17343,7 @@ module.filter('px', function() {
                  * @ngdoc function
                  * @name csvExport
                  * @methodOf  ui.grid.exporter.api:PublicApi
-                 * @description Exports rows from the grid in csv format, 
+                 * @description Exports rows from the grid in csv format,
                  * the data exported is selected based on the provided options
                  * @param {string} rowTypes which rows to export, valid values are
                  * uiGridExporterConstants.ALL, uiGridExporterConstants.VISIBLE,
@@ -14121,7 +17358,7 @@ module.filter('px', function() {
                  * @ngdoc function
                  * @name pdfExport
                  * @methodOf  ui.grid.exporter.api:PublicApi
-                 * @description Exports rows from the grid in pdf format, 
+                 * @description Exports rows from the grid in pdf format,
                  * the data exported is selected based on the provided options
                  * Note that this function has a dependency on pdfMake, all
                  * going well this has been installed for you.
@@ -14142,7 +17379,7 @@ module.filter('px', function() {
           grid.api.registerEventsFromObject(publicApi.events);
 
           grid.api.registerMethodsFromObject(publicApi.methods);
-          
+
           if (grid.api.core.addToGridMenu){
             service.addToMenu( grid );
           } else {
@@ -14150,8 +17387,8 @@ module.filter('px', function() {
             $interval( function() {
               if (grid.api.core.addToGridMenu){
                 service.addToMenu( grid );
-              }              
-            }, 100, 1);
+              }
+            }, this.delay, 1);
           }
 
         },
@@ -14162,7 +17399,7 @@ module.filter('px', function() {
            * @ngdoc object
            * @name ui.grid.exporter.api:GridOptions
            *
-           * @description GridOptions for exporter feature, these are available to be  
+           * @description GridOptions for exporter feature, these are available to be
            * set using the ui-grid {@link ui.grid.class:GridOptions gridOptions}
            */
           /**
@@ -14214,11 +17451,29 @@ module.filter('px', function() {
            * @ngdoc object
            * @name exporterCsvFilename
            * @propertyOf  ui.grid.exporter.api:GridOptions
-           * @description The default filename to use when saving the downloaded csv.  
+           * @description The default filename to use when saving the downloaded csv.
            * This will only work in some browsers.
            * <br/>Defaults to 'download.csv'
            */
           gridOptions.exporterCsvFilename = gridOptions.exporterCsvFilename ? gridOptions.exporterCsvFilename : 'download.csv';
+          /**
+           * @ngdoc object
+           * @name exporterPdfFilename
+           * @propertyOf  ui.grid.exporter.api:GridOptions
+           * @description The default filename to use when saving the downloaded pdf, only used in IE (other browsers open pdfs in a new window)
+           * <br/>Defaults to 'download.pdf'
+           */
+          gridOptions.exporterPdfFilename = gridOptions.exporterPdfFilename ? gridOptions.exporterPdfFilename : 'download.pdf';
+          /**
+           * @ngdoc object
+           * @name exporterOlderExcelCompatibility
+           * @propertyOf  ui.grid.exporter.api:GridOptions
+           * @description Some versions of excel don't like the utf-16 BOM on the front, and it comes
+           * through as ï»¿ in the first column header.  Setting this option to false will suppress this, at the
+           * expense of proper utf-16 handling in applications that do recognise the BOM
+           * <br/>Defaults to false
+           */
+          gridOptions.exporterOlderExcelCompatibility = gridOptions.exporterOlderExcelCompatibility === true;
           /**
            * @ngdoc object
            * @name exporterPdfDefaultStyle
@@ -14331,21 +17586,45 @@ module.filter('px', function() {
            * @ngdoc object
            * @name exporterPdfMaxGridWidth
            * @propertyOf  ui.grid.exporter.api:GridOptions
-           * @description The maxium grid width - the current grid width 
+           * @description The maxium grid width - the current grid width
            * will be scaled to match this, with any fixed width columns
            * being adjusted accordingly.
-           * <br/>Defaults to 720 (for A4 landscape), use 670 for LETTER 
+           * <br/>Defaults to 720 (for A4 landscape), use 670 for LETTER
            */
           gridOptions.exporterPdfMaxGridWidth = gridOptions.exporterPdfMaxGridWidth ? gridOptions.exporterPdfMaxGridWidth : 720;
           /**
            * @ngdoc object
            * @name exporterPdfTableLayout
            * @propertyOf  ui.grid.exporter.api:GridOptions
-           * @description A tableLayout in pdfMake format, 
+           * @description A tableLayout in pdfMake format,
            * controls gridlines and the like.  We use the default
            * layout usually.
-           * <br/>Defaults to null, which means no layout 
+           * <br/>Defaults to null, which means no layout
            */
+
+          /**
+           * @ngdoc object
+           * @name exporterMenuAllData
+           * @porpertyOf  ui.grid.exporter.api:GridOptions
+           * @description Add export all data as cvs/pdf menu items to the ui-grid grid menu, if it's present.  Defaults to true.
+           */
+          gridOptions.exporterMenuAllData = gridOptions.exporterMenuAllData !== undefined ? gridOptions.exporterMenuAllData : true;
+
+          /**
+           * @ngdoc object
+           * @name exporterMenuVisibleData
+           * @porpertyOf  ui.grid.exporter.api:GridOptions
+           * @description Add export visible data as cvs/pdf menu items to the ui-grid grid menu, if it's present.  Defaults to true.
+           */
+          gridOptions.exporterMenuVisibleData = gridOptions.exporterMenuVisibleData !== undefined ? gridOptions.exporterMenuVisibleData : true;
+
+          /**
+           * @ngdoc object
+           * @name exporterMenuSelectedData
+           * @porpertyOf  ui.grid.exporter.api:GridOptions
+           * @description Add export selected data as cvs/pdf menu items to the ui-grid grid menu, if it's present.  Defaults to true.
+           */
+          gridOptions.exporterMenuSelectedData = gridOptions.exporterMenuSelectedData !== undefined ? gridOptions.exporterMenuSelectedData : true;
 
           /**
            * @ngdoc object
@@ -14362,7 +17641,7 @@ module.filter('px', function() {
            * @description Add pdf export menu items to the ui-grid grid menu, if it's present.  Defaults to true.
            */
           gridOptions.exporterMenuPdf = gridOptions.exporterMenuPdf !== undefined ? gridOptions.exporterMenuPdf : true;
-          
+
           /**
            * @ngdoc object
            * @name exporterPdfCustomFormatter
@@ -14378,26 +17657,26 @@ module.filter('px', function() {
            *     docDefinition.styles.footerStyle = { bold: true, fontSize: 10 };
            *     return docDefinition;
            *   }
-           * 
+           *
            *   gridOptions.exporterPdfFooter = { text: 'My footer', style: 'footerStyle' }
            * </pre>
            */
           gridOptions.exporterPdfCustomFormatter = ( gridOptions.exporterPdfCustomFormatter && typeof( gridOptions.exporterPdfCustomFormatter ) === 'function' ) ? gridOptions.exporterPdfCustomFormatter : function ( docDef ) { return docDef; };
-          
+
           /**
            * @ngdoc object
            * @name exporterHeaderFilterUseName
            * @propertyOf  ui.grid.exporter.api:GridOptions
            * @description Defaults to false, which leads to `displayName` being passed into the headerFilter.
            * If set to true, then will pass `name` instead.
-           * 
-           * 
+           *
+           *
            * @example
            * <pre>
            *   gridOptions.exporterHeaderFilterUseName = true;
            * </pre>
            */
-          gridOptions.exporterHeaderFilterUseName = gridOptions.exporterHeaderFilterUseName === true;          
+          gridOptions.exporterHeaderFilterUseName = gridOptions.exporterHeaderFilterUseName === true;
 
           /**
            * @ngdoc object
@@ -14406,9 +17685,9 @@ module.filter('px', function() {
            * @description A function to apply to the header displayNames before exporting.  Useful for internationalisation,
            * for example if you were using angular-translate you'd set this to `$translate.instant`.  Note that this
            * call must be synchronous, it cannot be a call that returns a promise.
-           * 
+           *
            * Behaviour can be changed to pass in `name` instead of `displayName` through use of `exporterHeaderFilterUseName: true`.
-           * 
+           *
            * @example
            * <pre>
            *   gridOptions.exporterHeaderFilter = function( displayName ){ return 'col: ' + name; };
@@ -14418,25 +17697,25 @@ module.filter('px', function() {
            *   gridOptions.exporterHeaderFilter = $translate.instant;
            * </pre>
            */
-          
+
           /**
            * @ngdoc function
            * @name exporterFieldCallback
            * @propertyOf  ui.grid.exporter.api:GridOptions
-           * @description A function to call for each field before exporting it.  Allows 
-           * massaging of raw data into a display format, for example if you have applied 
+           * @description A function to call for each field before exporting it.  Allows
+           * massaging of raw data into a display format, for example if you have applied
            * filters to convert codes into decodes, or you require
            * a specific date format in the exported content.
-           * 
+           *
            * The method is called once for each field exported, and provides the grid, the
            * gridCol and the GridRow for you to use as context in massaging the data.
-           * 
+           *
            * @param {Grid} grid provides the grid in case you have need of it
            * @param {GridRow} row the row from which the data comes
            * @param {GridCol} col the column from which the data comes
            * @param {object} value the value for your massaging
            * @returns {object} you must return the massaged value ready for exporting
-           * 
+           *
            * @example
            * <pre>
            *   gridOptions.exporterFieldCallback = function ( grid, row, col, value ){
@@ -14448,6 +17727,44 @@ module.filter('px', function() {
            * </pre>
            */
           gridOptions.exporterFieldCallback = gridOptions.exporterFieldCallback ? gridOptions.exporterFieldCallback : function( grid, row, col, value ) { return value; };
+
+          /**
+           * @ngdoc function
+           * @name exporterAllDataFn
+           * @propertyOf  ui.grid.exporter.api:GridOptions
+           * @description This promise is needed when exporting all rows,
+           * and the data need to be provided by server side. Default is null.
+           * @returns {Promise} a promise to load all data from server
+           *
+           * @example
+           * <pre>
+           *   gridOptions.exporterAllDataFn = function () {
+           *     return $http.get('/data/100.json')
+           *   }
+           * </pre>
+           */
+          gridOptions.exporterAllDataFn = gridOptions.exporterAllDataFn ? gridOptions.exporterAllDataFn : null;
+
+          /**
+           * @ngdoc function
+           * @name exporterAllDataPromise
+           * @propertyOf  ui.grid.exporter.api:GridOptions
+           * @description DEPRECATED - exporterAllDataFn used to be
+           * called this, but it wasn't a promise, it was a function that returned
+           * a promise.  Deprecated, but supported for backward compatibility, use
+           * exporterAllDataFn instead.
+           * @returns {Promise} a promise to load all data from server
+           *
+           * @example
+           * <pre>
+           *   gridOptions.exporterAllDataFn = function () {
+           *     return $http.get('/data/100.json')
+           *   }
+           * </pre>
+           */
+          if ( gridOptions.exporterAllDataFn == null && gridOptions.exporterAllDataPromise ) {
+            gridOptions.exporterAllDataFn = gridOptions.exporterAllDataPromise;
+          }
         },
 
 
@@ -14456,7 +17773,7 @@ module.filter('px', function() {
          * @name addToMenu
          * @methodOf  ui.grid.exporter.service:uiGridExporterService
          * @description Adds export items to the grid menu,
-         * allowing the user to select export options 
+         * allowing the user to select export options
          * @param {Grid} grid the grid from which data should be exported
          */
         addToMenu: function ( grid ) {
@@ -14467,8 +17784,9 @@ module.filter('px', function() {
                 this.grid.api.exporter.csvExport( uiGridExporterConstants.ALL, uiGridExporterConstants.ALL );
               },
               shown: function() {
-                return this.grid.options.exporterMenuCsv; 
-              }
+                return this.grid.options.exporterMenuCsv && this.grid.options.exporterMenuAllData;
+              },
+              order: 200
             },
             {
               title: i18nService.getSafeText('gridMenu.exporterVisibleAsCsv'),
@@ -14476,8 +17794,9 @@ module.filter('px', function() {
                 this.grid.api.exporter.csvExport( uiGridExporterConstants.VISIBLE, uiGridExporterConstants.VISIBLE );
               },
               shown: function() {
-                return this.grid.options.exporterMenuCsv; 
-              }
+                return this.grid.options.exporterMenuCsv && this.grid.options.exporterMenuVisibleData;
+              },
+              order: 201
             },
             {
               title: i18nService.getSafeText('gridMenu.exporterSelectedAsCsv'),
@@ -14485,9 +17804,10 @@ module.filter('px', function() {
                 this.grid.api.exporter.csvExport( uiGridExporterConstants.SELECTED, uiGridExporterConstants.VISIBLE );
               },
               shown: function() {
-                return this.grid.options.exporterMenuCsv &&
-                       ( this.grid.api.selection && this.grid.api.selection.getSelectedRows().length > 0 ); 
-              }
+                return this.grid.options.exporterMenuCsv && this.grid.options.exporterMenuSelectedData &&
+                       ( this.grid.api.selection && this.grid.api.selection.getSelectedRows().length > 0 );
+              },
+              order: 202
             },
             {
               title: i18nService.getSafeText('gridMenu.exporterAllAsPdf'),
@@ -14495,8 +17815,9 @@ module.filter('px', function() {
                 this.grid.api.exporter.pdfExport( uiGridExporterConstants.ALL, uiGridExporterConstants.ALL );
               },
               shown: function() {
-                return this.grid.options.exporterMenuPdf; 
-              }
+                return this.grid.options.exporterMenuPdf && this.grid.options.exporterMenuAllData;
+              },
+              order: 203
             },
             {
               title: i18nService.getSafeText('gridMenu.exporterVisibleAsPdf'),
@@ -14504,8 +17825,9 @@ module.filter('px', function() {
                 this.grid.api.exporter.pdfExport( uiGridExporterConstants.VISIBLE, uiGridExporterConstants.VISIBLE );
               },
               shown: function() {
-                return this.grid.options.exporterMenuPdf; 
-              }
+                return this.grid.options.exporterMenuPdf && this.grid.options.exporterMenuVisibleData;
+              },
+              order: 204
             },
             {
               title: i18nService.getSafeText('gridMenu.exporterSelectedAsPdf'),
@@ -14513,19 +17835,20 @@ module.filter('px', function() {
                 this.grid.api.exporter.pdfExport( uiGridExporterConstants.SELECTED, uiGridExporterConstants.VISIBLE );
               },
               shown: function() {
-                return this.grid.options.exporterMenuPdf &&
-                       ( this.grid.api.selection && this.grid.api.selection.getSelectedRows().length > 0 ); 
-              }
+                return this.grid.options.exporterMenuPdf && this.grid.options.exporterMenuSelectedData &&
+                       ( this.grid.api.selection && this.grid.api.selection.getSelectedRows().length > 0 );
+              },
+              order: 205
             }
           ]);
         },
-        
+
 
         /**
          * @ngdoc function
          * @name csvExport
          * @methodOf  ui.grid.exporter.service:uiGridExporterService
-         * @description Exports rows from the grid in csv format, 
+         * @description Exports rows from the grid in csv format,
          * the data exported is selected based on the provided options
          * @param {Grid} grid the grid from which data should be exported
          * @param {string} rowTypes which rows to export, valid values are
@@ -14536,15 +17859,46 @@ module.filter('px', function() {
          * uiGridExporterConstants.SELECTED
          */
         csvExport: function (grid, rowTypes, colTypes) {
-          var exportColumnHeaders = this.getColumnHeaders(grid, colTypes);
-          var exportData = this.getData(grid, rowTypes, colTypes);
-          var csvContent = this.formatAsCsv(exportColumnHeaders, exportData, grid.options.exporterCsvColumnSeparator);
-          
-          this.downloadFile (grid.options.exporterCsvFilename, csvContent);
+          var self = this;
+          this.loadAllDataIfNeeded(grid, rowTypes, colTypes).then(function() {
+            var exportColumnHeaders = grid.options.showHeader ? self.getColumnHeaders(grid, colTypes) : [];
+            var exportData = self.getData(grid, rowTypes, colTypes);
+            var csvContent = self.formatAsCsv(exportColumnHeaders, exportData, grid.options.exporterCsvColumnSeparator);
+
+            self.downloadFile (grid.options.exporterCsvFilename, csvContent, grid.options.exporterOlderExcelCompatibility);
+          });
         },
-        
-        
-        /** 
+
+        /**
+         * @ngdoc function
+         * @name loadAllDataIfNeeded
+         * @methodOf  ui.grid.exporter.service:uiGridExporterService
+         * @description When using server side pagination, use exporterAllDataFn to
+         * load all data before continuing processing.
+         * When using client side pagination, return a resolved promise so processing
+         * continues immediately
+         * @param {Grid} grid the grid from which data should be exported
+         * @param {string} rowTypes which rows to export, valid values are
+         * uiGridExporterConstants.ALL, uiGridExporterConstants.VISIBLE,
+         * uiGridExporterConstants.SELECTED
+         * @param {string} colTypes which columns to export, valid values are
+         * uiGridExporterConstants.ALL, uiGridExporterConstants.VISIBLE,
+         * uiGridExporterConstants.SELECTED
+         */
+        loadAllDataIfNeeded: function (grid, rowTypes, colTypes) {
+          if ( rowTypes === uiGridExporterConstants.ALL && grid.rows.length !== grid.options.totalItems && grid.options.exporterAllDataFn) {
+            return grid.options.exporterAllDataFn()
+              .then(function() {
+                grid.modifyRows(grid.options.data);
+              });
+          } else {
+            var deferred = $q.defer();
+            deferred.resolve();
+            return deferred.promise;
+          }
+        },
+
+        /**
          * @ngdoc property
          * @propertyOf ui.grid.exporter.api:ColumnDef
          * @name exporterSuppressExport
@@ -14556,13 +17910,13 @@ module.filter('px', function() {
          * @name getColumnHeaders
          * @methodOf  ui.grid.exporter.service:uiGridExporterService
          * @description Gets the column headers from the grid to use
-         * as a title row for the exported file, all headers have 
+         * as a title row for the exported file, all headers have
          * headerCellFilters applied as appropriate.
-         * 
+         *
          * Column headers are an array of objects, each object has
          * name, displayName, width and align attributes.  Only name is
          * used for csv, all attributes are used for pdf.
-         * 
+         *
          * @param {Grid} grid the grid from which data should be exported
          * @param {string} colTypes which columns to export, valid values are
          * uiGridExporterConstants.ALL, uiGridExporterConstants.VISIBLE,
@@ -14570,9 +17924,20 @@ module.filter('px', function() {
          */
         getColumnHeaders: function (grid, colTypes) {
           var headers = [];
-          angular.forEach(grid.columns, function( gridCol, index ) {
-            if ( (gridCol.visible || colTypes === uiGridExporterConstants.ALL ) && 
-                 gridCol.colDef.exporterSuppressExport !== true &&
+          var columns;
+
+          if ( colTypes === uiGridExporterConstants.ALL ){
+            columns = grid.columns;
+          } else {
+            var leftColumns = grid.renderContainers.left ? grid.renderContainers.left.visibleColumnCache.filter( function( column ){ return column.visible; } ) : [];
+            var bodyColumns = grid.renderContainers.body ? grid.renderContainers.body.visibleColumnCache.filter( function( column ){ return column.visible; } ) : [];
+            var rightColumns = grid.renderContainers.right ? grid.renderContainers.right.visibleColumnCache.filter( function( column ){ return column.visible; } ) : [];
+
+            columns = leftColumns.concat(bodyColumns,rightColumns);
+          }
+
+          columns.forEach( function( gridCol, index ) {
+            if ( gridCol.colDef.exporterSuppressExport !== true &&
                  grid.options.exporterSuppressColumns.indexOf( gridCol.name ) === -1 ){
               headers.push({
                 name: gridCol.field,
@@ -14582,12 +17947,12 @@ module.filter('px', function() {
               });
             }
           });
-          
+
           return headers;
         },
-        
-        
-        /** 
+
+
+        /**
          * @ngdoc property
          * @propertyOf ui.grid.exporter.api:ColumnDef
          * @name exporterPdfAlign
@@ -14606,7 +17971,7 @@ module.filter('px', function() {
          * @ngdoc object
          * @name exporterEnableExporting
          * @propertyOf  ui.grid.exporter.api:GridRow
-         * @description If set to false, then don't export this row, notwithstanding visible or 
+         * @description If set to false, then don't export this row, notwithstanding visible or
          * other settings
          * <br/>Defaults to true
          */
@@ -14625,15 +17990,16 @@ module.filter('px', function() {
          * @param {string} colTypes which columns to export, valid values are
          * uiGridExporterConstants.ALL, uiGridExporterConstants.VISIBLE,
          * uiGridExporterConstants.SELECTED
+         * @param {boolean} applyCellFilters whether or not to get the display value or the raw value of the data
          */
-        getData: function (grid, rowTypes, colTypes) {
+        getData: function (grid, rowTypes, colTypes, applyCellFilters) {
           var data = [];
-          
           var rows;
-          
+          var columns;
+
           switch ( rowTypes ) {
             case uiGridExporterConstants.ALL:
-              rows = grid.rows; 
+              rows = grid.rows;
               break;
             case uiGridExporterConstants.VISIBLE:
               rows = grid.getVisibleRows();
@@ -14646,27 +18012,40 @@ module.filter('px', function() {
               }
               break;
           }
-          
-          angular.forEach(rows, function( row, index ) {
+
+          if ( colTypes === uiGridExporterConstants.ALL ){
+            columns = grid.columns;
+          } else {
+            var leftColumns = grid.renderContainers.left ? grid.renderContainers.left.visibleColumnCache.filter( function( column ){ return column.visible; } ) : [];
+            var bodyColumns = grid.renderContainers.body ? grid.renderContainers.body.visibleColumnCache.filter( function( column ){ return column.visible; } ) : [];
+            var rightColumns = grid.renderContainers.right ? grid.renderContainers.right.visibleColumnCache.filter( function( column ){ return column.visible; } ) : [];
+
+            columns = leftColumns.concat(bodyColumns,rightColumns);
+          }
+
+          rows.forEach( function( row, index ) {
 
             if (row.exporterEnableExporting !== false) {
               var extractedRow = [];
-              angular.forEach(grid.columns, function( gridCol, index ) {
-              if ( (gridCol.visible || colTypes === uiGridExporterConstants.ALL ) && 
+
+
+              columns.forEach( function( gridCol, index ) {
+              if ( (gridCol.visible || colTypes === uiGridExporterConstants.ALL ) &&
                    gridCol.colDef.exporterSuppressExport !== true &&
                    grid.options.exporterSuppressColumns.indexOf( gridCol.name ) === -1 ){
-                  var extractedField = { value: grid.options.exporterFieldCallback( grid, row, gridCol, grid.getCellValue( row, gridCol ) ) };
+                  var cellValue = applyCellFilters ? grid.getCellDisplayValue( row, gridCol ) : grid.getCellValue( row, gridCol );
+                  var extractedField = { value: grid.options.exporterFieldCallback( grid, row, gridCol, cellValue ) };
                   if ( gridCol.colDef.exporterPdfAlign ) {
-                    extractedField.alignment = gridCol.colDef.exporterPdfAlign;                 
+                    extractedField.alignment = gridCol.colDef.exporterPdfAlign;
                   }
                   extractedRow.push(extractedField);
                 }
               });
-              
+
               data.push(extractedRow);
             }
           });
-          
+
           return data;
         },
 
@@ -14675,9 +18054,9 @@ module.filter('px', function() {
          * @ngdoc function
          * @name formatAsCSV
          * @methodOf  ui.grid.exporter.service:uiGridExporterService
-         * @description Formats the column headers and data as a CSV, 
+         * @description Formats the column headers and data as a CSV,
          * and sends that data to the user
-         * @param {array} exportColumnHeaders an array of column headers, 
+         * @param {array} exportColumnHeaders an array of column headers,
          * where each header is an object with name, width and maybe alignment
          * @param {array} exportData an array of rows, where each row is
          * an array of column data
@@ -14685,13 +18064,13 @@ module.filter('px', function() {
          */
         formatAsCsv: function (exportColumnHeaders, exportData, separator) {
           var self = this;
-          
+
           var bareHeaders = exportColumnHeaders.map(function(header){return { value: header.displayName };});
-          
-          var csv = self.formatRowAsCsv(this, separator)(bareHeaders) + '\n';
-          
+
+          var csv = bareHeaders.length > 0 ? (self.formatRowAsCsv(this, separator)(bareHeaders) + '\n') : '';
+
           csv += exportData.map(this.formatRowAsCsv(this, separator)).join('\n');
-          
+
           return csv;
         },
 
@@ -14701,7 +18080,7 @@ module.filter('px', function() {
          * @methodOf  ui.grid.exporter.service:uiGridExporterService
          * @description Renders a single field as a csv field, including
          * quotes around the value
-         * @param {exporterService} exporter pass in exporter 
+         * @param {exporterService} exporter pass in exporter
          * @param {array} row the row to be turned into a csv string
          * @returns {string} a csv-ified version of the row
          */
@@ -14710,7 +18089,7 @@ module.filter('px', function() {
             return row.map(exporter.formatFieldAsCsv).join(separator);
           };
         },
-        
+
         /**
          * @ngdoc function
          * @name formatFieldAsCsv
@@ -14735,7 +18114,25 @@ module.filter('px', function() {
             return '"' + field.value.replace(/"/g,'""') + '"';
           }
 
-          return JSON.stringify(field.value);        
+          return JSON.stringify(field.value);
+        },
+
+
+        /**
+         * @ngdoc function
+         * @name isIE
+         * @methodOf  ui.grid.exporter.service:uiGridExporterService
+         * @description Checks whether current browser is IE and returns it's version if it is
+        */
+        isIE: function () {
+          var match = navigator.userAgent.search(/(?:Edge|MSIE|Trident\/.*; rv:)/);
+          var isIE = false;
+
+          if (match !== -1) {
+            isIE = true;
+          }
+
+          return isIE;
         },
 
 
@@ -14747,34 +18144,55 @@ module.filter('px', function() {
          * by @cssensei (from his colleagues at https://github.com/ifeelgoods) in issue #2391
          * @param {string} fileName the filename we'd like our file to be
          * given
-         * @param {string} csvContent the csv content that we'd like to 
+         * @param {string} csvContent the csv content that we'd like to
          * download as a file
+         * @param {boolean} exporterOlderExcelCompatibility whether or not we put a utf-16 BOM on the from (\uFEFF)
          */
-        downloadFile: function (fileName, csvContent) {
+        downloadFile: function (fileName, csvContent, exporterOlderExcelCompatibility) {
           var D = document;
           var a = D.createElement('a');
           var strMimeType = 'application/octet-stream;charset=utf-8';
           var rawFile;
-      
+          var ieVersion;
+
+          ieVersion = this.isIE();
+          if (ieVersion && ieVersion < 10) {
+            var frame = D.createElement('iframe');
+            document.body.appendChild(frame);
+
+            frame.contentWindow.document.open("text/html", "replace");
+            frame.contentWindow.document.write('sep=,\r\n' + csvContent);
+            frame.contentWindow.document.close();
+            frame.contentWindow.focus();
+            frame.contentWindow.document.execCommand('SaveAs', true, fileName);
+
+            document.body.removeChild(frame);
+            return true;
+          }
+
           // IE10+
           if (navigator.msSaveBlob) {
-            return navigator.msSaveBlob(new Blob(["\ufeff", csvContent], {
-              type: strMimeType
-            }), fileName);
+            return navigator.msSaveOrOpenBlob(
+              new Blob(
+                [exporterOlderExcelCompatibility ? "\uFEFF" : '', csvContent],
+                { type: strMimeType } ),
+              fileName
+            );
           }
-      
+
           //html5 A[download]
           if ('download' in a) {
-            var blob = new Blob([csvContent], {
-              type: strMimeType
-            });
+            var blob = new Blob(
+              [exporterOlderExcelCompatibility ? "\uFEFF" : '', csvContent],
+              { type: strMimeType }
+            );
             rawFile = URL.createObjectURL(blob);
             a.setAttribute('download', fileName);
           } else {
             rawFile = 'data:' + strMimeType + ',' + encodeURIComponent(csvContent);
             a.setAttribute('target', '_blank');
           }
-      
+
           a.href = rawFile;
           a.setAttribute('style', 'display:none;');
           D.body.appendChild(a);
@@ -14788,15 +18206,15 @@ module.filter('px', function() {
               a.dispatchEvent(eventObj);
             }
             D.body.removeChild(a);
-    
-          }, 100);
+
+          }, this.delay);
         },
 
         /**
          * @ngdoc function
          * @name pdfExport
          * @methodOf  ui.grid.exporter.service:uiGridExporterService
-         * @description Exports rows from the grid in pdf format, 
+         * @description Exports rows from the grid in pdf format,
          * the data exported is selected based on the provided options.
          * Note that this function has a dependency on pdfMake, which must
          * be installed.  The resulting pdf opens in a new
@@ -14810,39 +18228,99 @@ module.filter('px', function() {
          * uiGridExporterConstants.SELECTED
          */
         pdfExport: function (grid, rowTypes, colTypes) {
-          var exportColumnHeaders = this.getColumnHeaders(grid, colTypes);
-          var exportData = this.getData(grid, rowTypes, colTypes);
-          var docDefinition = this.prepareAsPdf(grid, exportColumnHeaders, exportData);
-          
-          pdfMake.createPdf(docDefinition).open();
+          var self = this;
+          this.loadAllDataIfNeeded(grid, rowTypes, colTypes).then(function () {
+            var exportColumnHeaders = self.getColumnHeaders(grid, colTypes);
+            var exportData = self.getData(grid, rowTypes, colTypes);
+            var docDefinition = self.prepareAsPdf(grid, exportColumnHeaders, exportData);
+
+            if (self.isIE() || navigator.appVersion.indexOf("Edge") !== -1) {
+              self.downloadPDF(grid.options.exporterPdfFilename, docDefinition);
+            } else {
+              pdfMake.createPdf(docDefinition).open();
+            }
+          });
         },
-        
-        
+
+
+        /**
+         * @ngdoc function
+         * @name downloadPdf
+         * @methodOf  ui.grid.exporter.service:uiGridExporterService
+         * @description Generates and retrieves the pdf as a blob, then downloads
+         * it as a file.  Only used in IE, in all other browsers we use the native
+         * pdfMake.open function to just open the PDF
+         * @param {string} fileName the filename to give to the pdf, can be set
+         * through exporterPdfFilename
+         * @param {object} docDefinition a pdf docDefinition that we can generate
+         * and get a blob from
+         */
+        downloadPDF: function (fileName, docDefinition) {
+          var D = document;
+          var a = D.createElement('a');
+          var strMimeType = 'application/octet-stream;charset=utf-8';
+          var rawFile;
+          var ieVersion;
+
+          ieVersion = this.isIE(); // This is now a boolean value
+          var doc = pdfMake.createPdf(docDefinition);
+          var blob;
+
+          doc.getBuffer( function (buffer) {
+            blob = new Blob([buffer]);
+
+            // IE10+
+            if (navigator.msSaveBlob) {
+              return navigator.msSaveBlob(
+                blob, fileName
+              );
+            }
+
+            // Previously:  && ieVersion < 10
+            // ieVersion now returns a boolean for the
+            // sake of sanity. We just check `msSaveBlob` first.
+            if (ieVersion) {
+              var frame = D.createElement('iframe');
+              document.body.appendChild(frame);
+
+              frame.contentWindow.document.open("text/html", "replace");
+              frame.contentWindow.document.write(blob);
+              frame.contentWindow.document.close();
+              frame.contentWindow.focus();
+              frame.contentWindow.document.execCommand('SaveAs', true, fileName);
+
+              document.body.removeChild(frame);
+              return true;
+            }
+          });
+        },
+
+
         /**
          * @ngdoc function
          * @name renderAsPdf
          * @methodOf  ui.grid.exporter.service:uiGridExporterService
          * @description Renders the data into a pdf, and opens that pdf.
-         * 
+         *
          * @param {Grid} grid the grid from which data should be exported
-         * @param {array} exportColumnHeaders an array of column headers, 
+         * @param {array} exportColumnHeaders an array of column headers,
          * where each header is an object with name, width and maybe alignment
          * @param {array} exportData an array of rows, where each row is
          * an array of column data
-         * @returns {object} a pdfMake format document definition, ready 
+         * @returns {object} a pdfMake format document definition, ready
          * for generation
-         */        
+         */
         prepareAsPdf: function(grid, exportColumnHeaders, exportData) {
           var headerWidths = this.calculatePdfHeaderWidths( grid, exportColumnHeaders );
-          
+
           var headerColumns = exportColumnHeaders.map( function( header ) {
-            return { text: header.displayName, style: 'tableHeader' }; 
+            return { text: header.displayName, style: 'tableHeader' };
           });
-          
+
           var stringData = exportData.map(this.formatRowAsPdf(this));
-          
+
           var allData = [headerColumns].concat(stringData);
-          
+
           var docDefinition = {
             pageOrientation: grid.options.exporterPdfOrientation,
             pageSize: grid.options.exporterPdfPageSize,
@@ -14851,7 +18329,7 @@ module.filter('px', function() {
               table: {
                 headerRows: 1,
                 widths: headerWidths,
-                body: allData 
+                body: allData
               }
             }],
             styles: {
@@ -14860,84 +18338,84 @@ module.filter('px', function() {
             },
             defaultStyle: grid.options.exporterPdfDefaultStyle
           };
-          
+
           if ( grid.options.exporterPdfLayout ){
             docDefinition.layout = grid.options.exporterPdfLayout;
           }
-          
+
           if ( grid.options.exporterPdfHeader ){
             docDefinition.header = grid.options.exporterPdfHeader;
           }
-          
+
           if ( grid.options.exporterPdfFooter ){
             docDefinition.footer = grid.options.exporterPdfFooter;
           }
-          
+
           if ( grid.options.exporterPdfCustomFormatter ){
             docDefinition = grid.options.exporterPdfCustomFormatter( docDefinition );
           }
           return docDefinition;
-          
+
         },
-        
-                
+
+
         /**
          * @ngdoc function
          * @name calculatePdfHeaderWidths
          * @methodOf  ui.grid.exporter.service:uiGridExporterService
-         * @description Determines the column widths base on the 
+         * @description Determines the column widths base on the
          * widths we got from the grid.  If the column is drawn
          * then we have a drawnWidth.  If the column is not visible
          * then we have '*', 'x%' or a width.  When columns are
          * not visible they don't contribute to the overall gridWidth,
          * so we need to adjust to allow for extra columns
-         * 
-         * Our basic heuristic is to take the current gridWidth, plus 
+         *
+         * Our basic heuristic is to take the current gridWidth, plus
          * numeric columns and call this the base gridwidth.
-         * 
+         *
          * To that we add 100 for any '*' column, and x% of the base gridWidth
          * for any column that is a %
-         *  
+         *
          * @param {Grid} grid the grid from which data should be exported
-         * @param {object} exportHeaders array of header information 
+         * @param {array} exportHeaders array of header information
          * @returns {object} an array of header widths
          */
         calculatePdfHeaderWidths: function ( grid, exportHeaders ) {
           var baseGridWidth = 0;
-          angular.forEach(exportHeaders, function(value){
+          exportHeaders.forEach( function(value){
             if (typeof(value.width) === 'number'){
               baseGridWidth += value.width;
             }
           });
-          
+
           var extraColumns = 0;
-          angular.forEach(exportHeaders, function(value){
+          exportHeaders.forEach( function(value){
             if (value.width === '*'){
               extraColumns += 100;
             }
             if (typeof(value.width) === 'string' && value.width.match(/(\d)*%/)) {
               var percent = parseInt(value.width.match(/(\d)*%/)[0]);
-              
+
               value.width = baseGridWidth * percent / 100;
               extraColumns += value.width;
             }
           });
-          
+
           var gridWidth = baseGridWidth + extraColumns;
-          
+
           return exportHeaders.map(function( header ) {
             return header.width === '*' ? header.width : header.width * grid.options.exporterPdfMaxGridWidth / gridWidth;
           });
-          
+
         },
-        
+
         /**
          * @ngdoc function
          * @name formatRowAsPdf
          * @methodOf  ui.grid.exporter.service:uiGridExporterService
          * @description Renders a row in a format consumable by PDF,
          * mainly meaning casting everything to a string
-         * @param {exporterService} exporter pass in exporter 
+         * @param {exporterService} exporter pass in exporter
          * @param {array} row the row to be turned into a csv string
          * @returns {string} a csv-ified version of the row
          */
@@ -14946,8 +18424,8 @@ module.filter('px', function() {
             return row.map(exporter.formatFieldAsPdfString);
           };
         },
-        
-        
+
+
         /**
          * @ngdoc function
          * @name formatFieldAsCsv
@@ -14970,13 +18448,13 @@ module.filter('px', function() {
           } else if (typeof(field.value) === 'string') {
             returnVal = field.value.replace(/"/g,'""');
           } else {
-            returnVal = JSON.stringify(field.value).replace(/^"/,'').replace(/"$/,'');        
+            returnVal = JSON.stringify(field.value).replace(/^"/,'').replace(/"$/,'');
           }
-          
+
           if (field.alignment && typeof(field.alignment) === 'string' ){
             returnVal = { text: returnVal, alignment: field.alignment };
           }
-          
+
           return returnVal;
         }
       };
@@ -15044,32 +18522,1304 @@ module.filter('px', function() {
 
   /**
    * @ngdoc overview
+   * @name ui.grid.grouping
+   * @description
+   *
+   * # ui.grid.grouping
+   *
+   * <div class="alert alert-warning" role="alert"><strong>Beta</strong> This feature is ready for testing, but it either hasn't seen a lot of use or has some known bugs.</div>
+   *
+   * This module provides grouping of rows based on the data in them, similar
+   * in concept to excel grouping.  You can group multiple columns, resulting in
+   * nested grouping.
+   *
+   * In concept this feature is similar to sorting + grid footer/aggregation, it
+   * sorts the data based on the grouped columns, then creates group rows that
+   * reflect a break in the data.  Each of those group rows can have aggregations for
+   * the data within that group.
+   *
+   * This feature leverages treeBase to provide the tree functionality itself,
+   * the key thing this feature does therefore is to set treeLevels on the rows
+   * and insert the group headers.
+   *
+   * Design information:
+   * -------------------
+   *
+   * Each column will get new menu items - group by, and aggregate by.  Group by
+   * will cause this column to be sorted (if not already), and will move this column
+   * to the front of the sorted columns (i.e. grouped columns take precedence over
+   * sorted columns).  It will respect the sort order already set if there is one,
+   * and it will allow the sorting logic to change that sort order, it just forces
+   * the column to the front of the sorting.  You can group by multiple columns, the
+   * logic will add this column to the sorting after any already grouped columns.
+   *
+   * Once a grouping is defined, grouping logic is added to the rowsProcessors.  This
+   * will process the rows, identifying a break in the data value, and inserting a grouping row.
+   * Grouping rows have specific attributes on them:
+   *
+   *  - internalRow = true: tells us that this isn't a real row, so we can ignore it
+   *    from any processing that it looking at core data rows.  This is used by the core
+   *    logic (or will be one day), as it's not grouping specific
+   *  - groupHeader = true: tells us this is a groupHeader.  This is used by the grouping logic
+   *    to know if this is a groupHeader row or not
+   *
+   * Since the logic is baked into the rowsProcessors, it should get triggered whenever
+   * row order or filtering or anything like that is changed.  In order to avoid the row instantiation
+   * time, and to preserve state across invocations, we hold a cache of the rows that we created
+   * last time, and we use them again this time if we can.
+   *
+   * By default rows are collapsed, which means all data rows have their visible property
+   * set to false, and only level 0 group rows are set to visible.
+   *
+   * <br/>
+   * <br/>
+   *
+   * <div doc-module-components="ui.grid.grouping"></div>
+   */
+
+  var module = angular.module('ui.grid.grouping', ['ui.grid', 'ui.grid.treeBase']);
+
+  /**
+   *  @ngdoc object
+   *  @name ui.grid.grouping.constant:uiGridGroupingConstants
+   *
+   *  @description constants available in grouping module, this includes
+   *  all the constants declared in the treeBase module (these are manually copied
+   *  as there isn't an easy way to include constants in another constants file, and
+   *  we don't want to make users include treeBase)
+   *
+   */
+  module.constant('uiGridGroupingConstants', {
+    featureName: "grouping",
+    rowHeaderColName: 'treeBaseRowHeaderCol',
+    EXPANDED: 'expanded',
+    COLLAPSED: 'collapsed',
+    aggregation: {
+      COUNT: 'count',
+      SUM: 'sum',
+      MAX: 'max',
+      MIN: 'min',
+      AVG: 'avg'
+    }
+  });
+
+  /**
+   *  @ngdoc service
+   *  @name ui.grid.grouping.service:uiGridGroupingService
+   *
+   *  @description Services for grouping features
+   */
+  module.service('uiGridGroupingService', ['$q', 'uiGridGroupingConstants', 'gridUtil', 'rowSorter', 'GridRow', 'gridClassFactory', 'i18nService', 'uiGridConstants', 'uiGridTreeBaseService',
+  function ($q, uiGridGroupingConstants, gridUtil, rowSorter, GridRow, gridClassFactory, i18nService, uiGridConstants, uiGridTreeBaseService) {
+
+    var service = {
+
+      initializeGrid: function (grid, $scope) {
+        uiGridTreeBaseService.initializeGrid( grid, $scope );
+
+        //add feature namespace and any properties to grid for needed
+        /**
+         *  @ngdoc object
+         *  @name ui.grid.grouping.grid:grouping
+         *
+         *  @description Grid properties and functions added for grouping
+         */
+        grid.grouping = {};
+
+        /**
+         *  @ngdoc property
+         *  @propertyOf ui.grid.grouping.grid:grouping
+         *  @name groupHeaderCache
+         *
+         *  @description Cache that holds the group header rows we created last time, we'll
+         *  reuse these next time, not least because they hold our expanded states.
+         *
+         *  We need to take care with these that they don't become a memory leak, we
+         *  create a new cache each time using the values from the old cache.  This works
+         *  so long as we're creating group rows for invisible rows as well.
+         *
+         *  The cache is a nested hash, indexed on the value we grouped by.  So if we
+         *  grouped by gender then age, we'd maybe have something like:
+         *  ```
+         *    {
+         *      male: {
+         *        row: <pointer to the old row>,
+         *        children: {
+         *          22: { row: <pointer to the old row> },
+         *          31: { row: <pointer to the old row> }
+         *      },
+         *      female: {
+         *        row: <pointer to the old row>,
+         *        children: {
+         *          28: { row: <pointer to the old row> },
+         *          55: { row: <pointer to the old row> }
+         *      }
+         *    }
+         *  ```
+         *
+         *  We create new rows for any missing rows, this means that they come in as collapsed.
+         *
+         */
+        grid.grouping.groupHeaderCache = {};
+
+        service.defaultGridOptions(grid.options);
+
+        grid.registerRowsProcessor(service.groupRows, 400);
+
+        grid.registerColumnBuilder( service.groupingColumnBuilder);
+
+        grid.registerColumnsProcessor(service.groupingColumnProcessor, 400);
+
+        /**
+         *  @ngdoc object
+         *  @name ui.grid.grouping.api:PublicApi
+         *
+         *  @description Public Api for grouping feature
+         */
+        var publicApi = {
+          events: {
+            grouping: {
+              /**
+               * @ngdoc event
+               * @eventOf ui.grid.grouping.api:PublicApi
+               * @name aggregationChanged
+               * @description raised whenever aggregation is changed, added or removed from a column
+               *
+               * <pre>
+               *      gridApi.grouping.on.aggregationChanged(scope,function(col){})
+               * </pre>
+               * @param {gridCol} col the column which on which aggregation changed. The aggregation
+               * type is available as `col.treeAggregation.type`
+               */
+              aggregationChanged: {},
+              /**
+               * @ngdoc event
+               * @eventOf ui.grid.grouping.api:PublicApi
+               * @name groupingChanged
+               * @description raised whenever the grouped columns changes
+               *
+               * <pre>
+               *      gridApi.grouping.on.groupingChanged(scope,function(col){})
+               * </pre>
+               * @param {gridCol} col the column which on which grouping changed. The new grouping is
+               * available as `col.grouping`
+               */
+              groupingChanged: {}
+            }
+          },
+          methods: {
+            grouping: {
+              /**
+               * @ngdoc function
+               * @name getGrouping
+               * @methodOf  ui.grid.grouping.api:PublicApi
+               * @description Get the grouping configuration for this grid,
+               * used by the saveState feature.  Adds expandedState to the information
+               * provided by the internal getGrouping, and removes any aggregations that have a source
+               * of grouping (i.e. will be automatically reapplied when we regroup the column)
+               * Returned grouping is an object
+               *   `{ grouping: groupArray, treeAggregations: aggregateArray, expandedState: hash }`
+               * where grouping contains an array of objects:
+               *   `{ field: column.field, colName: column.name, groupPriority: column.grouping.groupPriority }`
+               * and aggregations contains an array of objects:
+               *   `{ field: column.field, colName: column.name, aggregation: column.grouping.aggregation }`
+               * and expandedState is a hash of the currently expanded nodes
+               *
+               * The groupArray will be sorted by groupPriority.
+               *
+               * @param {boolean} getExpanded whether or not to return the expanded state
+               * @returns {object} grouping configuration
+               */
+              getGrouping: function ( getExpanded ) {
+                var grouping = service.getGrouping(grid);
+
+                grouping.grouping.forEach( function( group ) {
+                  group.colName = group.col.name;
+                  delete group.col;
+                });
+
+                grouping.aggregations.forEach( function( aggregation ) {
+                  aggregation.colName = aggregation.col.name;
+                  delete aggregation.col;
+                });
+
+                grouping.aggregations = grouping.aggregations.filter( function( aggregation ){
+                  return !aggregation.aggregation.source || aggregation.aggregation.source !== 'grouping';
+                });
+
+                if ( getExpanded ){
+                  grouping.rowExpandedStates = service.getRowExpandedStates( grid.grouping.groupingHeaderCache );
+                }
+
+                return grouping;
+              },
+
+              /**
+               * @ngdoc function
+               * @name setGrouping
+               * @methodOf  ui.grid.grouping.api:PublicApi
+               * @description Set the grouping configuration for this grid,
+               * used by the saveState feature, but can also be used by any
+               * user to specify a combined grouping and aggregation configuration
+               * @param {object} config the config you want to apply, in the format
+               * provided out by getGrouping
+               */
+              setGrouping: function ( config ) {
+                service.setGrouping(grid, config);
+              },
+
+              /**
+               * @ngdoc function
+               * @name groupColumn
+               * @methodOf  ui.grid.grouping.api:PublicApi
+               * @description Adds this column to the existing grouping, at the end of the priority order.
+               * If the column doesn't have a sort, adds one, by default ASC
+               *
+               * This column will move to the left of any non-group columns, the
+               * move is handled in a columnProcessor, so gets called as part of refresh
+               *
+               * @param {string} columnName the name of the column we want to group
+               */
+              groupColumn: function( columnName ) {
+                var column = grid.getColumn(columnName);
+                service.groupColumn(grid, column);
+              },
+
+              /**
+               * @ngdoc function
+               * @name ungroupColumn
+               * @methodOf  ui.grid.grouping.api:PublicApi
+               * @description Removes the groupPriority from this column.  If the
+               * column was previously aggregated the aggregation will come back.
+               * The sort will remain.
+               *
+               * This column will move to the right of any other group columns, the
+               * move is handled in a columnProcessor, so gets called as part of refresh
+               *
+               * @param {string} columnName the name of the column we want to ungroup
+               */
+              ungroupColumn: function( columnName ) {
+                var column = grid.getColumn(columnName);
+                service.ungroupColumn(grid, column);
+              },
+
+              /**
+               * @ngdoc function
+               * @name clearGrouping
+               * @methodOf  ui.grid.grouping.api:PublicApi
+               * @description Clear any grouped columns and any aggregations.  Doesn't remove sorting,
+               * as we don't know whether that sorting was added by grouping or was there beforehand
+               *
+               */
+              clearGrouping: function() {
+                service.clearGrouping(grid);
+              },
+
+              /**
+               * @ngdoc function
+               * @name aggregateColumn
+               * @methodOf  ui.grid.grouping.api:PublicApi
+               * @description Sets the aggregation type on a column, if the
+               * column is currently grouped then it removes the grouping first.
+               * If the aggregationDef is null then will result in the aggregation
+               * being removed
+               *
+               * @param {string} columnName the column we want to aggregate
+               * @param {string} or {function} aggregationDef one of the recognised types
+               * from uiGridGroupingConstants or a custom aggregation function.
+               * @param {string} aggregationLabel (optional) The label to use for this aggregation.
+               */
+              aggregateColumn: function( columnName, aggregationDef, aggregationLabel){
+                var column = grid.getColumn(columnName);
+                service.aggregateColumn( grid, column, aggregationDef, aggregationLabel);
+              }
+
+            }
+          }
+        };
+
+        grid.api.registerEventsFromObject(publicApi.events);
+
+        grid.api.registerMethodsFromObject(publicApi.methods);
+
+        grid.api.core.on.sortChanged( $scope, service.tidyPriorities);
+
+      },
+
+      defaultGridOptions: function (gridOptions) {
+        //default option to true unless it was explicitly set to false
+        /**
+         *  @ngdoc object
+         *  @name ui.grid.grouping.api:GridOptions
+         *
+         *  @description GridOptions for grouping feature, these are available to be
+         *  set using the ui-grid {@link ui.grid.class:GridOptions gridOptions}
+         */
+
+        /**
+         *  @ngdoc object
+         *  @name enableGrouping
+         *  @propertyOf  ui.grid.grouping.api:GridOptions
+         *  @description Enable row grouping for entire grid.
+         *  <br/>Defaults to true
+         */
+        gridOptions.enableGrouping = gridOptions.enableGrouping !== false;
+
+        /**
+         *  @ngdoc object
+         *  @name groupingShowCounts
+         *  @propertyOf  ui.grid.grouping.api:GridOptions
+         *  @description shows counts on the groupHeader rows. Not that if you are using a cellFilter or a
+         *  sortingAlgorithm which relies on a specific format or data type, showing counts may cause that
+         *  to break, since the group header rows will always be a string with groupingShowCounts enabled.
+         *  <br/>Defaults to true except on columns of type 'date'
+         */
+        gridOptions.groupingShowCounts = gridOptions.groupingShowCounts !== false;
+
+        /**
+         *  @ngdoc object
+         *  @name groupingNullLabel
+         *  @propertyOf  ui.grid.grouping.api:GridOptions
+         *  @description The string to use for the grouping header row label on rows which contain a null or undefined value in the grouped column.
+         *  <br/>Defaults to "Null"
+         */
+        gridOptions.groupingNullLabel = typeof(gridOptions.groupingNullLabel) === 'undefined' ? 'Null' : gridOptions.groupingNullLabel;
+
+        /**
+         *  @ngdoc object
+         *  @name enableGroupHeaderSelection
+         *  @propertyOf  ui.grid.grouping.api:GridOptions
+         *  @description Allows group header rows to be selected.
+         *  <br/>Defaults to false
+         */
+        gridOptions.enableGroupHeaderSelection = gridOptions.enableGroupHeaderSelection === true;
+      },
+
+
+      /**
+       * @ngdoc function
+       * @name groupingColumnBuilder
+       * @methodOf  ui.grid.grouping.service:uiGridGroupingService
+       * @description Sets the grouping defaults based on the columnDefs
+       *
+       * @param {object} colDef columnDef we're basing on
+       * @param {GridCol} col the column we're to update
+       * @param {object} gridOptions the options we should use
+       * @returns {promise} promise for the builder - actually we do it all inline so it's immediately resolved
+       */
+      groupingColumnBuilder: function (colDef, col, gridOptions) {
+        /**
+         *  @ngdoc object
+         *  @name ui.grid.grouping.api:ColumnDef
+         *
+         *  @description ColumnDef for grouping feature, these are available to be
+         *  set using the ui-grid {@link ui.grid.class:GridOptions.columnDef gridOptions.columnDefs}
+         */
+
+        /**
+         *  @ngdoc object
+         *  @name enableGrouping
+         *  @propertyOf  ui.grid.grouping.api:ColumnDef
+         *  @description Enable grouping on this column
+         *  <br/>Defaults to true.
+         */
+        if (colDef.enableGrouping === false){
+          return;
+        }
+
+        /**
+         *  @ngdoc object
+         *  @name grouping
+         *  @propertyOf  ui.grid.grouping.api:ColumnDef
+         *  @description Set the grouping for a column.  Format is:
+         *  ```
+         *    {
+         *      groupPriority: <number, starts at 0, if less than 0 or undefined then we're aggregating in this column>
+         *    }
+         *  ```
+         *
+         *  **Note that aggregation used to be included in grouping, but is now separately set on the column via treeAggregation
+         *  setting in treeBase**
+         *
+         *  We group in the priority order given, this will also put these columns to the high order of the sort irrespective
+         *  of the sort priority given them.  If there is no sort defined then we sort ascending, if there is a sort defined then
+         *  we use that sort.
+         *
+         *  If the groupPriority is undefined or less than 0, then we expect to be aggregating, and we look at the
+         *  aggregation types to determine what sort of aggregation we can do.  Values are in the constants file, but
+         *  include SUM, COUNT, MAX, MIN
+         *
+         *  groupPriorities should generally be sequential, if they're not then the next time getGrouping is called
+         *  we'll renumber them to be sequential.
+         *  <br/>Defaults to undefined.
+         */
+
+        if ( typeof(col.grouping) === 'undefined' && typeof(colDef.grouping) !== 'undefined') {
+          col.grouping = angular.copy(colDef.grouping);
+          if ( typeof(col.grouping.groupPriority) !== 'undefined' && col.grouping.groupPriority > -1 ){
+            col.treeAggregationFn = uiGridTreeBaseService.nativeAggregations()[uiGridGroupingConstants.aggregation.COUNT].aggregationFn;
+            col.treeAggregationFinalizerFn = service.groupedFinalizerFn;
+          }
+        } else if (typeof(col.grouping) === 'undefined'){
+          col.grouping = {};
+        }
+
+        if (typeof(col.grouping) !== 'undefined' && typeof(col.grouping.groupPriority) !== 'undefined' && col.grouping.groupPriority >= 0){
+          col.suppressRemoveSort = true;
+        }
+
+        var groupColumn = {
+          name: 'ui.grid.grouping.group',
+          title: i18nService.get().grouping.group,
+          icon: 'ui-grid-icon-indent-right',
+          shown: function () {
+            return typeof(this.context.col.grouping) === 'undefined' ||
+                   typeof(this.context.col.grouping.groupPriority) === 'undefined' ||
+                   this.context.col.grouping.groupPriority < 0;
+          },
+          action: function () {
+            service.groupColumn( this.context.col.grid, this.context.col );
+          }
+        };
+
+        var ungroupColumn = {
+          name: 'ui.grid.grouping.ungroup',
+          title: i18nService.get().grouping.ungroup,
+          icon: 'ui-grid-icon-indent-left',
+          shown: function () {
+            return typeof(this.context.col.grouping) !== 'undefined' &&
+                   typeof(this.context.col.grouping.groupPriority) !== 'undefined' &&
+                   this.context.col.grouping.groupPriority >= 0;
+          },
+          action: function () {
+            service.ungroupColumn( this.context.col.grid, this.context.col );
+          }
+        };
+
+        var aggregateRemove = {
+          name: 'ui.grid.grouping.aggregateRemove',
+          title: i18nService.get().grouping.aggregate_remove,
+          shown: function () {
+            return typeof(this.context.col.treeAggregationFn) !== 'undefined';
+          },
+          action: function () {
+            service.aggregateColumn( this.context.col.grid, this.context.col, null);
+          }
+        };
+
+        // generic adder for the aggregation menus, which follow a pattern
+        var addAggregationMenu = function(type, title){
+          title = title || i18nService.get().grouping['aggregate_' + type] || type;
+          var menuItem = {
+            name: 'ui.grid.grouping.aggregate' + type,
+            title: title,
+            shown: function () {
+              return typeof(this.context.col.treeAggregation) === 'undefined' ||
+                     typeof(this.context.col.treeAggregation.type) === 'undefined' ||
+                     this.context.col.treeAggregation.type !== type;
+            },
+            action: function () {
+              service.aggregateColumn( this.context.col.grid, this.context.col, type);
+            }
+          };
+
+          if (!gridUtil.arrayContainsObjectWithProperty(col.menuItems, 'name', 'ui.grid.grouping.aggregate' + type)) {
+            col.menuItems.push(menuItem);
+          }
+        };
+
+        /**
+         *  @ngdoc object
+         *  @name groupingShowGroupingMenu
+         *  @propertyOf  ui.grid.grouping.api:ColumnDef
+         *  @description Show the grouping (group and ungroup items) menu on this column
+         *  <br/>Defaults to true.
+         */
+        if ( col.colDef.groupingShowGroupingMenu !== false ){
+          if (!gridUtil.arrayContainsObjectWithProperty(col.menuItems, 'name', 'ui.grid.grouping.group')) {
+            col.menuItems.push(groupColumn);
+          }
+
+          if (!gridUtil.arrayContainsObjectWithProperty(col.menuItems, 'name', 'ui.grid.grouping.ungroup')) {
+            col.menuItems.push(ungroupColumn);
+          }
+        }
+
+
+        /**
+         *  @ngdoc object
+         *  @name groupingShowAggregationMenu
+         *  @propertyOf  ui.grid.grouping.api:ColumnDef
+         *  @description Show the aggregation menu on this column
+         *  <br/>Defaults to true.
+         */
+        if ( col.colDef.groupingShowAggregationMenu !== false ){
+          angular.forEach(uiGridTreeBaseService.nativeAggregations(), function(aggregationDef, name){
+            addAggregationMenu(name);
+          });
+          angular.forEach(gridOptions.treeCustomAggregations, function(aggregationDef, name){
+            addAggregationMenu(name, aggregationDef.menuTitle);
+          });
+
+          if (!gridUtil.arrayContainsObjectWithProperty(col.menuItems, 'name', 'ui.grid.grouping.aggregateRemove')) {
+            col.menuItems.push(aggregateRemove);
+          }
+        }
+      },
+
+
+
+
+      /**
+       * @ngdoc function
+       * @name groupingColumnProcessor
+       * @methodOf  ui.grid.grouping.service:uiGridGroupingService
+       * @description Moves the columns around based on which are grouped
+       *
+       * @param {array} columns the columns to consider rendering
+       * @param {array} rows the grid rows, which we don't use but are passed to us
+       * @returns {array} updated columns array
+       */
+      groupingColumnProcessor: function( columns, rows ) {
+        var grid = this;
+
+        columns = service.moveGroupColumns(this, columns, rows);
+        return columns;
+      },
+
+      /**
+       * @ngdoc function
+       * @name groupedFinalizerFn
+       * @methodOf  ui.grid.grouping.service:uiGridGroupingService
+       * @description Used on group columns to display the rendered value and optionally
+       * display the count of rows.
+       *
+       * @param {aggregation} the aggregation entity for a grouped column
+       */
+      groupedFinalizerFn: function( aggregation ){
+        var col = this;
+
+        if ( typeof(aggregation.groupVal) !== 'undefined') {
+          aggregation.rendered = aggregation.groupVal;
+          if ( col.grid.options.groupingShowCounts && col.colDef.type !== 'date' ){
+            aggregation.rendered += (' (' + aggregation.value + ')');
+          }
+        } else {
+          aggregation.rendered = null;
+        }
+      },
+
+      /**
+       * @ngdoc function
+       * @name moveGroupColumns
+       * @methodOf  ui.grid.grouping.service:uiGridGroupingService
+       * @description Moves the column order so that the grouped columns are lined up
+       * to the left (well, unless you're RTL, then it's the right).  By doing this in
+       * the columnsProcessor, we make it transient - when the column is ungrouped it'll
+       * go back to where it was.
+       *
+       * Does nothing if the option `moveGroupColumns` is set to false.
+       *
+       * @param {Grid} grid grid object
+       * @param {array} columns the columns that we should process/move
+       * @param {array} rows the grid rows
+       * @returns {array} updated columns
+       */
+      moveGroupColumns: function( grid, columns, rows ){
+        if ( grid.options.moveGroupColumns === false){
+          return columns;
+        }
+
+        columns.forEach( function(column, index){
+          // position used to make stable sort in moveGroupColumns
+          column.groupingPosition = index;
+        });
+
+        columns.sort(function(a, b){
+          var a_group, b_group;
+          if (a.isRowHeader){
+            a_group = -1000;
+          }
+          else if ( typeof(a.grouping) === 'undefined' || typeof(a.grouping.groupPriority) === 'undefined' || a.grouping.groupPriority < 0){
+            a_group = null;
+          } else {
+            a_group = a.grouping.groupPriority;
+          }
+
+          if (b.isRowHeader){
+            b_group = -1000;
+          }
+          else if ( typeof(b.grouping) === 'undefined' || typeof(b.grouping.groupPriority) === 'undefined' || b.grouping.groupPriority < 0){
+            b_group = null;
+          } else {
+            b_group = b.grouping.groupPriority;
+          }
+
+          // groups get sorted to the top
+          if ( a_group !== null && b_group === null) { return -1; }
+          if ( b_group !== null && a_group === null) { return 1; }
+          if ( a_group !== null && b_group !== null) {return a_group - b_group; }
+
+          return a.groupingPosition - b.groupingPosition;
+        });
+
+        columns.forEach( function(column, index) {
+          delete column.groupingPosition;
+        });
+
+        return columns;
+      },
+
+
+      /**
+       * @ngdoc function
+       * @name groupColumn
+       * @methodOf  ui.grid.grouping.service:uiGridGroupingService
+       * @description Adds this column to the existing grouping, at the end of the priority order.
+       * If the column doesn't have a sort, adds one, by default ASC
+       *
+       * This column will move to the left of any non-group columns, the
+       * move is handled in a columnProcessor, so gets called as part of refresh
+       *
+       * @param {Grid} grid grid object
+       * @param {GridCol} column the column we want to group
+       */
+      groupColumn: function( grid, column){
+        if ( typeof(column.grouping) === 'undefined' ){
+          column.grouping = {};
+        }
+
+        // set the group priority to the next number in the hierarchy
+        var existingGrouping = service.getGrouping( grid );
+        column.grouping.groupPriority = existingGrouping.grouping.length;
+
+        // add sort if not present
+        if ( !column.sort ){
+          column.sort = { direction: uiGridConstants.ASC };
+        } else if ( typeof(column.sort.direction) === 'undefined' || column.sort.direction === null ){
+          column.sort.direction = uiGridConstants.ASC;
+        }
+
+        column.treeAggregation = { type: uiGridGroupingConstants.aggregation.COUNT, source: 'grouping' };
+        column.treeAggregationFn = uiGridTreeBaseService.nativeAggregations()[uiGridGroupingConstants.aggregation.COUNT].aggregationFn;
+        column.treeAggregationFinalizerFn = service.groupedFinalizerFn;
+
+        grid.api.grouping.raise.groupingChanged(column);
+        // This indirectly calls service.tidyPriorities( grid );
+        grid.api.core.raise.sortChanged(grid, grid.getColumnSorting());
+
+        grid.queueGridRefresh();
+      },
+
+
+       /**
+       * @ngdoc function
+       * @name ungroupColumn
+       * @methodOf  ui.grid.grouping.service:uiGridGroupingService
+       * @description Removes the groupPriority from this column.  If the
+       * column was previously aggregated the aggregation will come back.
+       * The sort will remain.
+       *
+       * This column will move to the right of any other group columns, the
+       * move is handled in a columnProcessor, so gets called as part of refresh
+       *
+       * @param {Grid} grid grid object
+       * @param {GridCol} column the column we want to ungroup
+       */
+      ungroupColumn: function( grid, column){
+        if ( typeof(column.grouping) === 'undefined' ){
+          return;
+        }
+
+        delete column.grouping.groupPriority;
+        delete column.treeAggregation;
+        delete column.customTreeAggregationFinalizer;
+
+        service.tidyPriorities( grid );
+
+        grid.api.grouping.raise.groupingChanged(column);
+
+        grid.queueGridRefresh();
+      },
+
+      /**
+       * @ngdoc function
+       * @name aggregateColumn
+       * @methodOf  ui.grid.grouping.service:uiGridGroupingService
+       * @description Sets the aggregation type on a column, if the
+       * column is currently grouped then it removes the grouping first.
+       *
+       * @param {Grid} grid grid object
+       * @param {GridCol} column the column we want to aggregate
+       * @param {string} one of the recognised types from uiGridGroupingConstants or one of the custom aggregations from gridOptions
+       */
+      aggregateColumn: function( grid, column, aggregationType){
+
+        if (typeof(column.grouping) !== 'undefined' && typeof(column.grouping.groupPriority) !== 'undefined' && column.grouping.groupPriority >= 0){
+          service.ungroupColumn( grid, column );
+        }
+
+        var aggregationDef = {};
+        if ( typeof(grid.options.treeCustomAggregations[aggregationType]) !== 'undefined' ){
+          aggregationDef = grid.options.treeCustomAggregations[aggregationType];
+        } else if ( typeof(uiGridTreeBaseService.nativeAggregations()[aggregationType]) !== 'undefined' ){
+          aggregationDef = uiGridTreeBaseService.nativeAggregations()[aggregationType];
+        }
+
+        column.treeAggregation = { type: aggregationType, label:  i18nService.get().aggregation[aggregationDef.label] || aggregationDef.label };
+        column.treeAggregationFn = aggregationDef.aggregationFn;
+        column.treeAggregationFinalizerFn = aggregationDef.finalizerFn;
+
+        grid.api.grouping.raise.aggregationChanged(column);
+
+        grid.queueGridRefresh();
+      },
+
+
+      /**
+       * @ngdoc function
+       * @name setGrouping
+       * @methodOf  ui.grid.grouping.service:uiGridGroupingService
+       * @description Set the grouping based on a config object, used by the save state feature
+       * (more specifically, by the restore function in that feature )
+       *
+       * @param {Grid} grid grid object
+       * @param {object} config the config we want to set, same format as that returned by getGrouping
+       */
+      setGrouping: function ( grid, config ){
+        if ( typeof(config) === 'undefined' ){
+          return;
+        }
+
+        // first remove any existing grouping
+        service.clearGrouping(grid);
+
+        if ( config.grouping && config.grouping.length && config.grouping.length > 0 ){
+          config.grouping.forEach( function( group ) {
+            var col = grid.getColumn(group.colName);
+
+            if ( col ) {
+              service.groupColumn( grid, col );
+            }
+          });
+        }
+
+        if ( config.aggregations && config.aggregations.length ){
+          config.aggregations.forEach( function( aggregation ) {
+            var col = grid.getColumn(aggregation.colName);
+
+            if ( col ) {
+              service.aggregateColumn( grid, col, aggregation.aggregation.type );
+            }
+          });
+        }
+
+        if ( config.rowExpandedStates ){
+          service.applyRowExpandedStates( grid.grouping.groupingHeaderCache, config.rowExpandedStates );
+        }
+      },
+
+
+      /**
+       * @ngdoc function
+       * @name clearGrouping
+       * @methodOf  ui.grid.grouping.service:uiGridGroupingService
+       * @description Clear any grouped columns and any aggregations.  Doesn't remove sorting,
+       * as we don't know whether that sorting was added by grouping or was there beforehand
+       *
+       * @param {Grid} grid grid object
+       */
+      clearGrouping: function( grid ) {
+        var currentGrouping = service.getGrouping(grid);
+
+        if ( currentGrouping.grouping.length > 0 ){
+          currentGrouping.grouping.forEach( function( group ) {
+            if (!group.col){
+              // should have a group.colName if there's no col
+              group.col = grid.getColumn(group.colName);
+            }
+            service.ungroupColumn(grid, group.col);
+          });
+        }
+
+        if ( currentGrouping.aggregations.length > 0 ){
+          currentGrouping.aggregations.forEach( function( aggregation ){
+            if (!aggregation.col){
+              // should have a group.colName if there's no col
+              aggregation.col = grid.getColumn(aggregation.colName);
+            }
+            service.aggregateColumn(grid, aggregation.col, null);
+          });
+        }
+      },
+
+
+      /**
+       * @ngdoc function
+       * @name tidyPriorities
+       * @methodOf  ui.grid.grouping.service:uiGridGroupingService
+       * @description Renumbers groupPriority and sortPriority such that
+       * groupPriority is contiguous, and sortPriority either matches
+       * groupPriority (for group columns), and otherwise is contiguous and
+       * higher than groupPriority.
+       *
+       * @param {Grid} grid grid object
+       */
+      tidyPriorities: function( grid ){
+        // if we're called from sortChanged, grid is in this, not passed as param, the param can be a column or undefined
+        if ( ( typeof(grid) === 'undefined' || typeof(grid.grid) !== 'undefined' ) && typeof(this.grid) !== 'undefined' ) {
+          grid = this.grid;
+        }
+
+        var groupArray = [];
+        var sortArray = [];
+
+        grid.columns.forEach( function(column, index){
+          if ( typeof(column.grouping) !== 'undefined' && typeof(column.grouping.groupPriority) !== 'undefined' && column.grouping.groupPriority >= 0){
+            groupArray.push(column);
+          } else if ( typeof(column.sort) !== 'undefined' && typeof(column.sort.priority) !== 'undefined' && column.sort.priority >= 0){
+            sortArray.push(column);
+          }
+        });
+
+        groupArray.sort(function(a, b){ return a.grouping.groupPriority - b.grouping.groupPriority; });
+        groupArray.forEach( function(column, index){
+          column.grouping.groupPriority = index;
+          column.suppressRemoveSort = true;
+          if ( typeof(column.sort) === 'undefined'){
+            column.sort = {};
+          }
+          column.sort.priority = index;
+        });
+
+        var i = groupArray.length;
+        sortArray.sort(function(a, b){ return a.sort.priority - b.sort.priority; });
+        sortArray.forEach( function(column, index){
+          column.sort.priority = i;
+          column.suppressRemoveSort = column.colDef.suppressRemoveSort;
+          i++;
+        });
+      },
+
+
+      /**
+       * @ngdoc function
+       * @name groupRows
+       * @methodOf  ui.grid.grouping.service:uiGridGroupingService
+       * @description The rowProcessor that creates the groupHeaders (i.e. does
+       * the actual grouping).
+       *
+       * Assumes it is always called after the sorting processor, guaranteed by the priority setting
+       *
+       * Processes all the rows in order, inserting a groupHeader row whenever there is a change
+       * in value of a grouped row, based on the sortAlgorithm used for the column.  The group header row
+       * is looked up in the groupHeaderCache, and used from there if there is one. The entity is reset
+       * to {} if one is found.
+       *
+       * As it processes it maintains a `processingState` array. This records, for each level of grouping we're
+       * working with, the following information:
+       * ```
+       *   {
+       *     fieldName: name,
+       *     col: col,
+       *     initialised: boolean,
+       *     currentValue: value,
+       *     currentRow: gridRow,
+       *   }
+       * ```
+       * We look for changes in the currentValue at any of the levels.  Where we find a change we:
+       *
+       * - create a new groupHeader row in the array
+       *
+       * @param {array} renderableRows the rows we want to process, usually the output from the previous rowProcessor
+       * @returns {array} the updated rows, including our new group rows
+       */
+      groupRows: function( renderableRows ) {
+        if (renderableRows.length === 0){
+          return renderableRows;
+        }
+
+        var grid = this;
+        grid.grouping.oldGroupingHeaderCache = grid.grouping.groupingHeaderCache || {};
+        grid.grouping.groupingHeaderCache = {};
+
+        var processingState = service.initialiseProcessingState( grid );
+
+        // processes each of the fields we are grouping by, checks if the value has changed and inserts a groupHeader
+        // Broken out as shouldn't create functions in a loop.
+        var updateProcessingState = function( groupFieldState, stateIndex ) {
+          var fieldValue = grid.getCellValue(row, groupFieldState.col);
+
+          // look for change of value - and insert a header
+          if ( !groupFieldState.initialised || rowSorter.getSortFn(grid, groupFieldState.col, renderableRows)(fieldValue, groupFieldState.currentValue) !== 0 ){
+            service.insertGroupHeader( grid, renderableRows, i, processingState, stateIndex );
+            i++;
+          }
+        };
+
+        // use a for loop because it's tolerant of the array length changing whilst we go - we can
+        // manipulate the iterator when we insert groupHeader rows
+        for (var i = 0; i < renderableRows.length; i++ ){
+          var row = renderableRows[i];
+
+          if ( row.visible ){
+            processingState.forEach( updateProcessingState );
+          }
+        }
+
+        delete grid.grouping.oldGroupingHeaderCache;
+        return renderableRows;
+      },
+
+
+      /**
+       * @ngdoc function
+       * @name initialiseProcessingState
+       * @methodOf  ui.grid.grouping.service:uiGridGroupingService
+       * @description Creates the processing state array that is used
+       * for groupRows.
+       *
+       * @param {Grid} grid grid object
+       * @returns {array} an array in the format described in the groupRows method,
+       * initialised with blank values
+       */
+      initialiseProcessingState: function( grid ){
+        var processingState = [];
+        var columnSettings = service.getGrouping( grid );
+
+        columnSettings.grouping.forEach( function( groupItem, index){
+          processingState.push({
+            fieldName: groupItem.field,
+            col: groupItem.col,
+            initialised: false,
+            currentValue: null,
+            currentRow: null
+          });
+        });
+
+        return processingState;
+      },
+
+
+      /**
+       * @ngdoc function
+       * @name getGrouping
+       * @methodOf  ui.grid.grouping.service:uiGridGroupingService
+       * @description Get the grouping settings from the columns.  As a side effect
+       * this always renumbers the grouping starting at 0
+       * @param {Grid} grid grid object
+       * @returns {array} an array of the group fields, in order of priority
+       */
+      getGrouping: function( grid ){
+        var groupArray = [];
+        var aggregateArray = [];
+
+        // get all the grouping
+        grid.columns.forEach( function(column, columnIndex){
+          if ( column.grouping ){
+            if ( typeof(column.grouping.groupPriority) !== 'undefined' && column.grouping.groupPriority >= 0){
+              groupArray.push({ field: column.field, col: column, groupPriority: column.grouping.groupPriority, grouping: column.grouping });
+            }
+          }
+          if ( column.treeAggregation && column.treeAggregation.type ){
+            aggregateArray.push({ field: column.field, col: column, aggregation: column.treeAggregation });
+          }
+        });
+
+        // sort grouping into priority order
+        groupArray.sort( function(a, b){
+          return a.groupPriority - b.groupPriority;
+        });
+
+        // renumber the priority in case it was somewhat messed up, then remove the grouping reference
+        groupArray.forEach( function( group, index) {
+          group.grouping.groupPriority = index;
+          group.groupPriority = index;
+          delete group.grouping;
+        });
+
+        return { grouping: groupArray, aggregations: aggregateArray };
+      },
+
+
+      /**
+       * @ngdoc function
+       * @name insertGroupHeader
+       * @methodOf  ui.grid.grouping.service:uiGridGroupingService
+       * @description Create a group header row, and link it to the various configuration
+       * items that we use.
+       *
+       * Look for the row in the oldGroupingHeaderCache, write the row into the new groupingHeaderCache.
+       *
+       * @param {Grid} grid grid object
+       * @param {array} renderableRows the rows that we are processing
+       * @param {number} rowIndex the row we were up to processing
+       * @param {array} processingState the current processing state
+       * @param {number} stateIndex the processing state item that we were on when we triggered a new group header -
+       * i.e. the column that we want to create a header for
+       */
+      insertGroupHeader: function( grid, renderableRows, rowIndex, processingState, stateIndex ) {
+        // set the value that caused the end of a group into the header row and the processing state
+        var fieldName = processingState[stateIndex].fieldName;
+        var col = processingState[stateIndex].col;
+
+        var newValue = grid.getCellValue(renderableRows[rowIndex], col);
+        var newDisplayValue = newValue;
+        if ( typeof(newValue) === 'undefined' || newValue === null ) {
+          newDisplayValue = grid.options.groupingNullLabel;
+        }
+
+        var getKeyAsValueForCacheMap = function(key) {
+          if (angular.isObject(key)) {
+              return JSON.stringify(key);
+          } else {
+              return key;
+          }
+        };
+
+        var cacheItem = grid.grouping.oldGroupingHeaderCache;
+        for ( var i = 0; i < stateIndex; i++ ){
+          if ( cacheItem && cacheItem[getKeyAsValueForCacheMap(processingState[i].currentValue)] ){
+            cacheItem = cacheItem[getKeyAsValueForCacheMap(processingState[i].currentValue)].children;
+          }
+        }
+
+        var headerRow;
+        if ( cacheItem && cacheItem[getKeyAsValueForCacheMap(newValue)]){
+          headerRow = cacheItem[getKeyAsValueForCacheMap(newValue)].row;
+          headerRow.entity = {};
+        } else {
+          headerRow = new GridRow( {}, null, grid );
+          gridClassFactory.rowTemplateAssigner.call(grid, headerRow);
+        }
+
+        headerRow.entity['$$' + processingState[stateIndex].col.uid] = { groupVal: newDisplayValue };
+        headerRow.treeLevel = stateIndex;
+        headerRow.groupHeader = true;
+        headerRow.internalRow = true;
+        headerRow.enableCellEdit = false;
+        headerRow.enableSelection = grid.options.enableGroupHeaderSelection;
+        processingState[stateIndex].initialised = true;
+        processingState[stateIndex].currentValue = newValue;
+        processingState[stateIndex].currentRow = headerRow;
+
+        // set all processing states below this one to not be initialised - change of this state
+        // means all those need to start again
+        service.finaliseProcessingState( processingState, stateIndex + 1);
+
+        // insert our new header row
+        renderableRows.splice(rowIndex, 0, headerRow);
+
+        // add our new header row to the cache
+        cacheItem = grid.grouping.groupingHeaderCache;
+        for ( i = 0; i < stateIndex; i++ ){
+          cacheItem = cacheItem[getKeyAsValueForCacheMap(processingState[i].currentValue)].children;
+        }
+        cacheItem[getKeyAsValueForCacheMap(newValue)] = { row: headerRow, children: {} };
+      },
+
+
+      /**
+       * @ngdoc function
+       * @name finaliseProcessingState
+       * @methodOf  ui.grid.grouping.service:uiGridGroupingService
+       * @description Set all processing states lower than the one that had a break in value to
+       * no longer be initialised.  Render the counts into the entity ready for display.
+       *
+       * @param {Grid} grid grid object
+       * @param {array} processingState the current processing state
+       * @param {number} stateIndex the processing state item that we were on when we triggered a new group header, all
+       * processing states after this need to be finalised
+       */
+      finaliseProcessingState: function( processingState, stateIndex ){
+        for ( var i = stateIndex; i < processingState.length; i++){
+          processingState[i].initialised = false;
+          processingState[i].currentRow = null;
+          processingState[i].currentValue = null;
+        }
+      },
+
+
+      /**
+       * @ngdoc function
+       * @name getRowExpandedStates
+       * @methodOf  ui.grid.grouping.service:uiGridGroupingService
+       * @description Extract the groupHeaderCache hash, pulling out only the states.
+       *
+       * The example below shows a grid that is grouped by gender then age
+       *
+       * <pre>
+       *   {
+       *     male: {
+       *       state: 'expanded',
+       *       children: {
+       *         22: { state: 'expanded' },
+       *         30: { state: 'collapsed' }
+       *       }
+       *     },
+       *     female: {
+       *       state: 'expanded',
+       *       children: {
+       *         28: { state: 'expanded' },
+       *         55: { state: 'collapsed' }
+       *       }
+       *     }
+       *   }
+       * </pre>
+       *
+       * @param {Grid} grid grid object
+       * @returns {hash} the expanded states as a hash
+       */
+      getRowExpandedStates: function(treeChildren){
+        if ( typeof(treeChildren) === 'undefined' ){
+          return {};
+        }
+
+        var newChildren = {};
+
+        angular.forEach( treeChildren, function( value, key ){
+          newChildren[key] = { state: value.row.treeNode.state };
+          if ( value.children ){
+            newChildren[key].children = service.getRowExpandedStates( value.children );
+          } else {
+            newChildren[key].children = {};
+          }
+        });
+
+        return newChildren;
+      },
+
+
+      /**
+       * @ngdoc function
+       * @name applyRowExpandedStates
+       * @methodOf  ui.grid.grouping.service:uiGridGroupingService
+       * @description Take a hash in the format as created by getRowExpandedStates,
+       * and apply it to the grid.grouping.groupHeaderCache.
+       *
+       * Takes a treeSubset, and applies to a treeSubset - so can be called
+       * recursively.
+       *
+       * @param {object} currentNode can be grid.grouping.groupHeaderCache, or any of
+       * the children of that hash
+       * @returns {hash} expandedStates can be the full expanded states, or children
+       * of that expanded states (which hopefully matches the subset of the groupHeaderCache)
+       */
+      applyRowExpandedStates: function( currentNode, expandedStates ){
+        if ( typeof(expandedStates) === 'undefined' ){
+          return;
+        }
+
+        angular.forEach(expandedStates, function( value, key ) {
+          if ( currentNode[key] ){
+            currentNode[key].row.treeNode.state = value.state;
+
+            if (value.children && currentNode[key].children){
+              service.applyRowExpandedStates( currentNode[key].children, value.children );
+            }
+          }
+        });
+      }
+
+
+    };
+
+    return service;
+
+  }]);
+
+
+  /**
+   *  @ngdoc directive
+   *  @name ui.grid.grouping.directive:uiGridGrouping
+   *  @element div
+   *  @restrict A
+   *
+   *  @description Adds grouping features to grid
+   *
+   *  @example
+   <example module="app">
+   <file name="app.js">
+   var app = angular.module('app', ['ui.grid', 'ui.grid.grouping']);
+
+   app.controller('MainCtrl', ['$scope', function ($scope) {
+      $scope.data = [
+        { name: 'Bob', title: 'CEO' },
+            { name: 'Frank', title: 'Lowly Developer' }
+      ];
+
+      $scope.columnDefs = [
+        {name: 'name', enableCellEdit: true},
+        {name: 'title', enableCellEdit: true}
+      ];
+
+      $scope.gridOptions = { columnDefs: $scope.columnDefs, data: $scope.data };
+    }]);
+   </file>
+   <file name="index.html">
+   <div ng-controller="MainCtrl">
+   <div ui-grid="gridOptions" ui-grid-grouping></div>
+   </div>
+   </file>
+   </example>
+   */
+  module.directive('uiGridGrouping', ['uiGridGroupingConstants', 'uiGridGroupingService', '$templateCache',
+  function (uiGridGroupingConstants, uiGridGroupingService, $templateCache) {
+    return {
+      replace: true,
+      priority: 0,
+      require: '^uiGrid',
+      scope: false,
+      compile: function () {
+        return {
+          pre: function ($scope, $elm, $attrs, uiGridCtrl) {
+            if (uiGridCtrl.grid.options.enableGrouping !== false){
+              uiGridGroupingService.initializeGrid(uiGridCtrl.grid, $scope);
+            }
+          },
+          post: function ($scope, $elm, $attrs, uiGridCtrl) {
+          }
+        };
+      }
+    };
+  }]);
+
+})();
+
+(function () {
+  'use strict';
+
+  /**
+   * @ngdoc overview
    * @name ui.grid.importer
    * @description
    *
-   *  # ui.grid.importer
+   * # ui.grid.importer
+   *
+   * <div class="alert alert-success" role="alert"><strong>Stable</strong> This feature is stable. There should no longer be breaking api changes without a deprecation warning.</div>
+   *
    * This module provides the ability to import data into the grid. It
-   * uses the column defs to work out which data belongs in which column, 
+   * uses the column defs to work out which data belongs in which column,
    * and creates entities from a configured class (typically a $resource).
-   * 
-   * If the rowEdit feature is enabled, it also calls save on those newly 
-   * created objects, and then displays any errors in the imported data.  
-   * 
+   *
+   * If the rowEdit feature is enabled, it also calls save on those newly
+   * created objects, and then displays any errors in the imported data.
+   *
    * Currently the importer imports only CSV and json files, although provision has been
-   * made to process other file formats, and these can be added over time.  
-   * 
+   * made to process other file formats, and these can be added over time.
+   *
    * For json files, the properties within each object in the json must match the column names
    * (to put it another way, the importer doesn't process the json, it just copies the objects
    * within the json into a new instance of the specified object type)
-   * 
+   *
    * For CSV import, the default column identification relies on each column in the
-   * header row matching a column.name or column.displayName. Optionally, a column identification 
+   * header row matching a column.name or column.displayName. Optionally, a column identification
    * callback can be used.  This allows matching using other attributes, which is particularly
-   * useful if your application has internationalised column headings (i.e. the headings that 
+   * useful if your application has internationalised column headings (i.e. the headings that
    * the user sees don't match the column names).
-   * 
+   *
    * The importer makes use of the grid menu as the UI for requesting an
-   * import. 
+   * import.
    *
    * <div ui-grid-importer></div>
    */
@@ -15102,9 +19852,9 @@ module.filter('px', function() {
 
           //add feature namespace and any properties to grid for needed state
           grid.importer = {
-            $scope: $scope 
+            $scope: $scope
           };
-          
+
           this.defaultGridOptions(grid.options);
 
           /**
@@ -15124,7 +19874,7 @@ module.filter('px', function() {
                  * @ngdoc function
                  * @name importFile
                  * @methodOf  ui.grid.importer.api:PublicApi
-                 * @description Imports a file into the grid using the file object 
+                 * @description Imports a file into the grid using the file object
                  * provided.  Bypasses the grid menu
                  * @param {File} fileObject the file we want to import, as a javascript
                  * File object
@@ -15148,12 +19898,12 @@ module.filter('px', function() {
               $interval( function() {
                 if (grid.api.core.addToGridMenu){
                   service.addToMenu( grid );
-                }             
+                }
               }, 100, 1);
             }
           }
         },
-        
+
 
         defaultGridOptions: function (gridOptions) {
           //default option to true unless it was explicitly set to false
@@ -15161,7 +19911,7 @@ module.filter('px', function() {
            * @ngdoc object
            * @name ui.grid.importer.api:GridOptions
            *
-           * @description GridOptions for importer feature, these are available to be  
+           * @description GridOptions for importer feature, these are available to be
            * set using the ui-grid {@link ui.grid.class:GridOptions gridOptions}
            */
 
@@ -15172,7 +19922,7 @@ module.filter('px', function() {
            * @description Whether or not importer is enabled.  Automatically set
            * to false if the user's browser does not support the required fileApi.
            * Otherwise defaults to true.
-           * 
+           *
            */
           if (gridOptions.enableImporter  || gridOptions.enableImporter === undefined) {
             if ( !($window.hasOwnProperty('File') && $window.hasOwnProperty('FileReader') && $window.hasOwnProperty('FileList') && $window.hasOwnProperty('Blob')) ) {
@@ -15184,33 +19934,33 @@ module.filter('px', function() {
           } else {
             gridOptions.enableImporter = false;
           }
-          
+
           /**
            * @ngdoc method
            * @name importerProcessHeaders
            * @methodOf ui.grid.importer.api:GridOptions
            * @description A callback function that will process headers using custom
-           * logic.  Set this callback function if the headers that your user will provide in their 
+           * logic.  Set this callback function if the headers that your user will provide in their
            * import file don't necessarily match the grid header or field names.  This might commonly
            * occur where your application is internationalised, and therefore the field names
            * that the user recognises are in a different language than the field names that
            * ui-grid knows about.
-           * 
+           *
            * Defaults to the internal `processHeaders` method, which seeks to match using both
            * displayName and column.name.  Any non-matching columns are discarded.
-           * 
+           *
            * Your callback routine should respond by processing the header array, and returning an array
            * of matching column names.  A null value in any given position means "don't import this column"
-           * 
+           *
            * <pre>
            *      gridOptions.importerProcessHeaders: function( headerArray ) {
            *        var myHeaderColumns = [];
            *        var thisCol;
            *        headerArray.forEach( function( value, index ) {
            *          thisCol = mySpecialLookupFunction( value );
-           *          myHeaderColumns.push( thisCol.name ); 
+           *          myHeaderColumns.push( thisCol.name );
            *        });
-           *        
+           *
            *        return myHeaderCols;
            *      })
            * </pre>
@@ -15218,7 +19968,7 @@ module.filter('px', function() {
            * @param {array} headerArray an array of the text from the first row of the csv file,
            * which you need to match to column.names
            * @returns {array} array of matching column names, in the same order as the headerArray
-           * 
+           *
            */
           gridOptions.importerProcessHeaders = gridOptions.importerProcessHeaders || service.processHeaders;
 
@@ -15229,21 +19979,21 @@ module.filter('px', function() {
            * @description A callback function that will filter (usually translate) a single
            * header.  Used when you want to match the passed in column names to the column
            * displayName after the header filter.
-           * 
-           * Your callback routine needs to return the filtered header value. 
+           *
+           * Your callback routine needs to return the filtered header value.
            * <pre>
            *      gridOptions.importerHeaderFilter: function( displayName ) {
            *        return $translate.instant( displayName );
            *      })
            * </pre>
-           * 
+           *
            * or:
            * <pre>
            *      gridOptions.importerHeaderFilter: $translate.instant
            * </pre>
            * @param {string} displayName the displayName that we'd like to translate
            * @returns {string} the translated name
-           * 
+           *
            */
           gridOptions.importerHeaderFilter = gridOptions.importerHeaderFilter || function( displayName ) { return displayName; };
 
@@ -15252,10 +20002,10 @@ module.filter('px', function() {
            * @name importerErrorCallback
            * @methodOf ui.grid.importer.api:GridOptions
            * @description A callback function that provides custom error handling, rather
-           * than the standard grid behaviour of an alert box and a console message.  You 
-           * might use this to internationalise the console log messages, or to write to a 
+           * than the standard grid behaviour of an alert box and a console message.  You
+           * might use this to internationalise the console log messages, or to write to a
            * custom logging routine that returned errors to the server.
-           * 
+           *
            * <pre>
            *      gridOptions.importerErrorCallback: function( grid, errorKey, consoleMessage, context ) {
            *        myUserDisplayRoutine( errorKey );
@@ -15264,15 +20014,15 @@ module.filter('px', function() {
            * </pre>
            * @param {Grid} grid the grid we're importing into, may be useful if you're positioning messages
            * in some way
-           * @param {string} errorKey one of the i18n keys the importer can return - importer.noHeaders, 
+           * @param {string} errorKey one of the i18n keys the importer can return - importer.noHeaders,
            * importer.noObjects, importer.invalidCsv, importer.invalidJson, importer.jsonNotArray
            * @param {string} consoleMessage the English console message that importer would have written
            * @param {object} context the context data that importer would have appended to that console message,
            * often the file content itself or the element that is in error
-           * 
+           *
            */
           if ( !gridOptions.importerErrorCallback ||  typeof(gridOptions.importerErrorCallback) !== 'function' ){
-            delete gridOptions.importerErrorCallback;  
+            delete gridOptions.importerErrorCallback;
           }
 
           /**
@@ -15282,7 +20032,7 @@ module.filter('px', function() {
            * @description A mandatory callback function that adds data to the source data array.  The grid
            * generally doesn't add rows to the source data array, it is tidier to handle this through a user
            * callback.
-           * 
+           *
            * <pre>
            *      gridOptions.importerDataAddCallback: function( grid, newObjects ) {
            *        $scope.myData = $scope.myData.concat( newObjects );
@@ -15290,28 +20040,28 @@ module.filter('px', function() {
            * </pre>
            * @param {Grid} grid the grid we're importing into, may be useful in some way
            * @param {array} newObjects an array of new objects that you should add to your data
-           * 
+           *
            */
           if ( gridOptions.enableImporter === true && !gridOptions.importerDataAddCallback ) {
             gridUtil.logError("You have not set an importerDataAddCallback, importer is disabled");
             gridOptions.enableImporter = false;
           }
-                    
+
           /**
            * @ngdoc object
            * @name importerNewObject
            * @propertyOf  ui.grid.importer.api:GridOptions
            * @description An object on which we call `new` to create each new row before inserting it into
-           * the data array.  Typically this would be a $resource entity, which means that if you're using 
+           * the data array.  Typically this would be a $resource entity, which means that if you're using
            * the rowEdit feature, you can directly call save on this entity when the save event is triggered.
-           * 
+           *
            * Defaults to a vanilla javascript object
-           * 
+           *
            * @example
            * <pre>
            *   gridOptions.importerNewObject = MyRes;
            * </pre>
-           * 
+           *
            */
 
           /**
@@ -15319,10 +20069,10 @@ module.filter('px', function() {
            * @propertyOf ui.grid.importer.api:GridOptions
            * @name importerShowMenu
            * @description Whether or not to show an item in the grid menu.  Defaults to true.
-           * 
+           *
            */
           gridOptions.importerShowMenu = gridOptions.importerShowMenu !== false;
-          
+
           /**
            * @ngdoc method
            * @methodOf ui.grid.importer.api:GridOptions
@@ -15358,29 +20108,31 @@ module.filter('px', function() {
          * @name addToMenu
          * @methodOf  ui.grid.importer.service:uiGridImporterService
          * @description Adds import menu item to the grid menu,
-         * allowing the user to request import of a file 
+         * allowing the user to request import of a file
          * @param {Grid} grid the grid into which data should be imported
          */
         addToMenu: function ( grid ) {
           grid.api.core.addToGridMenu( grid, [
             {
-              title: i18nService.getSafeText('gridMenu.importerTitle')
+              title: i18nService.getSafeText('gridMenu.importerTitle'),
+              order: 150
             },
             {
               templateUrl: 'ui-grid/importerMenuItemContainer',
               action: function ($event) {
                 this.grid.api.importer.importAFile( grid );
-              }
+              },
+              order: 151
             }
           ]);
         },
-        
-        
+
+
         /**
          * @ngdoc function
          * @name importThisFile
          * @methodOf ui.grid.importer.service:uiGridImporterService
-         * @description Imports the provided file into the grid using the file object 
+         * @description Imports the provided file into the grid using the file object
          * provided.  Bypasses the grid menu
          * @param {Grid} grid the grid we're importing into
          * @param {File} fileObject the file we want to import, as returned from the File
@@ -15391,9 +20143,9 @@ module.filter('px', function() {
             gridUtil.logError( 'No file object provided to importThisFile, should be impossible, aborting');
             return;
           }
-          
+
           var reader = new FileReader();
-          
+
           switch ( fileObject.type ){
             case 'application/json':
               reader.onload = service.importJsonClosure( grid );
@@ -15402,11 +20154,11 @@ module.filter('px', function() {
               reader.onload = service.importCsvClosure( grid );
               break;
           }
-          
+
           reader.readAsText( fileObject );
         },
-        
-        
+
+
         /**
          * @ngdoc function
          * @name importJson
@@ -15415,23 +20167,27 @@ module.filter('px', function() {
          * The json data is imported into new objects of type `gridOptions.importerNewObject`,
          * and if the rowEdit feature is enabled the rows are marked as dirty
          * @param {Grid} grid the grid we want to import into
-         * @param {FileObject} importFile the file that we want to import, as 
+         * @param {FileObject} importFile the file that we want to import, as
          * a FileObject
          */
         importJsonClosure: function( grid ) {
           return function( importFile ){
             var newObjects = [];
             var newObject;
-            
-            angular.forEach( service.parseJson( grid, importFile ), function( value, index ) {
+
+            var importArray = service.parseJson( grid, importFile );
+            if (importArray === null){
+              return;
+            }
+            importArray.forEach(  function( value, index ) {
               newObject = service.newObject( grid );
               angular.extend( newObject, value );
               newObject = grid.options.importerObjectCallback( grid, newObject );
               newObjects.push( newObject );
             });
-            
+
             service.addObjects( grid, newObjects );
-            
+
           };
         },
 
@@ -15442,8 +20198,8 @@ module.filter('px', function() {
          * @methodOf ui.grid.importer.service:uiGridImporterService
          * @description Parses a json file, returns the parsed data.
          * Displays an error if file doesn't parse
-         * @param {Grid} grid the grid that we want to import into 
-         * @param {FileObject} importFile the file that we want to import, as 
+         * @param {Grid} grid the grid that we want to import into
+         * @param {FileObject} importFile the file that we want to import, as
          * a FileObject
          * @returns {array} array of objects from the imported json
          */
@@ -15455,7 +20211,7 @@ module.filter('px', function() {
             service.alertError( grid, 'importer.invalidJson', 'File could not be processed, is it valid json? Content was: ', importFile.target.result );
             return;
           }
-          
+
           if ( !Array.isArray( loadedObjects ) ){
             service.alertError( grid, 'importer.jsonNotarray', 'Import failed, file is not an array, file was: ', importFile.target.result );
             return [];
@@ -15463,57 +20219,57 @@ module.filter('px', function() {
             return loadedObjects;
           }
         },
-        
-        
-        
+
+
+
         /**
          * @ngdoc function
          * @name importCsvClosure
          * @methodOf ui.grid.importer.service:uiGridImporterService
          * @description Creates a function that imports a csv file into the grid
          * (allowing it to be used in the reader.onload event)
-         * @param {Grid} grid the grid that we want to import into 
-         * @param {FileObject} importFile the file that we want to import, as 
+         * @param {Grid} grid the grid that we want to import into
+         * @param {FileObject} importFile the file that we want to import, as
          * a file object
          */
         importCsvClosure: function( grid ) {
           return function( importFile ){
             var importArray = service.parseCsv( importFile );
-            if ( !importArray || importArray.length < 1 ){ 
+            if ( !importArray || importArray.length < 1 ){
               service.alertError( grid, 'importer.invalidCsv', 'File could not be processed, is it valid csv? Content was: ', importFile.target.result );
-              return; 
+              return;
             }
-            
+
             var newObjects = service.createCsvObjects( grid, importArray );
             if ( !newObjects || newObjects.length === 0 ){
               service.alertError( grid, 'importer.noObjects', 'Objects were not able to be derived, content was: ', importFile.target.result );
               return;
             }
-            
+
             service.addObjects( grid, newObjects );
           };
         },
-        
-        
+
+
         /**
          * @ngdoc function
          * @name parseCsv
          * @methodOf ui.grid.importer.service:uiGridImporterService
          * @description Parses a csv file into an array of arrays, with the first
          * array being the headers, and the remaining arrays being the data.
-         * The logic for this comes from https://github.com/thetalecrafter/excel.js/blob/master/src/csv.js, 
+         * The logic for this comes from https://github.com/thetalecrafter/excel.js/blob/master/src/csv.js,
          * which is noted as being under the MIT license.  The code is modified to pass the jscs yoda condition
          * checker
-         * @param {FileObject} importFile the file that we want to import, as a 
+         * @param {FileObject} importFile the file that we want to import, as a
          * file object
          */
         parseCsv: function( importFile ) {
           var csv = importFile.target.result;
-          
+
           // use the CSV-JS library to parse
           return CSV.parse(csv);
         },
-        
+
 
         /**
          * @ngdoc function
@@ -15521,14 +20277,13 @@ module.filter('px', function() {
          * @methodOf ui.grid.importer.service:uiGridImporterService
          * @description Converts an array of arrays (representing the csv file)
          * into a set of objects.  Uses the provided `gridOptions.importerNewObject`
-         * to create the objects, and maps the header row into the individual columns 
+         * to create the objects, and maps the header row into the individual columns
          * using either `gridOptions.importerProcessHeaders`, or by using a native method
          * of matching to either the displayName, column name or column field of
          * the columns in the column defs.  The resulting objects will have attributes
          * that are named based on the column.field or column.name, in that order.
-         * @param {Grid} grid the grid that we want to import into 
-         * @param {FileObject} importFile the file that we want to import, as a 
-         * file object
+         * @param {Grid} grid the grid that we want to import into
+         * @param {Array} importArray the data that we want to import, as an array
          */
         createCsvObjects: function( grid, importArray ){
           // pull off header row and turn into headers
@@ -15537,24 +20292,26 @@ module.filter('px', function() {
             service.alertError( grid, 'importer.noHeaders', 'Column names could not be derived, content was: ', importArray );
             return [];
           }
-          
+
           var newObjects = [];
           var newObject;
-          angular.forEach( importArray, function( row, index ) {
+          importArray.forEach( function( row, index ) {
             newObject = service.newObject( grid );
-            angular.forEach( row, function( field, index ){
-              if ( headerMapping[index] !== null ){
-                newObject[ headerMapping[index] ] = field;
-              }
-            });
+            if ( row !== null ){
+              row.forEach( function( field, index ){
+                if ( headerMapping[index] !== null ){
+                  newObject[ headerMapping[index] ] = field;
+                }
+              });
+            }
             newObject = grid.options.importerObjectCallback( grid, newObject );
             newObjects.push( newObject );
           });
-          
+
           return newObjects;
         },
-        
-        
+
+
         /**
          * @ngdoc function
          * @name processHeaders
@@ -15566,20 +20323,20 @@ module.filter('px', function() {
          * the column definitions
          * @returns {array} an array of the attribute names that should be used
          * for that column, based on matching the headers or creating the headers
-         * 
+         *
          */
         processHeaders: function( grid, headerRow ) {
           var headers = [];
           if ( !grid.options.columnDefs || grid.options.columnDefs.length === 0 ){
             // we are going to create new columnDefs for all these columns, so just remove
             // spaces from the names to create fields
-            angular.forEach( headerRow, function( value, index ) {
+            headerRow.forEach( function( value, index ) {
               headers.push( value.replace( /[^0-9a-zA-Z\-_]/g, '_' ) );
             });
             return headers;
           } else {
             var lookupHash = service.flattenColumnDefs( grid, grid.options.columnDefs );
-            angular.forEach( headerRow, function( value, index ) {
+            headerRow.forEach(  function( value, index ) {
               if ( lookupHash[value] ) {
                 headers.push( lookupHash[value] );
               } else if ( lookupHash[ value.toLowerCase() ] ) {
@@ -15591,16 +20348,16 @@ module.filter('px', function() {
             return headers;
           }
         },
-        
-        
+
+
         /**
          * @name flattenColumnDefs
          * @methodOf ui.grid.importer.service:uiGridImporterService
          * @description Runs through the column defs and creates a hash of
          * the displayName, name and field, and of each of those values forced to lower case,
          * with each pointing to the field or name
-         * (whichever is present).  Used to lookup column headers and decide what 
-         * attribute name to give to the resulting field. 
+         * (whichever is present).  Used to lookup column headers and decide what
+         * attribute name to give to the resulting field.
          * @param {Grid} grid the grid we're importing into
          * @param {array} columnDefs the columnDefs that we should flatten
          * @returns {hash} the flattened version of the column def information, allowing
@@ -15608,47 +20365,47 @@ module.filter('px', function() {
          */
         flattenColumnDefs: function( grid, columnDefs ){
           var flattenedHash = {};
-          angular.forEach( columnDefs, function( columnDef, index) {
+          columnDefs.forEach(  function( columnDef, index) {
             if ( columnDef.name ){
               flattenedHash[ columnDef.name ] = columnDef.field || columnDef.name;
               flattenedHash[ columnDef.name.toLowerCase() ] = columnDef.field || columnDef.name;
             }
-            
+
             if ( columnDef.field ){
               flattenedHash[ columnDef.field ] = columnDef.field || columnDef.name;
               flattenedHash[ columnDef.field.toLowerCase() ] = columnDef.field || columnDef.name;
             }
-            
+
             if ( columnDef.displayName ){
               flattenedHash[ columnDef.displayName ] = columnDef.field || columnDef.name;
               flattenedHash[ columnDef.displayName.toLowerCase() ] = columnDef.field || columnDef.name;
             }
-            
+
             if ( columnDef.displayName && grid.options.importerHeaderFilter ){
               flattenedHash[ grid.options.importerHeaderFilter(columnDef.displayName) ] = columnDef.field || columnDef.name;
               flattenedHash[ grid.options.importerHeaderFilter(columnDef.displayName).toLowerCase() ] = columnDef.field || columnDef.name;
             }
           });
-          
+
           return flattenedHash;
         },
-        
-        
+
+
         /**
          * @ngdoc function
          * @name addObjects
          * @methodOf ui.grid.importer.service:uiGridImporterService
          * @description Inserts our new objects into the grid data, and
          * sets the rows to dirty if the rowEdit feature is being used
-         * 
+         *
          * Does this by registering a watch on dataChanges, which essentially
          * is waiting on the result of the grid data watch, and downstream processing.
-         * 
+         *
          * When the callback is called, it deregisters itself - we don't want to run
          * again next time data is added.
-         * 
+         *
          * If we never get called, we deregister on destroy.
-         * 
+         *
          * @param {Grid} grid the grid we're importing into
          * @param {array} newObjects the objects we want to insert into the grid data
          * @returns {object} the new object
@@ -15659,15 +20416,15 @@ module.filter('px', function() {
               grid.api.rowEdit.setRowsDirty( newObjects );
               dataChangeDereg();
             }, [uiGridConstants.dataChange.ROW] );
-            
+
             grid.importer.$scope.$on( '$destroy', dataChangeDereg );
           }
 
           grid.importer.$scope.$apply( grid.options.importerDataAddCallback( grid, newObjects ) );
-          
+
         },
-        
-        
+
+
         /**
          * @ngdoc function
          * @name newObject
@@ -15684,8 +20441,8 @@ module.filter('px', function() {
             return {};
           }
         },
-        
-        
+
+
         /**
          * @ngdoc function
          * @name alertError
@@ -15702,8 +20459,8 @@ module.filter('px', function() {
           if ( grid.options.importerErrorCallback ){
             grid.options.importerErrorCallback( grid, alertI18nToken, consoleMessage, context );
           } else {
-            $window.alert(i18nService.getSafeText( alertI18nToken )); 
-            gridUtil.logError(consoleMessage + context ); 
+            $window.alert(i18nService.getSafeText( alertI18nToken ));
+            gridUtil.logError(consoleMessage + context );
           }
         }
       };
@@ -15735,7 +20492,7 @@ module.filter('px', function() {
       };
     }
   ]);
-  
+
   /**
    *  @ngdoc directive
    *  @name ui.grid.importer.directive:uiGridImporterMenuItem
@@ -15757,7 +20514,7 @@ module.filter('px', function() {
         link: function ($scope, $elm, $attrs, uiGridCtrl) {
           var handleFileSelect = function( event ){
             var target = event.srcElement || event.target;
-            
+
             if (target && target.files && target.files.length === 1) {
               var fileObject = target.files[0];
               uiGridImporterService.importThisFile( grid, fileObject );
@@ -15767,17 +20524,18 @@ module.filter('px', function() {
 
           var fileChooser = $elm[0].querySelectorAll('.ui-grid-importer-file-chooser');
           var grid = uiGridCtrl.grid;
-          
+
           if ( fileChooser.length !== 1 ){
             gridUtil.logError('Found > 1 or < 1 file choosers within the menu item, error, cannot continue');
           } else {
-            fileChooser[0].addEventListener('change', handleFileSelect, false);  // TODO: why the false on the end?  Google  
+            fileChooser[0].addEventListener('change', handleFileSelect, false);  // TODO: why the false on the end?  Google
           }
         }
       };
     }
-  ]);  
+  ]);
 })();
+
 (function() {
   'use strict';
   /**
@@ -15786,7 +20544,10 @@ module.filter('px', function() {
    *
    *  @description
    *
-   *   #ui.grid.infiniteScroll
+   * #ui.grid.infiniteScroll
+   *
+   * <div class="alert alert-warning" role="alert"><strong>Beta</strong> This feature is ready for testing, but it either hasn't seen a lot of use or has some known bugs.</div>
+   *
    * This module provides infinite scroll functionality to ui-grid
    *
    */
@@ -15797,7 +20558,7 @@ module.filter('px', function() {
    *
    *  @description Service for infinite scroll features
    */
-  module.service('uiGridInfiniteScrollService', ['gridUtil', '$compile', '$timeout', 'uiGridConstants', function (gridUtil, $compile, $timeout, uiGridConstants) {
+  module.service('uiGridInfiniteScrollService', ['gridUtil', '$compile', '$timeout', 'uiGridConstants', 'ScrollEvent', '$q', function (gridUtil, $compile, $timeout, uiGridConstants, ScrollEvent, $q) {
 
     var service = {
 
@@ -15808,8 +20569,16 @@ module.filter('px', function() {
        * @description This method register events and methods into grid public API
        */
 
-      initializeGrid: function(grid) {
+      initializeGrid: function(grid, $scope) {
         service.defaultGridOptions(grid.options);
+
+        if (!grid.options.enableInfiniteScroll){
+          return;
+        }
+
+        grid.infiniteScroll = { dataLoading: false };
+        service.setScrollDirections( grid, grid.options.infiniteScrollUp, grid.options.infiniteScrollDown );
+          grid.api.core.on.scrollEnd($scope, service.handleScroll);
 
         /**
          *  @ngdoc object
@@ -15825,7 +20594,7 @@ module.filter('px', function() {
                * @ngdoc event
                * @name needLoadMoreData
                * @eventOf ui.grid.infiniteScroll.api:PublicAPI
-               * @description This event fires when scroll reached bottom percentage of grid
+               * @description This event fires when scroll reaches bottom percentage of grid
                * and needs to load data
                */
 
@@ -15836,7 +20605,7 @@ module.filter('px', function() {
                * @ngdoc event
                * @name needLoadMoreDataTop
                * @eventOf ui.grid.infiniteScroll.api:PublicAPI
-               * @description This event fires when scroll reached top percentage of grid
+               * @description This event fires when scroll reaches top percentage of grid
                * and needs to load data
                */
 
@@ -15851,20 +20620,120 @@ module.filter('px', function() {
                * @ngdoc function
                * @name dataLoaded
                * @methodOf ui.grid.infiniteScroll.api:PublicAPI
-               * @description This function is used as a promise when data finished loading.
-               * See infinite_scroll ngdoc for example of usage
+               * @description Call this function when you have loaded the additional data
+               * requested.  You should set scrollUp and scrollDown to indicate
+               * whether there are still more pages in each direction.
+               *
+               * If you call dataLoaded without first calling `saveScrollPercentage` then we will
+               * scroll the user to the start of the newly loaded data, which usually gives a smooth scroll
+               * experience, but can give a jumpy experience with large `infiniteScrollRowsFromEnd` values, and
+               * on variable speed internet connections.  Using `saveScrollPercentage` as demonstrated in the tutorial
+               * should give a smoother scrolling experience for users.
+               *
+               * See infinite_scroll tutorial for example of usage
+               * @param {boolean} scrollUp if set to false flags that there are no more pages upwards, so don't fire
+               * any more infinite scroll events upward
+               * @param {boolean} scrollDown if set to false flags that there are no more pages downwards, so don't
+               * fire any more infinite scroll events downward
+               * @returns {promise} a promise that is resolved when the grid scrolling is fully adjusted.  If you're
+               * planning to remove pages, you should wait on this promise first, or you'll break the scroll positioning
                */
+              dataLoaded: function( scrollUp, scrollDown ) {
+                service.setScrollDirections(grid, scrollUp, scrollDown);
 
-              dataLoaded: function() {
-                grid.options.loadTimout = false;
+                var promise = service.adjustScroll(grid).then(function() {
+                  grid.infiniteScroll.dataLoading = false;
+                });
+
+                return promise;
+              },
+
+              /**
+               * @ngdoc function
+               * @name resetScroll
+               * @methodOf ui.grid.infiniteScroll.api:PublicAPI
+               * @description Call this function when you have taken some action that makes the current
+               * scroll position invalid.  For example, if you're using external sorting and you've resorted
+               * then you might reset the scroll, or if you've otherwise substantially changed the data, perhaps
+               * you've reused an existing grid for a new data set
+               *
+               * You must tell us whether there is data upwards or downwards after the reset
+               *
+               * @param {boolean} scrollUp flag that there are pages upwards, fire
+               * infinite scroll events upward
+               * @param {boolean} scrollDown flag that there are pages downwards, so
+               * fire infinite scroll events downward
+               * @returns {promise} promise that is resolved when the scroll reset is complete
+               */
+              resetScroll: function( scrollUp, scrollDown ) {
+                service.setScrollDirections( grid, scrollUp, scrollDown);
+
+                return service.adjustInfiniteScrollPosition(grid, 0);
+              },
+
+
+              /**
+               * @ngdoc function
+               * @name saveScrollPercentage
+               * @methodOf ui.grid.infiniteScroll.api:PublicAPI
+               * @description Saves the scroll percentage and number of visible rows before you adjust the data,
+               * used if you're subsequently going to call `dataRemovedTop` or `dataRemovedBottom`
+               */
+              saveScrollPercentage: function() {
+                grid.infiniteScroll.prevScrollTop = grid.renderContainers.body.prevScrollTop;
+                grid.infiniteScroll.previousVisibleRows = grid.getVisibleRowCount();
+              },
+
+
+              /**
+               * @ngdoc function
+               * @name dataRemovedTop
+               * @methodOf ui.grid.infiniteScroll.api:PublicAPI
+               * @description Adjusts the scroll position after you've removed data at the top
+               * @param {boolean} scrollUp flag that there are pages upwards, fire
+               * infinite scroll events upward
+               * @param {boolean} scrollDown flag that there are pages downwards, so
+               * fire infinite scroll events downward
+               */
+              dataRemovedTop: function( scrollUp, scrollDown ) {
+                service.dataRemovedTop( grid, scrollUp, scrollDown );
+              },
+
+              /**
+               * @ngdoc function
+               * @name dataRemovedBottom
+               * @methodOf ui.grid.infiniteScroll.api:PublicAPI
+               * @description Adjusts the scroll position after you've removed data at the bottom
+               * @param {boolean} scrollUp flag that there are pages upwards, fire
+               * infinite scroll events upward
+               * @param {boolean} scrollDown flag that there are pages downwards, so
+               * fire infinite scroll events downward
+               */
+              dataRemovedBottom: function( scrollUp, scrollDown ) {
+                service.dataRemovedBottom( grid, scrollUp, scrollDown );
+              },
+
+              /**
+               * @ngdoc function
+               * @name setScrollDirections
+               * @methodOf ui.grid.infiniteScroll.service:uiGridInfiniteScrollService
+               * @description Sets the scrollUp and scrollDown flags, handling nulls and undefined,
+               * and also sets the grid.suppressParentScroll
+               * @param {boolean} scrollUp whether there are pages available up - defaults to false
+               * @param {boolean} scrollDown whether there are pages available down - defaults to true
+               */
+              setScrollDirections:  function ( scrollUp, scrollDown ) {
+                service.setScrollDirections( grid, scrollUp, scrollDown );
               }
+
             }
           }
         };
-        grid.options.loadTimout = false;
         grid.api.registerEventsFromObject(publicApi.events);
         grid.api.registerMethodsFromObject(publicApi.methods);
       },
+
+
       defaultGridOptions: function (gridOptions) {
         //default option to true unless it was explicitly set to false
         /**
@@ -15883,6 +20752,95 @@ module.filter('px', function() {
          *  <br/>Defaults to true
          */
         gridOptions.enableInfiniteScroll = gridOptions.enableInfiniteScroll !== false;
+
+        /**
+         * @ngdoc property
+         * @name infiniteScrollRowsFromEnd
+         * @propertyOf ui.grid.class:GridOptions
+         * @description This setting controls how close to the end of the dataset a user gets before
+         * more data is requested by the infinite scroll, whether scrolling up or down.  This allows you to
+         * 'prefetch' rows before the user actually runs out of scrolling.
+         *
+         * Note that if you set this value too high it may give jumpy scrolling behaviour, if you're getting
+         * this behaviour you could use the `saveScrollPercentageMethod` right before loading your data, and we'll
+         * preserve that scroll position
+         *
+         * <br> Defaults to 20
+         */
+        gridOptions.infiniteScrollRowsFromEnd = gridOptions.infiniteScrollRowsFromEnd || 20;
+
+        /**
+         * @ngdoc property
+         * @name infiniteScrollUp
+         * @propertyOf ui.grid.class:GridOptions
+         * @description Whether you allow infinite scroll up, implying that the first page of data
+         * you have displayed is in the middle of your data set.  If set to true then we trigger the
+         * needMoreDataTop event when the user hits the top of the scrollbar.
+         * <br> Defaults to false
+         */
+        gridOptions.infiniteScrollUp = gridOptions.infiniteScrollUp === true;
+
+        /**
+         * @ngdoc property
+         * @name infiniteScrollDown
+         * @propertyOf ui.grid.class:GridOptions
+         * @description Whether you allow infinite scroll down, implying that the first page of data
+         * you have displayed is in the middle of your data set.  If set to true then we trigger the
+         * needMoreData event when the user hits the bottom of the scrollbar.
+         * <br> Defaults to true
+         */
+        gridOptions.infiniteScrollDown = gridOptions.infiniteScrollDown !== false;
+      },
+
+
+      /**
+       * @ngdoc function
+       * @name setScrollDirections
+       * @methodOf ui.grid.infiniteScroll.service:uiGridInfiniteScrollService
+       * @description Sets the scrollUp and scrollDown flags, handling nulls and undefined,
+       * and also sets the grid.suppressParentScroll
+       * @param {grid} grid the grid we're operating on
+       * @param {boolean} scrollUp whether there are pages available up - defaults to false
+       * @param {boolean} scrollDown whether there are pages available down - defaults to true
+       */
+      setScrollDirections:  function ( grid, scrollUp, scrollDown ) {
+        grid.infiniteScroll.scrollUp = ( scrollUp === true );
+        grid.suppressParentScrollUp = ( scrollUp === true );
+
+        grid.infiniteScroll.scrollDown = ( scrollDown !== false);
+        grid.suppressParentScrollDown = ( scrollDown !== false);
+      },
+
+
+      /**
+       * @ngdoc function
+       * @name handleScroll
+       * @methodOf ui.grid.infiniteScroll.service:uiGridInfiniteScrollService
+       * @description Called whenever the grid scrolls, determines whether the scroll should
+       * trigger an infinite scroll request for more data
+       * @param {object} args the args from the event
+       */
+      handleScroll:  function (args) {
+        // don't request data if already waiting for data, or if source is coming from ui.grid.adjustInfiniteScrollPosition() function
+        if ( args.grid.infiniteScroll && args.grid.infiniteScroll.dataLoading || args.source === 'ui.grid.adjustInfiniteScrollPosition' ){
+          return;
+        }
+
+        if (args.y) {
+          var percentage;
+          var targetPercentage = args.grid.options.infiniteScrollRowsFromEnd / args.grid.renderContainers.body.visibleRowCache.length;
+          if (args.grid.scrollDirection === uiGridConstants.scrollDirection.UP ) {
+            percentage = args.y.percentage;
+            if (percentage <= targetPercentage){
+              service.loadData(args.grid);
+            }
+          } else if (args.grid.scrollDirection === uiGridConstants.scrollDirection.DOWN) {
+            percentage = 1 - args.y.percentage;
+            if (percentage <= targetPercentage){
+              service.loadData(args.grid);
+            }
+          }
+        }
       },
 
 
@@ -15891,43 +20849,171 @@ module.filter('px', function() {
        * @name loadData
        * @methodOf ui.grid.infiniteScroll.service:uiGridInfiniteScrollService
        * @description This function fires 'needLoadMoreData' or 'needLoadMoreDataTop' event based on scrollDirection
+       * and whether there are more pages upwards or downwards.  It also stores the number of rows that we had previously,
+       * and clears out any saved scroll position so that we know whether or not the user calls `saveScrollPercentage`
+       * @param {Grid} grid the grid we're working on
        */
-
       loadData: function (grid) {
-        grid.options.loadTimout = true;
-        if (grid.scrollDirection === uiGridConstants.scrollDirection.UP) {
+        // save number of currently visible rows to calculate new scroll position later - we know that we want
+        // to be at approximately the row we're currently at
+        grid.infiniteScroll.previousVisibleRows = grid.renderContainers.body.visibleRowCache.length;
+        grid.infiniteScroll.direction = grid.scrollDirection;
+        delete grid.infiniteScroll.prevScrollTop;
+
+        if (grid.scrollDirection === uiGridConstants.scrollDirection.UP && grid.infiniteScroll.scrollUp ) {
+          grid.infiniteScroll.dataLoading = true;
           grid.api.infiniteScroll.raise.needLoadMoreDataTop();
-          return;
+        } else if (grid.scrollDirection === uiGridConstants.scrollDirection.DOWN && grid.infiniteScroll.scrollDown ) {
+          grid.infiniteScroll.dataLoading = true;
+          grid.api.infiniteScroll.raise.needLoadMoreData();
         }
-        grid.api.infiniteScroll.raise.needLoadMoreData();
+      },
+
+
+      /**
+       * @ngdoc function
+       * @name adjustScroll
+       * @methodOf ui.grid.infiniteScroll.service:uiGridInfiniteScrollService
+       * @description Once we are informed that data has been loaded, adjust the scroll position to account for that
+       * addition and to make things look clean.
+       *
+       * If we're scrolling up we scroll to the first row of the old data set -
+       * so we're assuming that you would have gotten to the top of the grid (from the 20% need more data trigger) by
+       * the time the data comes back.  If we're scrolling down we scoll to the last row of the old data set - so we're
+       * assuming that you would have gotten to the bottom of the grid (from the 80% need more data trigger) by the time
+       * the data comes back.
+       *
+       * Neither of these are good assumptions, but making this a smoother experience really requires
+       * that trigger to not be a percentage, and to be much closer to the end of the data (say, 5 rows off the end).  Even then
+       * it'd be better still to actually run into the end.  But if the data takes a while to come back, they may have scrolled
+       * somewhere else in the mean-time, in which case they'll get a jump back to the new data.  Anyway, this will do for
+       * now, until someone wants to do better.
+       * @param {Grid} grid the grid we're working on
+       * @returns {promise} a promise that is resolved when scrolling has finished
+       */
+      adjustScroll: function(grid){
+        var promise = $q.defer();
+        $timeout(function () {
+          var newPercentage, viewportHeight, rowHeight, newVisibleRows, oldTop, newTop;
+
+          viewportHeight = grid.getViewportHeight() + grid.headerHeight - grid.renderContainers.body.headerHeight - grid.scrollbarHeight;
+          rowHeight = grid.options.rowHeight;
+
+          if ( grid.infiniteScroll.direction === undefined ){
+            // called from initialize, tweak our scroll up a little
+            service.adjustInfiniteScrollPosition(grid, 0);
+          }
+
+          newVisibleRows = grid.getVisibleRowCount();
+
+          // in case not enough data is loaded to enable scroller - load more data
+          var canvasHeight = rowHeight * newVisibleRows;
+          if (grid.infiniteScroll.scrollDown && (viewportHeight > canvasHeight)) {
+            grid.api.infiniteScroll.raise.needLoadMoreData();
+          }
+
+          if ( grid.infiniteScroll.direction === uiGridConstants.scrollDirection.UP ){
+            oldTop = grid.infiniteScroll.prevScrollTop || 0;
+            newTop = oldTop + (newVisibleRows - grid.infiniteScroll.previousVisibleRows)*rowHeight;
+            service.adjustInfiniteScrollPosition(grid, newTop);
+            $timeout( function() {
+              promise.resolve();
+            });
+          }
+
+          if ( grid.infiniteScroll.direction === uiGridConstants.scrollDirection.DOWN ){
+            newTop = grid.infiniteScroll.prevScrollTop || (grid.infiniteScroll.previousVisibleRows*rowHeight - viewportHeight);
+            service.adjustInfiniteScrollPosition(grid, newTop);
+            $timeout( function() {
+              promise.resolve();
+            });
+          }
+        }, 0);
+
+        return promise.promise;
+      },
+
+
+      /**
+       * @ngdoc function
+       * @name adjustInfiniteScrollPosition
+       * @methodOf ui.grid.infiniteScroll.service:uiGridInfiniteScrollService
+       * @description This function fires 'needLoadMoreData' or 'needLoadMoreDataTop' event based on scrollDirection
+       * @param {Grid} grid the grid we're working on
+       * @param {number} scrollTop the position through the grid that we want to scroll to
+       * @returns {promise} a promise that is resolved when the scrolling finishes
+       */
+      adjustInfiniteScrollPosition: function (grid, scrollTop) {
+        var scrollEvent = new ScrollEvent(grid, null, null, 'ui.grid.adjustInfiniteScrollPosition'),
+          visibleRows = grid.getVisibleRowCount(),
+          viewportHeight = grid.getViewportHeight() + grid.headerHeight - grid.renderContainers.body.headerHeight - grid.scrollbarHeight,
+          rowHeight = grid.options.rowHeight,
+          scrollHeight = visibleRows*rowHeight-viewportHeight;
+
+        //for infinite scroll, if there are pages upwards then never allow it to be at the zero position so the up button can be active
+        if (scrollTop === 0 && grid.infiniteScroll.scrollUp) {
+          // using pixels results in a relative scroll, hence we have to use percentage
+          scrollEvent.y = {percentage: 1/scrollHeight};
+        }
+        else {
+          scrollEvent.y = {percentage: scrollTop/scrollHeight};
+        }
+        grid.scrollContainers('', scrollEvent);
+      },
+
+
+      /**
+       * @ngdoc function
+       * @name dataRemovedTop
+       * @methodOf ui.grid.infiniteScroll.api:PublicAPI
+       * @description Adjusts the scroll position after you've removed data at the top. You should
+       * have called `saveScrollPercentage` before you remove the data, and if you're doing this in
+       * response to a `needMoreData` you should wait until the promise from `loadData` has resolved
+       * before you start removing data
+       * @param {Grid} grid the grid we're working on
+       * @param {boolean} scrollUp flag that there are pages upwards, fire
+       * infinite scroll events upward
+       * @param {boolean} scrollDown flag that there are pages downwards, so
+       * fire infinite scroll events downward
+       * @returns {promise} a promise that is resolved when the scrolling finishes
+       */
+      dataRemovedTop: function( grid, scrollUp, scrollDown ) {
+        var newVisibleRows, oldTop, newTop, rowHeight;
+        service.setScrollDirections( grid, scrollUp, scrollDown );
+
+        newVisibleRows = grid.renderContainers.body.visibleRowCache.length;
+        oldTop = grid.infiniteScroll.prevScrollTop;
+        rowHeight = grid.options.rowHeight;
+
+        // since we removed from the top, our new scroll row will be the old scroll row less the number
+        // of rows removed
+        newTop = oldTop - ( grid.infiniteScroll.previousVisibleRows - newVisibleRows )*rowHeight;
+
+        return service.adjustInfiniteScrollPosition( grid, newTop );
       },
 
       /**
        * @ngdoc function
-       * @name checkScroll
-       * @methodOf ui.grid.infiniteScroll.service:uiGridInfiniteScrollService
-       * @description This function checks scroll position inside grid and
-       * calls 'loadData' function when scroll reaches 'infiniteScrollPercentage'
+       * @name dataRemovedBottom
+       * @methodOf ui.grid.infiniteScroll.api:PublicAPI
+       * @description Adjusts the scroll position after you've removed data at the bottom.  You should
+       * have called `saveScrollPercentage` before you remove the data, and if you're doing this in
+       * response to a `needMoreData` you should wait until the promise from `loadData` has resolved
+       * before you start removing data
+       * @param {Grid} grid the grid we're working on
+       * @param {boolean} scrollUp flag that there are pages upwards, fire
+       * infinite scroll events upward
+       * @param {boolean} scrollDown flag that there are pages downwards, so
+       * fire infinite scroll events downward
        */
+      dataRemovedBottom: function( grid, scrollUp, scrollDown ) {
+        var newTop;
+        service.setScrollDirections( grid, scrollUp, scrollDown );
 
-      checkScroll: function(grid, scrollTop) {
+        newTop = grid.infiniteScroll.prevScrollTop;
 
-        /* Take infiniteScrollPercentage value or use 20% as default */
-        var infiniteScrollPercentage = grid.options.infiniteScrollPercentage ? grid.options.infiniteScrollPercentage : 20;
-
-        if (!grid.options.loadTimout && scrollTop <= infiniteScrollPercentage) {
-          this.loadData(grid);
-          return true;
-        }
-        return false;
+        return service.adjustInfiniteScrollPosition( grid, newTop );
       }
-      /**
-       * @ngdoc property
-       * @name infiniteScrollPercentage
-       * @propertyOf ui.grid.class:GridOptions
-       * @description This setting controls at what percentage of the scroll more data
-       * is requested by the infinite scroll
-       */
     };
     return service;
   }]);
@@ -15973,7 +21059,7 @@ module.filter('px', function() {
         compile: function($scope, $elm, $attr){
           return {
             pre: function($scope, $elm, $attr, uiGridCtrl) {
-              uiGridInfiniteScrollService.initializeGrid(uiGridCtrl.grid);
+              uiGridInfiniteScrollService.initializeGrid(uiGridCtrl.grid, $scope);
             },
             post: function($scope, $elm, $attr) {
             }
@@ -15982,29 +21068,8 @@ module.filter('px', function() {
       };
     }]);
 
-  module.directive('uiGridViewport',
-    ['$compile', 'gridUtil', 'uiGridInfiniteScrollService', 'uiGridConstants',
-      function ($compile, gridUtil, uiGridInfiniteScrollService, uiGridConstants) {
-        return {
-          priority: -200,
-          scope: false,
-          link: function ($scope, $elm, $attr){
-            if ($scope.grid.options.enableInfiniteScroll) {
-              $scope.grid.api.core.on.scrollEvent($scope, function (args) {
-                  //Prevent circular scroll references, if source is coming from ui.grid.adjustInfiniteScrollPosition() function
-                  if (args.y && (args.source !== 'ui.grid.adjustInfiniteScrollPosition')) {
-                    var percentage = 100 - (args.y.percentage * 100);
-                    if ($scope.grid.scrollDirection === uiGridConstants.scrollDirection.UP) {
-                      percentage = (args.y.percentage * 100);
-                    }
-                    uiGridInfiniteScrollService.checkScroll($scope.grid, percentage);
-                  }
-              });
-            }
-          }
-        };
-      }]);
 })();
+
 (function () {
   'use strict';
 
@@ -16012,7 +21077,11 @@ module.filter('px', function() {
    * @ngdoc overview
    * @name ui.grid.moveColumns
    * @description
+   *
    * # ui.grid.moveColumns
+   *
+   * <div class="alert alert-warning" role="alert"><strong>Alpha</strong> This feature is in development. There will almost certainly be breaking api changes, or there are major outstanding bugs.</div>
+   *
    * This module provides column moving capability to ui.grid. It enables to change the position of columns.
    * <div doc-module-components="ui.grid.moveColumns"></div>
    */
@@ -16023,14 +21092,16 @@ module.filter('px', function() {
    *  @name ui.grid.moveColumns.service:uiGridMoveColumnService
    *  @description Service for column moving feature.
    */
-  module.service('uiGridMoveColumnService', ['$q', '$timeout', '$log', 'ScrollEvent', 'uiGridConstants', function ($q, $timeout, $log, ScrollEvent, uiGridConstants) {
+  module.service('uiGridMoveColumnService', ['$q', '$timeout', '$log', 'ScrollEvent', 'uiGridConstants', 'gridUtil', function ($q, $timeout, $log, ScrollEvent, uiGridConstants, gridUtil) {
 
     var service = {
       initializeGrid: function (grid) {
         var self = this;
         this.registerPublicApi(grid);
         this.defaultGridOptions(grid.options);
+        grid.moveColumns = {orderCache: []}; // Used to cache the order before columns are rebuilt
         grid.registerColumnBuilder(self.movableColumnBuilder);
+        grid.registerDataChangeCallback(self.verifyColumnOrder, [uiGridConstants.dataChange.COLUMN]);
       },
       registerPublicApi: function (grid) {
         var self = this;
@@ -16074,7 +21145,7 @@ module.filter('px', function() {
               moveColumn: function (originalPosition, finalPosition) {
                 var columns = grid.columns;
                 if (!angular.isNumber(originalPosition) || !angular.isNumber(finalPosition)) {
-                  console.log('Please provide valid values for originalPosition and finalPosition');
+                  gridUtil.logError('MoveColumn: Please provide valid values for originalPosition and finalPosition');
                   return;
                 }
                 var nonMovableColumns = 0;
@@ -16084,7 +21155,7 @@ module.filter('px', function() {
                   }
                 }
                 if (originalPosition >= (columns.length - nonMovableColumns) || finalPosition >= (columns.length - nonMovableColumns)) {
-                  console.log('Invalid values for originalPosition, finalPosition');
+                  gridUtil.logError('MoveColumn: Invalid values for originalPosition, finalPosition');
                   return;
                 }
                 var findPositionForRenderIndex = function (index) {
@@ -16140,7 +21211,38 @@ module.filter('px', function() {
           : colDef.enableColumnMoving;
         return $q.all(promises);
       },
+      /**
+       * @ngdoc method
+       * @name updateColumnCache
+       * @methodOf  ui.grid.moveColumns
+       * @description Cache the current order of columns, so we can restore them after new columnDefs are defined
+       */
+      updateColumnCache: function(grid){
+        grid.moveColumns.orderCache = grid.getOnlyDataColumns();
+      },
+      /**
+       * @ngdoc method
+       * @name verifyColumnOrder
+       * @methodOf  ui.grid.moveColumns
+       * @description dataChangeCallback which uses the cached column order to restore the column order
+       * when it is reset by altering the columnDefs array.
+       */
+      verifyColumnOrder: function(grid){
+        var headerRowOffset = grid.rowHeaderColumns.length;
+        var newIndex;
+
+        angular.forEach(grid.moveColumns.orderCache, function(cacheCol, cacheIndex){
+          newIndex = grid.columns.indexOf(cacheCol);
+          if ( newIndex !== -1 && newIndex - headerRowOffset !== cacheIndex ){
+            var column = grid.columns.splice(newIndex, 1)[0];
+            grid.columns.splice(cacheIndex + headerRowOffset, 0, column);
+          }
+        });
+      },
       redrawColumnAtPosition: function (grid, originalPosition, newPosition) {
+        if (originalPosition === newPosition) {
+          return;
+        }
 
         var columns = grid.columns;
 
@@ -16157,10 +21259,11 @@ module.filter('px', function() {
             }
           }
           columns[newPosition] = originalColumn;
+          service.updateColumnCache(grid);
+          grid.queueGridRefresh();
           $timeout(function () {
-            grid.refresh();
-            grid.api.colMovable.raise.columnPositionChanged(originalColumn.colDef, originalPosition, newPosition);
             grid.api.core.notifyDataChange( uiGridConstants.dataChange.COLUMN );
+            grid.api.colMovable.raise.columnPositionChanged(originalColumn.colDef, originalPosition, newPosition);
           });
         }
       }
@@ -16254,220 +21357,272 @@ module.filter('px', function() {
 
               if ($scope.col.colDef.enableColumnMoving) {
 
-                $scope.$on(uiGridConstants.events.COLUMN_HEADER_CLICK, function (event, args) {
+                /*
+                 * Our general approach to column move is that we listen to a touchstart or mousedown
+                 * event over the column header.  When we hear one, then we wait for a move of the same type
+                 * - if we are a touchstart then we listen for a touchmove, if we are a mousedown we listen for
+                 * a mousemove (i.e. a drag) before we decide that there's a move underway.  If there's never a move,
+                 * and we instead get a mouseup or a touchend, then we just drop out again and do nothing.
+                 *
+                 */
+                var $contentsElm = angular.element( $elm[0].querySelectorAll('.ui-grid-cell-contents') );
 
-                  if (args.columnName === $scope.col.colDef.name && !$scope.col.renderContainer) {
+                var gridLeft;
+                var previousMouseX;
+                var totalMouseMovement;
+                var rightMoveLimit;
+                var elmCloned = false;
+                var movingElm;
+                var reducedWidth;
+                var moveOccurred = false;
 
-                    var evt = args.event;
-                    if (evt.target.className !== 'ui-grid-icon-angle-down' && evt.target.tagName !== 'I' &&
-                      evt.target.className.indexOf('ui-grid-filter-input') < 0) {
+                var downFn = function( event ){
+                  //Setting some variables required for calculations.
+                  gridLeft = $scope.grid.element[0].getBoundingClientRect().left;
+                  if ( $scope.grid.hasLeftContainer() ){
+                    gridLeft += $scope.grid.renderContainers.left.header[0].getBoundingClientRect().width;
+                  }
 
-                      //Setting some variables required for calculations.
-                      var gridLeft = $scope.grid.element[0].getBoundingClientRect().left;
-                      var previousMouseX = evt.pageX;
-                      var totalMouseMovement = 0;
-                      var rightMoveLimit = gridLeft + $scope.grid.getViewportWidth();// - $scope.grid.verticalScrollbarWidth;
+                  previousMouseX = event.pageX;
+                  totalMouseMovement = 0;
+                  rightMoveLimit = gridLeft + $scope.grid.getViewportWidth();
 
-                      //Clone element should move horizontally with mouse.
-                      var elmCloned = false;
-                      var movingElm;
-                      var reducedWidth;
+                  if ( event.type === 'mousedown' ){
+                    $document.on('mousemove', moveFn);
+                    $document.on('mouseup', upFn);
+                  } else if ( event.type === 'touchstart' ){
+                    $document.on('touchmove', moveFn);
+                    $document.on('touchend', upFn);
+                  }
+                };
 
-                      var cloneElement = function () {
-                        elmCloned = true;
+                var moveFn = function( event ) {
+                  var changeValue = event.pageX - previousMouseX;
+                  if ( changeValue === 0 ){ return; }
+                  //Disable text selection in Chrome during column move
+                  document.onselectstart = function() { return false; };
 
-                        //Cloning header cell and appending to current header cell.
-                        movingElm = $elm.clone();
-                        $elm.parent().append(movingElm);
+                  moveOccurred = true;
 
-                        //Left of cloned element should be aligned to original header cell.
-                        movingElm.addClass('movingColumn');
-                        var movingElementStyles = {};
-                        var elmLeft = $elm[0].getBoundingClientRect().left;
-                        movingElementStyles.left = (elmLeft - gridLeft) + 'px';
-                        var gridRight = $scope.grid.element[0].getBoundingClientRect().right;
-                        var elmRight = $elm[0].getBoundingClientRect().right;
-                        if (elmRight > gridRight) {
-                          reducedWidth = $scope.col.drawnWidth + (gridRight - elmRight);
-                          movingElementStyles.width = reducedWidth + 'px';
-                        }
-                        movingElm.css(movingElementStyles);
-                      };
+                  if (!elmCloned) {
+                    cloneElement();
+                  }
+                  else if (elmCloned) {
+                    moveElement(changeValue);
+                    previousMouseX = event.pageX;
+                  }
+                };
 
-                      var moveElement = function (changeValue) {
-                        //Hide column menu
-                        uiGridCtrl.fireEvent('hide-menu');
+                var upFn = function( event ){
+                  //Re-enable text selection after column move
+                  document.onselectstart = null;
 
-                        //Calculate total column width
-                        var columns = $scope.grid.columns;
-                        var totalColumnWidth = 0;
-                        for (var i = 0; i < columns.length; i++) {
-                          if (angular.isUndefined(columns[i].colDef.visible) || columns[i].colDef.visible === true) {
-                            totalColumnWidth += columns[i].drawnWidth || columns[i].width || columns[i].colDef.width;
-                          }
-                        }
+                  //Remove the cloned element on mouse up.
+                  if (movingElm) {
+                    movingElm.remove();
+                    elmCloned = false;
+                  }
 
-                        //Calculate new position of left of column
-                        var currentElmLeft = movingElm[0].getBoundingClientRect().left - 1;
-                        var currentElmRight = movingElm[0].getBoundingClientRect().right;
-                        var newElementLeft;
-                        if (gridUtil.detectBrowser() === 'ie') {
-                          newElementLeft = currentElmLeft + changeValue;
-                        }
-                        else {
-                          newElementLeft = currentElmLeft - gridLeft + changeValue;
-                        }
-                        newElementLeft = newElementLeft < rightMoveLimit ? newElementLeft : rightMoveLimit;
+                  offAllEvents();
+                  onDownEvents();
 
-                        //Update css of moving column to adjust to new left value or fire scroll in case column has reached edge of grid
-                        if ((currentElmLeft >= gridLeft || changeValue > 0) && (currentElmRight <= rightMoveLimit || changeValue < 0)) {
-                          movingElm.css({visibility: 'visible', 'left': newElementLeft + 'px'});
-                        }
-                        else if (totalColumnWidth > Math.ceil(uiGridCtrl.grid.gridWidth)) {
-                          changeValue *= 8;
-                          var scrollEvent = new ScrollEvent($scope.col.grid, null, null, 'uiGridHeaderCell.moveElement');
-                          scrollEvent.x = {pixels: changeValue};
-                          scrollEvent.fireScrollingEvent();
-                        }
+                  if (!moveOccurred){
+                    return;
+                  }
 
-                        //Calculate total width of columns on the left of the moving column and the mouse movement
-                        var totalColumnsLeftWidth = 0;
-                        for (var il = 0; il < columns.length; il++) {
-                          if (angular.isUndefined(columns[il].colDef.visible) || columns[il].colDef.visible === true) {
-                            if (columns[il].colDef.name !== $scope.col.colDef.name) {
-                              totalColumnsLeftWidth += columns[il].drawnWidth || columns[il].width || columns[il].colDef.width;
-                            }
-                            else {
-                              break;
-                            }
-                          }
-                        }
-                        if ($scope.newScrollLeft === undefined) {
-                          totalMouseMovement += changeValue;
-                        }
-                        else {
-                          totalMouseMovement = $scope.newScrollLeft + newElementLeft - totalColumnsLeftWidth;
-                        }
+                  var columns = $scope.grid.columns;
+                  var columnIndex = 0;
+                  for (var i = 0; i < columns.length; i++) {
+                    if (columns[i].colDef.name !== $scope.col.colDef.name) {
+                      columnIndex++;
+                    }
+                    else {
+                      break;
+                    }
+                  }
 
-                        //Increase width of moving column, in case the rightmost column was moved and its width was
-                        //decreased because of overflow
-                        if (reducedWidth < $scope.col.drawnWidth) {
-                          reducedWidth += Math.abs(changeValue);
-                          movingElm.css({'width': reducedWidth + 'px'});
-                        }
-                      };
+                  var targetIndex;
 
-                      var mouseMoveHandler = function (evt) {
-                        //Disable text selection in Chrome during column move
-                        document.onselectstart = function() { return false; };
-
-                        var changeValue = evt.pageX - previousMouseX;
-                        if (!elmCloned && Math.abs(changeValue) > 50) {
-                          cloneElement();
-                        }
-                        else if (elmCloned) {
-                          moveElement(changeValue);
-                          previousMouseX = evt.pageX;
-                        }
-                      };
-
-                      /*
-                       //Commenting these lines as they are creating trouble with column moving when grid has huge scroll
-                       // On scope destroy, remove the mouse event handlers from the document body
-                       $scope.$on('$destroy', function () {
-                       $document.off('mousemove', mouseMoveHandler);
-                       $document.off('mouseup', mouseUpHandler);
-                       });
-                       */
-                      $document.on('mousemove', mouseMoveHandler);
-
-                      var mouseUpHandler = function (evt) {
-                        //Re-enable text selection after column move
-                        document.onselectstart = null;
-
-                        //Remove the cloned element on mouse up.
-                        if (movingElm) {
-                          movingElm.remove();
-                        }
-
-                        var columns = $scope.grid.columns;
-                        var columnIndex = 0;
-                        for (var i = 0; i < columns.length; i++) {
-                          if (columns[i].colDef.name !== $scope.col.colDef.name) {
-                            columnIndex++;
-                          }
-                          else {
+                  //Case where column should be moved to a position on its left
+                  if (totalMouseMovement < 0) {
+                    var totalColumnsLeftWidth = 0;
+                    var il;
+                    if ( $scope.grid.isRTL() ){
+                      for (il = columnIndex + 1; il < columns.length; il++) {
+                        if (angular.isUndefined(columns[il].colDef.visible) || columns[il].colDef.visible === true) {
+                          totalColumnsLeftWidth += columns[il].drawnWidth || columns[il].width || columns[il].colDef.width;
+                          if (totalColumnsLeftWidth > Math.abs(totalMouseMovement)) {
+                            uiGridMoveColumnService.redrawColumnAtPosition
+                            ($scope.grid, columnIndex, il - 1);
                             break;
                           }
                         }
-
-                        //Case where column should be moved to a position on its left
-                        if (totalMouseMovement < 0) {
-                          var totalColumnsLeftWidth = 0;
-                          for (var il = columnIndex - 1; il >= 0; il--) {
-                            if (angular.isUndefined(columns[il].colDef.visible) || columns[il].colDef.visible === true) {
-                              totalColumnsLeftWidth += columns[il].drawnWidth || columns[il].width || columns[il].colDef.width;
-                              if (totalColumnsLeftWidth > Math.abs(totalMouseMovement)) {
-                                uiGridMoveColumnService.redrawColumnAtPosition
-                                ($scope.grid, columnIndex, il + 1);
-                                break;
-                              }
-                            }
-                          }
-                          //Case where column should be moved to beginning of the grid.
-                          if (totalColumnsLeftWidth < Math.abs(totalMouseMovement)) {
+                      }
+                    }
+                    else {
+                      for (il = columnIndex - 1; il >= 0; il--) {
+                        if (angular.isUndefined(columns[il].colDef.visible) || columns[il].colDef.visible === true) {
+                          totalColumnsLeftWidth += columns[il].drawnWidth || columns[il].width || columns[il].colDef.width;
+                          if (totalColumnsLeftWidth > Math.abs(totalMouseMovement)) {
                             uiGridMoveColumnService.redrawColumnAtPosition
-                            ($scope.grid, columnIndex, 0);
+                            ($scope.grid, columnIndex, il + 1);
+                            break;
                           }
                         }
+                      }
+                    }
 
-                        //Case where column should be moved to a position on its right
-                        else if (totalMouseMovement > 0) {
-                          var totalColumnsRightWidth = 0;
-                          for (var ir = columnIndex + 1; ir < columns.length; ir++) {
-                            if (angular.isUndefined(columns[ir].colDef.visible) || columns[ir].colDef.visible === true) {
-                              totalColumnsRightWidth += columns[ir].drawnWidth || columns[ir].width || columns[ir].colDef.width;
-                              if (totalColumnsRightWidth > totalMouseMovement) {
-                                uiGridMoveColumnService.redrawColumnAtPosition
-                                ($scope.grid, columnIndex, ir - 1);
-                                break;
-                              }
-                            }
-                          }
-                          //Case where column should be moved to end of the grid.
-                          if (totalColumnsRightWidth < totalMouseMovement) {
-                            uiGridMoveColumnService.redrawColumnAtPosition
-                            ($scope.grid, columnIndex, columns.length - 1);
-                          }
-                        }
-/*
-                        else if (totalMouseMovement === 0) {
-                          if (uiGridCtrl.grid.options.enableSorting && $scope.col.enableSorting) {
-                            //sort the current column
-                            var add = false;
-                            if (evt.shiftKey) {
-                              add = true;
-                            }
-                            // Sort this column then rebuild the grid's rows
-                            uiGridCtrl.grid.sortColumn($scope.col, add)
-                              .then(function () {
-                                if (uiGridCtrl.columnMenuScope) {
-                                  uiGridCtrl.columnMenuScope.hideMenu();
-                                }
-                                uiGridCtrl.grid.refresh();
-                              });
-                          }
-                        }
-*/
-                        $document.off('mousemove', mouseMoveHandler);
-                        $document.off('mouseup', mouseUpHandler);
-                      };
-
-                      //Binding the mouseup event handler
-                      $document.on('mouseup', mouseUpHandler);
+                    //Case where column should be moved to beginning (or end in RTL) of the grid.
+                    if (totalColumnsLeftWidth < Math.abs(totalMouseMovement)) {
+                      targetIndex = 0;
+                      if ( $scope.grid.isRTL() ){
+                        targetIndex = columns.length - 1;
+                      }
+                      uiGridMoveColumnService.redrawColumnAtPosition
+                      ($scope.grid, columnIndex, targetIndex);
                     }
                   }
-                });
+
+                  //Case where column should be moved to a position on its right
+                  else if (totalMouseMovement > 0) {
+                    var totalColumnsRightWidth = 0;
+                    var ir;
+                    if ( $scope.grid.isRTL() ){
+                      for (ir = columnIndex - 1; ir > 0; ir--) {
+                        if (angular.isUndefined(columns[ir].colDef.visible) || columns[ir].colDef.visible === true) {
+                          totalColumnsRightWidth += columns[ir].drawnWidth || columns[ir].width || columns[ir].colDef.width;
+                          if (totalColumnsRightWidth > totalMouseMovement) {
+                            uiGridMoveColumnService.redrawColumnAtPosition
+                            ($scope.grid, columnIndex, ir);
+                            break;
+                          }
+                        }
+                      }
+                    }
+                    else {
+                      for (ir = columnIndex + 1; ir < columns.length; ir++) {
+                        if (angular.isUndefined(columns[ir].colDef.visible) || columns[ir].colDef.visible === true) {
+                          totalColumnsRightWidth += columns[ir].drawnWidth || columns[ir].width || columns[ir].colDef.width;
+                          if (totalColumnsRightWidth > totalMouseMovement) {
+                            uiGridMoveColumnService.redrawColumnAtPosition
+                            ($scope.grid, columnIndex, ir - 1);
+                            break;
+                          }
+                        }
+                      }
+                    }
+
+
+                    //Case where column should be moved to end (or beginning in RTL) of the grid.
+                    if (totalColumnsRightWidth < totalMouseMovement) {
+                      targetIndex = columns.length - 1;
+                      if ( $scope.grid.isRTL() ){
+                        targetIndex = 0;
+                      }
+                      uiGridMoveColumnService.redrawColumnAtPosition
+                      ($scope.grid, columnIndex, targetIndex);
+                    }
+                  }
+
+
+
+                };
+
+                var onDownEvents = function(){
+                  $contentsElm.on('touchstart', downFn);
+                  $contentsElm.on('mousedown', downFn);
+                };
+
+                var offAllEvents = function() {
+                  $contentsElm.off('touchstart', downFn);
+                  $contentsElm.off('mousedown', downFn);
+
+                  $document.off('mousemove', moveFn);
+                  $document.off('touchmove', moveFn);
+
+                  $document.off('mouseup', upFn);
+                  $document.off('touchend', upFn);
+                };
+
+                onDownEvents();
+
+
+                var cloneElement = function () {
+                  elmCloned = true;
+
+                  //Cloning header cell and appending to current header cell.
+                  movingElm = $elm.clone();
+                  $elm.parent().append(movingElm);
+
+                  //Left of cloned element should be aligned to original header cell.
+                  movingElm.addClass('movingColumn');
+                  var movingElementStyles = {};
+                  movingElementStyles.left = $elm[0].offsetLeft + 'px';
+                  var gridRight = $scope.grid.element[0].getBoundingClientRect().right;
+                  var elmRight = $elm[0].getBoundingClientRect().right;
+                  if (elmRight > gridRight) {
+                    reducedWidth = $scope.col.drawnWidth + (gridRight - elmRight);
+                    movingElementStyles.width = reducedWidth + 'px';
+                  }
+                  movingElm.css(movingElementStyles);
+                };
+
+                var moveElement = function (changeValue) {
+                  //Calculate total column width
+                  var columns = $scope.grid.columns;
+                  var totalColumnWidth = 0;
+                  for (var i = 0; i < columns.length; i++) {
+                    if (angular.isUndefined(columns[i].colDef.visible) || columns[i].colDef.visible === true) {
+                      totalColumnWidth += columns[i].drawnWidth || columns[i].width || columns[i].colDef.width;
+                    }
+                  }
+
+                  //Calculate new position of left of column
+                  var currentElmLeft = movingElm[0].getBoundingClientRect().left - 1;
+                  var currentElmRight = movingElm[0].getBoundingClientRect().right;
+                  var newElementLeft;
+
+                  newElementLeft = currentElmLeft - gridLeft + changeValue;
+                  newElementLeft = newElementLeft < rightMoveLimit ? newElementLeft : rightMoveLimit;
+
+                  //Update css of moving column to adjust to new left value or fire scroll in case column has reached edge of grid
+                  if ((currentElmLeft >= gridLeft || changeValue > 0) && (currentElmRight <= rightMoveLimit || changeValue < 0)) {
+                    movingElm.css({visibility: 'visible', 'left': (movingElm[0].offsetLeft +
+                    (newElementLeft < rightMoveLimit ? changeValue : (rightMoveLimit - currentElmLeft))) + 'px'});
+                  }
+                  else if (totalColumnWidth > Math.ceil(uiGridCtrl.grid.gridWidth)) {
+                    changeValue *= 8;
+                    var scrollEvent = new ScrollEvent($scope.col.grid, null, null, 'uiGridHeaderCell.moveElement');
+                    scrollEvent.x = {pixels: changeValue};
+                    scrollEvent.grid.scrollContainers('',scrollEvent);
+                  }
+
+                  //Calculate total width of columns on the left of the moving column and the mouse movement
+                  var totalColumnsLeftWidth = 0;
+                  for (var il = 0; il < columns.length; il++) {
+                    if (angular.isUndefined(columns[il].colDef.visible) || columns[il].colDef.visible === true) {
+                      if (columns[il].colDef.name !== $scope.col.colDef.name) {
+                        totalColumnsLeftWidth += columns[il].drawnWidth || columns[il].width || columns[il].colDef.width;
+                      }
+                      else {
+                        break;
+                      }
+                    }
+                  }
+                  if ($scope.newScrollLeft === undefined) {
+                    totalMouseMovement += changeValue;
+                  }
+                  else {
+                    totalMouseMovement = $scope.newScrollLeft + newElementLeft - totalColumnsLeftWidth;
+                  }
+
+                  //Increase width of moving column, in case the rightmost column was moved and its width was
+                  //decreased because of overflow
+                  if (reducedWidth < $scope.col.drawnWidth) {
+                    reducedWidth += Math.abs(changeValue);
+                    movingElm.css({'width': reducedWidth + 'px'});
+                  }
+                };
               }
             }
           };
@@ -16485,7 +21640,10 @@ module.filter('px', function() {
    *
    * @description
    *
-   * #ui.grid.pagination
+   * # ui.grid.pagination
+   *
+   * <div class="alert alert-warning" role="alert"><strong>Alpha</strong> This feature is in development. There will almost certainly be breaking api changes, or there are major outstanding bugs.</div>
+   *
    * This module provides pagination support to ui-grid
    */
   var module = angular.module('ui.grid.pagination', ['ng', 'ui.grid']);
@@ -16609,14 +21767,15 @@ module.filter('px', function() {
 
           grid.api.registerEventsFromObject(publicApi.events);
           grid.api.registerMethodsFromObject(publicApi.methods);
-          grid.registerRowsProcessor(function (renderableRows) {
+
+          var processPagination = function( renderableRows ){
             if (grid.options.useExternalPagination || !grid.options.enablePagination) {
               return renderableRows;
             }
             //client side pagination
             var pageSize = parseInt(grid.options.paginationPageSize, 10);
             var currentPage = parseInt(grid.options.paginationCurrentPage, 10);
-            
+
             var visibleRows = renderableRows.filter(function (row) { return row.visible; });
             grid.options.totalItems = visibleRows.length;
 
@@ -16626,7 +21785,9 @@ module.filter('px', function() {
               firstRow = (currentPage - 1) * pageSize;
             }
             return visibleRows.slice(firstRow, firstRow + pageSize);
-          });
+          };
+
+          grid.registerRowsProcessor(processPagination, 900 );
 
         },
         defaultGridOptions: function (gridOptions) {
@@ -16642,14 +21803,14 @@ module.filter('px', function() {
            * @ngdoc property
            * @name enablePagination
            * @propertyOf ui.grid.pagination.api:GridOptions
-           * @description Enables pagination, defaults to true
+           * @description Enables pagination.  Defaults to true.
            */
           gridOptions.enablePagination = gridOptions.enablePagination !== false;
           /**
            * @ngdoc property
            * @name enablePaginationControls
            * @propertyOf ui.grid.pagination.api:GridOptions
-           * @description Enables the paginator at the bottom of the grid. Turn this off, if you want to implement your
+           * @description Enables the paginator at the bottom of the grid. Turn this off if you want to implement your
            *              own controls outside the grid.
            */
           gridOptions.enablePaginationControls = gridOptions.enablePaginationControls !== false;
@@ -16658,14 +21819,14 @@ module.filter('px', function() {
            * @name useExternalPagination
            * @propertyOf ui.grid.pagination.api:GridOptions
            * @description Disables client side pagination. When true, handle the paginationChanged event and set data
-           *              and totalItems, defaults to `false`
+           *              and totalItems.  Defaults to `false`
            */
           gridOptions.useExternalPagination = gridOptions.useExternalPagination === true;
           /**
            * @ngdoc property
            * @name totalItems
            * @propertyOf ui.grid.pagination.api:GridOptions
-           * @description Total number of items, set automatically when client side pagination, needs set by user
+           * @description Total number of items, set automatically when using client side pagination, but needs set by user
            *              for server side pagination
            */
           if (gridUtil.isNullOrUndefined(gridOptions.totalItems)) {
@@ -16689,7 +21850,7 @@ module.filter('px', function() {
           if (gridUtil.isNullOrUndefined(gridOptions.paginationPageSize)) {
             if (gridOptions.paginationPageSizes.length > 0) {
               gridOptions.paginationPageSize = gridOptions.paginationPageSizes[0];
-            } else {              
+            } else {
               gridOptions.paginationPageSize = 0;
             }
           }
@@ -16725,11 +21886,11 @@ module.filter('px', function() {
         onPaginationChanged: function (grid, currentPage, pageSize) {
             grid.api.pagination.raise.paginationChanged(currentPage, pageSize);
             if (!grid.options.useExternalPagination) {
-              grid.refresh(); //client side pagination
+              grid.queueGridRefresh(); //client side pagination
             }
         }
       };
-      
+
       return service;
     }
   ]);
@@ -16768,7 +21929,7 @@ module.filter('px', function() {
         columnDefs: [
           {name: 'name'},
           {name: 'car'}
-        ];
+        ]
        }
     }]);
    </file>
@@ -16815,23 +21976,28 @@ module.filter('px', function() {
         scope: true,
         require: '^uiGrid',
         link: function ($scope, $elm, $attr, uiGridCtrl) {
+          var defaultFocusElementSelector = '.ui-grid-pager-control-input';
+          $scope.aria = i18nService.getSafeText('pagination.aria'); //Returns an object with all of the aria labels
+
           $scope.paginationApi = uiGridCtrl.grid.api.pagination;
           $scope.sizesLabel = i18nService.getSafeText('pagination.sizes');
           $scope.totalItemsLabel = i18nService.getSafeText('pagination.totalItems');
-          
+          $scope.paginationOf = i18nService.getSafeText('pagination.of');
+          $scope.paginationThrough = i18nService.getSafeText('pagination.through');
+
           var options = uiGridCtrl.grid.options;
-          
+
           uiGridCtrl.grid.renderContainers.body.registerViewportAdjuster(function (adjustment) {
-            adjustment.height = adjustment.height - gridUtil.elementHeight($elm);
+            adjustment.height = adjustment.height - gridUtil.elementHeight($elm, "padding");
             return adjustment;
           });
-          
+
           var dataChangeDereg = uiGridCtrl.grid.registerDataChangeCallback(function (grid) {
             if (!grid.options.useExternalPagination) {
               grid.options.totalItems = grid.rows.length;
             }
           }, [uiGridConstants.dataChange.ROW]);
-          
+
           $scope.$on('$destroy', dataChangeDereg);
 
           var setShowing = function () {
@@ -16842,8 +22008,8 @@ module.filter('px', function() {
           var deregT = $scope.$watch('grid.options.totalItems + grid.options.paginationPageSize', setShowing);
 
           var deregP = $scope.$watch('grid.options.paginationCurrentPage + grid.options.paginationPageSize', function (newValues, oldValues) {
-              if (newValues === oldValues) { 
-                return; 
+              if (newValues === oldValues || oldValues === undefined) {
+                return;
               }
 
               if (!angular.isNumber(options.paginationCurrentPage) || options.paginationCurrentPage < 1) {
@@ -16873,7 +22039,7 @@ module.filter('px', function() {
               return options.data.length < 1;
             }
           };
-          
+
           $scope.cantPageToLast = function () {
             if (options.totalItems > 0) {
               return $scope.cantPageForward();
@@ -16881,10 +22047,38 @@ module.filter('px', function() {
               return true;
             }
           };
-          
+
           $scope.cantPageBackward = function () {
             return options.paginationCurrentPage <= 1;
           };
+
+          var focusToInputIf = function(condition){
+            if (condition){
+              gridUtil.focus.bySelector($elm, defaultFocusElementSelector);
+            }
+          };
+
+          //Takes care of setting focus to the middle element when focus is lost
+          $scope.pageFirstPageClick = function () {
+            $scope.paginationApi.seek(1);
+            focusToInputIf($scope.cantPageBackward());
+          };
+
+          $scope.pagePreviousPageClick = function () {
+            $scope.paginationApi.previousPage();
+            focusToInputIf($scope.cantPageBackward());
+          };
+
+          $scope.pageNextPageClick = function () {
+            $scope.paginationApi.nextPage();
+            focusToInputIf($scope.cantPageForward());
+          };
+
+          $scope.pageLastPageClick = function () {
+            $scope.paginationApi.seek($scope.paginationApi.getTotalPages());
+            focusToInputIf($scope.cantPageToLast());
+          };
+
         }
       };
     }
@@ -16899,17 +22093,26 @@ module.filter('px', function() {
    * @name ui.grid.pinning
    * @description
    *
-   *  # ui.grid.pinning
+   * # ui.grid.pinning
+   *
+   * <div class="alert alert-success" role="alert"><strong>Stable</strong> This feature is stable. There should no longer be breaking api changes without a deprecation warning.</div>
+   *
    * This module provides column pinning to the end user via menu options in the column header
-   * <br/>
-   * <br/>
    *
    * <div doc-module-components="ui.grid.pinning"></div>
    */
 
   var module = angular.module('ui.grid.pinning', ['ui.grid']);
 
-  module.service('uiGridPinningService', ['gridUtil', 'GridRenderContainer', 'i18nService', function (gridUtil, GridRenderContainer, i18nService) {
+  module.constant('uiGridPinningConstants', {
+    container: {
+      LEFT: 'left',
+      RIGHT: 'right',
+      NONE: ''
+    }
+  });
+
+  module.service('uiGridPinningService', ['gridUtil', 'GridRenderContainer', 'i18nService', 'uiGridPinningConstants', function (gridUtil, GridRenderContainer, i18nService, uiGridPinningConstants) {
     var service = {
 
       initializeGrid: function (grid) {
@@ -16917,6 +22120,54 @@ module.filter('px', function() {
 
         // Register a column builder to add new menu items for pinning left and right
         grid.registerColumnBuilder(service.pinningColumnBuilder);
+
+        /**
+         *  @ngdoc object
+         *  @name ui.grid.pinning.api:PublicApi
+         *
+         *  @description Public Api for pinning feature
+         */
+        var publicApi = {
+          events: {
+            pinning: {
+              /**
+               * @ngdoc event
+               * @name columnPin
+               * @eventOf ui.grid.pinning.api:PublicApi
+               * @description raised when column pin state has changed
+               * <pre>
+               *   gridApi.pinning.on.columnPinned(scope, function(colDef){})
+               * </pre>
+               * @param {object} colDef the column that was changed
+               * @param {string} container the render container the column is in ('left', 'right', '')
+               */
+              columnPinned: function(colDef, container) {
+              }
+            }
+          },
+          methods: {
+            pinning: {
+              /**
+               * @ngdoc function
+               * @name pinColumn
+               * @methodOf ui.grid.pinning.api:PublicApi
+               * @description pin column left, right, or none
+               * <pre>
+               *   gridApi.pinning.pinColumn(col, uiGridPinningConstants.container.LEFT)
+               * </pre>
+               * @param {gridColumn} col the column being pinned
+               * @param {string} container one of the recognised types
+               * from uiGridPinningConstants
+               */
+              pinColumn: function(col, container) {
+                service.pinColumn(grid, col, container);
+              }
+            }
+          }
+        };
+
+        grid.api.registerEventsFromObject(publicApi.events);
+        grid.api.registerMethodsFromObject(publicApi.methods);
       },
 
       defaultGridOptions: function (gridOptions) {
@@ -16925,7 +22176,7 @@ module.filter('px', function() {
          *  @ngdoc object
          *  @name ui.grid.pinning.api:GridOptions
          *
-         *  @description GridOptions for pinning feature, these are available to be  
+         *  @description GridOptions for pinning feature, these are available to be
            *  set using the ui-grid {@link ui.grid.class:GridOptions gridOptions}
          */
 
@@ -16933,7 +22184,7 @@ module.filter('px', function() {
          *  @ngdoc object
          *  @name enablePinning
          *  @propertyOf  ui.grid.pinning.api:GridOptions
-         *  @description Enable pinning for the entire grid.  
+         *  @description Enable pinning for the entire grid.
          *  <br/>Defaults to true
          */
         gridOptions.enablePinning = gridOptions.enablePinning !== false;
@@ -16947,7 +22198,7 @@ module.filter('px', function() {
          *  @ngdoc object
          *  @name ui.grid.pinning.api:ColumnDef
          *
-         *  @description ColumnDef for pinning feature, these are available to be 
+         *  @description ColumnDef for pinning feature, these are available to be
          *  set using the ui-grid {@link ui.grid.class:GridOptions.columnDef gridOptions.columnDefs}
          */
 
@@ -16955,7 +22206,7 @@ module.filter('px', function() {
          *  @ngdoc object
          *  @name enablePinning
          *  @propertyOf  ui.grid.pinning.api:ColumnDef
-         *  @description Enable pinning for the individual column.  
+         *  @description Enable pinning for the individual column.
          *  <br/>Defaults to true
          */
         colDef.enablePinning = colDef.enablePinning === undefined ? gridOptions.enablePinning : colDef.enablePinning;
@@ -16977,38 +22228,12 @@ module.filter('px', function() {
          *  <br/>Defaults to false
          */
         if (colDef.pinnedLeft) {
-          if (col.width === '*') {
-            // Need to refresh so the width can be calculated.
-            col.grid.refresh()
-                .then(function () {
-                    col.renderContainer = 'left';
-                    // Need to calculate the width. If col.drawnWidth is used instead then the width
-                    // will be 100% if it's the first column, 50% if it's the second etc.
-                    col.width = col.grid.canvasWidth / col.grid.columns.length;
-                    col.grid.createLeftContainer();
-            });
-          }
-          else {
-            col.renderContainer = 'left';
-            col.grid.createLeftContainer();
-          }
+          col.renderContainer = 'left';
+          col.grid.createLeftContainer();
         }
         else if (colDef.pinnedRight) {
-            if (col.width === '*') {
-                // Need to refresh so the width can be calculated.
-                col.grid.refresh()
-                    .then(function () {
-                        col.renderContainer = 'right';
-                        // Need to calculate the width. If col.drawnWidth is used instead then the width
-                        // will be 100% if it's the first column, 50% if it's the second etc.
-                        col.width = col.grid.canvasWidth / col.grid.columns.length;
-                        col.grid.createRightContainer();
-                    });
-            }
-            else {
-                col.renderContainer = 'right';
-                col.grid.createRightContainer();
-            }
+          col.renderContainer = 'right';
+          col.grid.createRightContainer();
         }
 
         if (!colDef.enablePinning) {
@@ -17023,16 +22248,7 @@ module.filter('px', function() {
             return typeof(this.context.col.renderContainer) === 'undefined' || !this.context.col.renderContainer || this.context.col.renderContainer !== 'left';
           },
           action: function () {
-            this.context.col.renderContainer = 'left';
-            this.context.col.width = this.context.col.drawnWidth;
-            this.context.col.grid.createLeftContainer();
-
-            // Need to call refresh twice; once to move our column over to the new render container and then
-            //   a second time to update the grid viewport dimensions with our adjustments
-            col.grid.refresh()
-              .then(function () {
-                col.grid.refresh();
-              });
+            service.pinColumn(this.context.col.grid, this.context.col, uiGridPinningConstants.container.LEFT);
           }
         };
 
@@ -17044,17 +22260,7 @@ module.filter('px', function() {
             return typeof(this.context.col.renderContainer) === 'undefined' || !this.context.col.renderContainer || this.context.col.renderContainer !== 'right';
           },
           action: function () {
-            this.context.col.renderContainer = 'right';
-            this.context.col.width = this.context.col.drawnWidth;
-            this.context.col.grid.createRightContainer();
-
-
-            // Need to call refresh twice; once to move our column over to the new render container and then
-            //   a second time to update the grid viewport dimensions with our adjustments
-            col.grid.refresh()
-              .then(function () {
-                col.grid.refresh();
-              });
+            service.pinColumn(this.context.col.grid, this.context.col, uiGridPinningConstants.container.RIGHT);
           }
         };
 
@@ -17066,14 +22272,7 @@ module.filter('px', function() {
             return typeof(this.context.col.renderContainer) !== 'undefined' && this.context.col.renderContainer !== null && this.context.col.renderContainer !== 'body';
           },
           action: function () {
-            this.context.col.renderContainer = null;
-
-            // Need to call refresh twice; once to move our column over to the new render container and then
-            //   a second time to update the grid viewport dimensions with our adjustments
-            col.grid.refresh()
-              .then(function () {
-                col.grid.refresh();
-              });
+            service.pinColumn(this.context.col.grid, this.context.col, uiGridPinningConstants.container.NONE);
           }
         };
 
@@ -17086,6 +22285,27 @@ module.filter('px', function() {
         if (!gridUtil.arrayContainsObjectWithProperty(col.menuItems, 'name', 'ui.grid.pinning.unpin')) {
           col.menuItems.push(removePinAction);
         }
+      },
+
+      pinColumn: function(grid, col, container) {
+        if (container === uiGridPinningConstants.container.NONE) {
+          col.renderContainer = null;
+          col.colDef.pinnedLeft = col.colDef.pinnedRight = false;
+        }
+        else {
+          col.renderContainer = container;
+          if (container === uiGridPinningConstants.container.LEFT) {
+            grid.createLeftContainer();
+          }
+          else if (container === uiGridPinningConstants.container.RIGHT) {
+            grid.createRightContainer();
+          }
+        }
+
+        grid.refresh()
+        .then(function() {
+          grid.api.pinning.raise.columnPinned( col.colDef, container );
+        });
       }
     };
 
@@ -17115,6 +22335,17 @@ module.filter('px', function() {
 (function(){
   'use strict';
 
+  /**
+   * @ngdoc overview
+   * @name ui.grid.resizeColumns
+   * @description
+   *
+   * # ui.grid.resizeColumns
+   *
+   * <div class="alert alert-success" role="alert"><strong>Stable</strong> This feature is stable. There should no longer be breaking api changes without a deprecation warning.</div>
+   *
+   * This module allows columns to be resized.
+   */
   var module = angular.module('ui.grid.resizeColumns', ['ui.grid']);
 
   module.service('uiGridResizeColumnsService', ['gridUtil', '$q', '$timeout',
@@ -17127,7 +22358,7 @@ module.filter('px', function() {
            *  @ngdoc object
            *  @name ui.grid.resizeColumns.api:GridOptions
            *
-           *  @description GridOptions for resizeColumns feature, these are available to be  
+           *  @description GridOptions for resizeColumns feature, these are available to be
            *  set using the ui-grid {@link ui.grid.class:GridOptions gridOptions}
            */
 
@@ -17135,7 +22366,7 @@ module.filter('px', function() {
            *  @ngdoc object
            *  @name enableColumnResizing
            *  @propertyOf  ui.grid.resizeColumns.api:GridOptions
-           *  @description Enable column resizing on the entire grid 
+           *  @description Enable column resizing on the entire grid
            *  <br/>Defaults to true
            */
           gridOptions.enableColumnResizing = gridOptions.enableColumnResizing !== false;
@@ -17154,7 +22385,7 @@ module.filter('px', function() {
            *  @ngdoc object
            *  @name ui.grid.resizeColumns.api:ColumnDef
            *
-           *  @description ColumnDef for resizeColumns feature, these are available to be 
+           *  @description ColumnDef for resizeColumns feature, these are available to be
            *  set using the ui-grid {@link ui.grid.class:GridOptions.columnDef gridOptions.columnDefs}
            */
 
@@ -17176,7 +22407,7 @@ module.filter('px', function() {
 
           return $q.all(promises);
         },
-        
+
         registerPublicApi: function (grid) {
             /**
              *  @ngdoc object
@@ -17204,13 +22435,17 @@ module.filter('px', function() {
             };
             grid.api.registerEventsFromObject(publicApi.events);
         },
-        
+
         fireColumnSizeChanged: function (grid, colDef, deltaChange) {
           $timeout(function () {
-            grid.api.colResizable.raise.columnSizeChanged(colDef, deltaChange);
+            if ( grid.api.colResizable ){
+              grid.api.colResizable.raise.columnSizeChanged(colDef, deltaChange);
+            } else {
+              gridUtil.logError("The resizeable api is not registered, this may indicate that you've included the module but not added the 'ui-grid-resize-columns' directive to your grid definition.  Cannot raise any events.");
+            }
           });
         },
-        
+
         // get either this column, or the column next to this column, to resize,
         // returns the column we're going to resize
         findTargetCol: function(col, position, rtlMultiplier){
@@ -17218,13 +22453,13 @@ module.filter('px', function() {
 
           if (position === 'left') {
             // Get the column to the left of this one
-            var colIndex = renderContainer.visibleColumnCache.indexOf(col);          
+            var colIndex = renderContainer.visibleColumnCache.indexOf(col);
             return renderContainer.visibleColumnCache[colIndex - 1 * rtlMultiplier];
           } else {
             return col;
           }
         }
-        
+
       };
 
       return service;
@@ -17276,7 +22511,7 @@ module.filter('px', function() {
       scope: false,
       compile: function () {
         return {
-          pre: function ($scope, $elm, $attrs, uiGridCtrl) {            
+          pre: function ($scope, $elm, $attrs, uiGridCtrl) {
             uiGridResizeColumnsService.defaultGridOptions(uiGridCtrl.grid.options);
             uiGridCtrl.grid.registerColumnBuilder( uiGridResizeColumnsService.colResizerColumnBuilder);
             uiGridResizeColumnsService.registerPublicApi(uiGridCtrl.grid);
@@ -17302,7 +22537,7 @@ module.filter('px', function() {
 
             if (grid.options.enableColumnResizing) {
               var columnResizerElm = $templateCache.get('ui-grid/columnResizer');
-    
+
               var rtlMultiplier = 1;
               //when in RTL mode reverse the direction using the rtlMultiplier and change the position to left
               if (grid.isRTL()) {
@@ -17311,17 +22546,17 @@ module.filter('px', function() {
               }
 
               var displayResizers = function(){
-                
-                // remove any existing resizers.  
+
+                // remove any existing resizers.
                 var resizers = $elm[0].getElementsByClassName('ui-grid-column-resizer');
                 for ( var i = 0; i < resizers.length; i++ ){
                   angular.element(resizers[i]).remove();
-                } 
-                
+                }
+
                 // get the target column for the left resizer
                 var otherCol = uiGridResizeColumnsService.findTargetCol($scope.col, 'left', rtlMultiplier);
                 var renderContainer = $scope.col.getRenderContainer();
-              
+
                 // Don't append the left resizer if this is the first column or the column to the left of this one has resizing disabled
                 if (otherCol && renderContainer.visibleColumnCache.indexOf($scope.col) !== 0 && otherCol.colDef.enableColumnResizing !== false) {
                   var resizerLeft = angular.element(columnResizerElm).clone();
@@ -17330,7 +22565,7 @@ module.filter('px', function() {
                   $elm.prepend(resizerLeft);
                   $compile(resizerLeft)($scope);
                 }
-                
+
                 // Don't append the right resizer if this column has resizing disabled
                 if ($scope.col.colDef.enableColumnResizing !== false) {
                   var resizerRight = angular.element(columnResizerElm).clone();
@@ -17342,13 +22577,13 @@ module.filter('px', function() {
               };
 
               displayResizers();
-              
+
               var waitDisplay = function(){
                 $timeout(displayResizers);
               };
-              
+
               var dataChangeDereg = grid.registerDataChangeCallback( waitDisplay, [uiGridConstants.dataChange.COLUMN] );
-              
+
               $scope.$on( '$destroy', dataChangeDereg );
             }
           }
@@ -17358,7 +22593,7 @@ module.filter('px', function() {
   }]);
 
 
-  
+
   /**
    * @ngdoc directive
    * @name ui.grid.resizeColumns.directive:uiGridColumnResizer
@@ -17367,7 +22602,7 @@ module.filter('px', function() {
    *
    * @description
    * Draggable handle that controls column resizing.
-   * 
+   *
    * @example
    <doc:example module="app">
      <doc:source>
@@ -17393,27 +22628,13 @@ module.filter('px', function() {
      </doc:source>
      <doc:scenario>
       // TODO: e2e specs?
-        // TODO: Obey minWidth and maxWIdth;
 
       // TODO: post-resize a horizontal scroll event should be fired
      </doc:scenario>
    </doc:example>
-   */  
+   */
   module.directive('uiGridColumnResizer', ['$document', 'gridUtil', 'uiGridConstants', 'uiGridResizeColumnsService', function ($document, gridUtil, uiGridConstants, uiGridResizeColumnsService) {
     var resizeOverlay = angular.element('<div class="ui-grid-resize-overlay"></div>');
-
-    var downEvent, upEvent, moveEvent;
-
-    if (gridUtil.isTouchEnabled()) {
-      downEvent = 'touchstart';
-      upEvent = 'touchend';
-      moveEvent = 'touchmove';
-    }
-    else {
-      downEvent = 'mousedown';
-      upEvent = 'mouseup';
-      moveEvent = 'mousemove';
-    }
 
     var resizer = {
       priority: 0,
@@ -17442,33 +22663,13 @@ module.filter('px', function() {
           $elm.addClass('right');
         }
 
-        // Resize all the other columns around col
-        function resizeAroundColumn(col) {
-          // Get this column's render container
-          var renderContainer = col.getRenderContainer();
-
-          renderContainer.visibleColumnCache.forEach(function (column) {
-            // Skip the column we just resized
-            if (column === col) { return; }
-            
-            var colDef = column.colDef;
-            if (!colDef.width || (angular.isString(colDef.width) && (colDef.width.indexOf('*') !== -1 || colDef.width.indexOf('%') !== -1))) {
-              column.width = column.drawnWidth;
-            }
-          });
-        }
-
-        // Build the columns then refresh the grid canvas
+        // Refresh the grid canvas
         //   takes an argument representing the diff along the X-axis that the resize had
-        function buildColumnsAndRefresh(xDiff) {
-          // Build the columns
-          uiGridCtrl.grid.buildColumns()
-            .then(function() {
-              // Then refresh the grid canvas, rebuilding the styles so that the scrollbar updates its size
-              uiGridCtrl.grid.refreshCanvas(true).then( function() {
-                uiGridCtrl.grid.refresh();
-              });
-            });
+        function refreshCanvas(xDiff) {
+          // Then refresh the grid canvas, rebuilding the styles so that the scrollbar updates its size
+          uiGridCtrl.grid.refreshCanvas(true).then( function() {
+            uiGridCtrl.grid.queueGridRefresh();
+          });
         }
 
         // Check that the requested width isn't wider than the maxWidth, or narrower than the minWidth
@@ -17477,18 +22678,26 @@ module.filter('px', function() {
           var newWidth = width;
 
           // If the new width would be less than the column's allowably minimum width, don't allow it
-          if (col.colDef.minWidth && newWidth < col.colDef.minWidth) {
-            newWidth = col.colDef.minWidth;
+          if (col.minWidth && newWidth < col.minWidth) {
+            newWidth = col.minWidth;
           }
-          else if (col.colDef.maxWidth && newWidth > col.colDef.maxWidth) {
-            newWidth = col.colDef.maxWidth;
+          else if (col.maxWidth && newWidth > col.maxWidth) {
+            newWidth = col.maxWidth;
           }
-          
+
           return newWidth;
         }
-        
-        
-        function mousemove(event, args) {
+
+
+        /*
+         * Our approach to event handling aims to deal with both touch devices and mouse devices
+         * We register down handlers on both touch and mouse.  When a touchstart or mousedown event
+         * occurs, we register the corresponding touchmove/touchend, or mousemove/mouseend events.
+         *
+         * This way we can listen for both without worrying about the fact many touch devices also emulate
+         * mouse events - basically whichever one we hear first is what we'll go with.
+         */
+        function moveFunction(event, args) {
           if (event.originalEvent) { event = event.originalEvent; }
           event.preventDefault();
 
@@ -17516,14 +22725,14 @@ module.filter('px', function() {
 
           // check we're not outside the allowable bounds for this column
           x = x + ( constrainWidth(col, newWidth) - newWidth ) * rtlMultiplier;
-          
+
           resizeOverlay.css({ left: x + 'px' });
 
           uiGridCtrl.fireEvent(uiGridConstants.events.ITEM_DRAGGING);
         }
-        
 
-        function mouseup(event, args) {
+
+        function upFunction(event, args) {
           if (event.originalEvent) { event = event.originalEvent; }
           event.preventDefault();
 
@@ -17536,8 +22745,10 @@ module.filter('px', function() {
           var xDiff = x - startX;
 
           if (xDiff === 0) {
-            $document.off(upEvent, mouseup);
-            $document.off(moveEvent, mousemove);
+            // no movement, so just reset event handlers, including turning back on both
+            // down events - we turned one off when this event started
+            offAllEvents();
+            onDownEvents();
             return;
           }
 
@@ -17553,20 +22764,20 @@ module.filter('px', function() {
 
           // check we're not outside the allowable bounds for this column
           col.width = constrainWidth(col, newWidth);
+          col.hasCustomWidth = true;
 
-          // All other columns because fixed to their drawn width, if they aren't already
-          resizeAroundColumn(col);
-
-          buildColumnsAndRefresh(xDiff);
+          refreshCanvas(xDiff);
 
           uiGridResizeColumnsService.fireColumnSizeChanged(uiGridCtrl.grid, col.colDef, xDiff);
 
-          $document.off(upEvent, mouseup);
-          $document.off(moveEvent, mousemove);
+          // stop listening of up and move events - wait for next down
+          // reset the down events - we will have turned one off when this event started
+          offAllEvents();
+          onDownEvents();
         }
 
 
-        $elm.on(downEvent, function(event, args) {
+        var downFunction = function(event, args) {
           if (event.originalEvent) { event = event.originalEvent; }
           event.stopPropagation();
 
@@ -17583,14 +22794,40 @@ module.filter('px', function() {
           // Place the resizer overlay at the start position
           resizeOverlay.css({ left: startX });
 
-          // Add handlers for mouse move and up events
-          $document.on(upEvent, mouseup);
-          $document.on(moveEvent, mousemove);
-        });
+          // Add handlers for move and up events - if we were mousedown then we listen for mousemove and mouseup, if
+          // we were touchdown then we listen for touchmove and touchup.  Also remove the handler for the equivalent
+          // down event - so if we're touchdown, then remove the mousedown handler until this event is over, if we're
+          // mousedown then remove the touchdown handler until this event is over, this avoids processing duplicate events
+          if ( event.type === 'touchstart' ){
+            $document.on('touchend', upFunction);
+            $document.on('touchmove', moveFunction);
+            $elm.off('mousedown', downFunction);
+          } else {
+            $document.on('mouseup', upFunction);
+            $document.on('mousemove', moveFunction);
+            $elm.off('touchstart', downFunction);
+          }
+        };
+
+        var onDownEvents = function() {
+          $elm.on('mousedown', downFunction);
+          $elm.on('touchstart', downFunction);
+        };
+
+        var offAllEvents = function() {
+          $document.off('mouseup', upFunction);
+          $document.off('touchend', upFunction);
+          $document.off('mousemove', moveFunction);
+          $document.off('touchmove', moveFunction);
+          $elm.off('mousedown', downFunction);
+          $elm.off('touchstart', downFunction);
+        };
+
+        onDownEvents();
 
 
         // On doubleclick, resize to fit all rendered cells
-        $elm.on('dblclick', function(event, args) {
+        var dblClickFn = function(event, args){
           event.stopPropagation();
 
           var col = uiGridResizeColumnsService.findTargetCol($scope.col, $scope.position, rtlMultiplier);
@@ -17640,20 +22877,16 @@ module.filter('px', function() {
 
           // check we're not outside the allowable bounds for this column
           col.width = constrainWidth(col, maxWidth);
-          
-          // All other columns because fixed to their drawn width, if they aren't already
-          resizeAroundColumn(col);
+          col.hasCustomWidth = true;
 
-          buildColumnsAndRefresh(xDiff);
-          
-          uiGridResizeColumnsService.fireColumnSizeChanged(uiGridCtrl.grid, col.colDef, xDiff);
-        });
+          refreshCanvas(xDiff);
+
+          uiGridResizeColumnsService.fireColumnSizeChanged(uiGridCtrl.grid, col.colDef, xDiff);        };
+        $elm.on('dblclick', dblClickFn);
 
         $elm.on('$destroy', function() {
-          $elm.off(downEvent);
-          $elm.off('dblclick');
-          $document.off(moveEvent, mousemove);
-          $document.off(upEvent, mouseup);
+          $elm.off('dblclick', dblClickFn);
+          offAllEvents();
         });
       }
     };
@@ -17662,6 +22895,7 @@ module.filter('px', function() {
   }]);
 
 })();
+
 (function () {
   'use strict';
 
@@ -17670,15 +22904,18 @@ module.filter('px', function() {
    * @name ui.grid.rowEdit
    * @description
    *
-   *  # ui.grid.rowEdit
+   * # ui.grid.rowEdit
+   *
+   * <div class="alert alert-success" role="alert"><strong>Stable</strong> This feature is stable. There should no longer be breaking api changes without a deprecation warning.</div>
+   *
    * This module extends the edit feature to provide tracking and saving of rows
    * of data.  The tutorial provides more information on how this feature is best
    * used {@link tutorial/205_row_editable here}.
    * <br/>
    * This feature depends on usage of the ui-grid-edit feature, and also benefits
-   * from use of ui-grid-cellNav to provide the full spreadsheet-like editing 
+   * from use of ui-grid-cellNav to provide the full spreadsheet-like editing
    * experience
-   * 
+   *
    */
 
   var module = angular.module('ui.grid.rowEdit', ['ui.grid', 'ui.grid.edit', 'ui.grid.cellNav']);
@@ -17698,7 +22935,7 @@ module.filter('px', function() {
    *
    *  @description Services for row editing features
    */
-  module.service('uiGridRowEditService', ['$interval', '$q', 'uiGridConstants', 'uiGridRowEditConstants', 'gridUtil', 
+  module.service('uiGridRowEditService', ['$interval', '$q', 'uiGridConstants', 'uiGridRowEditConstants', 'gridUtil',
     function ($interval, $q, uiGridConstants, uiGridRowEditConstants, gridUtil) {
 
       var service = {
@@ -17710,9 +22947,9 @@ module.filter('px', function() {
            *
            *  @description Public Api for rowEdit feature
            */
-          
+
           grid.rowEdit = {};
-          
+
           var publicApi = {
             events: {
               rowEdit: {
@@ -17722,24 +22959,24 @@ module.filter('px', function() {
                  * @name saveRow
                  * @description raised when a row is ready for saving.  Once your
                  * row has saved you may need to use angular.extend to update the
-                 * data entity with any changed data from your save (for example, 
+                 * data entity with any changed data from your save (for example,
                  * lock version information if you're using optimistic locking,
                  * or last update time/user information).
-                 * 
+                 *
                  * Your method should call setSavePromise somewhere in the body before
-                 * returning control.  The feature will then wait, with the gridRow greyed out 
+                 * returning control.  The feature will then wait, with the gridRow greyed out
                  * whilst this promise is being resolved.
-                 * 
+                 *
                  * <pre>
                  *      gridApi.rowEdit.on.saveRow(scope,function(rowEntity){})
                  * </pre>
                  * and somewhere within the event handler:
                  * <pre>
-                 *      gridApi.rowEdit.setSavePromise( grid, rowEntity, savePromise)
+                 *      gridApi.rowEdit.setSavePromise( rowEntity, savePromise)
                  * </pre>
                  * @param {object} rowEntity the options.data element that was edited
                  * @returns {promise} Your saveRow method should return a promise, the
-                 * promise should either be resolved (implying successful save), or 
+                 * promise should either be resolved (implying successful save), or
                  * rejected (implying an error).
                  */
                 saveRow: function (rowEntity) {
@@ -17755,13 +22992,13 @@ module.filter('px', function() {
                  * @description Sets the promise associated with the row save, mandatory that
                  * the saveRow event handler calls this method somewhere before returning.
                  * <pre>
-                 *      gridApi.rowEdit.setSavePromise(grid, rowEntity)
+                 *      gridApi.rowEdit.setSavePromise(rowEntity, savePromise)
                  * </pre>
                  * @param {object} rowEntity a data row from the grid for which a save has
                  * been initiated
                  * @param {promise} savePromise the promise that will be resolved when the
                  * save is successful, or rejected if the save fails
-                 * 
+                 *
                  */
                 setSavePromise: function ( rowEntity, savePromise) {
                   service.setSavePromise(grid, rowEntity, savePromise);
@@ -17775,7 +23012,7 @@ module.filter('px', function() {
                  *      gridApi.rowEdit.getDirtyRows(grid)
                  * </pre>
                  * @returns {array} An array of gridRows that are currently dirty
-                 * 
+                 *
                  */
                 getDirtyRows: function () {
                   return grid.rowEdit.dirtyRows ? grid.rowEdit.dirtyRows : [];
@@ -17789,7 +23026,7 @@ module.filter('px', function() {
                  *      gridApi.rowEdit.getErrorRows(grid)
                  * </pre>
                  * @returns {array} An array of gridRows that are currently in error
-                 * 
+                 *
                  */
                 getErrorRows: function () {
                   return grid.rowEdit.errorRows ? grid.rowEdit.errorRows : [];
@@ -17806,12 +23043,12 @@ module.filter('px', function() {
                  * @returns {promise} a promise that represents the aggregate of all
                  * of the individual save promises - i.e. it will be resolved when all
                  * the individual save promises have been resolved.
-                 * 
+                 *
                  */
                 flushDirtyRows: function () {
                   return service.flushDirtyRows(grid);
                 },
-                
+
                 /**
                  * @ngdoc method
                  * @methodOf ui.grid.rowEdit.api:PublicApi
@@ -17823,15 +23060,35 @@ module.filter('px', function() {
                  * call in a $interval or $timeout
                  * <pre>
                  *      $interval( function() {
-                 *        gridApi.rowEdit.setRowsDirty(grid, myDataRows);
+                 *        gridApi.rowEdit.setRowsDirty(myDataRows);
                  *      }, 0, 1);
                  * </pre>
                  * @param {array} dataRows the data entities for which the gridRows
-                 * should be set dirty.  
-                 * 
+                 * should be set dirty.
+                 *
                  */
                 setRowsDirty: function ( dataRows) {
                   service.setRowsDirty(grid, dataRows);
+                },
+
+                /**
+                 * @ngdoc method
+                 * @methodOf ui.grid.rowEdit.api:PublicApi
+                 * @name setRowsClean
+                 * @description Sets each of the rows passed in dataRows
+                 * to be clean, removing them from the dirty cache and the error cache,
+                 * and clearing the error flag and the dirty flag
+                 * <pre>
+                 *      var gridRows = $scope.gridApi.rowEdit.getDirtyRows();
+                 *      var dataRows = gridRows.map( function( gridRow ) { return gridRow.entity; });
+                 *      $scope.gridApi.rowEdit.setRowsClean( dataRows );
+                 * </pre>
+                 * @param {array} dataRows the data entities for which the gridRows
+                 * should be set clean.
+                 *
+                 */
+                setRowsClean: function ( dataRows) {
+                  service.setRowsClean(grid, dataRows);
                 }
               }
             }
@@ -17839,15 +23096,15 @@ module.filter('px', function() {
 
           grid.api.registerEventsFromObject(publicApi.events);
           grid.api.registerMethodsFromObject(publicApi.methods);
-          
+
           grid.api.core.on.renderingComplete( scope, function ( gridApi ) {
             grid.api.edit.on.afterCellEdit( scope, service.endEditCell );
             grid.api.edit.on.beginCellEdit( scope, service.beginEditCell );
             grid.api.edit.on.cancelCellEdit( scope, service.cancelEditCell );
-            
+
             if ( grid.api.cellNav ) {
               grid.api.cellNav.on.navigate( scope, service.navigate );
-            }              
+            }
           });
 
         },
@@ -17858,7 +23115,7 @@ module.filter('px', function() {
            *  @ngdoc object
            *  @name ui.grid.rowEdit.api:GridOptions
            *
-           *  @description Options for configuring the rowEdit feature, these are available to be  
+           *  @description Options for configuring the rowEdit feature, these are available to be
            *  set using the ui-grid {@link ui.grid.class:GridOptions gridOptions}
            */
 
@@ -17882,8 +23139,13 @@ module.filter('px', function() {
           return function() {
             gridRow.isSaving = true;
 
+            if ( gridRow.rowEditSavePromise ){
+              // don't save the row again if it's already saving - that causes stale object exceptions
+              return gridRow.rowEditSavePromise;
+            }
+
             var promise = grid.api.rowEdit.raise.saveRow( gridRow.entity );
-            
+
             if ( gridRow.rowEditSavePromise ){
               gridRow.rowEditSavePromise.then( self.processSuccessPromise( grid, gridRow ), self.processErrorPromise( grid, gridRow ));
             } else {
@@ -17892,7 +23154,7 @@ module.filter('px', function() {
             return promise;
           };
         },
-        
+
 
         /**
          * @ngdoc method
@@ -17908,7 +23170,7 @@ module.filter('px', function() {
          * been initiated
          * @param {promise} savePromise the promise that will be resolved when the
          * save is successful, or rejected if the save fails
-         * 
+         *
          */
         setSavePromise: function (grid, rowEntity, savePromise) {
           var gridRow = grid.getRow( rowEntity );
@@ -17921,31 +23183,32 @@ module.filter('px', function() {
          * @methodOf ui.grid.rowEdit.service:uiGridRowEditService
          * @name processSuccessPromise
          * @description  Returns a function that processes the successful
-         * resolution of a save promise  
+         * resolution of a save promise
          * @param {object} grid the grid for which the promise should be processed
          * @param {GridRow} gridRow the row that has been saved
          * @returns {function} the success handling function
          */
         processSuccessPromise: function ( grid, gridRow ) {
           var self = this;
-          
+
           return function() {
             delete gridRow.isSaving;
             delete gridRow.isDirty;
             delete gridRow.isError;
             delete gridRow.rowEditSaveTimer;
+            delete gridRow.rowEditSavePromise;
             self.removeRow( grid.rowEdit.errorRows, gridRow );
             self.removeRow( grid.rowEdit.dirtyRows, gridRow );
           };
         },
-        
+
 
         /**
          * @ngdoc method
          * @methodOf ui.grid.rowEdit.service:uiGridRowEditService
          * @name processErrorPromise
          * @description  Returns a function that processes the failed
-         * resolution of a save promise  
+         * resolution of a save promise
          * @param {object} grid the grid for which the promise should be processed
          * @param {GridRow} gridRow the row that is now in error
          * @returns {function} the error handling function
@@ -17954,9 +23217,10 @@ module.filter('px', function() {
           return function() {
             delete gridRow.isSaving;
             delete gridRow.rowEditSaveTimer;
+            delete gridRow.rowEditSavePromise;
 
             gridRow.isError = true;
-            
+
             if (!grid.rowEdit.errorRows){
               grid.rowEdit.errorRows = [];
             }
@@ -17965,39 +23229,43 @@ module.filter('px', function() {
             }
           };
         },
-        
-        
+
+
         /**
          * @ngdoc method
          * @methodOf ui.grid.rowEdit.service:uiGridRowEditService
          * @name removeRow
          * @description  Removes a row from a cache of rows - either
          * grid.rowEdit.errorRows or grid.rowEdit.dirtyRows.  If the row
-         * is not present silently does nothing. 
+         * is not present silently does nothing.
          * @param {array} rowArray the array from which to remove the row
          * @param {GridRow} gridRow the row that should be removed
          */
         removeRow: function( rowArray, removeGridRow ){
-          angular.forEach( rowArray, function( gridRow, index ){
+          if (typeof(rowArray) === 'undefined' || rowArray === null){
+            return;
+          }
+
+          rowArray.forEach( function( gridRow, index ){
             if ( gridRow.uid === removeGridRow.uid ){
               rowArray.splice( index, 1);
             }
           });
         },
-        
-        
+
+
         /**
          * @ngdoc method
          * @methodOf ui.grid.rowEdit.service:uiGridRowEditService
          * @name isRowPresent
          * @description  Checks whether a row is already present
-         * in the given array 
+         * in the given array
          * @param {array} rowArray the array in which to look for the row
          * @param {GridRow} gridRow the row that should be looked for
          */
         isRowPresent: function( rowArray, removeGridRow ){
           var present = false;
-          angular.forEach( rowArray, function( gridRow, index ){
+          rowArray.forEach( function( gridRow, index ){
             if ( gridRow.uid === removeGridRow.uid ){
               present = true;
             }
@@ -18005,7 +23273,7 @@ module.filter('px', function() {
           return present;
         },
 
-        
+
         /**
          * @ngdoc method
          * @methodOf ui.grid.rowEdit.service:uiGridRowEditService
@@ -18019,19 +23287,19 @@ module.filter('px', function() {
          * @returns {promise} a promise that represents the aggregate of all
          * of the individual save promises - i.e. it will be resolved when all
          * the individual save promises have been resolved.
-         * 
+         *
          */
         flushDirtyRows: function(grid){
           var promises = [];
-          angular.forEach(grid.rowEdit.dirtyRows, function( gridRow ){
+          grid.api.rowEdit.getDirtyRows().forEach( function( gridRow ){
             service.saveRow( grid, gridRow )();
             promises.push( gridRow.rowEditSavePromise );
           });
-          
+
           return $q.all( promises );
         },
-        
-        
+
+
         /**
          * @ngdoc method
          * @methodOf ui.grid.rowEdit.service:uiGridRowEditService
@@ -18039,10 +23307,10 @@ module.filter('px', function() {
          * @description Receives an afterCellEdit event from the edit function,
          * and sets flags as appropriate.  Only the rowEntity parameter
          * is processed, although other params are available.  Grid
-         * is automatically provided by the gridApi. 
+         * is automatically provided by the gridApi.
          * @param {object} rowEntity the data entity for which the cell
          * was edited
-         */        
+         */
         endEditCell: function( rowEntity, colDef, newValue, previousValue ){
           var grid = this.grid;
           var gridRow = grid.getRow( rowEntity );
@@ -18052,19 +23320,19 @@ module.filter('px', function() {
             if ( !grid.rowEdit.dirtyRows ){
               grid.rowEdit.dirtyRows = [];
             }
-            
+
             if ( !gridRow.isDirty ){
               gridRow.isDirty = true;
               grid.rowEdit.dirtyRows.push( gridRow );
             }
-            
+
             delete gridRow.isError;
-            
+
             service.considerSetTimer( grid, gridRow );
           }
         },
-        
-        
+
+
         /**
          * @ngdoc method
          * @methodOf ui.grid.rowEdit.service:uiGridRowEditService
@@ -18073,7 +23341,7 @@ module.filter('px', function() {
          * and cancels any rowEditSaveTimers if present, as the user is still editing
          * this row.  Only the rowEntity parameter
          * is processed, although other params are available.  Grid
-         * is automatically provided by the gridApi. 
+         * is automatically provided by the gridApi.
          * @param {object} rowEntity the data entity for which the cell
          * editing has commenced
          */
@@ -18081,7 +23349,7 @@ module.filter('px', function() {
           var grid = this.grid;
           var gridRow = grid.getRow( rowEntity );
           if ( !gridRow ){ gridUtil.logError( 'Unable to find rowEntity in grid data, timer cannot be cancelled' ); return; }
-          
+
           service.cancelTimer( grid, gridRow );
         },
 
@@ -18093,34 +23361,34 @@ module.filter('px', function() {
          * @description Receives a cancelCellEdit event from the edit function,
          * and if the row was already dirty, restarts the save timer.  If the row
          * was not already dirty, then it's not dirty now either and does nothing.
-         * 
+         *
          * Only the rowEntity parameter
          * is processed, although other params are available.  Grid
          * is automatically provided by the gridApi.
-         *  
+         *
          * @param {object} rowEntity the data entity for which the cell
          * editing was cancelled
-         */        
+         */
         cancelEditCell: function( rowEntity, colDef ){
           var grid = this.grid;
           var gridRow = grid.getRow( rowEntity );
           if ( !gridRow ){ gridUtil.logError( 'Unable to find rowEntity in grid data, timer cannot be set' ); return; }
-          
+
           service.considerSetTimer( grid, gridRow );
         },
-        
-        
+
+
         /**
          * @ngdoc method
          * @methodOf ui.grid.rowEdit.service:uiGridRowEditService
          * @name navigate
          * @description cellNav tells us that the selected cell has changed.  If
          * the new row had a timer running, then stop it similar to in a beginCellEdit
-         * call.  If the old row is dirty and not the same as the new row, then 
+         * call.  If the old row is dirty and not the same as the new row, then
          * start a timer on it.
          * @param {object} newRowCol the row and column that were selected
          * @param {object} oldRowCol the row and column that was left
-         * 
+         *
          */
         navigate: function( newRowCol, oldRowCol ){
           var grid = this.grid;
@@ -18132,38 +23400,38 @@ module.filter('px', function() {
             service.considerSetTimer( grid, oldRowCol.row );
           }
         },
-        
-        
+
+
         /**
          * @ngdoc property
          * @propertyOf ui.grid.rowEdit.api:GridOptions
          * @name rowEditWaitInterval
          * @description How long the grid should wait for another change on this row
-         * before triggering a save (in milliseconds).  If set to -1, then saves are 
-         * never triggered by timer (implying that the user will call flushDirtyRows() 
+         * before triggering a save (in milliseconds).  If set to -1, then saves are
+         * never triggered by timer (implying that the user will call flushDirtyRows()
          * manually)
-         * 
+         *
          * @example
          * Setting the wait interval to 4 seconds
          * <pre>
          *   $scope.gridOptions = { rowEditWaitInterval: 4000 }
          * </pre>
-         * 
+         *
          */
         /**
          * @ngdoc method
          * @methodOf ui.grid.rowEdit.service:uiGridRowEditService
          * @name considerSetTimer
-         * @description Consider setting a timer on this row (if it is dirty).  if there is a timer running 
-         * on the row and the row isn't currently saving, cancel it, using cancelTimer, then if the row is 
+         * @description Consider setting a timer on this row (if it is dirty).  if there is a timer running
+         * on the row and the row isn't currently saving, cancel it, using cancelTimer, then if the row is
          * dirty and not currently saving then set a new timer
          * @param {object} grid the grid for which we are processing
          * @param {GridRow} gridRow the row for which the timer should be adjusted
-         * 
+         *
          */
         considerSetTimer: function( grid, gridRow ){
           service.cancelTimer( grid, gridRow );
-          
+
           if ( gridRow.isDirty && !gridRow.isSaving ){
             if ( grid.options.rowEditWaitInterval !== -1 ){
               var waitTime = grid.options.rowEditWaitInterval ? grid.options.rowEditWaitInterval : 2000;
@@ -18171,7 +23439,7 @@ module.filter('px', function() {
             }
           }
         },
-        
+
 
         /**
          * @ngdoc method
@@ -18181,7 +23449,7 @@ module.filter('px', function() {
          * then delete the timer itself
          * @param {object} grid the grid for which we are processing
          * @param {GridRow} gridRow the row for which the timer should be adjusted
-         * 
+         *
          */
         cancelTimer: function( grid, gridRow ){
           if ( gridRow.rowEditSaveTimer && !gridRow.isSaving ){
@@ -18207,8 +23475,8 @@ module.filter('px', function() {
          * </pre>
          * @param {object} grid the grid for which rows should be set dirty
          * @param {array} dataRows the data entities for which the gridRows
-         * should be set dirty.  
-         * 
+         * should be set dirty.
+         *
          */
         setRowsDirty: function( grid, myDataRows ) {
           var gridRow;
@@ -18218,22 +23486,52 @@ module.filter('px', function() {
               if ( !grid.rowEdit.dirtyRows ){
                 grid.rowEdit.dirtyRows = [];
               }
-              
+
               if ( !gridRow.isDirty ){
                 gridRow.isDirty = true;
                 grid.rowEdit.dirtyRows.push( gridRow );
               }
-              
+
               delete gridRow.isError;
-              
+
               service.considerSetTimer( grid, gridRow );
             } else {
               gridUtil.logError( "requested row not found in rowEdit.setRowsDirty, row was: " + value );
             }
           });
+        },
+
+
+        /**
+         * @ngdoc method
+         * @methodOf ui.grid.rowEdit.service:uiGridRowEditService
+         * @name setRowsClean
+         * @description Sets each of the rows passed in dataRows
+         * to be clean, clearing the dirty flag and the error flag, and removing
+         * the rows from the dirty and error caches.
+         * @param {object} grid the grid for which rows should be set clean
+         * @param {array} dataRows the data entities for which the gridRows
+         * should be set clean.
+         *
+         */
+        setRowsClean: function( grid, myDataRows ) {
+          var gridRow;
+
+          myDataRows.forEach( function( value, index ){
+            gridRow = grid.getRow( value );
+            if ( gridRow ){
+              delete gridRow.isDirty;
+              service.removeRow( grid.rowEdit.dirtyRows, gridRow );
+              service.cancelTimer( grid, gridRow );
+
+              delete gridRow.isError;
+              service.removeRow( grid.rowEdit.errorRows, gridRow );
+            } else {
+              gridUtil.logError( "requested row not found in rowEdit.setRowsClean, row was: " + value );
+            }
+          });
         }
-        
-        
+
       };
 
       return service;
@@ -18249,7 +23547,7 @@ module.filter('px', function() {
    *  @description Adds row editing features to the ui-grid-edit directive.
    *
    */
-  module.directive('uiGridRowEdit', ['gridUtil', 'uiGridRowEditService', 'uiGridEditConstants', 
+  module.directive('uiGridRowEdit', ['gridUtil', 'uiGridRowEditService', 'uiGridEditConstants',
   function (gridUtil, uiGridRowEditService, uiGridEditConstants) {
     return {
       replace: true,
@@ -18261,7 +23559,7 @@ module.filter('px', function() {
           pre: function ($scope, $elm, $attrs, uiGridCtrl) {
             uiGridRowEditService.initializeGrid($scope, uiGridCtrl.grid);
           },
-          post: function ($scope, $elm, $attrs, uiGridCtrl) {            
+          post: function ($scope, $elm, $attrs, uiGridCtrl) {
           }
         };
       }
@@ -18285,7 +23583,7 @@ module.filter('px', function() {
           scope: false,
           compile: function ($elm, $attrs) {
             var rowRepeatDiv = angular.element($elm.children().children()[0]);
-            
+
             var existingNgClass = rowRepeatDiv.attr("ng-class");
             var newNgClass = '';
             if ( existingNgClass ) {
@@ -18316,21 +23614,24 @@ module.filter('px', function() {
    * @name ui.grid.saveState
    * @description
    *
-   *  # ui.grid.saveState
+   * # ui.grid.saveState
+   *
+   * <div class="alert alert-success" role="alert"><strong>Stable</strong> This feature is stable. There should no longer be breaking api changes without a deprecation warning.</div>
+   *
    * This module provides the ability to save the grid state, and restore
-   * it when the user returns to the page.  
-   * 
-   * No UI is provided, the caller should provide their own UI/buttons 
+   * it when the user returns to the page.
+   *
+   * No UI is provided, the caller should provide their own UI/buttons
    * as appropriate. Usually the navigate events would be used to save
    * the grid state and restore it.
-   * 
+   *
    * <br/>
    * <br/>
    *
    * <div doc-module-components="ui.grid.save-state"></div>
    */
 
-  var module = angular.module('ui.grid.saveState', ['ui.grid', 'ui.grid.selection', 'ui.grid.cellNav']);
+  var module = angular.module('ui.grid.saveState', ['ui.grid', 'ui.grid.selection', 'ui.grid.cellNav', 'ui.grid.grouping', 'ui.grid.pinning', 'ui.grid.treeView']);
 
   /**
    *  @ngdoc object
@@ -18377,7 +23678,7 @@ module.filter('px', function() {
                  * @ngdoc function
                  * @name save
                  * @methodOf  ui.grid.saveState.api:PublicApi
-                 * @description Packages the current state of the grid into 
+                 * @description Packages the current state of the grid into
                  * an object, and provides it to the user for saving
                  * @returns {object} the state as a javascript object that can be saved
                  */
@@ -18402,7 +23703,7 @@ module.filter('px', function() {
           grid.api.registerEventsFromObject(publicApi.events);
 
           grid.api.registerMethodsFromObject(publicApi.methods);
-          
+
         },
 
         defaultGridOptions: function (gridOptions) {
@@ -18411,7 +23712,7 @@ module.filter('px', function() {
            * @ngdoc object
            * @name ui.grid.saveState.api:GridOptions
            *
-           * @description GridOptions for saveState feature, these are available to be  
+           * @description GridOptions for saveState feature, these are available to be
            * set using the ui-grid {@link ui.grid.class:GridOptions gridOptions}
            */
           /**
@@ -18428,7 +23729,7 @@ module.filter('px', function() {
            * @ngdoc object
            * @name saveOrder
            * @propertyOf  ui.grid.saveState.api:GridOptions
-           * @description Save the current column order.  Note that unless
+           * @description Restore the current column order.  Note that unless
            * you've provided the user with some way to reorder their columns (for
            * example the move columns feature), this makes little sense.
            * <br/>Defaults to true
@@ -18440,12 +23741,12 @@ module.filter('px', function() {
            * @propertyOf  ui.grid.saveState.api:GridOptions
            * @description Save the current scroll position.  Note that this
            * is saved as the percentage of the grid scrolled - so if your
-           * user returns to a grid with a significantly different number of 
-           * rows (perhaps some data has been deleted) then the scroll won't 
+           * user returns to a grid with a significantly different number of
+           * rows (perhaps some data has been deleted) then the scroll won't
            * actually show the same rows as before.  If you want to scroll to
            * a specific row then you should instead use the saveFocus option, which
            * is the default.
-           * 
+           *
            * Note that this element will only be saved if the cellNav feature is
            * enabled
            * <br/>Defaults to false
@@ -18458,20 +23759,20 @@ module.filter('px', function() {
            * @description Save the current focused cell.  On returning
            * to this focused cell we'll also scroll.  This option is
            * preferred to the saveScroll option, so is set to true by
-           * default.  If saveScroll is set to true then this option will 
-           * be disabled.  
-           * 
-           * By default this option saves the current row number and column 
+           * default.  If saveScroll is set to true then this option will
+           * be disabled.
+           *
+           * By default this option saves the current row number and column
            * number, and returns to that row and column.  However, if you define
-           * a saveRowIdentity function, then it will return you to the currently 
+           * a saveRowIdentity function, then it will return you to the currently
            * selected column within that row (in a business sense - so if some
-           * rows have been deleted, it will still find the same data, presuming it 
+           * rows have been deleted, it will still find the same data, presuming it
            * still exists in the list.  If it isn't in the list then it will instead
            * return to the same row number - i.e. scroll percentage)
-           * 
+           *
            * Note that this option will do nothing if the cellNav
            * feature is not enabled.
-           * 
+           *
            * <br/>Defaults to true (unless saveScroll is true)
            */
           gridOptions.saveFocus = gridOptions.saveScroll !== true && gridOptions.saveFocus !== false;
@@ -18479,14 +23780,14 @@ module.filter('px', function() {
            * @ngdoc object
            * @name saveRowIdentity
            * @propertyOf  ui.grid.saveState.api:GridOptions
-           * @description A function that can be called, passing in a rowEntity, 
-           * and that will return a unique id for that row.  This might simply 
+           * @description A function that can be called, passing in a rowEntity,
+           * and that will return a unique id for that row.  This might simply
            * return the `id` field from that row (if you have one), or it might
            * concatenate some fields within the row to make a unique value.
-           * 
-           * This value will be used to find the same row again and set the focus 
+           *
+           * This value will be used to find the same row again and set the focus
            * to it, if it exists when we return.
-           * 
+           *
            * <br/>Defaults to undefined
            */
           /**
@@ -18494,25 +23795,25 @@ module.filter('px', function() {
            * @name saveVisible
            * @propertyOf  ui.grid.saveState.api:GridOptions
            * @description Save whether or not columns are visible.
-           * 
+           *
            * <br/>Defaults to true
            */
-          gridOptions.saveVisible = gridOptions.saveVisible !== false;          
+          gridOptions.saveVisible = gridOptions.saveVisible !== false;
           /**
            * @ngdoc object
            * @name saveSort
            * @propertyOf  ui.grid.saveState.api:GridOptions
            * @description Save the current sort state for each column
-           * 
+           *
            * <br/>Defaults to true
            */
-          gridOptions.saveSort = gridOptions.saveSort !== false;         
+          gridOptions.saveSort = gridOptions.saveSort !== false;
           /**
            * @ngdoc object
            * @name saveFilter
            * @propertyOf  ui.grid.saveState.api:GridOptions
            * @description Save the current filter state for each column
-           * 
+           *
            * <br/>Defaults to true
            */
           gridOptions.saveFilter = gridOptions.saveFilter !== false;
@@ -18524,13 +23825,55 @@ module.filter('px', function() {
            * is defined, then it will save the id of the row and select that.  If not, then
            * it will attempt to select the rows by row number, which will give the wrong results
            * if the data set has changed in the mean-time.
-           * 
+           *
            * Note that this option only does anything
-           * if the selection feature is enabled.  
-           * 
+           * if the selection feature is enabled.
+           *
            * <br/>Defaults to true
            */
-          gridOptions.saveSelection = gridOptions.saveSelection !== false;          
+          gridOptions.saveSelection = gridOptions.saveSelection !== false;
+          /**
+           * @ngdoc object
+           * @name saveGrouping
+           * @propertyOf  ui.grid.saveState.api:GridOptions
+           * @description Save the grouping configuration.  If set to true and the
+           * grouping feature is not enabled then does nothing.
+           *
+           * <br/>Defaults to true
+           */
+          gridOptions.saveGrouping = gridOptions.saveGrouping !== false;
+          /**
+           * @ngdoc object
+           * @name saveGroupingExpandedStates
+           * @propertyOf  ui.grid.saveState.api:GridOptions
+           * @description Save the grouping row expanded states.  If set to true and the
+           * grouping feature is not enabled then does nothing.
+           *
+           * This can be quite a bit of data, in many cases you wouldn't want to save this
+           * information.
+           *
+           * <br/>Defaults to false
+           */
+          gridOptions.saveGroupingExpandedStates = gridOptions.saveGroupingExpandedStates === true;
+          /**
+           * @ngdoc object
+           * @name savePinning
+           * @propertyOf ui.grid.saveState.api:GridOptions
+           * @description Save pinning state for columns.
+           *
+           * <br/>Defaults to true
+           */
+          gridOptions.savePinning = gridOptions.savePinning !== false;
+          /**
+           * @ngdoc object
+           * @name saveTreeView
+           * @propertyOf  ui.grid.saveState.api:GridOptions
+           * @description Save the treeView configuration.  If set to true and the
+           * treeView feature is not enabled then does nothing.
+           *
+           * <br/>Defaults to true
+           */
+          gridOptions.saveTreeView = gridOptions.saveTreeView !== false;
         },
 
 
@@ -18546,21 +23889,24 @@ module.filter('px', function() {
          */
         save: function (grid) {
           var savedState = {};
-          
+
           savedState.columns = service.saveColumns( grid );
           savedState.scrollFocus = service.saveScrollFocus( grid );
           savedState.selection = service.saveSelection( grid );
-          
+          savedState.grouping = service.saveGrouping( grid );
+          savedState.treeView = service.saveTreeView( grid );
+          savedState.pagination = service.savePagination( grid );
+
           return savedState;
         },
-        
-        
+
+
         /**
          * @ngdoc function
          * @name restore
          * @methodOf  ui.grid.saveState.service:uiGridSaveStateService
          * @description Applies the provided state to the grid
-         * 
+         *
          * @param {Grid} grid the grid whose state we'd like to restore
          * @param {scope} $scope a scope that we can broadcast on
          * @param {object} state the state we'd like to restore
@@ -18569,26 +23915,38 @@ module.filter('px', function() {
           if ( state.columns ) {
             service.restoreColumns( grid, state.columns );
           }
-          
+
           if ( state.scrollFocus ){
             service.restoreScrollFocus( grid, $scope, state.scrollFocus );
           }
-          
+
           if ( state.selection ){
             service.restoreSelection( grid, state.selection );
           }
-          
+
+          if ( state.grouping ){
+            service.restoreGrouping( grid, state.grouping );
+          }
+
+          if ( state.treeView ){
+            service.restoreTreeView( grid, state.treeView );
+          }
+
+          if ( state.pagination ){
+            service.restorePagination( grid, state.pagination );
+          }
+
           grid.refresh();
         },
-        
-        
+
+
         /**
          * @ngdoc function
          * @name saveColumns
          * @methodOf  ui.grid.saveState.service:uiGridSaveStateService
-         * @description Saves the column setup, including sort, filters, ordering
-         * and column widths.
-         * 
+         * @description Saves the column setup, including sort, filters, ordering,
+         * pinning and column widths.
+         *
          * Works through the current columns, storing them in order.  Stores the
          * column name, then the visible flag, width, sort and filters for each column.
          *
@@ -18597,38 +23955,63 @@ module.filter('px', function() {
          */
         saveColumns: function( grid ) {
           var columns = [];
-          angular.forEach( grid.columns, function( column ) {
+          grid.getOnlyDataColumns().forEach( function( column ) {
             var savedColumn = {};
             savedColumn.name = column.name;
-            savedColumn.visible = column.visible;
-            savedColumn.width = column.width;
-            
+
+            if ( grid.options.saveVisible ){
+              savedColumn.visible = column.visible;
+            }
+
+            if ( grid.options.saveWidths ){
+              savedColumn.width = column.width;
+            }
+
             // these two must be copied, not just pointed too - otherwise our saved state is pointing to the same object as current state
-            savedColumn.sort = angular.copy( column.sort );
-            savedColumn.filters = angular.copy ( column.filters );
+            if ( grid.options.saveSort ){
+              savedColumn.sort = angular.copy( column.sort );
+            }
+
+            if ( grid.options.saveFilter ){
+              savedColumn.filters = [];
+              column.filters.forEach( function( filter ){
+                var copiedFilter = {};
+                angular.forEach( filter, function( value, key) {
+                  if ( key !== 'condition' && key !== '$$hashKey' && key !== 'placeholder'){
+                    copiedFilter[key] = value;
+                  }
+                });
+                savedColumn.filters.push(copiedFilter);
+              });
+            }
+
+            if ( !!grid.api.pinning && grid.options.savePinning ){
+              savedColumn.pinned = column.renderContainer ? column.renderContainer : '';
+            }
+
             columns.push( savedColumn );
           });
-          
+
           return columns;
         },
-        
+
 
         /**
          * @ngdoc function
          * @name saveScrollFocus
          * @methodOf  ui.grid.saveState.service:uiGridSaveStateService
          * @description Saves the currently scroll or focus.
-         * 
+         *
          * If cellNav isn't present then does nothing - we can't return
          * to the scroll position without cellNav anyway.
-         * 
+         *
          * If the cellNav module is present, and saveFocus is true, then
          * it saves the currently focused cell.  If rowIdentity is present
          * then saves using rowIdentity, otherwise saves visibleRowNum.
-         * 
+         *
          * If the cellNav module is not present, and saveScroll is true, then
          * it approximates the current scroll row and column, and saves that.
-         * 
+         *
          * @param {Grid} grid the grid whose state we'd like to save
          * @returns {object} the selection state ready to be saved
          */
@@ -18636,29 +24019,35 @@ module.filter('px', function() {
           if ( !grid.api.cellNav ){
             return {};
           }
-          
+
           var scrollFocus = {};
           if ( grid.options.saveFocus ){
             scrollFocus.focus = true;
             var rowCol = grid.api.cellNav.getFocusedCell();
             if ( rowCol !== null ) {
-              scrollFocus.colName = rowCol.col.colDef.name;
-              scrollFocus.rowVal = service.getRowVal( grid, rowCol.row );
+              if ( rowCol.col !== null ){
+                scrollFocus.colName = rowCol.col.colDef.name;
+              }
+              if ( rowCol.row !== null ){
+                scrollFocus.rowVal = service.getRowVal( grid, rowCol.row );
+              }
             }
-          } else if ( grid.options.saveScroll ) {
+          }
+
+          if ( grid.options.saveScroll || grid.options.saveFocus && !scrollFocus.colName && !scrollFocus.rowVal ) {
             scrollFocus.focus = false;
             if ( grid.renderContainers.body.prevRowScrollIndex ){
               scrollFocus.rowVal = service.getRowVal( grid, grid.renderContainers.body.visibleRowCache[ grid.renderContainers.body.prevRowScrollIndex ]);
             }
-            
+
             if ( grid.renderContainers.body.prevColScrollIndex ){
               scrollFocus.colName = grid.renderContainers.body.visibleColumnCache[ grid.renderContainers.body.prevColScrollIndex ].name;
             }
-          }        
-          
+          }
+
           return scrollFocus;
         },
-        
+
 
         /**
          * @ngdoc function
@@ -18666,11 +24055,11 @@ module.filter('px', function() {
          * @methodOf  ui.grid.saveState.service:uiGridSaveStateService
          * @description Saves the currently selected rows, if the selection feature is enabled
          * @param {Grid} grid the grid whose state we'd like to save
-         * @returns {object} the selection state ready to be saved
+         * @returns {array} the selection state ready to be saved
          */
         saveSelection: function( grid ){
           if ( !grid.api.selection || !grid.options.saveSelection ){
-            return {};
+            return [];
           }
 
           var selection = grid.api.selection.getSelectedGridRows().map( function( gridRow ) {
@@ -18679,24 +24068,78 @@ module.filter('px', function() {
 
           return selection;
         },
-        
-        
+
+
+        /**
+         * @ngdoc function
+         * @name saveGrouping
+         * @methodOf  ui.grid.saveState.service:uiGridSaveStateService
+         * @description Saves the grouping state, if the grouping feature is enabled
+         * @param {Grid} grid the grid whose state we'd like to save
+         * @returns {object} the grouping state ready to be saved
+         */
+        saveGrouping: function( grid ){
+          if ( !grid.api.grouping || !grid.options.saveGrouping ){
+            return {};
+          }
+
+          return grid.api.grouping.getGrouping( grid.options.saveGroupingExpandedStates );
+        },
+
+
+        /**
+         * @ngdoc function
+         * @name savePagination
+         * @methodOf  ui.grid.saveState.service:uiGridSaveStateService
+         * @description Saves the pagination state, if the pagination feature is enabled
+         * @param {Grid} grid the grid whose state we'd like to save
+         * @returns {object} the pagination state ready to be saved
+         */
+        savePagination: function( grid ) {
+          if ( !grid.api.pagination || !grid.options.paginationPageSize ){
+            return {};
+          }
+
+          return {
+            paginationCurrentPage: grid.options.paginationCurrentPage,
+            paginationPageSize: grid.options.paginationPageSize
+          };
+        },
+
+
+        /**
+         * @ngdoc function
+         * @name saveTreeView
+         * @methodOf  ui.grid.saveState.service:uiGridSaveStateService
+         * @description Saves the tree view state, if the tree feature is enabled
+         * @param {Grid} grid the grid whose state we'd like to save
+         * @returns {object} the tree view state ready to be saved
+         */
+        saveTreeView: function( grid ){
+          if ( !grid.api.treeView || !grid.options.saveTreeView ){
+            return {};
+          }
+
+          return grid.api.treeView.getTreeView();
+        },
+
+
         /**
          * @ngdoc function
          * @name getRowVal
          * @methodOf  ui.grid.saveState.service:uiGridSaveStateService
          * @description Helper function that gets either the rowNum or
-         * the saveRowIdentity, given a gridRow 
+         * the saveRowIdentity, given a gridRow
          * @param {Grid} grid the grid the row is in
          * @param {GridRow} gridRow the row we want the rowNum for
          * @returns {object} an object containing { identity: true/false, row: rowNumber/rowIdentity }
-         * 
+         *
          */
         getRowVal: function( grid, gridRow ){
           if ( !gridRow ) {
             return null;
           }
-          
+
           var rowVal = {};
           if ( grid.options.saveRowIdentity ){
             rowVal.identity = true;
@@ -18707,64 +24150,84 @@ module.filter('px', function() {
           }
           return rowVal;
         },
-        
-        
+
+
         /**
          * @ngdoc function
          * @name restoreColumns
          * @methodOf  ui.grid.saveState.service:uiGridSaveStateService
-         * @description Restores the columns, including order, visible, width
-         * sort and filters.
-         * 
+         * @description Restores the columns, including order, visible, width,
+         * pinning, sort and filters.
+         *
          * @param {Grid} grid the grid whose state we'd like to restore
          * @param {object} columnsState the list of columns we had before, with their state
          */
         restoreColumns: function( grid, columnsState ){
-          angular.forEach( columnsState, function( columnState, index ) {
-            var currentCol = grid.columns.filter( function( column ) {
-              return column.name === columnState.name;
-            });
-            
-            if ( currentCol.length > 0 ){
-              var currentIndex = grid.columns.indexOf( currentCol[0] );
-              
-              if ( grid.columns[currentIndex].visible !== columnState.visible ||
-                   grid.columns[currentIndex].colDef.visible !== columnState.visible ){
-                grid.columns[currentIndex].visible = columnState.visible;
-                grid.columns[currentIndex].colDef.visible = columnState.visible;
-                grid.api.core.raise.columnVisibilityChanged( grid.columns[currentIndex]);
-              }
-              
-              grid.columns[currentIndex].width = columnState.width;
+          var isSortChanged = false;
 
-              if ( !angular.equals(grid.columns[currentIndex].sort, columnState.sort && 
-                   !( grid.columns[currentIndex].sort === undefined && angular.isEmpty(columnState.sort) ) ) ){
-                grid.columns[currentIndex].sort = angular.copy( columnState.sort );
-                grid.api.core.raise.sortChanged();
+          columnsState.forEach( function( columnState, index ) {
+            var currentCol = grid.getColumn( columnState.name );
+
+            if ( currentCol && !grid.isRowHeaderColumn(currentCol) ){
+              if ( grid.options.saveVisible &&
+                   ( currentCol.visible !== columnState.visible ||
+                     currentCol.colDef.visible !== columnState.visible ) ){
+                currentCol.visible = columnState.visible;
+                currentCol.colDef.visible = columnState.visible;
+                grid.api.core.raise.columnVisibilityChanged(currentCol);
               }
 
-              if ( !angular.equals(grid.columns[currentIndex].filters, columnState.filters ) ){
-                grid.columns[currentIndex].filters = angular.copy( columnState.filters );
+              if ( grid.options.saveWidths && currentCol.width !== columnState.width){
+                currentCol.width = columnState.width;
+                currentCol.hasCustomWidth = true;
+              }
+
+              if ( grid.options.saveSort &&
+                   !angular.equals(currentCol.sort, columnState.sort) &&
+                   !( currentCol.sort === undefined && angular.isEmpty(columnState.sort) ) ){
+                currentCol.sort = angular.copy( columnState.sort );
+                isSortChanged = true;
+              }
+
+              if ( grid.options.saveFilter &&
+                   !angular.equals(currentCol.filters, columnState.filters ) ){
+                columnState.filters.forEach( function( filter, index ){
+                  angular.extend( currentCol.filters[index], filter );
+                  if ( typeof(filter.term) === 'undefined' || filter.term === null ){
+                    delete currentCol.filters[index].term;
+                  }
+                });
                 grid.api.core.raise.filterChanged();
               }
-              
-              if ( currentIndex !== index ){
-                var column = grid.columns.splice( currentIndex, 1 )[0];
-                grid.columns.splice( index, 0, column );
+
+              if ( !!grid.api.pinning && grid.options.savePinning && currentCol.renderContainer !== columnState.pinned ){
+                grid.api.pinning.pinColumn(currentCol, columnState.pinned);
+              }
+
+              var currentIndex = grid.getOnlyDataColumns().indexOf( currentCol );
+              if (currentIndex !== -1) {
+                if (grid.options.saveOrder && currentIndex !== index) {
+                  var column = grid.columns.splice(currentIndex + grid.rowHeaderColumns.length, 1)[0];
+                  grid.columns.splice(index + grid.rowHeaderColumns.length, 0, column);
+                }
               }
             }
           });
+
+          if ( isSortChanged ) {
+            grid.api.core.raise.sortChanged( grid, grid.getColumnSorting() );
+          }
         },
-        
+
 
         /**
          * @ngdoc function
          * @name restoreScrollFocus
          * @methodOf  ui.grid.saveState.service:uiGridSaveStateService
          * @description Scrolls to the position that was saved.  If focus is true, then
-         * sets focus to the specified row/col.  If focus is false, then scrolls to the 
+         * sets focus to the specified row/col.  If focus is false, then scrolls to the
          * specified row/col.
-         * 
+         *
          * @param {Grid} grid the grid whose state we'd like to restore
          * @param {scope} $scope a scope that we can broadcast on
          * @param {object} scrollFocusState the scroll/focus state ready to be restored
@@ -18773,7 +24236,7 @@ module.filter('px', function() {
           if ( !grid.api.cellNav ){
             return;
           }
-          
+
           var colDef, row;
           if ( scrollFocusState.colName ){
             var colDefs = grid.options.columnDefs.filter( function( colDef ) { return colDef.name === scrollFocusState.colName; });
@@ -18781,7 +24244,7 @@ module.filter('px', function() {
               colDef = colDefs[0];
             }
           }
-          
+
           if ( scrollFocusState.rowVal && scrollFocusState.rowVal.row ){
             if ( scrollFocusState.rowVal.identity ){
               row = service.findRowByIdentity( grid, scrollFocusState.rowVal );
@@ -18789,18 +24252,18 @@ module.filter('px', function() {
               row = grid.renderContainers.body.visibleRowCache[ scrollFocusState.rowVal.row ];
             }
           }
-          
+
           var entity = row && row.entity ? row.entity : null ;
 
-          if ( colDef || entity ) {          
+          if ( colDef || entity ) {
             if (scrollFocusState.focus ){
               grid.api.cellNav.scrollToFocus( entity, colDef );
             } else {
-              grid.api.cellNav.scrollTo( entity, colDef );
+              grid.scrollTo( entity, colDef );
             }
           }
         },
-        
+
 
         /**
          * @ngdoc function
@@ -18816,24 +24279,77 @@ module.filter('px', function() {
           if ( !grid.api.selection ){
             return;
           }
-          
+
           grid.api.selection.clearSelectedRows();
 
-          angular.forEach( selectionState, function( rowVal ) {
+          selectionState.forEach(  function( rowVal ) {
             if ( rowVal.identity ){
               var foundRow = service.findRowByIdentity( grid, rowVal );
-              
+
               if ( foundRow ){
                 grid.api.selection.selectRow( foundRow.entity );
               }
-              
+
             } else {
               grid.api.selection.selectRowByVisibleIndex( rowVal.row );
             }
           });
         },
-        
-        
+
+
+        /**
+         * @ngdoc function
+         * @name restoreGrouping
+         * @methodOf  ui.grid.saveState.service:uiGridSaveStateService
+         * @description Restores the grouping configuration, if the grouping feature
+         * is enabled.
+         * @param {Grid} grid the grid whose state we'd like to restore
+         * @param {object} groupingState the grouping state ready to be restored
+         */
+        restoreGrouping: function( grid, groupingState ){
+          if ( !grid.api.grouping || typeof(groupingState) === 'undefined' || groupingState === null || angular.equals(groupingState, {}) ){
+            return;
+          }
+
+          grid.api.grouping.setGrouping( groupingState );
+        },
+
+        /**
+         * @ngdoc function
+         * @name restoreTreeView
+         * @methodOf  ui.grid.saveState.service:uiGridSaveStateService
+         * @description Restores the tree view configuration, if the tree view feature
+         * is enabled.
+         * @param {Grid} grid the grid whose state we'd like to restore
+         * @param {object} treeViewState the tree view state ready to be restored
+         */
+        restoreTreeView: function( grid, treeViewState ){
+          if ( !grid.api.treeView || typeof(treeViewState) === 'undefined' || treeViewState === null || angular.equals(treeViewState, {}) ){
+            return;
+          }
+
+          grid.api.treeView.setTreeView( treeViewState );
+        },
+
+        /**
+         * @ngdoc function
+         * @name restorePagination
+         * @methodOf  ui.grid.saveState.service:uiGridSaveStateService
+         * @description Restores the pagination information, if pagination is enabled.
+         * @param {Grid} grid the grid whose state we'd like to restore
+         * @param {object} pagination the pagination object to be restored
+         * @param {number} pagination.paginationCurrentPage the page number to restore
+         * @param {number} pagination.paginationPageSize the number of items displayed per page
+         */
+        restorePagination: function( grid, pagination ){
+          if ( !grid.api.pagination || !grid.options.paginationPageSize ){
+            return;
+          }
+
+          grid.options.paginationCurrentPage = pagination.paginationCurrentPage;
+          grid.options.paginationPageSize = pagination.paginationPageSize;
+        },
+
         /**
          * @ngdoc function
          * @name findRowByIdentity
@@ -18848,7 +24364,7 @@ module.filter('px', function() {
           if ( !grid.options.saveRowIdentity ){
             return null;
           }
-          
+
           var filteredRows = grid.rows.filter( function( gridRow ) {
             if ( grid.options.saveRowIdentity( gridRow.entity ) === rowVal.row ){
               return true;
@@ -18856,7 +24372,7 @@ module.filter('px', function() {
               return false;
             }
           });
-          
+
           if ( filteredRows.length > 0 ){
             return filteredRows[0];
           } else {
@@ -18928,10 +24444,10 @@ module.filter('px', function() {
    * @name ui.grid.selection
    * @description
    *
-   *  # ui.grid.selection
+   * # ui.grid.selection
    * This module provides row selection
-   * <br/>
-   * <br/>
+   *
+   * <div class="alert alert-success" role="alert"><strong>Stable</strong> This feature is stable. There should no longer be breaking api changes without a deprecation warning.</div>
    *
    * <div doc-module-components="ui.grid.selection"></div>
    */
@@ -18985,7 +24501,7 @@ module.filter('px', function() {
          * @methodOf ui.grid.selection.api:GridRow
          * @description Sets the isSelected property and updates the selectedCount
          * Changes to isSelected state should only be made via this function
-         * @param {bool} selelected value to set
+         * @param {bool} selected value to set
          */
         $delegate.prototype.setSelected = function(selected) {
           this.isSelected = selected;
@@ -19084,7 +24600,7 @@ module.filter('px', function() {
                  */
                 toggleRowSelection: function (rowEntity, evt) {
                   var row = grid.getRow(rowEntity);
-                  if (row !== null && row.enableSelection !== false) {
+                  if (row !== null) {
                     service.toggleRowSelection(grid, row, evt, grid.options.multiSelect, grid.options.noUnselect);
                   }
                 },
@@ -19098,7 +24614,7 @@ module.filter('px', function() {
                  */
                 selectRow: function (rowEntity, evt) {
                   var row = grid.getRow(rowEntity);
-                  if (row !== null && !row.isSelected && row.enableSelection !== false) {
+                  if (row !== null && !row.isSelected) {
                     service.toggleRowSelection(grid, row, evt, grid.options.multiSelect, grid.options.noUnselect);
                   }
                 },
@@ -19115,7 +24631,7 @@ module.filter('px', function() {
                  */
                 selectRowByVisibleIndex: function ( rowNum, evt ) {
                   var row = grid.renderContainers.body.visibleRowCache[rowNum];
-                  if (row !== null && typeof(row) !== 'undefined' && !row.isSelected && row.enableSelection !== false) {
+                  if (row !== null && typeof(row) !== 'undefined' && !row.isSelected) {
                     service.toggleRowSelection(grid, row, evt, grid.options.multiSelect, grid.options.noUnselect);
                   }
                 },
@@ -19216,6 +24732,15 @@ module.filter('px', function() {
                 },
                 /**
                  * @ngdoc function
+                 * @name getSelectedCount
+                 * @methodOf  ui.grid.selection.api:PublicApi
+                 * @description returns the number of rows selected
+                 */
+                getSelectedCount: function () {
+                  return grid.selection.selectedCount;
+                },
+                /**
+                 * @ngdoc function
                  * @name setMultiSelect
                  * @methodOf  ui.grid.selection.api:PublicApi
                  * @description Sets the current gridOption.multiSelect to true or false
@@ -19312,6 +24837,16 @@ module.filter('px', function() {
           gridOptions.enableRowHeaderSelection = gridOptions.enableRowHeaderSelection !== false;
           /**
            *  @ngdoc object
+           *  @name enableFullRowSelection
+           *  @propertyOf  ui.grid.selection.api:GridOptions
+           *  @description Enable selection by clicking anywhere on the row.  Defaults to
+           *  false if `enableRowHeaderSelection` is true, otherwise defaults to false.
+           */
+          if ( typeof(gridOptions.enableFullRowSelection) === 'undefined' ){
+            gridOptions.enableFullRowSelection = !gridOptions.enableRowHeaderSelection;
+          }
+          /**
+           *  @ngdoc object
            *  @name enableSelectAll
            *  @propertyOf  ui.grid.selection.api:GridOptions
            *  @description Enable the select all checkbox at the top of the selectionRowHeader
@@ -19344,7 +24879,7 @@ module.filter('px', function() {
            *  @propertyOf  ui.grid.selection.api:GridOptions
            *  @description Shows the total number of selected items in footer if true.
            *  <br/>Defaults to true.
-           *  <br/>GridOptions.showFooter must also be set to true.
+           *  <br/>GridOptions.showGridFooter must also be set to true.
            */
           gridOptions.enableFooterTotalSelected = gridOptions.enableFooterTotalSelected !== false;
 
@@ -19352,7 +24887,7 @@ module.filter('px', function() {
            *  @ngdoc object
            *  @name isRowSelectable
            *  @propertyOf  ui.grid.selection.api:GridOptions
-           *  @description Makes it possible to specify a method that evaluates for each and sets its "enableSelection" property.
+           *  @description Makes it possible to specify a method that evaluates for each row and sets its "enableSelection" property.
            */
 
           gridOptions.isRowSelectable = angular.isDefined(gridOptions.isRowSelectable) ? gridOptions.isRowSelectable : angular.noop;
@@ -19372,10 +24907,15 @@ module.filter('px', function() {
         toggleRowSelection: function (grid, row, evt, multiSelect, noUnselect) {
           var selected = row.isSelected;
 
+          if ( row.enableSelection === false && !selected ){
+            return;
+          }
+
+          var selectedRows;
           if (!multiSelect && !selected) {
             service.clearSelectedRows(grid, evt);
           } else if (!multiSelect && selected) {
-            var selectedRows = service.getSelectedRows(grid);
+            selectedRows = service.getSelectedRows(grid);
             if (selectedRows.length > 1) {
               selected = false; // Enable reselect of the row
               service.clearSelectedRows(grid, evt);
@@ -19383,14 +24923,16 @@ module.filter('px', function() {
           }
 
           if (selected && noUnselect){
-            // don't deselect the row 
-          } else if (row.enableSelection !== false) {
+            // don't deselect the row
+          } else {
             row.setSelected(!selected);
             if (row.isSelected === true) {
               grid.selection.lastSelectedRow = row;
-            } else {
-              grid.selection.selectAll = false;
             }
+
+            selectedRows = service.getSelectedRows(grid);
+            grid.selection.selectAll = grid.rows.length === selectedRows.length;
+
             grid.api.selection.raise.rowSelectionChanged(row, evt);
           }
         },
@@ -19462,6 +25004,7 @@ module.filter('px', function() {
           });
           service.decideRaiseSelectionBatchEvent( grid, changedRows, evt );
           grid.selection.selectAll = false;
+          grid.selection.selectedCount = 0;
         },
 
         /**
@@ -19537,8 +25080,8 @@ module.filter('px', function() {
    </file>
    </example>
    */
-  module.directive('uiGridSelection', ['uiGridSelectionConstants', 'uiGridSelectionService', '$templateCache',
-    function (uiGridSelectionConstants, uiGridSelectionService, $templateCache) {
+  module.directive('uiGridSelection', ['uiGridSelectionConstants', 'uiGridSelectionService', '$templateCache', 'uiGridConstants',
+    function (uiGridSelectionConstants, uiGridSelectionService, $templateCache, uiGridConstants) {
       return {
         replace: true,
         priority: 0,
@@ -19558,17 +25101,34 @@ module.filter('px', function() {
                   headerCellTemplate: 'ui-grid/selectionHeaderCell',
                   enableColumnResizing: false,
                   enableColumnMenu: false,
-                  exporterSuppressExport: true 
+                  exporterSuppressExport: true,
+                  allowCellFocus: true
                 };
 
                 uiGridCtrl.grid.addRowHeaderColumn(selectionRowHeaderDef);
               }
-              
-              if (uiGridCtrl.grid.options.isRowSelectable !== angular.noop) {
-                uiGridCtrl.grid.registerRowBuilder(function(row, options) {
+
+              var processorSet = false;
+
+              var processSelectableRows = function( rows ){
+                rows.forEach(function(row){
                   row.enableSelection = uiGridCtrl.grid.options.isRowSelectable(row);
                 });
-              }
+                return rows;
+              };
+
+              var updateOptions = function(){
+                if (uiGridCtrl.grid.options.isRowSelectable !== angular.noop && processorSet !== true) {
+                  uiGridCtrl.grid.registerRowsProcessor(processSelectableRows, 500);
+                  processorSet = true;
+                }
+              };
+
+              updateOptions();
+
+              var dataChangeDereg = uiGridCtrl.grid.registerDataChangeCallback( updateOptions, [uiGridConstants.dataChange.OPTIONS] );
+
+              $scope.$on( '$destroy', dataChangeDereg);
             },
             post: function ($scope, $elm, $attrs, uiGridCtrl) {
 
@@ -19578,8 +25138,8 @@ module.filter('px', function() {
       };
     }]);
 
-  module.directive('uiGridSelectionRowHeaderButtons', ['$templateCache', 'uiGridSelectionService',
-    function ($templateCache, uiGridSelectionService) {
+  module.directive('uiGridSelectionRowHeaderButtons', ['$templateCache', 'uiGridSelectionService', 'gridUtil',
+    function ($templateCache, uiGridSelectionService, gridUtil) {
       return {
         replace: true,
         restrict: 'E',
@@ -19588,7 +25148,18 @@ module.filter('px', function() {
         require: '^uiGrid',
         link: function($scope, $elm, $attrs, uiGridCtrl) {
           var self = uiGridCtrl.grid;
-          $scope.selectButtonClick = function(row, evt) {
+          $scope.selectButtonClick = selectButtonClick;
+
+          // On IE, prevent mousedowns on the select button from starting a selection.
+          //   If this is not done and you shift+click on another row, the browser will select a big chunk of text
+          if (gridUtil.detectBrowser() === 'ie') {
+            $elm.on('mousedown', selectButtonMouseDown);
+          }
+
+
+          function selectButtonClick(row, evt) {
+            evt.stopPropagation();
+
             if (evt.shiftKey) {
               uiGridSelectionService.shiftSelect(self, row, evt, self.options.multiSelect);
             }
@@ -19598,7 +25169,14 @@ module.filter('px', function() {
             else {
               uiGridSelectionService.toggleRowSelection(self, row, evt, (self.options.multiSelect && !self.options.modifierKeysToMultiSelect), self.options.noUnselect);
             }
-          };
+          }
+
+          function selectButtonMouseDown(evt) {
+            if (evt.ctrlKey || evt.shiftKey) {
+              evt.target.onselectstart = function () { return false; };
+              window.setTimeout(function () { evt.target.onselectstart = null; }, 0);
+            }
+          }
         }
       };
     }]);
@@ -19677,17 +25255,48 @@ module.filter('px', function() {
    *  @description Stacks on top of ui.grid.uiGridCell to provide selection feature
    */
   module.directive('uiGridCell',
-    ['$compile', 'uiGridConstants', 'uiGridSelectionConstants', 'gridUtil', '$parse', 'uiGridSelectionService',
-      function ($compile, uiGridConstants, uiGridSelectionConstants, gridUtil, $parse, uiGridSelectionService) {
+    ['$compile', 'uiGridConstants', 'uiGridSelectionConstants', 'gridUtil', '$parse', 'uiGridSelectionService', '$timeout',
+      function ($compile, uiGridConstants, uiGridSelectionConstants, gridUtil, $parse, uiGridSelectionService, $timeout) {
         return {
           priority: -200, // run after default uiGridCell directive
           restrict: 'A',
+          require: '?^uiGrid',
           scope: false,
-          link: function ($scope, $elm, $attrs) {
+          link: function ($scope, $elm, $attrs, uiGridCtrl) {
 
             var touchStartTime = 0;
             var touchTimeout = 300;
+
+            // Bind to keydown events in the render container
+            if (uiGridCtrl.grid.api.cellNav) {
+
+              uiGridCtrl.grid.api.cellNav.on.viewPortKeyDown($scope, function (evt, rowCol) {
+                if (rowCol === null ||
+                  rowCol.row !== $scope.row ||
+                  rowCol.col !== $scope.col) {
+                  return;
+                }
+
+                if (evt.keyCode === 32 && $scope.col.colDef.name === "selectionRowHeaderCol") {
+                  uiGridSelectionService.toggleRowSelection($scope.grid, $scope.row, evt, ($scope.grid.options.multiSelect && !$scope.grid.options.modifierKeysToMultiSelect), $scope.grid.options.noUnselect);
+                  $scope.$apply();
+                }
+
+              //  uiGridCellNavService.scrollToIfNecessary(uiGridCtrl.grid, rowCol.row, rowCol.col);
+              });
+            }
+
+            //$elm.bind('keydown', function (evt) {
+            //  if (evt.keyCode === 32 && $scope.col.colDef.name === "selectionRowHeaderCol") {
+            //    uiGridSelectionService.toggleRowSelection($scope.grid, $scope.row, evt, ($scope.grid.options.multiSelect && !$scope.grid.options.modifierKeysToMultiSelect), $scope.grid.options.noUnselect);
+            //    $scope.$apply();
+            //  }
+            //});
+
             var selectCells = function(evt){
+              // if we get a click, then stop listening for touchend
+              $elm.off('touchend', touchEnd);
+
               if (evt.shiftKey) {
                 uiGridSelectionService.shiftSelect($scope.grid, $scope.row, evt, $scope.grid.options.multiSelect);
               }
@@ -19698,10 +25307,19 @@ module.filter('px', function() {
                 uiGridSelectionService.toggleRowSelection($scope.grid, $scope.row, evt, ($scope.grid.options.multiSelect && !$scope.grid.options.modifierKeysToMultiSelect), $scope.grid.options.noUnselect);
               }
               $scope.$apply();
+
+              // don't re-enable the touchend handler for a little while - some devices generate both, and it will
+              // take a little while to move your hand from the mouse to the screen if you have both modes of input
+              $timeout(function() {
+                $elm.on('touchend', touchEnd);
+              }, touchTimeout);
             };
 
             var touchStart = function(evt){
               touchStartTime = (new Date()).getTime();
+
+              // if we get a touch event, then stop listening for click
+              $elm.off('click', selectCells);
             };
 
             var touchEnd = function(evt) {
@@ -19712,10 +25330,16 @@ module.filter('px', function() {
                 // short touch
                 selectCells(evt);
               }
+
+              // don't re-enable the click handler for a little while - some devices generate both, and it will
+              // take a little while to move your hand from the screen to the mouse if you have both modes of input
+              $timeout(function() {
+                $elm.on('click', selectCells);
+              }, touchTimeout);
             };
 
             function registerRowSelectionEvents() {
-              if ($scope.grid.options.enableRowSelection && !$scope.grid.options.enableRowHeaderSelection) {
+              if ($scope.grid.options.enableRowSelection && $scope.grid.options.enableFullRowSelection) {
                 $elm.addClass('ui-grid-disable-selection');
                 $elm.on('touchstart', touchStart);
                 $elm.on('touchend', touchEnd);
@@ -19741,10 +25365,10 @@ module.filter('px', function() {
             // register a dataChange callback so that we can change the selection configuration dynamically
             // if the user changes the options
             var dataChangeDereg = $scope.grid.registerDataChangeCallback( function() {
-              if ( $scope.grid.options.enableRowSelection && !$scope.grid.options.enableRowHeaderSelection &&
+              if ( $scope.grid.options.enableRowSelection && $scope.grid.options.enableFullRowSelection &&
                 !$scope.registered ){
                 registerRowSelectionEvents();
-              } else if ( ( !$scope.grid.options.enableRowSelection || $scope.grid.options.enableRowHeaderSelection ) &&
+              } else if ( ( !$scope.grid.options.enableRowSelection || !$scope.grid.options.enableFullRowSelection ) &&
                 $scope.registered ){
                 deregisterRowSelectionEvents();
               }
@@ -19791,11 +25415,2443 @@ module.filter('px', function() {
 
 })();
 
+(function () {
+  'use strict';
+
+  /**
+   * @ngdoc overview
+   * @name ui.grid.treeBase
+   * @description
+   *
+   * # ui.grid.treeBase
+   *
+   * <div class="alert alert-warning" role="alert"><strong>Beta</strong> This feature is ready for testing, but it either hasn't seen a lot of use or has some known bugs.</div>
+   *
+   * This module provides base tree handling functions that are shared by other features, notably grouping
+   * and treeView.  It provides a tree view of the data, with nodes in that
+   * tree and leaves.
+   *
+   * Design information:
+   * -------------------
+   *
+   * The raw data that is provided must come with a $$treeLevel on any non-leaf node.  Grouping will create
+   * these on all the group header rows, treeView will expect these to be set in the raw data by the user.
+   * TreeBase will run a rowsProcessor that:
+   *  - builds `treeBase.tree` out of the provided rows
+   *  - permits a recursive sort of the tree
+   *  - maintains the expand/collapse state of each node
+   *  - provides the expand/collapse all button and the expand/collapse buttons
+   *  - maintains the count of children for each node
+   *
+   * Each row is updated with a link to the tree node that represents it.  Refer {@link ui.grid.treeBase.grid:treeBase.tree tree documentation}
+   * for information.
+   *
+   *  TreeBase adds information to the rows
+   *  - treeLevel: if present and > -1 tells us the level (level 0 is the top level)
+   *  - treeNode: pointer to the node in the grid.treeBase.tree that refers
+   *    to this row, allowing us to manipulate the state
+   *
+   * Since the logic is baked into the rowsProcessors, it should get triggered whenever
+   * row order or filtering or anything like that is changed.  We recall the expanded state
+   * across invocations of the rowsProcessors by the reference to the treeNode on the individual
+   * rows.  We rebuild the tree itself quite frequently, when we do this we use the saved treeNodes to
+   * get the state, but we overwrite the other data in that treeNode.
+   *
+   * By default rows are collapsed, which means all data rows have their visible property
+   * set to false, and only level 0 group rows are set to visible.
+   *
+   * We rely on the rowsProcessors to do the actual expanding and collapsing, so we set the flags we want into
+   * grid.treeBase.tree, then call refresh.  This is because we can't easily change the visible
+   * row cache without calling the processors, and once we've built the logic into the rowProcessors we may as
+   * well use it all the time.
+   *
+   * Tree base provides sorting (on non-grouped columns).
+   *
+   * Sorting works in two passes.  The standard sorting is performed for any columns that are important to building
+   * the tree (for example, any grouped columns).  Then after the tree is built, a recursive tree sort is performed
+   * for the remaining sort columns (including the original sort) - these columns are sorted within each tree level
+   * (so all the level 1 nodes are sorted, then all the level 2 nodes within each level 1 node etc).
+   *
+   * To achieve this we make use of the `ignoreSort` property on the sort configuration.  The parent feature (treeView or grouping)
+   * must provide a rowsProcessor that runs with very low priority (typically in the 60-65 range), and that sets
+   * the `ignoreSort`on any sort that it wants to run on the tree.  TreeBase will clear the ignoreSort on all sorts - so it
+   * will turn on any sorts that haven't run.  It will then call a recursive sort on the tree.
+   *
+   * Tree base provides treeAggregation.  It checks the treeAggregation configuration on each column, and aggregates based on
+   * the logic provided as it builds the tree. Footer aggregation from the uiGrid core should not be used with treeBase aggregation,
+   * since it operates on all visible rows, as opposed to to leaf nodes only. Setting `showColumnFooter: true` will show the
+   * treeAggregations in the column footer.  Aggregation information will be collected in the format:
+   *
+   * ```
+   *   {
+   *     type: 'count',
+   *     value: 4,
+   *     label: 'count: ',
+   *     rendered: 'count: 4'
+   *   }
+   * ```
+   *
+   * A callback is provided to format the value once it is finalised (aka a valueFilter).
+   *
+   * <br/>
+   * <br/>
+   *
+   * <div doc-module-components="ui.grid.treeBase"></div>
+   */
+
+  var module = angular.module('ui.grid.treeBase', ['ui.grid']);
+
+  /**
+   *  @ngdoc object
+   *  @name ui.grid.treeBase.constant:uiGridTreeBaseConstants
+   *
+   *  @description constants available in treeBase module.
+   *
+   *  These constants are manually copied into grouping and treeView,
+   *  as I haven't found a way to simply include them, and it's not worth
+   *  investing time in for something that changes very infrequently.
+   *
+   */
+  module.constant('uiGridTreeBaseConstants', {
+    featureName: "treeBase",
+    rowHeaderColName: 'treeBaseRowHeaderCol',
+    EXPANDED: 'expanded',
+    COLLAPSED: 'collapsed',
+    aggregation: {
+      COUNT: 'count',
+      SUM: 'sum',
+      MAX: 'max',
+      MIN: 'min',
+      AVG: 'avg'
+    }
+  });
+
+  /**
+   *  @ngdoc service
+   *  @name ui.grid.treeBase.service:uiGridTreeBaseService
+   *
+   *  @description Services for treeBase feature
+   */
+  /**
+   *  @ngdoc object
+   *  @name ui.grid.treeBase.api:ColumnDef
+   *
+   *  @description ColumnDef for tree feature, these are available to be
+   *  set using the ui-grid {@link ui.grid.class:GridOptions.columnDef gridOptions.columnDefs}
+   */
+
+  module.service('uiGridTreeBaseService', ['$q', 'uiGridTreeBaseConstants', 'gridUtil', 'GridRow', 'gridClassFactory', 'i18nService', 'uiGridConstants', 'rowSorter',
+  function ($q, uiGridTreeBaseConstants, gridUtil, GridRow, gridClassFactory, i18nService, uiGridConstants, rowSorter) {
+
+    var service = {
+
+      initializeGrid: function (grid, $scope) {
+
+        //add feature namespace and any properties to grid for needed
+        /**
+         *  @ngdoc object
+         *  @name ui.grid.treeBase.grid:treeBase
+         *
+         *  @description Grid properties and functions added for treeBase
+         */
+        grid.treeBase = {};
+
+        /**
+         *  @ngdoc property
+         *  @propertyOf ui.grid.treeBase.grid:treeBase
+         *  @name numberLevels
+         *
+         *  @description Total number of tree levels currently used, calculated by the rowsProcessor by
+         *  retaining the highest tree level it sees
+         */
+        grid.treeBase.numberLevels = 0;
+
+        /**
+         *  @ngdoc property
+         *  @propertyOf ui.grid.treeBase.grid:treeBase
+         *  @name expandAll
+         *
+         *  @description Whether or not the expandAll box is selected
+         */
+        grid.treeBase.expandAll = false;
+
+        /**
+         *  @ngdoc property
+         *  @propertyOf ui.grid.treeBase.grid:treeBase
+         *  @name tree
+         *
+         *  @description Tree represented as a nested array that holds the state of each node, along with a
+         *  pointer to the row.  The array order is material - we will display the children in the order
+         *  they are stored in the array
+         *
+         *  Each node stores:
+         *
+         *    - the state of this node
+         *    - an array of children of this node
+         *    - a pointer to the parent of this node (reverse pointer, allowing us to walk up the tree)
+         *    - the number of children of this node
+         *    - aggregation information calculated from the nodes
+         *
+         *  ```
+         *    [{
+         *      state: 'expanded',
+         *      row: <reference to row>,
+         *      parentRow: null,
+         *      aggregations: [{
+         *        type: 'count',
+         *        col: <gridCol>,
+         *        value: 2,
+         *        label: 'count: ',
+         *        rendered: 'count: 2'
+         *      }],
+         *      children: [
+         *        {
+         *          state: 'expanded',
+         *          row: <reference to row>,
+         *          parentRow: <reference to row>,
+         *          aggregations: [{
+         *            type: 'count',
+         *            col: '<gridCol>,
+         *            value: 4,
+         *            label: 'count: ',
+         *            rendered: 'count: 4'
+         *          }],
+         *          children: [
+         *            { state: 'expanded', row: <reference to row>, parentRow: <reference to row> },
+         *            { state: 'collapsed', row: <reference to row>, parentRow: <reference to row> },
+         *            { state: 'expanded', row: <reference to row>, parentRow: <reference to row> },
+         *            { state: 'collapsed', row: <reference to row>, parentRow: <reference to row> }
+         *          ]
+         *        },
+         *        {
+         *          state: 'collapsed',
+         *          row: <reference to row>,
+         *          parentRow: <reference to row>,
+         *          aggregations: [{
+         *            type: 'count',
+         *            col: <gridCol>,
+         *            value: 3,
+         *            label: 'count: ',
+         *            rendered: 'count: 3'
+         *          }],
+         *          children: [
+         *            { state: 'expanded', row: <reference to row>, parentRow: <reference to row> },
+         *            { state: 'collapsed', row: <reference to row>, parentRow: <reference to row> },
+         *            { state: 'expanded', row: <reference to row>, parentRow: <reference to row> }
+         *          ]
+         *        }
+         *      ]
+         *    }, {<another level 0 node maybe>} ]
+         *  ```
+         *  Missing state values are false - meaning they aren't expanded.
+         *
+         *  This is used because the rowProcessors run every time the grid is refreshed, so
+         *  we'd lose the expanded state every time the grid was refreshed.  This instead gives
+         *  us a reliable lookup that persists across rowProcessors.
+         *
+         *  This tree is rebuilt every time we run the rowsProcessors.  Since each row holds a pointer
+         *  to it's tree node we can persist expand/collapse state across calls to rowsProcessor, we discard
+         *  all transient information on the tree (children, childCount) and recalculate it
+         *
+         */
+        grid.treeBase.tree = [];
+
+        service.defaultGridOptions(grid.options);
+
+        grid.registerRowsProcessor(service.treeRows, 410);
+
+        grid.registerColumnBuilder( service.treeBaseColumnBuilder );
+
+        service.createRowHeader( grid );
+
+        /**
+         *  @ngdoc object
+         *  @name ui.grid.treeBase.api:PublicApi
+         *
+         *  @description Public Api for treeBase feature
+         */
+        var publicApi = {
+          events: {
+            treeBase: {
+              /**
+               * @ngdoc event
+               * @eventOf ui.grid.treeBase.api:PublicApi
+               * @name rowExpanded
+               * @description raised whenever a row is expanded.  If you are dynamically
+               * rendering your tree you can listen to this event, and then retrieve
+               * the children of this row and load them into the grid data.
+               *
+               * When the data is loaded the grid will automatically refresh to show these new rows
+               *
+               * <pre>
+               *      gridApi.treeBase.on.rowExpanded(scope,function(row){})
+               * </pre>
+               * @param {gridRow} row the row that was expanded.  You can also
+               * retrieve the grid from this row with row.grid
+               */
+              rowExpanded: {},
+
+              /**
+               * @ngdoc event
+               * @eventOf ui.grid.treeBase.api:PublicApi
+               * @name rowCollapsed
+               * @description raised whenever a row is collapsed.  Doesn't really have
+               * a purpose at the moment, included for symmetry
+               *
+               * <pre>
+               *      gridApi.treeBase.on.rowCollapsed(scope,function(row){})
+               * </pre>
+               * @param {gridRow} row the row that was collapsed.  You can also
+               * retrieve the grid from this row with row.grid
+               */
+              rowCollapsed: {}
+            }
+          },
+
+          methods: {
+            treeBase: {
+              /**
+               * @ngdoc function
+               * @name expandAllRows
+               * @methodOf  ui.grid.treeBase.api:PublicApi
+               * @description Expands all tree rows
+               */
+              expandAllRows: function () {
+                service.expandAllRows(grid);
+              },
+
+              /**
+               * @ngdoc function
+               * @name collapseAllRows
+               * @methodOf  ui.grid.treeBase.api:PublicApi
+               * @description collapse all tree rows
+               */
+              collapseAllRows: function () {
+                service.collapseAllRows(grid);
+              },
+
+              /**
+               * @ngdoc function
+               * @name toggleRowTreeState
+               * @methodOf  ui.grid.treeBase.api:PublicApi
+               * @description  call expand if the row is collapsed, collapse if it is expanded
+               * @param {gridRow} row the row you wish to toggle
+               */
+              toggleRowTreeState: function (row) {
+                service.toggleRowTreeState(grid, row);
+              },
+
+              /**
+               * @ngdoc function
+               * @name expandRow
+               * @methodOf  ui.grid.treeBase.api:PublicApi
+               * @description expand the immediate children of the specified row
+               * @param {gridRow} row the row you wish to expand
+               */
+              expandRow: function (row) {
+                service.expandRow(grid, row);
+              },
+
+              /**
+               * @ngdoc function
+               * @name expandRowChildren
+               * @methodOf  ui.grid.treeBase.api:PublicApi
+               * @description expand all children of the specified row
+               * @param {gridRow} row the row you wish to expand
+               */
+              expandRowChildren: function (row) {
+                service.expandRowChildren(grid, row);
+              },
+
+              /**
+               * @ngdoc function
+               * @name collapseRow
+               * @methodOf  ui.grid.treeBase.api:PublicApi
+               * @description collapse  the specified row.  When
+               * you expand the row again, all grandchildren will retain their state
+               * @param {gridRow} row the row you wish to collapse
+               */
+              collapseRow: function ( row ) {
+                service.collapseRow(grid, row);
+              },
+
+              /**
+               * @ngdoc function
+               * @name collapseRowChildren
+               * @methodOf  ui.grid.treeBase.api:PublicApi
+               * @description collapse all children of the specified row.  When
+               * you expand the row again, all grandchildren will be collapsed
+               * @param {gridRow} row the row you wish to collapse children for
+               */
+              collapseRowChildren: function ( row ) {
+                service.collapseRowChildren(grid, row);
+              },
+
+              /**
+               * @ngdoc function
+               * @name getTreeState
+               * @methodOf  ui.grid.treeBase.api:PublicApi
+               * @description Get the tree state for this grid,
+               * used by the saveState feature
+               * Returned treeState as an object
+               *   `{ expandedState: { uid: 'expanded', uid: 'collapsed' } }`
+               * where expandedState is a hash of row uid and the current expanded state
+               *
+               * @returns {object} tree state
+               *
+               * TODO - this needs work - we need an identifier that persists across instantiations,
+               * not uid.  This really means we need a row identity defined, but that won't work for
+               * grouping.  Perhaps this needs to be moved up to treeView and grouping, rather than
+               * being in base.
+               */
+              getTreeExpandedState: function () {
+                return { expandedState: service.getTreeState(grid) };
+              },
+
+              /**
+               * @ngdoc function
+               * @name setTreeState
+               * @methodOf  ui.grid.treeBase.api:PublicApi
+               * @description Set the expanded states of the tree
+               * @param {object} config the config you want to apply, in the format
+               * provided by getTreeState
+               */
+              setTreeState: function ( config ) {
+                service.setTreeState( grid, config );
+              },
+
+              /**
+               * @ngdoc function
+               * @name getRowChildren
+               * @methodOf  ui.grid.treeBase.api:PublicApi
+               * @description Get the children of the specified row
+               * @param {GridRow} row the row you want the children of
+               * @returns {Array} array of children of this row, the children
+               * are all gridRows
+               */
+              getRowChildren: function ( row ){
+                return row.treeNode.children.map( function( childNode ){
+                  return childNode.row;
+                });
+              }
+            }
+          }
+        };
+
+        grid.api.registerEventsFromObject(publicApi.events);
+
+        grid.api.registerMethodsFromObject(publicApi.methods);
+      },
+
+
+      defaultGridOptions: function (gridOptions) {
+        //default option to true unless it was explicitly set to false
+        /**
+         *  @ngdoc object
+         *  @name ui.grid.treeBase.api:GridOptions
+         *
+         *  @description GridOptions for treeBase feature, these are available to be
+         *  set using the ui-grid {@link ui.grid.class:GridOptions gridOptions}
+         */
+
+        /**
+         *  @ngdoc object
+         *  @name treeRowHeaderBaseWidth
+         *  @propertyOf  ui.grid.treeBase.api:GridOptions
+         *  @description Base width of the tree header, provides for a single level of tree.  This
+         *  is incremented by `treeIndent` for each extra level
+         *  <br/>Defaults to 30
+         */
+        gridOptions.treeRowHeaderBaseWidth = gridOptions.treeRowHeaderBaseWidth || 30;
+
+        /**
+         *  @ngdoc object
+         *  @name treeIndent
+         *  @propertyOf  ui.grid.treeBase.api:GridOptions
+         *  @description Number of pixels of indent for the icon at each tree level, wider indents are visually more pleasing,
+         *  but will make the tree row header wider
+         *  <br/>Defaults to 10
+         */
+        gridOptions.treeIndent = gridOptions.treeIndent || 10;
+
+        /**
+         *  @ngdoc object
+         *  @name showTreeRowHeader
+         *  @propertyOf  ui.grid.treeBase.api:GridOptions
+         *  @description If set to false, don't create the row header.  Youll need to programatically control the expand
+         *  states
+         *  <br/>Defaults to true
+         */
+        gridOptions.showTreeRowHeader = gridOptions.showTreeRowHeader !== false;
+
+        /**
+         *  @ngdoc object
+         *  @name showTreeExpandNoChildren
+         *  @propertyOf  ui.grid.treeBase.api:GridOptions
+         *  @description If set to true, show the expand/collapse button even if there are no
+         *  children of a node.  You'd use this if you're planning to dynamically load the children
+         *
+         *  <br/>Defaults to true, grouping overrides to false
+         */
+        gridOptions.showTreeExpandNoChildren = gridOptions.showTreeExpandNoChildren !== false;
+
+        /**
+         *  @ngdoc object
+         *  @name treeRowHeaderAlwaysVisible
+         *  @propertyOf  ui.grid.treeBase.api:GridOptions
+         *  @description If set to true, row header even if there are no tree nodes
+         *
+         *  <br/>Defaults to true
+         */
+        gridOptions.treeRowHeaderAlwaysVisible = gridOptions.treeRowHeaderAlwaysVisible !== false;
+
+        /**
+         *  @ngdoc object
+         *  @name treeCustomAggregations
+         *  @propertyOf  ui.grid.treeBase.api:GridOptions
+         *  @description Define custom aggregation functions. The properties of this object will be
+         *  aggregation types available for use on columnDef with {@link ui.grid.treeBase.api:ColumnDef treeAggregationType} or through the column menu.
+         *  If a function defined here uses the same name as one of the native aggregations, this one will take precedence.
+         *  The object format is:
+         *
+         *  <pre>
+         *    {
+         *      aggregationName: {
+         *        label: (optional) string,
+         *        aggregationFn: function( aggregation, fieldValue, numValue, row ){...},
+         *        finalizerFn: (optional) function( aggregation ){...}
+       *        },
+         *      mean: {
+         *        label: 'mean',
+         *        aggregationFn: function( aggregation, fieldValue, numValue ){
+       *            aggregation.count = (aggregation.count || 1) + 1;
+         *          aggregation.sum = (aggregation.sum || 0) + numValue;
+         *        },
+         *        finalizerFn: function( aggregation ){
+         *          aggregation.value = aggregation.sum / aggregation.count
+         *        }
+         *      }
+         *    }
+         *  </pre>
+         *
+         *  <br/>The `finalizerFn` may be used to manipulate the value before rendering, or to
+         *  apply a custom rendered value. If `aggregation.rendered` is left undefined, the value will be
+         *  rendered. Note that the native aggregation functions use an `finalizerFn` to concatenate
+         *  the label and the value.
+         *
+         *  <br/>Defaults to {}
+         */
+        gridOptions.treeCustomAggregations = gridOptions.treeCustomAggregations || {};
+
+        /**
+         *  @ngdoc object
+         *  @name enableExpandAll
+         *  @propertyOf  ui.grid.treeBase.api:GridOptions
+         *  @description Enable the expand all button at the top of the row header
+         *
+         *  <br/>Defaults to true
+         */
+        gridOptions.enableExpandAll = gridOptions.enableExpandAll !== false;
+      },
+
+
+      /**
+       * @ngdoc function
+       * @name treeBaseColumnBuilder
+       * @methodOf  ui.grid.treeBase.service:uiGridTreeBaseService
+       * @description Sets the tree defaults based on the columnDefs
+       *
+       * @param {object} colDef columnDef we're basing on
+       * @param {GridCol} col the column we're to update
+       * @param {object} gridOptions the options we should use
+       * @returns {promise} promise for the builder - actually we do it all inline so it's immediately resolved
+       */
+      treeBaseColumnBuilder: function (colDef, col, gridOptions) {
+
+
+        /**
+         *  @ngdoc object
+         *  @name customTreeAggregationFn
+         *  @propertyOf  ui.grid.treeBase.api:ColumnDef
+         *  @description A custom function that aggregates rows into some form of
+         *  total.  Aggregations run row-by-row, the function needs to be capable of
+         *  creating a running total.
+         *
+         *  The function will be provided the aggregation item (in which you can store running
+         *  totals), the row value that is to be aggregated, and that same row value converted to
+         *  a number (most aggregations work on numbers)
+         *  @example
+         *  <pre>
+         *    customTreeAggregationFn = function ( aggregation, fieldValue, numValue, row ){
+         *      // calculates the average of the squares of the values
+         *      if ( typeof(aggregation.count) === 'undefined' ){
+         *        aggregation.count = 0;
+         *      }
+         *      aggregation.count++;
+         *
+         *      if ( !isNaN(numValue) ){
+         *        if ( typeof(aggregation.total) === 'undefined' ){
+         *          aggregation.total = 0;
+         *        }
+         *        aggregation.total = aggregation.total + numValue * numValue;
+         *      }
+         *
+         *      aggregation.value = aggregation.total / aggregation.count;
+         *    }
+         *  </pre>
+         *  <br/>Defaults to undefined. May be overwritten by treeAggregationType, the two options should not be used together.
+         */
+        if ( typeof(colDef.customTreeAggregationFn) !== 'undefined' ){
+          col.treeAggregationFn = colDef.customTreeAggregationFn;
+        }
+
+        /**
+         *  @ngdoc object
+         *  @name treeAggregationType
+         *  @propertyOf  ui.grid.treeBase.api:ColumnDef
+         *  @description Use one of the native or grid-level aggregation methods for calculating aggregations on this column.
+         *  Native method are in the constants file and include: SUM, COUNT, MIN, MAX, AVG. This may also be the property the
+         *  name of an aggregation function defined with {@link ui.grid.treeBase.api:GridOptions treeCustomAggregations}.
+         *
+         *  <pre>
+         *      treeAggregationType = uiGridTreeBaseConstants.aggregation.SUM,
+         *    }
+         *  </pre>
+         *
+         *  If you are using aggregations you should either:
+         *
+         *   - also use grouping, in which case the aggregations are displayed in the group header, OR
+         *   - use treeView, in which case you can set `treeAggregationUpdateEntity: true` in the colDef, and
+         *     treeBase will store the aggregation information in the entity, or you can set `treeAggregationUpdateEntity: false`
+         *     in the colDef, and you need to manual retrieve the calculated aggregations from the row.treeNode.aggregations
+         *
+         *  <br/>Takes precendence over a treeAggregationFn, the two options should not be used together.
+         *  <br/>Defaults to undefined.
+         */
+        if ( typeof(colDef.treeAggregationType) !== 'undefined' ){
+          col.treeAggregation = { type: colDef.treeAggregationType };
+          if ( typeof(gridOptions.treeCustomAggregations[colDef.treeAggregationType]) !== 'undefined' ){
+            col.treeAggregationFn = gridOptions.treeCustomAggregations[colDef.treeAggregationType].aggregationFn;
+            col.treeAggregationFinalizerFn = gridOptions.treeCustomAggregations[colDef.treeAggregationType].finalizerFn;
+            col.treeAggregation.label = gridOptions.treeCustomAggregations[colDef.treeAggregationType].label;
+          } else if ( typeof(service.nativeAggregations()[colDef.treeAggregationType]) !== 'undefined' ){
+            col.treeAggregationFn = service.nativeAggregations()[colDef.treeAggregationType].aggregationFn;
+            col.treeAggregation.label = service.nativeAggregations()[colDef.treeAggregationType].label;
+          }
+        }
+
+         /**
+         *  @ngdoc object
+         *  @name treeAggregationLabel
+         *  @propertyOf  ui.grid.treeBase.api:ColumnDef
+         *  @description A custom label to use for this aggregation. If provided we don't use native i18n.
+         */
+        if ( typeof(colDef.treeAggregationLabel) !== 'undefined' ){
+          if (typeof(col.treeAggregation) === 'undefined' ){
+            col.treeAggregation = {};
+          }
+          col.treeAggregation.label = colDef.treeAggregationLabel;
+        }
+
+        /**
+         *  @ngdoc object
+         *  @name treeAggregationUpdateEntity
+         *  @propertyOf  ui.grid.treeBase.api:ColumnDef
+         *  @description Store calculated aggregations into the entity, allowing them
+         *  to be displayed in the grid using a standard cellTemplate.  This defaults to true,
+         *  if you are using grouping then you shouldn't set it to false, as then the aggregations won't
+         *  display.
+         *
+         *  If you are using treeView in most cases you'll want to set this to true.  This will result in
+         *  getCellValue returning the aggregation rather than whatever was stored in the cell attribute on
+         *  the entity.  If you want to render the underlying entity value (and do something else with the aggregation)
+         *  then you could use a custom cellTemplate to display `row.entity.myAttribute`, rather than using getCellValue.
+         *
+         *  <br/>Defaults to true
+         *
+         *  @example
+         *  <pre>
+         *    gridOptions.columns = [{
+         *      name: 'myCol',
+         *      treeAggregation: { type: uiGridTreeBaseConstants.aggregation.SUM },
+         *      treeAggregationUpdateEntity: true
+         *      cellTemplate: '<div>{{row.entity.myCol + " " + row.treeNode.aggregations[0].rendered}}</div>'
+         *    }];
+         * </pre>
+         */
+        col.treeAggregationUpdateEntity = colDef.treeAggregationUpdateEntity !== false;
+
+        /**
+         *  @ngdoc object
+         *  @name customTreeAggregationFinalizerFn
+         *  @propertyOf  ui.grid.treeBase.api:ColumnDef
+         *  @description A custom function that populates aggregation.rendered, this is called when
+         *  a particular aggregation has been fully calculated, and we want to render the value.
+         *
+         *  With the native aggregation options we just concatenate `aggregation.label` and
+         *  `aggregation.value`, but if you wanted to apply a filter or otherwise manipulate the label
+         *  or the value, you can do so with this function. This function will be called after the
+         *  the default `finalizerFn`.
+         *
+         *  @example
+         *  <pre>
+         *    customTreeAggregationFinalizerFn = function ( aggregation ){
+         *      aggregation.rendered = aggregation.label + aggregation.value / 100 + '%';
+         *    }
+         *  </pre>
+         *  <br/>Defaults to undefined.
+         */
+        if ( typeof(col.customTreeAggregationFinalizerFn) === 'undefined' ){
+          col.customTreeAggregationFinalizerFn = colDef.customTreeAggregationFinalizerFn;
+        }
+
+      },
+
+
+      /**
+       * @ngdoc function
+       * @name createRowHeader
+       * @methodOf  ui.grid.treeBase.service:uiGridTreeBaseService
+       * @description Create the rowHeader.  If treeRowHeaderAlwaysVisible then
+       * set it to visible, otherwise set it to invisible
+       *
+       * @param {Grid} grid grid object
+       */
+      createRowHeader: function( grid ){
+        var rowHeaderColumnDef = {
+          name: uiGridTreeBaseConstants.rowHeaderColName,
+          displayName: '',
+          width:  grid.options.treeRowHeaderBaseWidth,
+          minWidth: 10,
+          cellTemplate: 'ui-grid/treeBaseRowHeader',
+          headerCellTemplate: 'ui-grid/treeBaseHeaderCell',
+          enableColumnResizing: false,
+          enableColumnMenu: false,
+          exporterSuppressExport: true,
+          allowCellFocus: true
+        };
+
+        rowHeaderColumnDef.visible = grid.options.treeRowHeaderAlwaysVisible;
+        grid.addRowHeaderColumn( rowHeaderColumnDef );
+      },
+
+
+      /**
+       * @ngdoc function
+       * @name expandAllRows
+       * @methodOf  ui.grid.treeBase.service:uiGridTreeBaseService
+       * @description Expands all nodes in the tree
+       *
+       * @param {Grid} grid grid object
+       */
+      expandAllRows: function (grid) {
+        grid.treeBase.tree.forEach( function( node ) {
+          service.setAllNodes( grid, node, uiGridTreeBaseConstants.EXPANDED);
+        });
+        grid.treeBase.expandAll = true;
+        grid.queueGridRefresh();
+      },
+
+
+      /**
+       * @ngdoc function
+       * @name collapseAllRows
+       * @methodOf  ui.grid.treeBase.service:uiGridTreeBaseService
+       * @description Collapses all nodes in the tree
+       *
+       * @param {Grid} grid grid object
+       */
+      collapseAllRows: function (grid) {
+        grid.treeBase.tree.forEach( function( node ) {
+          service.setAllNodes( grid, node, uiGridTreeBaseConstants.COLLAPSED);
+        });
+        grid.treeBase.expandAll = false;
+        grid.queueGridRefresh();
+      },
+
+
+      /**
+       * @ngdoc function
+       * @name setAllNodes
+       * @methodOf  ui.grid.treeBase.service:uiGridTreeBaseService
+       * @description Works through a subset of grid.treeBase.rowExpandedStates, setting
+       * all child nodes (and their descendents) of the provided node to the given state.
+       *
+       * Calls itself recursively on all nodes so as to achieve this.
+       *
+       * @param {Grid} grid the grid we're operating on (so we can raise events)
+       * @param {object} treeNode a node in the tree that we want to update
+       * @param {string} targetState the state we want to set it to
+       */
+      setAllNodes: function (grid, treeNode, targetState) {
+        if ( typeof(treeNode.state) !== 'undefined' && treeNode.state !== targetState ){
+          treeNode.state = targetState;
+
+          if ( targetState === uiGridTreeBaseConstants.EXPANDED ){
+            grid.api.treeBase.raise.rowExpanded(treeNode.row);
+          } else {
+            grid.api.treeBase.raise.rowCollapsed(treeNode.row);
+          }
+        }
+
+        // set all child nodes
+        if ( treeNode.children ){
+          treeNode.children.forEach(function( childNode ){
+            service.setAllNodes(grid, childNode, targetState);
+          });
+        }
+      },
+
+
+      /**
+       * @ngdoc function
+       * @name toggleRowTreeState
+       * @methodOf  ui.grid.treeBase.service:uiGridTreeBaseService
+       * @description Toggles the expand or collapse state of this grouped row, if
+       * it's a parent row
+       *
+       * @param {Grid} grid grid object
+       * @param {GridRow} row the row we want to toggle
+       */
+      toggleRowTreeState: function ( grid, row ){
+        if ( typeof(row.treeLevel) === 'undefined' || row.treeLevel === null || row.treeLevel < 0 ){
+          return;
+        }
+
+        if (row.treeNode.state === uiGridTreeBaseConstants.EXPANDED){
+          service.collapseRow(grid, row);
+        } else {
+          service.expandRow(grid, row);
+        }
+
+        grid.queueGridRefresh();
+      },
+
+
+      /**
+       * @ngdoc function
+       * @name expandRow
+       * @methodOf  ui.grid.treeBase.service:uiGridTreeBaseService
+       * @description Expands this specific row, showing only immediate children.
+       *
+       * @param {Grid} grid grid object
+       * @param {GridRow} row the row we want to expand
+       */
+      expandRow: function ( grid, row ){
+        if ( typeof(row.treeLevel) === 'undefined' || row.treeLevel === null || row.treeLevel < 0 ){
+          return;
+        }
+
+        if ( row.treeNode.state !== uiGridTreeBaseConstants.EXPANDED ){
+          row.treeNode.state = uiGridTreeBaseConstants.EXPANDED;
+          grid.api.treeBase.raise.rowExpanded(row);
+          grid.treeBase.expandAll = service.allExpanded(grid.treeBase.tree);
+          grid.queueGridRefresh();
+        }
+      },
+
+
+      /**
+       * @ngdoc function
+       * @name expandRowChildren
+       * @methodOf  ui.grid.treeBase.service:uiGridTreeBaseService
+       * @description Expands this specific row, showing all children.
+       *
+       * @param {Grid} grid grid object
+       * @param {GridRow} row the row we want to expand
+       */
+      expandRowChildren: function ( grid, row ){
+        if ( typeof(row.treeLevel) === 'undefined' || row.treeLevel === null || row.treeLevel < 0 ){
+          return;
+        }
+
+        service.setAllNodes(grid, row.treeNode, uiGridTreeBaseConstants.EXPANDED);
+        grid.treeBase.expandAll = service.allExpanded(grid.treeBase.tree);
+        grid.queueGridRefresh();
+      },
+
+
+      /**
+       * @ngdoc function
+       * @name collapseRow
+       * @methodOf  ui.grid.treeBase.service:uiGridTreeBaseService
+       * @description Collapses this specific row
+       *
+       * @param {Grid} grid grid object
+       * @param {GridRow} row the row we want to collapse
+       */
+      collapseRow: function( grid, row ){
+        if ( typeof(row.treeLevel) === 'undefined' || row.treeLevel === null || row.treeLevel < 0 ){
+          return;
+        }
+
+        if ( row.treeNode.state !== uiGridTreeBaseConstants.COLLAPSED ){
+          row.treeNode.state = uiGridTreeBaseConstants.COLLAPSED;
+          grid.treeBase.expandAll = false;
+          grid.api.treeBase.raise.rowCollapsed(row);
+          grid.queueGridRefresh();
+        }
+      },
+
+
+      /**
+       * @ngdoc function
+       * @name collapseRowChildren
+       * @methodOf  ui.grid.treeBase.service:uiGridTreeBaseService
+       * @description Collapses this specific row and all children
+       *
+       * @param {Grid} grid grid object
+       * @param {GridRow} row the row we want to collapse
+       */
+      collapseRowChildren: function( grid, row ){
+        if ( typeof(row.treeLevel) === 'undefined' || row.treeLevel === null || row.treeLevel < 0 ){
+          return;
+        }
+
+        service.setAllNodes(grid, row.treeNode, uiGridTreeBaseConstants.COLLAPSED);
+        grid.treeBase.expandAll = false;
+        grid.queueGridRefresh();
+      },
+
+
+      /**
+       * @ngdoc function
+       * @name allExpanded
+       * @methodOf  ui.grid.treeBase.service:uiGridTreeBaseService
+       * @description Returns true if all rows are expanded, false
+       * if they're not.  Walks the tree to determine this.  Used
+       * to set the expandAll state.
+       *
+       * If the node has no children, then return true (it's immaterial
+       * whether it is expanded).  If the node has children, then return
+       * false if this node is collapsed, or if any child node is not all expanded
+       *
+       * @param {object} tree the grid to check
+       * @returns {boolean} whether or not the tree is all expanded
+       */
+      allExpanded: function( tree ){
+        var allExpanded = true;
+        tree.forEach( function( node ){
+          if ( !service.allExpandedInternal( node ) ){
+            allExpanded = false;
+          }
+        });
+        return allExpanded;
+      },
+
+      allExpandedInternal: function( treeNode ){
+        if ( treeNode.children && treeNode.children.length > 0 ){
+          if ( treeNode.state === uiGridTreeBaseConstants.COLLAPSED ){
+            return false;
+          }
+          var allExpanded = true;
+          treeNode.children.forEach( function( node ){
+            if ( !service.allExpandedInternal( node ) ){
+              allExpanded = false;
+            }
+          });
+          return allExpanded;
+        } else {
+          return true;
+        }
+      },
+
+
+      /**
+       * @ngdoc function
+       * @name treeRows
+       * @methodOf  ui.grid.treeBase.service:uiGridTreeBaseService
+       * @description The rowProcessor that adds the nodes to the tree, and sets the visible
+       * state of each row based on it's parent state
+       *
+       * Assumes it is always called after the sorting processor, and the grouping processor if there is one.
+       * Performs any tree sorts itself after having built the tree
+       *
+       * Processes all the rows in order, setting the group level based on the $$treeLevel in the associated
+       * entity, and setting the visible state based on the parent's state.
+       *
+       * Calculates the deepest level of tree whilst it goes, and updates that so that the header column can be correctly
+       * sized.
+       *
+       * Aggregates if necessary along the way.
+       *
+       * @param {array} renderableRows the rows we want to process, usually the output from the previous rowProcessor
+       * @returns {array} the updated rows
+       */
+      treeRows: function( renderableRows ) {
+        if (renderableRows.length === 0){
+          return renderableRows;
+        }
+
+        var grid = this;
+        var currentLevel = 0;
+        var currentState = uiGridTreeBaseConstants.EXPANDED;
+        var parents = [];
+
+        grid.treeBase.tree = service.createTree( grid, renderableRows );
+        service.updateRowHeaderWidth( grid );
+
+        service.sortTree( grid );
+        service.fixFilter( grid );
+
+        return service.renderTree( grid.treeBase.tree );
+      },
+
+
+      /**
+       * @ngdoc function
+       * @name createOrUpdateRowHeaderWidth
+       * @methodOf  ui.grid.treeBase.service:uiGridTreeBaseService
+       * @description Calculates the rowHeader width.
+       *
+       * If rowHeader is always present, updates the width.
+       *
+       * If rowHeader is only sometimes present (`treeRowHeaderAlwaysVisible: false`), determines whether there
+       * should be one, then creates or removes it as appropriate, with the created rowHeader having the
+       * right width.
+       *
+       * If there's never a rowHeader then never creates one: `showTreeRowHeader: false`
+       *
+       * @param {Grid} grid the grid we want to set the row header on
+       */
+      updateRowHeaderWidth: function( grid ){
+        var rowHeader = grid.getColumn(uiGridTreeBaseConstants.rowHeaderColName);
+
+        var newWidth = grid.options.treeRowHeaderBaseWidth + grid.options.treeIndent * Math.max(grid.treeBase.numberLevels - 1, 0);
+        if ( rowHeader && newWidth !== rowHeader.width ){
+          rowHeader.width = newWidth;
+          grid.queueRefresh();
+        }
+
+        var newVisibility = true;
+        if ( grid.options.showTreeRowHeader === false ){
+          newVisibility = false;
+        }
+        if ( grid.options.treeRowHeaderAlwaysVisible === false && grid.treeBase.numberLevels <= 0 ){
+          newVisibility = false;
+        }
+        if ( rowHeader.visible !== newVisibility ) {
+          rowHeader.visible = newVisibility;
+          rowHeader.colDef.visible = newVisibility;
+          grid.queueGridRefresh();
+        }
+      },
+
+
+      /**
+       * @ngdoc function
+       * @name renderTree
+       * @methodOf  ui.grid.treeBase.service:uiGridTreeBaseService
+       * @description Creates an array of rows based on the tree, exporting only
+       * the visible nodes and leaves
+       *
+       * @param {array} nodeList the list of nodes - can be grid.treeBase.tree, or can be node.children when
+       * we're calling recursively
+       * @returns {array} renderable rows
+       */
+      renderTree: function( nodeList ){
+        var renderableRows = [];
+
+        nodeList.forEach( function ( node ){
+          if ( node.row.visible ){
+            renderableRows.push( node.row );
+          }
+          if ( node.state === uiGridTreeBaseConstants.EXPANDED && node.children && node.children.length > 0 ){
+            renderableRows = renderableRows.concat( service.renderTree( node.children ) );
+          }
+        });
+        return renderableRows;
+      },
+
+
+      /**
+       * @ngdoc function
+       * @name createTree
+       * @methodOf  ui.grid.treeBase.service:uiGridTreeBaseService
+       * @description Creates a tree from the renderableRows
+       *
+       * @param {Grid} grid the grid
+       * @param {array} renderableRows the rows we want to create a tree from
+       * @returns {object} the tree we've build
+       */
+      createTree: function( grid, renderableRows ) {
+        var currentLevel = -1;
+        var parents = [];
+        var currentState;
+        grid.treeBase.tree = [];
+        grid.treeBase.numberLevels = 0;
+        var aggregations = service.getAggregations( grid );
+
+        var createNode = function( row ){
+          if ( typeof(row.entity.$$treeLevel) !== 'undefined' && row.treeLevel !== row.entity.$$treeLevel ){
+            row.treeLevel = row.entity.$$treeLevel;
+          }
+
+          if ( row.treeLevel <= currentLevel ){
+            // pop any levels that aren't parents of this level, formatting the aggregation at the same time
+            while ( row.treeLevel <= currentLevel ){
+              var lastParent = parents.pop();
+              service.finaliseAggregations( lastParent );
+              currentLevel--;
+            }
+
+            // reset our current state based on the new parent, set to expanded if this is a level 0 node
+            if ( parents.length > 0 ){
+              currentState = service.setCurrentState(parents);
+            } else {
+              currentState = uiGridTreeBaseConstants.EXPANDED;
+            }
+          }
+
+          // aggregate if this is a leaf node
+          if ( ( typeof(row.treeLevel) === 'undefined' || row.treeLevel === null || row.treeLevel < 0 ) && row.visible  ){
+            service.aggregate( grid, row, parents );
+          }
+
+          // add this node to the tree
+          service.addOrUseNode(grid, row, parents, aggregations);
+
+          if ( typeof(row.treeLevel) !== 'undefined' && row.treeLevel !== null && row.treeLevel >= 0 ){
+            parents.push(row);
+            currentLevel++;
+            currentState = service.setCurrentState(parents);
+          }
+
+          // update the tree number of levels, so we can set header width if we need to
+          if ( grid.treeBase.numberLevels < row.treeLevel + 1){
+            grid.treeBase.numberLevels = row.treeLevel + 1;
+          }
+        };
+
+        renderableRows.forEach( createNode );
+
+        // finalise remaining aggregations
+        while ( parents.length > 0 ){
+          var lastParent = parents.pop();
+          service.finaliseAggregations( lastParent );
+        }
+
+        return grid.treeBase.tree;
+      },
+
+
+      /**
+       * @ngdoc function
+       * @name addOrUseNode
+       * @methodOf  ui.grid.treeBase.service:uiGridTreeBaseService
+       * @description Creates a tree node for this row.  If this row already has a treeNode
+       * recorded against it, preserves the state, but otherwise overwrites the data.
+       *
+       * @param {grid} grid the grid we're operating on
+       * @param {gridRow} row the row we want to set
+       * @param {array} parents an array of the parents this row should have
+       * @param {array} aggregationBase empty aggregation information
+       * @returns {undefined} updates the parents array, updates the row to have a treeNode, and updates the
+       * grid.treeBase.tree
+       */
+      addOrUseNode: function( grid, row, parents, aggregationBase ){
+        var newAggregations = [];
+        aggregationBase.forEach( function(aggregation){
+          newAggregations.push(service.buildAggregationObject(aggregation.col));
+        });
+
+        var newNode = { state: uiGridTreeBaseConstants.COLLAPSED, row: row, parentRow: null, aggregations: newAggregations, children: [] };
+        if ( row.treeNode ){
+          newNode.state = row.treeNode.state;
+        }
+        if ( parents.length > 0 ){
+          newNode.parentRow = parents[parents.length - 1];
+        }
+        row.treeNode = newNode;
+
+        if ( parents.length === 0 ){
+          grid.treeBase.tree.push( newNode );
+        } else {
+          parents[parents.length - 1].treeNode.children.push( newNode );
+        }
+      },
+
+
+      /**
+       * @ngdoc function
+       * @name setCurrentState
+       * @methodOf  ui.grid.treeBase.service:uiGridTreeBaseService
+       * @description Looks at the parents array to determine our current state.
+       * If any node in the hierarchy is collapsed, then return collapsed, otherwise return
+       * expanded.
+       *
+       * @param {array} parents an array of the parents this row should have
+       * @returns {string} the state we should be setting to any nodes we see
+       */
+      setCurrentState: function( parents ){
+        var currentState = uiGridTreeBaseConstants.EXPANDED;
+        parents.forEach( function(parent){
+          if ( parent.treeNode.state === uiGridTreeBaseConstants.COLLAPSED ){
+            currentState = uiGridTreeBaseConstants.COLLAPSED;
+          }
+        });
+        return currentState;
+      },
+
+
+      /**
+       * @ngdoc function
+       * @name sortTree
+       * @methodOf  ui.grid.treeBase.service:uiGridTreeBaseService
+       * @description Performs a recursive sort on the tree nodes, sorting the
+       * children of each node and putting them back into the children array.
+       *
+       * Before doing this it turns back on all the sortIgnore - things that were previously
+       * ignored we process now.  Since we're sorting within the nodes, presumably anything
+       * that was already sorted is how we derived the nodes, we can keep those sorts too.
+       *
+       * We only sort tree nodes that are expanded - no point in wasting effort sorting collapsed
+       * nodes
+       *
+       * @param {Grid} grid the grid to get the aggregation information from
+       * @returns {array} the aggregation information
+       */
+      sortTree: function( grid ){
+        grid.columns.forEach( function( column ) {
+          if ( column.sort && column.sort.ignoreSort ){
+            delete column.sort.ignoreSort;
+          }
+        });
+
+        grid.treeBase.tree = service.sortInternal( grid, grid.treeBase.tree );
+      },
+
+      sortInternal: function( grid, treeList ){
+        var rows = treeList.map( function( node ){
+          return node.row;
+        });
+
+        rows = rowSorter.sort( grid, rows, grid.columns );
+
+        var treeNodes = rows.map( function( row ){
+          return row.treeNode;
+        });
+
+        treeNodes.forEach( function( node ){
+          if ( node.state === uiGridTreeBaseConstants.EXPANDED && node.children && node.children.length > 0 ){
+            node.children = service.sortInternal( grid, node.children );
+          }
+        });
+
+        return treeNodes;
+      },
+
+      /**
+       * @ngdoc function
+       * @name fixFilter
+       * @methodOf  ui.grid.treeBase.service:uiGridTreeBaseService
+       * @description After filtering has run, we need to go back through the tree
+       * and make sure the parent rows are always visible if any of the child rows
+       * are visible (filtering may make a child visible, but the parent may not
+       * match the filter criteria)
+       *
+       * This has a risk of being computationally expensive, we do it by walking
+       * the tree and remembering whether there are any invisible nodes on the
+       * way down.
+       *
+       * @param {Grid} grid the grid to fix filters on
+       */
+      fixFilter: function( grid ){
+        var parentsVisible;
+
+        grid.treeBase.tree.forEach( function( node ){
+          if ( node.children && node.children.length > 0 ){
+            parentsVisible = node.row.visible;
+            service.fixFilterInternal( node.children, parentsVisible );
+          }
+        });
+      },
+
+      fixFilterInternal: function( nodes, parentsVisible) {
+        nodes.forEach( function( node ){
+          if ( node.row.visible && !parentsVisible ){
+            service.setParentsVisible( node );
+            parentsVisible = true;
+          }
+
+          if ( node.children && node.children.length > 0 ){
+            if ( service.fixFilterInternal( node.children, ( parentsVisible && node.row.visible ) ) ) {
+              parentsVisible = true;
+            }
+          }
+        });
+
+        return parentsVisible;
+      },
+
+      setParentsVisible: function( node ){
+        while ( node.parentRow ){
+          node.parentRow.visible = true;
+          node = node.parentRow.treeNode;
+        }
+      },
+
+      /**
+       * @ngdoc function
+       * @name buildAggregationObject
+       * @methodOf  ui.grid.treeBase.service:uiGridTreeBaseService
+       * @description Build the object which is stored on the column for holding meta-data about the aggregation.
+       * This method should only be called with columns which have an aggregation.
+       *
+       * @param {Column} the column which this object relates to
+       * @returns {object} {col: Column object, label: string, type: string (optional)}
+       */
+      buildAggregationObject: function( column ){
+        var newAggregation = { col: column };
+
+        if ( column.treeAggregation && column.treeAggregation.type ){
+          newAggregation.type = column.treeAggregation.type;
+        }
+
+        if ( column.treeAggregation && column.treeAggregation.label ){
+          newAggregation.label = column.treeAggregation.label;
+        }
+
+        return newAggregation;
+      },
+
+      /**
+       * @ngdoc function
+       * @name getAggregations
+       * @methodOf  ui.grid.treeBase.service:uiGridTreeBaseService
+       * @description Looks through the grid columns to find those with aggregations,
+       * and collates the aggregation information into an array, returns that array
+       *
+       * @param {Grid} grid the grid to get the aggregation information from
+       * @returns {array} the aggregation information
+       */
+      getAggregations: function( grid ){
+        var aggregateArray = [];
+
+        grid.columns.forEach( function(column){
+          if ( typeof(column.treeAggregationFn) !== 'undefined' ){
+            aggregateArray.push( service.buildAggregationObject(column) );
+
+            if ( grid.options.showColumnFooter && typeof(column.colDef.aggregationType) === 'undefined' && column.treeAggregation ){
+              // Add aggregation object for footer
+              column.treeFooterAggregation = service.buildAggregationObject(column);
+              column.aggregationType = service.treeFooterAggregationType;
+            }
+          }
+        });
+        return aggregateArray;
+      },
+
+
+      /**
+       * @ngdoc function
+       * @name aggregate
+       * @methodOf  ui.grid.treeBase.service:uiGridTreeBaseService
+       * @description Accumulate the data from this row onto the aggregations for each parent
+       *
+       * Iterate over the parents, then iterate over the aggregations for each of those parents,
+       * and perform the aggregation for each individual aggregation
+       *
+       * @param {Grid} grid grid object
+       * @param {GridRow} row the row we want to set grouping visibility on
+       * @param {array} parents the parents that we would want to aggregate onto
+       */
+      aggregate: function( grid, row, parents ){
+        if ( parents.length === 0 && row.treeNode && row.treeNode.aggregations ){
+          row.treeNode.aggregations.forEach(function(aggregation){
+            // Calculate aggregations for footer even if there are no grouped rows
+            if ( typeof(aggregation.col.treeFooterAggregation) !== 'undefined' ) {
+              var fieldValue = grid.getCellValue(row, aggregation.col);
+              var numValue = Number(fieldValue);
+              aggregation.col.treeAggregationFn(aggregation.col.treeFooterAggregation, fieldValue, numValue, row);
+            }
+          });
+        }
+
+        parents.forEach( function( parent, index ){
+          if ( parent.treeNode.aggregations ){
+            parent.treeNode.aggregations.forEach( function( aggregation ){
+              var fieldValue = grid.getCellValue(row, aggregation.col);
+              var numValue = Number(fieldValue);
+              aggregation.col.treeAggregationFn(aggregation, fieldValue, numValue, row);
+
+              if ( index === 0 && typeof(aggregation.col.treeFooterAggregation) !== 'undefined' ){
+                aggregation.col.treeAggregationFn(aggregation.col.treeFooterAggregation, fieldValue, numValue, row);
+              }
+            });
+          }
+        });
+      },
+
+
+      // Aggregation routines - no doco needed as self evident
+      nativeAggregations: function() {
+        var nativeAggregations = {
+          count: {
+            label: i18nService.get().aggregation.count,
+            menuTitle: i18nService.get().grouping.aggregate_count,
+            aggregationFn: function (aggregation, fieldValue, numValue) {
+              if (typeof(aggregation.value) === 'undefined') {
+                aggregation.value = 1;
+              } else {
+                aggregation.value++;
+              }
+            }
+          },
+
+          sum: {
+            label: i18nService.get().aggregation.sum,
+            menuTitle: i18nService.get().grouping.aggregate_sum,
+            aggregationFn: function( aggregation, fieldValue, numValue ) {
+              if (!isNaN(numValue)) {
+                if (typeof(aggregation.value) === 'undefined') {
+                  aggregation.value = numValue;
+                } else {
+                  aggregation.value += numValue;
+                }
+              }
+            }
+          },
+
+          min: {
+            label: i18nService.get().aggregation.min,
+            menuTitle: i18nService.get().grouping.aggregate_min,
+            aggregationFn: function( aggregation, fieldValue, numValue ) {
+              if (typeof(aggregation.value) === 'undefined') {
+                aggregation.value = fieldValue;
+              } else {
+                if (typeof(fieldValue) !== 'undefined' && fieldValue !== null && (fieldValue < aggregation.value || aggregation.value === null)) {
+                  aggregation.value = fieldValue;
+                }
+              }
+            }
+          },
+
+          max: {
+            label: i18nService.get().aggregation.max,
+            menuTitle: i18nService.get().grouping.aggregate_max,
+            aggregationFn: function( aggregation, fieldValue, numValue ){
+              if ( typeof(aggregation.value) === 'undefined' ){
+                aggregation.value = fieldValue;
+              } else {
+                if ( typeof(fieldValue) !== 'undefined' && fieldValue !== null && (fieldValue > aggregation.value || aggregation.value === null)){
+                  aggregation.value = fieldValue;
+                }
+              }
+            }
+          },
+
+          avg: {
+            label: i18nService.get().aggregation.avg,
+            menuTitle: i18nService.get().grouping.aggregate_avg,
+            aggregationFn: function( aggregation, fieldValue, numValue ){
+              if ( typeof(aggregation.count) === 'undefined' ){
+                aggregation.count = 1;
+              } else {
+                aggregation.count++;
+              }
+
+              if ( isNaN(numValue) ){
+                return;
+              }
+
+              if ( typeof(aggregation.value) === 'undefined' || typeof(aggregation.sum) === 'undefined' ){
+                aggregation.value = numValue;
+                aggregation.sum = numValue;
+              } else {
+                aggregation.sum += numValue;
+                aggregation.value = aggregation.sum / aggregation.count;
+              }
+            }
+          }
+        };
+        return nativeAggregations;
+      },
+
+      /**
+       * @ngdoc function
+       * @name finaliseAggregation
+       * @methodOf  ui.grid.treeBase.service:uiGridTreeBaseService
+       * @description Helper function used to finalize aggregation nodes and footer cells
+       *
+       * @param {gridRow} row the parent we're finalising
+       * @param {aggregation} the aggregation object manipulated by the aggregationFn
+       */
+      finaliseAggregation: function(row, aggregation){
+        if ( aggregation.col.treeAggregationUpdateEntity && typeof(row) !== 'undefined' && typeof(row.entity[ '$$' + aggregation.col.uid ]) !== 'undefined' ){
+          angular.extend( aggregation, row.entity[ '$$' + aggregation.col.uid ]);
+        }
+
+        if ( typeof(aggregation.col.treeAggregationFinalizerFn) === 'function' ){
+          aggregation.col.treeAggregationFinalizerFn( aggregation );
+        }
+        if ( typeof(aggregation.col.customTreeAggregationFinalizerFn) === 'function' ){
+          aggregation.col.customTreeAggregationFinalizerFn( aggregation );
+        }
+        if ( typeof(aggregation.rendered) === 'undefined' ){
+          aggregation.rendered = aggregation.label ? aggregation.label + aggregation.value : aggregation.value;
+        }
+      },
+
+      /**
+       * @ngdoc function
+       * @name finaliseAggregations
+       * @methodOf  ui.grid.treeBase.service:uiGridTreeBaseService
+       * @description Format the data from the aggregation into the rendered text
+       * e.g. if we had label: 'sum: ' and value: 25, we'd create 'sum: 25'.
+       *
+       * As part of this we call any formatting callback routines we've been provided.
+       *
+       * We write our aggregation out to the row.entity if treeAggregationUpdateEntity is
+       * set on the column - we don't overwrite any information that's already there, we append
+       * to it so that grouping can have set the groupVal beforehand without us overwriting it.
+       *
+       * We need to copy the data from the row.entity first before we finalise the aggregation,
+       * we need that information for the finaliserFn
+       *
+       * @param {gridRow} row the parent we're finalising
+       */
+      finaliseAggregations: function( row ){
+        if ( typeof(row.treeNode.aggregations) === 'undefined' ){
+          return;
+        }
+
+        row.treeNode.aggregations.forEach( function( aggregation ) {
+          service.finaliseAggregation(row, aggregation);
+
+          if ( aggregation.col.treeAggregationUpdateEntity ){
+            var aggregationCopy = {};
+            angular.forEach( aggregation, function( value, key ){
+              if ( aggregation.hasOwnProperty(key) && key !== 'col' ){
+                aggregationCopy[key] = value;
+              }
+            });
+
+            row.entity[ '$$' + aggregation.col.uid ] = aggregationCopy;
+          }
+        });
+      },
+
+      /**
+       * @ngdoc function
+       * @name treeFooterAggregationType
+       * @methodOf  ui.grid.treeBase.service:uiGridTreeBaseService
+       * @description Uses the tree aggregation functions and finalizers to set the
+       * column footer aggregations.
+       *
+       * @param {rows} visible rows. not used, but accepted to match signature of GridColumn.aggregationType
+       * @param {gridColumn} the column we are finalizing
+       */
+      treeFooterAggregationType: function( rows, column ) {
+        service.finaliseAggregation(undefined, column.treeFooterAggregation);
+        if ( typeof(column.treeFooterAggregation.value) === 'undefined' || column.treeFooterAggregation.rendered === null ){
+          // The was apparently no aggregation performed (perhaps this is a grouped column
+          return '';
+        }
+        return column.treeFooterAggregation.rendered;
+      }
+    };
+
+    return service;
+
+  }]);
+
+
+  /**
+   *  @ngdoc directive
+   *  @name ui.grid.treeBase.directive:uiGridTreeRowHeaderButtons
+   *  @element div
+   *
+   *  @description Provides the expand/collapse button on rows
+   */
+  module.directive('uiGridTreeBaseRowHeaderButtons', ['$templateCache', 'uiGridTreeBaseService',
+  function ($templateCache, uiGridTreeBaseService) {
+    return {
+      replace: true,
+      restrict: 'E',
+      template: $templateCache.get('ui-grid/treeBaseRowHeaderButtons'),
+      scope: true,
+      require: '^uiGrid',
+      link: function($scope, $elm, $attrs, uiGridCtrl) {
+        var self = uiGridCtrl.grid;
+        $scope.treeButtonClick = function(row, evt) {
+          uiGridTreeBaseService.toggleRowTreeState(self, row, evt);
+        };
+      }
+    };
+  }]);
+
+
+  /**
+   *  @ngdoc directive
+   *  @name ui.grid.treeBase.directive:uiGridTreeBaseExpandAllButtons
+   *  @element div
+   *
+   *  @description Provides the expand/collapse all button
+   */
+  module.directive('uiGridTreeBaseExpandAllButtons', ['$templateCache', 'uiGridTreeBaseService',
+  function ($templateCache, uiGridTreeBaseService) {
+    return {
+      replace: true,
+      restrict: 'E',
+      template: $templateCache.get('ui-grid/treeBaseExpandAllButtons'),
+      scope: false,
+      link: function($scope, $elm, $attrs, uiGridCtrl) {
+        var self = $scope.col.grid;
+
+        $scope.headerButtonClick = function(row, evt) {
+          if ( self.treeBase.expandAll ){
+            uiGridTreeBaseService.collapseAllRows(self, evt);
+          } else {
+            uiGridTreeBaseService.expandAllRows(self, evt);
+          }
+        };
+      }
+    };
+  }]);
+
+
+  /**
+   *  @ngdoc directive
+   *  @name ui.grid.treeBase.directive:uiGridViewport
+   *  @element div
+   *
+   *  @description Stacks on top of ui.grid.uiGridViewport to set formatting on a tree header row
+   */
+  module.directive('uiGridViewport',
+  ['$compile', 'uiGridConstants', 'gridUtil', '$parse',
+    function ($compile, uiGridConstants, gridUtil, $parse) {
+      return {
+        priority: -200, // run after default  directive
+        scope: false,
+        compile: function ($elm, $attrs) {
+          var rowRepeatDiv = angular.element($elm.children().children()[0]);
+
+          var existingNgClass = rowRepeatDiv.attr("ng-class");
+          var newNgClass = '';
+          if ( existingNgClass ) {
+            newNgClass = existingNgClass.slice(0, -1) + ",'ui-grid-tree-header-row': row.treeLevel > -1}";
+          } else {
+            newNgClass = "{'ui-grid-tree-header-row': row.treeLevel > -1}";
+          }
+          rowRepeatDiv.attr("ng-class", newNgClass);
+
+          return {
+            pre: function ($scope, $elm, $attrs, controllers) {
+
+            },
+            post: function ($scope, $elm, $attrs, controllers) {
+            }
+          };
+        }
+      };
+    }]);
+})();
+
+(function () {
+  'use strict';
+
+  /**
+   * @ngdoc overview
+   * @name ui.grid.treeView
+   * @description
+   *
+   * # ui.grid.treeView
+   *
+   * <div class="alert alert-warning" role="alert"><strong>Beta</strong> This feature is ready for testing, but it either hasn't seen a lot of use or has some known bugs.</div>
+   *
+   * This module provides a tree view of the data that it is provided, with nodes in that
+   * tree and leaves.  Unlike grouping, the tree is an inherent property of the data and must
+   * be provided with your data array.
+   *
+   * Design information:
+   * -------------------
+   *
+   * TreeView uses treeBase for the underlying functionality, and is a very thin wrapper around
+   * that logic.  Most of the design information has now moved to treebase.
+   * <br/>
+   * <br/>
+   *
+   * <div doc-module-components="ui.grid.treeView"></div>
+   */
+
+  var module = angular.module('ui.grid.treeView', ['ui.grid', 'ui.grid.treeBase']);
+
+  /**
+   *  @ngdoc object
+   *  @name ui.grid.treeView.constant:uiGridTreeViewConstants
+   *
+   *  @description constants available in treeView module, this includes
+   *  all the constants declared in the treeBase module (these are manually copied
+   *  as there isn't an easy way to include constants in another constants file, and
+   *  we don't want to make users include treeBase)
+   *
+   */
+  module.constant('uiGridTreeViewConstants', {
+    featureName: "treeView",
+    rowHeaderColName: 'treeBaseRowHeaderCol',
+    EXPANDED: 'expanded',
+    COLLAPSED: 'collapsed',
+    aggregation: {
+      COUNT: 'count',
+      SUM: 'sum',
+      MAX: 'max',
+      MIN: 'min',
+      AVG: 'avg'
+    }
+  });
+
+  /**
+   *  @ngdoc service
+   *  @name ui.grid.treeView.service:uiGridTreeViewService
+   *
+   *  @description Services for treeView features
+   */
+  module.service('uiGridTreeViewService', ['$q', 'uiGridTreeViewConstants', 'uiGridTreeBaseConstants', 'uiGridTreeBaseService', 'gridUtil', 'GridRow', 'gridClassFactory', 'i18nService', 'uiGridConstants',
+  function ($q, uiGridTreeViewConstants, uiGridTreeBaseConstants, uiGridTreeBaseService, gridUtil, GridRow, gridClassFactory, i18nService, uiGridConstants) {
+
+    var service = {
+
+      initializeGrid: function (grid, $scope) {
+        uiGridTreeBaseService.initializeGrid( grid, $scope );
+
+        /**
+         *  @ngdoc object
+         *  @name ui.grid.treeView.grid:treeView
+         *
+         *  @description Grid properties and functions added for treeView
+         */
+        grid.treeView = {};
+
+        grid.registerRowsProcessor(service.adjustSorting, 60);
+
+        /**
+         *  @ngdoc object
+         *  @name ui.grid.treeView.api:PublicApi
+         *
+         *  @description Public Api for treeView feature
+         */
+        var publicApi = {
+          events: {
+            treeView: {
+            }
+          },
+          methods: {
+            treeView: {
+            }
+          }
+        };
+
+        grid.api.registerEventsFromObject(publicApi.events);
+
+        grid.api.registerMethodsFromObject(publicApi.methods);
+
+      },
+
+      defaultGridOptions: function (gridOptions) {
+        //default option to true unless it was explicitly set to false
+        /**
+         *  @ngdoc object
+         *  @name ui.grid.treeView.api:GridOptions
+         *
+         *  @description GridOptions for treeView feature, these are available to be
+         *  set using the ui-grid {@link ui.grid.class:GridOptions gridOptions}
+         *
+         *  Many tree options are set on treeBase, make sure to look at that feature in
+         *  conjunction with these options.
+         */
+
+        /**
+         *  @ngdoc object
+         *  @name enableTreeView
+         *  @propertyOf  ui.grid.treeView.api:GridOptions
+         *  @description Enable row tree view for entire grid.
+         *  <br/>Defaults to true
+         */
+        gridOptions.enableTreeView = gridOptions.enableTreeView !== false;
+
+      },
+
+
+      /**
+       * @ngdoc function
+       * @name adjustSorting
+       * @methodOf  ui.grid.treeBase.service:uiGridTreeBaseService
+       * @description Trees cannot be sorted the same as flat lists of rows -
+       * trees are sorted recursively within each level - so the children of each
+       * node are sorted, but not the full set of rows.
+       *
+       * To achieve this, we suppress the normal sorting by setting ignoreSort on
+       * each of the sort columns.  When the treeBase rowsProcessor runs it will then
+       * unignore these, and will perform a recursive sort against the tree that it builds.
+       *
+       * @param {array} renderableRows the rows that we need to pass on through
+       * @returns {array} renderableRows that we passed on through
+       */
+      adjustSorting: function( renderableRows ) {
+        var grid = this;
+
+        grid.columns.forEach( function( column ){
+          if ( column.sort ){
+            column.sort.ignoreSort = true;
+          }
+        });
+
+        return renderableRows;
+      }
+
+    };
+
+    return service;
+
+  }]);
+
+  /**
+   *  @ngdoc directive
+   *  @name ui.grid.treeView.directive:uiGridTreeView
+   *  @element div
+   *  @restrict A
+   *
+   *  @description Adds treeView features to grid
+   *
+   *  @example
+   <example module="app">
+   <file name="app.js">
+   var app = angular.module('app', ['ui.grid', 'ui.grid.treeView']);
+
+   app.controller('MainCtrl', ['$scope', function ($scope) {
+      $scope.data = [
+        { name: 'Bob', title: 'CEO' },
+            { name: 'Frank', title: 'Lowly Developer' }
+      ];
+
+      $scope.columnDefs = [
+        {name: 'name', enableCellEdit: true},
+        {name: 'title', enableCellEdit: true}
+      ];
+
+      $scope.gridOptions = { columnDefs: $scope.columnDefs, data: $scope.data };
+    }]);
+   </file>
+   <file name="index.html">
+   <div ng-controller="MainCtrl">
+   <div ui-grid="gridOptions" ui-grid-tree-view></div>
+   </div>
+   </file>
+   </example>
+   */
+  module.directive('uiGridTreeView', ['uiGridTreeViewConstants', 'uiGridTreeViewService', '$templateCache',
+  function (uiGridTreeViewConstants, uiGridTreeViewService, $templateCache) {
+    return {
+      replace: true,
+      priority: 0,
+      require: '^uiGrid',
+      scope: false,
+      compile: function () {
+        return {
+          pre: function ($scope, $elm, $attrs, uiGridCtrl) {
+            if (uiGridCtrl.grid.options.enableTreeView !== false){
+              uiGridTreeViewService.initializeGrid(uiGridCtrl.grid, $scope);
+            }
+          },
+          post: function ($scope, $elm, $attrs, uiGridCtrl) {
+
+          }
+        };
+      }
+    };
+  }]);
+})();
+
+(function () {
+  'use strict';
+  
+  /**
+   * @ngdoc overview
+   * @name ui.grid.validate
+   * @description
+   *
+   * # ui.grid.validate
+   *
+   * <div class="alert alert-warning" role="alert"><strong>Alpha</strong> This feature is in development. There will almost certainly be breaking api changes, or there are major outstanding bugs.</div>
+   *
+   * This module provides the ability to validate cells upon change.
+   *
+   * Design information:
+   * -------------------
+   *
+   * Validation is not based on angularjs validation, since it would work only when editing the field.
+   * 
+   * Instead it adds custom properties to any field considered as invalid.
+   *
+   * <br/>
+   * <br/>
+   *
+   * <div doc-module-components="ui.grid.expandable"></div>
+   */
+
+  var module = angular.module('ui.grid.validate', ['ui.grid']);
+  
+  
+  /**
+   *  @ngdoc service
+   *  @name ui.grid.validate.service:uiGridValidateService
+   *
+   *  @description Services for validation features
+   */
+  module.service('uiGridValidateService', ['$sce', '$q', '$http', 'i18nService', 'uiGridConstants', function ($sce, $q, $http, i18nService, uiGridConstants) {
+
+    var service = {
+      
+      /**
+       *  @ngdoc object
+       *  @name validatorFactories
+       *  @propertyOf ui.grid.validate.service:uiGridValidateService
+       *  @description object containing all the factories used to validate data.<br/>
+       *  These factories will be in the form <br/>
+       *  ```
+       *  {
+       *    validatorFactory: function(argument) {
+       *                        return function(newValue, oldValue, rowEntity, colDef) {
+       *                          return true || false || promise
+       *                        }
+       *                      },
+       *    messageFunction: function(argument) {
+       *                       return string
+       *                     }
+       *  }
+       *  ```
+       *
+       * Promises should return true or false as result according to the result of validation.
+       */
+      validatorFactories: {},
+
+      
+      /**
+       * @ngdoc service
+       * @name setExternalFactoryFunction
+       * @methodOf ui.grid.validate.service:uiGridValidateService
+       * @description Adds a way to retrieve validators from an external service
+       * <p>Validators from this external service have a higher priority than default
+       * ones
+       * @param {function} externalFactoryFunction a function that accepts name and argument to pass to a
+       * validator factory and that returns an object with the same properties as 
+       * you can see in {@link ui.grid.validate.service:uiGridValidateService#properties_validatorFactories validatorFactories}
+       */
+      setExternalFactoryFunction: function(externalFactoryFunction) {
+        service.externalFactoryFunction = externalFactoryFunction;
+      },
+      
+      /**
+       * @ngdoc service
+       * @name clearExternalFactory
+       * @methodOf ui.grid.validate.service:uiGridValidateService
+       * @description Removes any link to external factory from this service
+       */
+      clearExternalFactory: function() {
+        delete service.externalFactoryFunction;
+      },
+
+      /**
+       * @ngdoc service
+       * @name getValidatorFromExternalFactory
+       * @methodOf ui.grid.validate.service:uiGridValidateService
+       * @description Retrieves a validator by executing a validatorFactory
+       * stored in an external service.
+       * @param {string} name the name of the validator to retrieve
+       * @param {object} argument an argument to pass to the validator factory
+       */
+      getValidatorFromExternalFactory: function(name, argument) {
+        return service.externalFactoryFunction(name, argument).validatorFactory(argument);
+      },
+      
+      /**
+       * @ngdoc service
+       * @name getMessageFromExternalFactory
+       * @methodOf ui.grid.validate.service:uiGridValidateService
+       * @description Retrieves a message stored in an external service.
+       * @param {string} name the name of the validator
+       * @param {object} argument an argument to pass to the message function
+       */
+      getMessageFromExternalFactory: function(name, argument) {
+        return service.externalFactoryFunction(name, argument).messageFunction(argument);
+      },
+      
+      /**
+       * @ngdoc service
+       * @name setValidator
+       * @methodOf ui.grid.validate.service:uiGridValidateService
+       * @description  Adds a new validator to the service
+       * @param {string} name the name of the validator, must be unique
+       * @param {function} validatorFactory a factory that return a validatorFunction
+       * @param {function} messageFunction a function that return the error message
+       */
+      setValidator: function(name, validatorFactory, messageFunction) {
+        service.validatorFactories[name] = {
+          validatorFactory: validatorFactory,
+          messageFunction: messageFunction
+        };
+      },
+
+      /**
+       * @ngdoc service
+       * @name getValidator
+       * @methodOf ui.grid.validate.service:uiGridValidateService
+       * @description Returns a validator registered to the service
+       * or retrieved from the external factory
+       * @param {string} name the name of the validator to retrieve
+       * @param {object} argument an argument to pass to the validator factory
+       * @returns {object} the validator function
+       */
+      getValidator: function(name, argument) {
+        if (service.externalFactoryFunction) {
+          var validator = service.getValidatorFromExternalFactory(name, argument);
+          if (validator) {
+            return validator;
+          }
+        }
+        if (!service.validatorFactories[name]) {
+          throw ("Invalid validator name: " + name);
+        }
+        return service.validatorFactories[name].validatorFactory(argument);
+      },
+
+      /**
+       * @ngdoc service
+       * @name getMessage
+       * @methodOf ui.grid.validate.service:uiGridValidateService
+       * @description Returns the error message related to the validator 
+       * @param {string} name the name of the validator
+       * @param {object} argument an argument to pass to the message function
+       * @returns {string} the error message related to the validator
+       */
+      getMessage: function(name, argument) {
+        if (service.externalFactoryFunction) {
+          var message = service.getMessageFromExternalFactory(name, argument);
+          if (message) {
+            return message;
+          }
+        }
+        return service.validatorFactories[name].messageFunction(argument);
+      },
+
+      /**
+       * @ngdoc service
+       * @name isInvalid
+       * @methodOf ui.grid.validate.service:uiGridValidateService
+       * @description Returns true if the cell (identified by rowEntity, colDef) is invalid 
+       * @param {object} rowEntity the row entity of the cell
+       * @param {object} colDef the colDef of the cell
+       * @returns {boolean} true if the cell is invalid
+       */
+      isInvalid: function (rowEntity, colDef) {
+        return rowEntity['$$invalid'+colDef.name];
+      },
+
+      /**
+       * @ngdoc service
+       * @name setInvalid
+       * @methodOf ui.grid.validate.service:uiGridValidateService
+       * @description Makes the cell invalid by adding the proper field to the entity
+       * @param {object} rowEntity the row entity of the cell
+       * @param {object} colDef the colDef of the cell
+       */
+      setInvalid: function (rowEntity, colDef) {
+        rowEntity['$$invalid'+colDef.name] = true;
+      },
+    
+      /**
+       * @ngdoc service
+       * @name setValid
+       * @methodOf ui.grid.validate.service:uiGridValidateService
+       * @description Makes the cell valid by removing the proper error field from the entity
+       * @param {object} rowEntity the row entity of the cell
+       * @param {object} colDef the colDef of the cell
+       */
+      setValid: function (rowEntity, colDef) {
+        delete rowEntity['$$invalid'+colDef.name];
+      },
+
+      /**
+       * @ngdoc service
+       * @name setError
+       * @methodOf ui.grid.validate.service:uiGridValidateService
+       * @description Adds the proper error to the entity errors field
+       * @param {object} rowEntity the row entity of the cell
+       * @param {object} colDef the colDef of the cell
+       * @param {string} validatorName the name of the validator that is failing
+       */
+      setError: function(rowEntity, colDef, validatorName) {
+        if (!rowEntity['$$errors'+colDef.name]) {
+          rowEntity['$$errors'+colDef.name] = {};
+        }
+        rowEntity['$$errors'+colDef.name][validatorName] = true;
+      },
+
+      /**
+       * @ngdoc service
+       * @name clearError
+       * @methodOf ui.grid.validate.service:uiGridValidateService
+       * @description Removes the proper error from the entity errors field
+       * @param {object} rowEntity the row entity of the cell
+       * @param {object} colDef the colDef of the cell
+       * @param {string} validatorName the name of the validator that is failing
+       */
+      clearError: function(rowEntity, colDef, validatorName) {
+        if (!rowEntity['$$errors'+colDef.name]) {
+          return;
+        }
+        if (validatorName in rowEntity['$$errors'+colDef.name]) {
+            delete rowEntity['$$errors'+colDef.name][validatorName];
+        }
+      },
+      
+      /**
+       * @ngdoc function
+       * @name getErrorMessages
+       * @methodOf ui.grid.validate.service:uiGridValidateService
+       * @description returns an array of i18n-ed error messages.
+       * @param {object} rowEntity gridOptions.data[] array instance whose errors we are looking for
+       * @param {object} colDef the column whose errors we are looking for
+       * @returns {array} An array of strings containing all the error messages for the cell
+       */
+      getErrorMessages: function(rowEntity, colDef) {
+        var errors = [];
+
+        if (!rowEntity['$$errors'+colDef.name] || Object.keys(rowEntity['$$errors'+colDef.name]).length === 0) {
+          return errors;
+        }
+
+        Object.keys(rowEntity['$$errors'+colDef.name]).sort().forEach(function(validatorName) {
+          errors.push(service.getMessage(validatorName, colDef.validators[validatorName]));
+        });
+        
+        return errors;
+      },
+      
+      /**
+       * @ngdoc function
+       * @name getFormattedErrors
+       * @methodOf  ui.grid.validate.service:uiGridValidateService
+       * @description returns the error i18n-ed and formatted in html to be shown inside the page.
+       * @param {object} rowEntity gridOptions.data[] array instance whose errors we are looking for
+       * @param {object} colDef the column whose errors we are looking for
+       * @returns {object} An object that can be used in a template (like a cellTemplate) to display the
+       * message inside the page (i.e. inside a div)
+       */
+      getFormattedErrors: function(rowEntity, colDef) {
+
+        var msgString = "";
+
+        var errors = service.getErrorMessages(rowEntity, colDef);
+        
+        if (!errors.length) {
+          return;
+        }
+        
+        errors.forEach(function(errorMsg) {
+          msgString += errorMsg + "<br/>";
+        });
+
+        return $sce.trustAsHtml('<p><b>' + i18nService.getSafeText('validate.error') + '</b></p>' + msgString );
+      },
+
+      /**
+       * @ngdoc function
+       * @name getTitleFormattedErrors
+       * @methodOf ui.grid.validate.service:uiGridValidateService
+       * @description returns the error i18n-ed and formatted in javaScript to be shown inside an html 
+       * title attribute.
+       * @param {object} rowEntity gridOptions.data[] array instance whose errors we are looking for
+       * @param {object} colDef the column whose errors we are looking for
+       * @returns {object} An object that can be used in a template (like a cellTemplate) to display the
+       * message inside an html title attribute
+       */
+      getTitleFormattedErrors: function(rowEntity, colDef) {
+
+        var newLine = "\n";
+
+        var msgString = "";
+        
+        var errors = service.getErrorMessages(rowEntity, colDef);
+        
+        if (!errors.length) {
+          return;
+        }
+        
+        errors.forEach(function(errorMsg) {
+          msgString += errorMsg + newLine;
+        });
+
+        return $sce.trustAsHtml(i18nService.getSafeText('validate.error') + newLine + msgString);
+      },
+
+      /**
+       * @ngdoc function
+       * @name getTitleFormattedErrors
+       * @methodOf ui.grid.validate.service:uiGridValidateService
+       * @description Executes all validators on a cell (identified by row entity and column definition) and sets or clears errors
+       * @param {object} rowEntity the row entity of the cell we want to run the validators on
+       * @param {object} colDef the column definition of the cell we want to run the validators on
+       * @param {object} newValue the value the user just entered
+       * @param {object} oldValue the value the field had before
+       */
+      runValidators: function(rowEntity, colDef, newValue, oldValue, grid) {
+        
+        if (newValue === oldValue) {
+          // If the value has not changed we perform no validation
+          return;
+        }
+        
+        if (typeof(colDef.name) === 'undefined' || !colDef.name) {
+          throw new Error('colDef.name is required to perform validation');
+        }
+        
+        service.setValid(rowEntity, colDef);
+        
+        var validateClosureFactory = function(rowEntity, colDef, validatorName) {
+          return function(value) {
+            if (!value) {
+              service.setInvalid(rowEntity, colDef);
+              service.setError(rowEntity, colDef, validatorName);
+              if (grid) {
+                grid.api.validate.raise.validationFailed(rowEntity, colDef, newValue, oldValue);
+              }
+            }
+          };
+        };
+
+        for (var validatorName in colDef.validators) {
+          service.clearError(rowEntity, colDef, validatorName);
+          var msg;
+          var validatorFunction = service.getValidator(validatorName, colDef.validators[validatorName]);
+          // We pass the arguments as oldValue, newValue so they are in the same order 
+          // as ng-model validators (modelValue, viewValue)
+          $q.when(validatorFunction(oldValue, newValue, rowEntity, colDef))
+            .then(validateClosureFactory(rowEntity, colDef, validatorName)
+          );
+        }
+      },
+
+      /**
+       * @ngdoc function
+       * @name createDefaultValidators
+       * @methodOf ui.grid.validate.service:uiGridValidateService
+       * @description adds the basic validators to the list of service validators
+       */
+      createDefaultValidators: function() {
+        service.setValidator('minLength',
+                             function (argument) {
+                               return function (oldValue, newValue, rowEntity, colDef) {
+                                 if (newValue === undefined || newValue === null || newValue === '') {
+                                   return true;
+                                 }
+                                 return newValue.length >= argument;
+                               };
+                             },
+                               function(argument) {
+                                 return i18nService.getSafeText('validate.minLength').replace('THRESHOLD', argument);
+                               });
+        
+        service.setValidator('maxLength',
+                             function (argument) {
+                               return function (oldValue, newValue, rowEntity, colDef) {
+                                 if (newValue === undefined || newValue === null || newValue === '') {
+                                   return true;
+                                 }
+                                 return newValue.length <= argument;
+                               };
+                             },
+                             function(threshold) {
+                               return i18nService.getSafeText('validate.maxLength').replace('THRESHOLD', threshold);
+                             });
+        
+        service.setValidator('required',
+                             function (argument) {
+                               return function (oldValue, newValue, rowEntity, colDef) {
+                                 if (argument) {
+                                   return !(newValue === undefined || newValue === null || newValue === '');
+                                 }
+                                 return true;
+                               };
+                             },
+                             function(argument) {
+                               return i18nService.getSafeText('validate.required');
+                             });
+      },
+
+      initializeGrid: function (scope, grid) {
+        grid.validate = {
+        
+          isInvalid: service.isInvalid,
+
+          getFormattedErrors: service.getFormattedErrors,
+         
+          getTitleFormattedErrors: service.getTitleFormattedErrors,
+
+          runValidators: service.runValidators
+        };
+        
+        /**
+         *  @ngdoc object
+         *  @name ui.grid.validate.api:PublicApi
+         *
+         *  @description Public Api for validation feature
+         */
+        var publicApi = {
+          events: {
+            validate: {
+              /**
+               * @ngdoc event
+               * @name validationFailed
+               * @eventOf  ui.grid.validate.api:PublicApi
+               * @description raised when one or more failure happened during validation 
+               * <pre>
+               *      gridApi.validate.on.validationFailed(scope, function(rowEntity, colDef, newValue, oldValue){...})
+               * </pre>
+               * @param {object} rowEntity the options.data element whose validation failed
+               * @param {object} colDef the column whose validation failed
+               * @param {object} newValue new value
+               * @param {object} oldValue old value
+               */
+              validationFailed: function (rowEntity, colDef, newValue, oldValue) {
+              }
+            }
+          },
+          methods: {
+            validate: {
+              /**
+               * @ngdoc function
+               * @name isInvalid
+               * @methodOf  ui.grid.validate.api:PublicApi
+               * @description checks if a cell (identified by rowEntity, colDef) is invalid
+               * @param {object} rowEntity gridOptions.data[] array instance we want to check
+               * @param {object} colDef the column whose errors we want to check
+               * @returns {boolean} true if the cell value is not valid
+               */
+              isInvalid: function(rowEntity, colDef) {
+                return grid.validate.isInvalid(rowEntity, colDef);
+              },
+              /**
+               * @ngdoc function
+               * @name getErrorMessages
+               * @methodOf  ui.grid.validate.api:PublicApi
+               * @description returns an array of i18n-ed error messages.
+               * @param {object} rowEntity gridOptions.data[] array instance whose errors we are looking for
+               * @param {object} colDef the column whose errors we are looking for
+               * @returns {array} An array of strings containing all the error messages for the cell
+               */
+              getErrorMessages: function (rowEntity, colDef) {
+                return grid.validate.getErrorMessages(rowEntity, colDef);
+              },
+              /**
+               * @ngdoc function
+               * @name getFormattedErrors
+               * @methodOf  ui.grid.validate.api:PublicApi
+               * @description returns the error i18n-ed and formatted in html to be shown inside the page.
+               * @param {object} rowEntity gridOptions.data[] array instance whose errors we are looking for
+               * @param {object} colDef the column whose errors we are looking for
+               * @returns {object} An object that can be used in a template (like a cellTemplate) to display the
+               * message inside the page (i.e. inside a div)
+               */
+              getFormattedErrors: function (rowEntity, colDef) {
+                return grid.validate.getFormattedErrors(rowEntity, colDef);
+              },
+              /**
+               * @ngdoc function
+               * @name getTitleFormattedErrors
+               * @methodOf  ui.grid.validate.api:PublicApi
+               * @description returns the error i18n-ed and formatted in javaScript to be shown inside an html 
+               * title attribute.
+               * @param {object} rowEntity gridOptions.data[] array instance whose errors we are looking for
+               * @param {object} colDef the column whose errors we are looking for
+               * @returns {object} An object that can be used in a template (like a cellTemplate) to display the
+               * message inside an html title attribute
+               */
+              getTitleFormattedErrors: function (rowEntity, colDef) {
+                return grid.validate.getTitleFormattedErrors(rowEntity, colDef);
+              }
+            } 
+          }
+        };
+        
+        grid.api.registerEventsFromObject(publicApi.events);
+        grid.api.registerMethodsFromObject(publicApi.methods);
+
+        if (grid.edit) {
+          grid.api.edit.on.afterCellEdit(scope, function(rowEntity, colDef, newValue, oldValue) {
+            grid.validate.runValidators(rowEntity, colDef, newValue, oldValue, grid);
+          });
+        }
+
+        service.createDefaultValidators();
+      }
+      
+    };
+  
+    return service;
+  }]);
+  
+  
+  /**
+   *  @ngdoc directive
+   *  @name ui.grid.validate.directive:uiGridValidate
+   *  @element div
+   *  @restrict A
+   *  @description Adds validating features to the ui-grid directive.
+   *  @example
+   <example module="app">
+   <file name="app.js">
+   var app = angular.module('app', ['ui.grid', 'ui.grid.edit', 'ui.grid.validate']);
+
+   app.controller('MainCtrl', ['$scope', function ($scope) {
+      $scope.data = [
+        { name: 'Bob', title: 'CEO' },
+            { name: 'Frank', title: 'Lowly Developer' }
+      ];
+
+      $scope.columnDefs = [
+        {name: 'name', enableCellEdit: true, validators: {minLength: 3, maxLength: 9}, cellTemplate: 'ui-grid/cellTitleValidator'},
+        {name: 'title', enableCellEdit: true, validators: {required: true}, cellTemplate: 'ui-grid/cellTitleValidator'}
+      ];
+    }]);
+   </file>
+   <file name="index.html">
+   <div ng-controller="MainCtrl">
+   <div ui-grid="{ data: data, columnDefs: columnDefs }" ui-grid-edit ui-grid-validate></div>
+   </div>
+   </file>
+   </example>
+   */
+
+  module.directive('uiGridValidate', ['gridUtil', 'uiGridValidateService', function (gridUtil, uiGridValidateService) {
+    return {
+      priority: 0,
+      replace: true,
+      require: '^uiGrid',
+      scope: false,
+      compile: function () {
+        return {
+          pre: function ($scope, $elm, $attrs, uiGridCtrl) {
+            uiGridValidateService.initializeGrid($scope, uiGridCtrl.grid);
+          },
+          post: function ($scope, $elm, $attrs, uiGridCtrl) {
+          }
+        };
+      }
+    };
+  }]);
+})();
 angular.module('ui.grid').run(['$templateCache', function($templateCache) {
   'use strict';
 
+  $templateCache.put('ui-grid/ui-grid-filter',
+    "<div class=\"ui-grid-filter-container\" ng-repeat=\"colFilter in col.filters\" ng-class=\"{'ui-grid-filter-cancel-button-hidden' : colFilter.disableCancelFilterButton === true }\"><div ng-if=\"colFilter.type !== 'select'\"><input type=\"text\" class=\"ui-grid-filter-input ui-grid-filter-input-{{$index}}\" ng-model=\"colFilter.term\" ng-attr-placeholder=\"{{colFilter.placeholder || ''}}\" aria-label=\"{{colFilter.ariaLabel || aria.defaultFilterLabel}}\"><div role=\"button\" class=\"ui-grid-filter-button\" ng-click=\"removeFilter(colFilter, $index)\" ng-if=\"!colFilter.disableCancelFilterButton\" ng-disabled=\"colFilter.term === undefined || colFilter.term === null || colFilter.term === ''\" ng-show=\"colFilter.term !== undefined && colFilter.term !== null && colFilter.term !== ''\"><i class=\"ui-grid-icon-cancel\" ui-grid-one-bind-aria-label=\"aria.removeFilter\">&nbsp;</i></div></div><div ng-if=\"colFilter.type === 'select'\"><select class=\"ui-grid-filter-select ui-grid-filter-input-{{$index}}\" ng-model=\"colFilter.term\" ng-attr-placeholder=\"{{colFilter.placeholder || aria.defaultFilterLabel}}\" aria-label=\"{{colFilter.ariaLabel || ''}}\" ng-options=\"option.value as option.label for option in colFilter.selectOptions\"><option value=\"\"></option></select><div role=\"button\" class=\"ui-grid-filter-button-select\" ng-click=\"removeFilter(colFilter, $index)\" ng-if=\"!colFilter.disableCancelFilterButton\" ng-disabled=\"colFilter.term === undefined || colFilter.term === null || colFilter.term === ''\" ng-show=\"colFilter.term !== undefined && colFilter.term != null\"><i class=\"ui-grid-icon-cancel\" ui-grid-one-bind-aria-label=\"aria.removeFilter\">&nbsp;</i></div></div></div>"
+  );
+
+
   $templateCache.put('ui-grid/ui-grid-footer',
-    "<div class=\"ui-grid-footer-panel ui-grid-footer-aggregates-row\"><div class=\"ui-grid-footer ui-grid-footer-viewport\"><div class=\"ui-grid-footer-canvas\"><div class=\"ui-grid-footer-cell-wrapper\" ng-style=\"colContainer.headerCellWrapperStyle()\"><div class=\"ui-grid-footer-cell-row\"><div ng-repeat=\"col in colContainer.renderedColumns track by col.colDef.name\" ui-grid-footer-cell col=\"col\" render-index=\"$index\" class=\"ui-grid-footer-cell ui-grid-clearfix\"></div></div></div></div></div></div>"
+    "<div class=\"ui-grid-footer-panel ui-grid-footer-aggregates-row\"><!-- tfooter --><div class=\"ui-grid-footer ui-grid-footer-viewport\"><div class=\"ui-grid-footer-canvas\"><div class=\"ui-grid-footer-cell-wrapper\" ng-style=\"colContainer.headerCellWrapperStyle()\"><div role=\"row\" class=\"ui-grid-footer-cell-row\"><div ui-grid-footer-cell role=\"gridcell\" ng-repeat=\"col in colContainer.renderedColumns track by col.uid\" col=\"col\" render-index=\"$index\" class=\"ui-grid-footer-cell ui-grid-clearfix\"></div></div></div></div></div></div>"
   );
 
 
@@ -19810,12 +27866,12 @@ angular.module('ui.grid').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('ui-grid/ui-grid-header',
-    "<div class=\"ui-grid-header\"><div class=\"ui-grid-top-panel\"><div class=\"ui-grid-header-viewport\"><div class=\"ui-grid-header-canvas\"><div class=\"ui-grid-header-cell-wrapper\" ng-style=\"colContainer.headerCellWrapperStyle()\"><div class=\"ui-grid-header-cell-row\"><div class=\"ui-grid-header-cell ui-grid-clearfix\" ng-repeat=\"col in colContainer.renderedColumns track by col.colDef.name\" ui-grid-header-cell col=\"col\" render-index=\"$index\"></div></div></div></div></div><div ui-grid-menu></div></div></div>"
+    "<div role=\"rowgroup\" class=\"ui-grid-header\"><!-- theader --><div class=\"ui-grid-top-panel\"><div class=\"ui-grid-header-viewport\"><div class=\"ui-grid-header-canvas\"><div class=\"ui-grid-header-cell-wrapper\" ng-style=\"colContainer.headerCellWrapperStyle()\"><div role=\"row\" class=\"ui-grid-header-cell-row\"><div class=\"ui-grid-header-cell ui-grid-clearfix\" ng-repeat=\"col in colContainer.renderedColumns track by col.uid\" ui-grid-header-cell col=\"col\" render-index=\"$index\"></div></div></div></div></div></div></div>"
   );
 
 
   $templateCache.put('ui-grid/ui-grid-menu-button',
-    "<div class=\"ui-grid-menu-button\" ng-click=\"toggleMenu()\"><div class=\"ui-grid-icon-container\"><i class=\"ui-grid-icon-menu\">&nbsp;</i></div><div ui-grid-menu menu-items=\"menuItems\"></div></div>"
+    "<div class=\"ui-grid-menu-button\"><div role=\"button\" ui-grid-one-bind-id-grid=\"'grid-menu'\" class=\"ui-grid-icon-container\" ng-click=\"toggleMenu()\" aria-haspopup=\"true\"><i class=\"ui-grid-icon-menu\" ui-grid-one-bind-aria-label=\"i18n.aria.buttonLabel\">&nbsp;</i></div><div ui-grid-menu menu-items=\"menuItems\"></div></div>"
   );
 
 
@@ -19825,7 +27881,7 @@ angular.module('ui.grid').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('ui-grid/ui-grid-row',
-    "<div ng-repeat=\"(colRenderIndex, col) in colContainer.renderedColumns track by col.colDef.name\" class=\"ui-grid-cell\" ng-class=\"{ 'ui-grid-row-header-cell': col.isRowHeader }\" ui-grid-cell></div>"
+    "<div ng-repeat=\"(colRenderIndex, col) in colContainer.renderedColumns track by col.uid\" ui-grid-one-bind-id-grid=\"rowRenderIndex + '-' + col.uid + '-cell'\" class=\"ui-grid-cell\" ng-class=\"{ 'ui-grid-row-header-cell': col.isRowHeader }\" role=\"{{col.isRowHeader ? 'rowheader' : 'gridcell'}}\" ui-grid-cell></div>"
   );
 
 
@@ -19851,17 +27907,12 @@ angular.module('ui.grid').run(['$templateCache', function($templateCache) {
     "    }\n" +
     "    */\n" +
     "\n" +
-    "    {{ grid.customStyles }}</style><div ui-grid-menu-button ng-if=\"grid.options.enableGridMenu\"></div><div ng-if=\"grid.hasLeftContainer()\" style=\"width: 0\" ui-grid-pinned-container=\"'left'\"></div><div ui-grid-render-container container-id=\"'body'\" col-container-name=\"'body'\" row-container-name=\"'body'\" bind-scroll-horizontal=\"true\" bind-scroll-vertical=\"true\" enable-horizontal-scrollbar=\"grid.options.enableHorizontalScrollbar\" enable-vertical-scrollbar=\"grid.options.enableVerticalScrollbar\"></div><div ng-if=\"grid.hasRightContainer()\" style=\"width: 0\" ui-grid-pinned-container=\"'right'\"></div><div ui-grid-grid-footer ng-if=\"grid.options.showGridFooter\"></div><div ui-grid-column-menu ng-if=\"grid.options.enableColumnMenus\"></div><div ng-transclude></div></div>"
+    "    {{ grid.customStyles }}</style><div class=\"ui-grid-contents-wrapper\"><div ui-grid-menu-button ng-if=\"grid.options.enableGridMenu\"></div><div ng-if=\"grid.hasLeftContainer()\" style=\"width: 0\" ui-grid-pinned-container=\"'left'\"></div><div ui-grid-render-container container-id=\"'body'\" col-container-name=\"'body'\" row-container-name=\"'body'\" bind-scroll-horizontal=\"true\" bind-scroll-vertical=\"true\" enable-horizontal-scrollbar=\"grid.options.enableHorizontalScrollbar\" enable-vertical-scrollbar=\"grid.options.enableVerticalScrollbar\"></div><div ng-if=\"grid.hasRightContainer()\" style=\"width: 0\" ui-grid-pinned-container=\"'right'\"></div><div ui-grid-grid-footer ng-if=\"grid.options.showGridFooter\"></div><div ui-grid-column-menu ng-if=\"grid.options.enableColumnMenus\"></div><div ng-transclude></div></div></div>"
   );
 
 
   $templateCache.put('ui-grid/uiGridCell',
-    "<div class=\"ui-grid-cell-contents\">{{COL_FIELD CUSTOM_FILTERS}}</div>"
-  );
-
-
-  $templateCache.put('ui-grid/uiGridColumnFilter',
-    "<li class=\"ui-grid-menu-item ui-grid-clearfix ui-grid-column-filter\" ng-show=\"itemShown()\" ng-click=\"$event.stopPropagation();\"><div class=\"input-container\"><input class=\"column-filter-input\" type=\"text\" ng-model=\"item.model\" placeholder=\"{{ i18n.search.placeholder }}\"><div class=\"column-filter-cancel-icon-container\"><i class=\"ui-grid-filter-cancel ui-grid-icon-cancel column-filter-cancel-icon\">&nbsp;</i></div></div><div style=\"button-container\" ng-click=\"item.action($event)\"><div class=\"ui-grid-button\"><i class=\"ui-grid-icon-search\">&nbsp;</i></div></div></li>"
+    "<div class=\"ui-grid-cell-contents\" title=\"TOOLTIP\">{{COL_FIELD CUSTOM_FILTERS}}</div>"
   );
 
 
@@ -19886,27 +27937,27 @@ angular.module('ui.grid').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('ui-grid/uiGridHeaderCell',
-    "<div ng-class=\"{ 'sortable': sortable }\"><!-- <div class=\"ui-grid-vertical-bar\">&nbsp;</div> --><div class=\"ui-grid-cell-contents\" col-index=\"renderIndex\"><span>{{ col.displayName CUSTOM_FILTERS }}</span> <span ui-grid-visible=\"col.sort.direction\" ng-class=\"{ 'ui-grid-icon-up-dir': col.sort.direction == asc, 'ui-grid-icon-down-dir': col.sort.direction == desc, 'ui-grid-icon-blank': !col.sort.direction }\">&nbsp;</span></div><div class=\"ui-grid-column-menu-button\" ng-if=\"grid.options.enableColumnMenus && !col.isRowHeader  && col.colDef.enableColumnMenu !== false\" ng-click=\"toggleMenu($event)\" ng-class=\"{'ui-grid-column-menu-button-last-col': isLastCol}\"><i class=\"ui-grid-icon-angle-down\">&nbsp;</i></div><div ng-if=\"filterable\" class=\"ui-grid-filter-container\" ng-repeat=\"colFilter in col.filters\"><input type=\"text\" class=\"ui-grid-filter-input\" ng-model=\"colFilter.term\" ng-attr-placeholder=\"{{colFilter.placeholder || ''}}\"><div class=\"ui-grid-filter-button\" ng-click=\"colFilter.term = null\"><i class=\"ui-grid-icon-cancel\" ng-show=\"!!colFilter.term\">&nbsp;</i><!-- use !! because angular interprets 'f' as false --></div></div></div>"
+    "<div role=\"columnheader\" ng-class=\"{ 'sortable': sortable }\" ui-grid-one-bind-aria-labelledby-grid=\"col.uid + '-header-text ' + col.uid + '-sortdir-text'\" aria-sort=\"{{col.sort.direction == asc ? 'ascending' : ( col.sort.direction == desc ? 'descending' : (!col.sort.direction ? 'none' : 'other'))}}\"><div role=\"button\" tabindex=\"0\" class=\"ui-grid-cell-contents ui-grid-header-cell-primary-focus\" col-index=\"renderIndex\" title=\"TOOLTIP\"><span class=\"ui-grid-header-cell-label\" ui-grid-one-bind-id-grid=\"col.uid + '-header-text'\">{{ col.displayName CUSTOM_FILTERS }}</span> <span ui-grid-one-bind-id-grid=\"col.uid + '-sortdir-text'\" ui-grid-visible=\"col.sort.direction\" aria-label=\"{{getSortDirectionAriaLabel()}}\"><i ng-class=\"{ 'ui-grid-icon-up-dir': col.sort.direction == asc, 'ui-grid-icon-down-dir': col.sort.direction == desc, 'ui-grid-icon-blank': !col.sort.direction }\" title=\"{{isSortPriorityVisible() ? i18n.headerCell.priority + ' ' + ( col.sort.priority + 1 )  : null}}\" aria-hidden=\"true\"></i> <sub ui-grid-visible=\"isSortPriorityVisible()\" class=\"ui-grid-sort-priority-number\">{{col.sort.priority + 1}}</sub></span></div><div role=\"button\" tabindex=\"0\" ui-grid-one-bind-id-grid=\"col.uid + '-menu-button'\" class=\"ui-grid-column-menu-button\" ng-if=\"grid.options.enableColumnMenus && !col.isRowHeader  && col.colDef.enableColumnMenu !== false\" ng-click=\"toggleMenu($event)\" ng-class=\"{'ui-grid-column-menu-button-last-col': isLastCol}\" ui-grid-one-bind-aria-label=\"i18n.headerCell.aria.columnMenuButtonLabel\" aria-haspopup=\"true\"><i class=\"ui-grid-icon-angle-down\" aria-hidden=\"true\">&nbsp;</i></div><div ui-grid-filter></div></div>"
   );
 
 
   $templateCache.put('ui-grid/uiGridMenu',
-    "<div class=\"ui-grid-menu\" ng-if=\"shown\"><div class=\"ui-grid-menu-mid\" ng-show=\"shownMid\"><div class=\"ui-grid-menu-inner\"><ul class=\"ui-grid-menu-items\"><li ng-repeat=\"item in menuItems\" ui-grid-menu-item action=\"item.action\" name=\"item.title\" active=\"item.active\" icon=\"item.icon\" shown=\"item.shown\" context=\"item.context\" template-url=\"item.templateUrl\"></li></ul></div></div></div>"
+    "<div class=\"ui-grid-menu\" ng-if=\"shown\"><style ui-grid-style>{{dynamicStyles}}</style><div class=\"ui-grid-menu-mid\" ng-show=\"shownMid\"><div class=\"ui-grid-menu-inner\"><ul role=\"menu\" class=\"ui-grid-menu-items\"><li ng-repeat=\"item in menuItems\" role=\"menuitem\" ui-grid-menu-item ui-grid-one-bind-id=\"'menuitem-'+$index\" action=\"item.action\" name=\"item.title\" active=\"item.active\" icon=\"item.icon\" shown=\"item.shown\" context=\"item.context\" template-url=\"item.templateUrl\" leave-open=\"item.leaveOpen\" screen-reader-only=\"item.screenReaderOnly\"></li></ul></div></div></div>"
   );
 
 
   $templateCache.put('ui-grid/uiGridMenuItem',
-    "<li class=\"ui-grid-menu-item\" ng-click=\"itemAction($event, title)\" ng-show=\"itemShown()\" ng-class=\"{ 'ui-grid-menu-item-active' : active() }\"><i ng-class=\"icon\"></i> {{ name }}</li>"
+    "<button type=\"button\" class=\"ui-grid-menu-item\" ng-click=\"itemAction($event, title)\" ng-show=\"itemShown()\" ng-class=\"{ 'ui-grid-menu-item-active': active(), 'ui-grid-sr-only': (!focus && screenReaderOnly) }\" aria-pressed=\"{{active()}}\" tabindex=\"0\" ng-focus=\"focus=true\" ng-blur=\"focus=false\"><i ng-class=\"icon\" aria-hidden=\"true\">&nbsp;</i> {{ name }}</button>"
   );
 
 
   $templateCache.put('ui-grid/uiGridRenderContainer',
-    "<div class=\"ui-grid-render-container\"><div ui-grid-header></div><div ui-grid-viewport></div><div ui-grid-footer ng-if=\"grid.options.showColumnFooter\"></div></div>"
+    "<div role=\"grid\" ui-grid-one-bind-id-grid=\"'grid-container'\" class=\"ui-grid-render-container\" ng-style=\"{ 'margin-left': colContainer.getMargin('left') + 'px', 'margin-right': colContainer.getMargin('right') + 'px' }\"><!-- All of these dom elements are replaced in place --><div ui-grid-header></div><div ui-grid-viewport></div><div ng-if=\"colContainer.needsHScrollbarPlaceholder()\" class=\"ui-grid-scrollbar-placeholder\" ng-style=\"{height:colContainer.grid.scrollbarHeight + 'px'}\"></div><ui-grid-footer ng-if=\"grid.options.showColumnFooter\"></ui-grid-footer></div>"
   );
 
 
   $templateCache.put('ui-grid/uiGridViewport',
-    "<div class=\"ui-grid-viewport\" ng-style=\"colContainer.getViewPortStyle()\"><div class=\"ui-grid-canvas\"><div ng-repeat=\"(rowRenderIndex, row) in rowContainer.renderedRows track by $index\" class=\"ui-grid-row\" ng-style=\"Viewport.rowStyle(rowRenderIndex)\"><div ui-grid-row=\"row\" row-render-index=\"rowRenderIndex\"></div></div></div></div>"
+    "<div role=\"rowgroup\" class=\"ui-grid-viewport\" ng-style=\"colContainer.getViewportStyle()\"><!-- tbody --><div class=\"ui-grid-canvas\"><div ng-repeat=\"(rowRenderIndex, row) in rowContainer.renderedRows track by $index\" class=\"ui-grid-row\" ng-style=\"Viewport.rowStyle(rowRenderIndex)\"><div role=\"row\" ui-grid-row=\"row\" row-render-index=\"rowRenderIndex\"></div></div></div></div>"
   );
 
 
@@ -19920,9 +27971,13 @@ angular.module('ui.grid').run(['$templateCache', function($templateCache) {
   );
 
 
+  $templateCache.put('ui-grid/fileChooserEditor',
+    "<div><form name=\"inputForm\"><input ng-class=\"'colt' + col.uid\" ui-grid-edit-file-chooser type=\"file\" id=\"files\" name=\"files[]\" ng-model=\"MODEL_COL_FIELD\"></form></div>"
+  );
+
+
   $templateCache.put('ui-grid/expandableRow',
-    "<div ui-grid-expandable-row ng-if=\"expandableRow.shouldRenderExpand()\" class=\"expandableRow\" style=\"float:left; margin-top: 1px; margin-bottom: 1px\" ng-style=\"{width: (grid.renderContainers.body.getCanvasWidth()) + 'px'\n" +
-    "     , height: grid.options.expandableRowHeight + 'px'}\"></div>"
+    "<div ui-grid-expandable-row ng-if=\"expandableRow.shouldRenderExpand()\" class=\"expandableRow\" style=\"float:left; margin-top: 1px; margin-bottom: 1px\" ng-style=\"{width: (grid.renderContainers.body.getCanvasWidth()) + 'px', height: row.expandedRowHeight + 'px'}\"></div>"
   );
 
 
@@ -19932,9 +27987,7 @@ angular.module('ui.grid').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('ui-grid/expandableScrollFiller',
-    "<div ng-if=\"expandableRow.shouldRenderFiller()\" style=\"float:left; margin-top: 2px; margin-bottom: 2px\" ng-style=\"{ width: (grid.getViewportWidth()) + 'px',\n" +
-    "              height: grid.options.expandableRowHeight + 'px', 'margin-left': grid.options.rowHeader.rowHeaderWidth + 'px' }\"><i class=\"ui-grid-icon-spin5 ui-grid-animate-spin\" ng-style=\"{ 'margin-top': ( grid.options.expandableRowHeight/2 - 5) + 'px',\n" +
-    "            'margin-left' : ((grid.getViewportWidth() - grid.options.rowHeader.rowHeaderWidth)/2 - 5) + 'px' }\"></i></div>"
+    "<div ng-if=\"expandableRow.shouldRenderFiller()\" ng-class=\"{scrollFiller:true, scrollFillerClass:(colContainer.name === 'body')}\" ng-style=\"{ width: (grid.getViewportWidth()) + 'px', height: row.expandedRowHeight + 2 + 'px', 'margin-left': grid.options.rowHeader.rowHeaderWidth + 'px' }\"><i class=\"ui-grid-icon-spin5 ui-grid-animate-spin\" ng-style=\"{'margin-top': ( row.expandedRowHeight/2 - 5) + 'px', 'margin-left' : ((grid.getViewportWidth() - grid.options.rowHeader.rowHeaderWidth)/2 - 5) + 'px'}\"></i></div>"
   );
 
 
@@ -19959,12 +28012,12 @@ angular.module('ui.grid').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('ui-grid/pagination',
-    "<div class=\"ui-grid-pager-panel\" ui-grid-pager ng-show=\"grid.options.enablePaginationControls\"><div class=\"ui-grid-pager-container\"><div class=\"ui-grid-pager-control\"><button type=\"button\" ng-click=\"paginationApi.seek(1)\" ng-disabled=\"cantPageBackward()\"><div class=\"first-triangle\"><div class=\"first-bar\"></div></div></button> <button type=\"button\" ng-click=\"paginationApi.previousPage()\" ng-disabled=\"cantPageBackward()\"><div class=\"first-triangle prev-triangle\"></div></button> <input type=\"number\" ng-model=\"grid.options.paginationCurrentPage\" min=\"1\" max=\"{{ paginationApi.getTotalPages() }}\" required> <span class=\"ui-grid-pager-max-pages-number\" ng-show=\"paginationApi.getTotalPages() > 0\">/ {{ paginationApi.getTotalPages() }}</span> <button type=\"button\" ng-click=\"paginationApi.nextPage()\" ng-disabled=\"cantPageForward()\"><div class=\"last-triangle next-triangle\"></div></button> <button type=\"button\" ng-click=\"paginationApi.seek(paginationApi.getTotalPages())\" ng-disabled=\"cantPageToLast()\"><div class=\"last-triangle\"><div class=\"last-bar\"></div></div></button></div><div class=\"ui-grid-pager-row-count-picker\"><select ng-model=\"grid.options.paginationPageSize\" ng-options=\"o as o for o in grid.options.paginationPageSizes\"></select><span class=\"ui-grid-pager-row-count-label\">&nbsp;{{sizesLabel}}</span></div></div><div class=\"ui-grid-pager-count-container\"><div class=\"ui-grid-pager-count\"><span ng-show=\"grid.options.totalItems > 0\">{{showingLow}} - {{showingHigh}} of {{grid.options.totalItems}} {{totalItemsLabel}}</span></div></div></div>"
+    "<div role=\"contentinfo\" class=\"ui-grid-pager-panel\" ui-grid-pager ng-show=\"grid.options.enablePaginationControls\"><div role=\"navigation\" class=\"ui-grid-pager-container\"><div role=\"menubar\" class=\"ui-grid-pager-control\"><button type=\"button\" role=\"menuitem\" class=\"ui-grid-pager-first\" ui-grid-one-bind-title=\"aria.pageToFirst\" ui-grid-one-bind-aria-label=\"aria.pageToFirst\" ng-click=\"pageFirstPageClick()\" ng-disabled=\"cantPageBackward()\"><div ng-class=\"grid.isRTL() ? 'last-triangle' : 'first-triangle'\"><div ng-class=\"grid.isRTL() ? 'last-bar-rtl' : 'first-bar'\"></div></div></button> <button type=\"button\" role=\"menuitem\" class=\"ui-grid-pager-previous\" ui-grid-one-bind-title=\"aria.pageBack\" ui-grid-one-bind-aria-label=\"aria.pageBack\" ng-click=\"pagePreviousPageClick()\" ng-disabled=\"cantPageBackward()\"><div ng-class=\"grid.isRTL() ? 'last-triangle prev-triangle' : 'first-triangle prev-triangle'\"></div></button> <input type=\"number\" ui-grid-one-bind-title=\"aria.pageSelected\" ui-grid-one-bind-aria-label=\"aria.pageSelected\" class=\"ui-grid-pager-control-input\" ng-model=\"grid.options.paginationCurrentPage\" min=\"1\" max=\"{{ paginationApi.getTotalPages() }}\" required> <span class=\"ui-grid-pager-max-pages-number\" ng-show=\"paginationApi.getTotalPages() > 0\"><abbr ui-grid-one-bind-title=\"paginationOf\">/</abbr> {{ paginationApi.getTotalPages() }}</span> <button type=\"button\" role=\"menuitem\" class=\"ui-grid-pager-next\" ui-grid-one-bind-title=\"aria.pageForward\" ui-grid-one-bind-aria-label=\"aria.pageForward\" ng-click=\"pageNextPageClick()\" ng-disabled=\"cantPageForward()\"><div ng-class=\"grid.isRTL() ? 'first-triangle next-triangle' : 'last-triangle next-triangle'\"></div></button> <button type=\"button\" role=\"menuitem\" class=\"ui-grid-pager-last\" ui-grid-one-bind-title=\"aria.pageToLast\" ui-grid-one-bind-aria-label=\"aria.pageToLast\" ng-click=\"pageLastPageClick()\" ng-disabled=\"cantPageToLast()\"><div ng-class=\"grid.isRTL() ? 'first-triangle' : 'last-triangle'\"><div ng-class=\"grid.isRTL() ? 'first-bar-rtl' : 'last-bar'\"></div></div></button></div><div class=\"ui-grid-pager-row-count-picker\" ng-if=\"grid.options.paginationPageSizes.length > 1\"><select ui-grid-one-bind-aria-labelledby-grid=\"'items-per-page-label'\" ng-model=\"grid.options.paginationPageSize\" ng-options=\"o as o for o in grid.options.paginationPageSizes\"></select><span ui-grid-one-bind-id-grid=\"'items-per-page-label'\" class=\"ui-grid-pager-row-count-label\">&nbsp;{{sizesLabel}}</span></div><span ng-if=\"grid.options.paginationPageSizes.length <= 1\" class=\"ui-grid-pager-row-count-label\">{{grid.options.paginationPageSize}}&nbsp;{{sizesLabel}}</span></div><div class=\"ui-grid-pager-count-container\"><div class=\"ui-grid-pager-count\"><span ng-show=\"grid.options.totalItems > 0\">{{showingLow}} <abbr ui-grid-one-bind-title=\"paginationThrough\">-</abbr> {{showingHigh}} {{paginationOf}} {{grid.options.totalItems}} {{totalItemsLabel}}</span></div></div></div>"
   );
 
 
   $templateCache.put('ui-grid/columnResizer',
-    "<div ui-grid-column-resizer ng-if=\"grid.options.enableColumnResizing\" class=\"ui-grid-column-resizer\" col=\"col\" position=\"right\" render-index=\"renderIndex\"></div>"
+    "<div ui-grid-column-resizer ng-if=\"grid.options.enableColumnResizing\" class=\"ui-grid-column-resizer\" col=\"col\" position=\"right\" render-index=\"renderIndex\" unselectable=\"on\"></div>"
   );
 
 
@@ -19990,6 +28043,36 @@ angular.module('ui.grid').run(['$templateCache', function($templateCache) {
 
   $templateCache.put('ui-grid/selectionSelectAllButtons',
     "<div class=\"ui-grid-selection-row-header-buttons ui-grid-icon-ok\" ng-class=\"{'ui-grid-all-selected': grid.selection.selectAll}\" ng-click=\"headerButtonClick($event)\"></div>"
+  );
+
+
+  $templateCache.put('ui-grid/treeBaseExpandAllButtons',
+    "<div class=\"ui-grid-tree-base-row-header-buttons\" ng-class=\"{'ui-grid-icon-minus-squared': grid.treeBase.numberLevels > 0 && grid.treeBase.expandAll, 'ui-grid-icon-plus-squared': grid.treeBase.numberLevels > 0 && !grid.treeBase.expandAll}\" ng-click=\"headerButtonClick($event)\"></div>"
+  );
+
+
+  $templateCache.put('ui-grid/treeBaseHeaderCell',
+    "<div><div class=\"ui-grid-cell-contents\" col-index=\"renderIndex\"><ui-grid-tree-base-expand-all-buttons ng-if=\"grid.options.enableExpandAll\"></ui-grid-tree-base-expand-all-buttons></div></div>"
+  );
+
+
+  $templateCache.put('ui-grid/treeBaseRowHeader',
+    "<div class=\"ui-grid-cell-contents\"><ui-grid-tree-base-row-header-buttons></ui-grid-tree-base-row-header-buttons></div>"
+  );
+
+
+  $templateCache.put('ui-grid/treeBaseRowHeaderButtons',
+    "<div class=\"ui-grid-tree-base-row-header-buttons\" ng-class=\"{'ui-grid-tree-base-header': row.treeLevel > -1 }\" ng-click=\"treeButtonClick(row, $event)\"><i ng-class=\"{'ui-grid-icon-minus-squared': ( ( grid.options.showTreeExpandNoChildren && row.treeLevel > -1 ) || ( row.treeNode.children && row.treeNode.children.length > 0 ) ) && row.treeNode.state === 'expanded', 'ui-grid-icon-plus-squared': ( ( grid.options.showTreeExpandNoChildren && row.treeLevel > -1 ) || ( row.treeNode.children && row.treeNode.children.length > 0 ) ) && row.treeNode.state === 'collapsed'}\" ng-style=\"{'padding-left': grid.options.treeIndent * row.treeLevel + 'px'}\"></i> &nbsp;</div>"
+  );
+
+
+  $templateCache.put('ui-grid/cellTitleValidator',
+    "<div class=\"ui-grid-cell-contents\" ng-class=\"{invalid:grid.validate.isInvalid(row.entity,col.colDef)}\" title=\"{{grid.validate.getTitleFormattedErrors(row.entity,col.colDef)}}\">{{COL_FIELD CUSTOM_FILTERS}}</div>"
+  );
+
+
+  $templateCache.put('ui-grid/cellTooltipValidator',
+    "<div class=\"ui-grid-cell-contents\" ng-class=\"{invalid:grid.validate.isInvalid(row.entity,col.colDef)}\" tooltip-html-unsafe=\"{{grid.validate.getFormattedErrors(row.entity,col.colDef)}}\" tooltip-enable=\"grid.validate.isInvalid(row.entity,col.colDef)\" tooltip-append-to-body=\"true\" tooltip-placement=\"top\" title=\"TOOLTIP\">{{COL_FIELD CUSTOM_FILTERS}}</div>"
   );
 
 }]);
