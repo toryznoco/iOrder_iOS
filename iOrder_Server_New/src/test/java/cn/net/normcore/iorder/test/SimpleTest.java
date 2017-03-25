@@ -3,6 +3,7 @@ package cn.net.normcore.iorder.test;
 import cn.net.normcore.iorder.common.utils.Config;
 import cn.net.normcore.iorder.common.utils.InfoUtils;
 import cn.net.normcore.iorder.common.utils.UuidUtils;
+import cn.net.normcore.iorder.entity.order.OrderItem;
 import org.junit.Test;
 
 import java.util.Calendar;

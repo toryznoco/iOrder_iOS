@@ -8,11 +8,15 @@ import cn.net.normcore.iorder.service.order.OrderItemService;
 import cn.net.normcore.iorder.service.order.OrderService;
 import cn.net.normcore.iorder.vo.order.OrderItemVo;
 import cn.net.normcore.iorder.vo.order.OrderVo;
+import com.fasterxml.jackson.databind.JsonNode;
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +33,27 @@ public class OrderApi {
     private OrderService orderService;
     @Autowired
     private OrderItemService orderItemService;
+
+    /**
+     * 顾客下单
+     *
+     * @param data
+     * @param customerId
+     * @return
+     */
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Map<String, Object> order(@NotNull JsonNode data, @HeaderParam("customerId") @NotNull Long customerId) {
+        if (customerId == null)
+            return SimpleResult.pessimistic(5000, "系统内部错误，请联系开发者");
+        Order order = orderService.order(data, customerId);
+        if (order == null)
+            return SimpleResult.pessimistic(4012, "生成订单失败");
+        Map<String, Object> result = SimpleResult.optimistic("生成订单成功");
+        result.put("order", OrderVo.fromOrder(order));
+        result.put("items", OrderItemVo.listFromOrderItems(order.getOrderItems()));
+        return result;
+    }
 
     /**
      * 顾客添加商品到购物车

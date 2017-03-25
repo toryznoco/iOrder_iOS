@@ -17,6 +17,8 @@ public class IOrderApplication extends ResourceConfig {
         packages("cn.net.normcore.iorder.api");
         //注册TOKEN过滤器
         register(TokenFilter.class);
+        property(ServerProperties.BV_SEND_ERROR_IN_RESPONSE, true);
+        property(ServerProperties.BV_DISABLE_VALIDATE_ON_EXECUTABLE_OVERRIDE_CHECK, true);
         register(LoggingFeature.class);
         property(ServerProperties.TRACING, TracingConfig.ON_DEMAND.name());
     }

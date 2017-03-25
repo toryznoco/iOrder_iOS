@@ -1,5 +1,7 @@
 package cn.net.normcore.iorder.service.order.impl;
 
+import cn.net.normcore.iorder.entity.business.Shop;
+import cn.net.normcore.iorder.entity.customer.Customer;
 import cn.net.normcore.iorder.entity.goods.Goods;
 import cn.net.normcore.iorder.entity.order.Order;
 import cn.net.normcore.iorder.entity.order.OrderItem;
@@ -11,11 +13,14 @@ import cn.net.normcore.iorder.service.customer.CustomerService;
 import cn.net.normcore.iorder.service.goods.GoodsService;
 import cn.net.normcore.iorder.service.order.OrderItemService;
 import cn.net.normcore.iorder.service.order.OrderService;
+import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -121,7 +126,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Long, OrderReposito
         if (!orderItems.isEmpty()) {
             Order order = new Order();
             order.setCustomer(customerService.get(customerId));
-            order.setCode(String.valueOf(System.currentTimeMillis()));
+            order.generateCode();
             if (couponId != null)
                 order.setCoupon(couponService.get(couponId));
             order.setShop(shopService.get(shopId));
@@ -160,6 +165,53 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Long, OrderReposito
             totalPrice += item.getGoods().getNowPrice() * item.getAmount();
         }
         return totalPrice;
+    }
+
+    @Override
+    @Transactional
+    public Order order(JsonNode data, Long customerId) {
+        JsonNode shopId = data.get("shopId");
+        if (shopId == null)
+            return null;
+        Shop shop = shopService.get(shopId.asLong());
+        if (shop == null)
+            return null;
+        Customer customer = customerService.get(customerId);
+        Iterator<JsonNode> itemsIterator = data.get("items").iterator();
+        if (!itemsIterator.hasNext())
+            return null;
+        List<OrderItem> orderItems = new ArrayList<>();
+        while (itemsIterator.hasNext()) {
+            JsonNode node = itemsIterator.next();
+            OrderItem item = new OrderItem();
+            JsonNode amount = node.get("amount");
+            if (amount == null || amount.asInt() <= 0)
+                return null;
+            item.setAmount(amount.asInt());
+            Goods goods = goodsService.get(node.get("goodsId").asLong());
+            if (goods == null || !goods.getShop().getId().equals(shop.getId()))
+                return null;
+            item.setGoods(goods);
+            item.setShop(goods.getShop());
+            item.setCustomer(customer);
+            item.readyInert();
+            orderItems.add(item);
+        }
+        Order order = new Order();
+        order.setShop(shop);
+        order.setCustomer(customer);
+        order.bindOrderItems(orderItems);
+        order.setGoodsAmount(getOrderGoodsAmount(order));
+        order.setStatus(Character.valueOf('1'));
+        order.generateCode();
+        JsonNode couponId = data.get("couponId");
+        if (couponId != null)
+            order.setCoupon(couponService.get(couponId.asLong()));
+        order.setOrderTime(new Date());
+        order.setTotalPrice(getItemsTotalPrice(orderItems));
+        order.setPayPrice(order.getTotalPrice() - (order.getCoupon() == null ? 0 : order.getCoupon().getMoney()));
+        save(order);
+        return order;
     }
 
 }

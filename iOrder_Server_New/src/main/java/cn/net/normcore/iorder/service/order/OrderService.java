@@ -3,6 +3,7 @@ package cn.net.normcore.iorder.service.order;
 import cn.net.normcore.iorder.entity.order.Order;
 import cn.net.normcore.iorder.entity.order.OrderItem;
 import cn.net.normcore.iorder.service.BaseService;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import java.util.List;
 
@@ -71,4 +72,12 @@ public interface OrderService extends BaseService<Order, Long> {
      * @return
      */
     Float getItemsTotalPrice(List<OrderItem> orderItems);
+
+    /**
+     * 下单，根据提交的json数据生成订单
+     *
+     * @param data
+     * @return
+     */
+    Order order(JsonNode data, Long customerId);
 }
