@@ -13,6 +13,21 @@
 @implementation IONetworkTool
 
 /**
+ Starts monitoring for changes in network reachability status.
+ */
++ (void)startMonitoring {
+    [[AFNetworkReachabilityManager sharedManager] startMonitoring];
+}
+
+/**
+ Stops monitoring for changes in network reachability status.
+ */
++ (void)stopMonitoring {
+    [[AFNetworkReachabilityManager sharedManager] stopMonitoring];
+}
+
+
+/**
  Get请求
  
  @param URLString URL
@@ -56,6 +71,7 @@
     
     // 检查网络是否可用
     if (![AFNetworkReachabilityManager sharedManager].reachable) {
+        IOLog(@"%ld", [AFNetworkReachabilityManager sharedManager].networkReachabilityStatus);
         // 若不可用，则抛出错误
         if (failure) {
             failure(nil, [IOError errorWithCode:IOErrorCodeNetworkDisable description:kIOStringNetworkDisable]);

@@ -25,7 +25,7 @@
         if ([obj isKindOfClass:[NSString class]]) { // NSString
             code = [NSString stringWithFormat:@"@property (nonatomic, strong) NSString *%@;", key];
         } else if ([obj isKindOfClass:NSClassFromString(@"__NSCFBoolean")]) { // BOOL
-            code = [NSString stringWithFormat:@"@property (nonatomic, assign) BOOL *%@;", key];
+            code = [NSString stringWithFormat:@"@property (nonatomic, assign) BOOL %@;", key];
         } else if ([obj isKindOfClass:[NSNumber class]]) { // NSNumber
             code = [NSString stringWithFormat:@"@property (nonatomic, assign) double %@;", key];
         } else if ([obj isKindOfClass:[NSArray class]]) { // NSArray

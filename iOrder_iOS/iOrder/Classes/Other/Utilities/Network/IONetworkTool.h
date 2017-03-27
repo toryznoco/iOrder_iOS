@@ -11,6 +11,16 @@
 @interface IONetworkTool : NSObject
 
 /**
+ Starts monitoring for changes in network reachability status.
+ */
++ (void)startMonitoring;
+
+/**
+ Stops monitoring for changes in network reachability status.
+ */
++ (void)stopMonitoring;
+
+/**
  Get请求
 
  @param URLString URL

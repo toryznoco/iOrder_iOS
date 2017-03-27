@@ -7,16 +7,20 @@
 //
 
 #import "IORegisterManager.h"
+#import "IORegisterParam.h"
+#import "IORegisterResult.h"
 
 @implementation IORegisterManager
 
 /**
- *  登录账号所返回的情况
- *
- *  @param loginParam 登录请求参数
- *  @param success    登录请求成功的时候的回调
- *  @param failure    登录请求失败的时候的回调
+ 注册
+ 
+ @param param 参数
+ @param success 成功的回调
+ @param failure 失败的回调
  */
-//+ (void)registerWithParam:(IORegisterParam *)param success:(void(^)(YWJLoginResult *loginResult))success failure:(void(^)(NSError *error))failure;
+//+ (void)registerWithParam:(IORegisterParam *)param
+//                  success:(void (^)(IORegisterResult * _Nullable result))success
+//                  failure:(void (^)(NSError * _Nonnull error))failure;
 
 @end

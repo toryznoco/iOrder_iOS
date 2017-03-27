@@ -21,6 +21,7 @@
 
 #import "IONewFeatureViewController.h"
 #import "IOTabBarController.h"
+#import "IONetworkTool.h"
 
 @import UserNotifications;
 
@@ -62,6 +63,9 @@ Singleton_implementation(Manager)
         
         // 设置蓝牙管理者及代理
         self.centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil options:nil];
+        
+        // 开始监听网络状态
+        [IONetworkTool startMonitoring];
     }
     return self;
 }
