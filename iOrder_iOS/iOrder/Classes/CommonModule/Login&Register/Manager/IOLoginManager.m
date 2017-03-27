@@ -9,18 +9,20 @@
 #import "IOLoginManager.h"
 #import "IONetworkTool.h"
 #import "IOLoginParam.h"
+#import "IOLoginResult.h"
 
 #define kIOHTTPLoginUrl @"app/customer/login"
 
 @implementation IOLoginManager
 
 + (void)loginWithParam:(IOLoginParam *)param
-               success:(void (^)(NSDictionary * _Nullable result))success
+               success:(void (^)(IOLoginResult * _Nullable result))success
                failure:(void (^)(NSError * _Nonnull error))failure {
     
     NSString *urlStr = [NSString stringWithFormat:@"%@%@", kIOHTTPBaseUrl, kIOHTTPLoginUrl];
     [IONetworkTool POST:urlStr parameters:param.mj_keyValues success:^(NSURLSessionDataTask * _Nonnull task, id _Nullable responseObj) {
-        success(responseObj);
+        IOLoginResult *result = [IOLoginResult mj_objectWithKeyValues:responseObj];
+        success(result);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         failure(error);
     }];

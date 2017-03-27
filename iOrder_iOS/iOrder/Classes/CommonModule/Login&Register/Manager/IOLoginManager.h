@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 @class IOLoginParam;
+@class IOLoginResult;
 
 @interface IOLoginManager : NSObject
 
@@ -20,7 +21,7 @@
  @param failure 失败的回调
  */
 + (void)loginWithParam:(IOLoginParam *)param
-               success:(void (^)(NSDictionary * _Nullable result))success
+               success:(void (^)(IOLoginResult * _Nullable result))success
                failure:(void (^)(NSError * _Nonnull error))failure;
 
 
