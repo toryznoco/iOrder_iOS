@@ -79,7 +79,7 @@
 }
 
 - (void)loginView:(IOLoginView *)loginView loginBtnDidPressed:(UIButton *)loginBtn {
-    [[IOGlobalManager sharedManager] enterHome];
+    [IOGlobalManager enterHome];
 }
 
 /*

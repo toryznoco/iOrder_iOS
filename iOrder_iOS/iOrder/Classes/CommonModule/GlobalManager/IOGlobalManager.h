@@ -32,9 +32,9 @@ Singleton_interface(Manager)
 + (BOOL)checkIfAllowPushNotification;
 
 /** 进入登录页面 */
-- (void)enterLogin;
++ (void)enterLogin;
 
 /** 进入主页 */
-- (void)enterHome;
++ (void)enterHome;
 
 @end

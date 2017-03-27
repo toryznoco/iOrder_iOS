@@ -15,6 +15,7 @@
 #import "IOLoginManager.h"
 #import "IOLoginParam.h"
 #import "IOLoginResult.h"
+#import "IOAccountTool.h"
 
 #pragma mark - IOLoginView
 
@@ -173,6 +174,8 @@
             if (result.result == YES) {
                 // 登录成功
                 // 保存accessToken和refreshToken
+                [IOAccountTool saveAccessToken:result.accessToken];
+                [IOAccountTool saveRefreshToken:result.refreshToken];
                 
                 // 通知主线程
                 dispatch_async(dispatch_get_main_queue(), ^{

@@ -22,6 +22,7 @@
 #import "IONewFeatureViewController.h"
 #import "IOTabBarController.h"
 #import "IONetworkTool.h"
+#import "IOAccountTool.h"
 
 @import UserNotifications;
 
@@ -74,32 +75,23 @@ Singleton_implementation(Manager)
 #pragma mark - Public Method
 /** 进入App时，根据情况选择根控制器 */
 + (void)chooseRootViewController {
-    // 直接进入登录界面
-    [[IOGlobalManager sharedManager] enterLogin];
     
-    /*
-    // 进入App，先判断版本
-    // 版本号大于存的版本号就进入新特性页面，并保存新的版本号
-//    [YWJVersionTool saveVersion:@"0.1"];
-    
-    // 当前版本
-    NSString *currentVersion = [NSBundle mainBundle].infoDictionary[@"CFBundleVersion"];
-    // 之前保存的版本
-    NSString *savedVersion = [YWJVersionTool savedVersion];
-    
-    if ([currentVersion isEqualToString:savedVersion]) { // 版本号相同
-        // 判断有无本地账号，有则自动登录进入首页，没有则进入登录界面
-        // 这里默认没有存储账号，直接进入登录页面
-        [self enterLogin];
+    // 判断是否需要显示新特性页面
+    if ([self checkIfNeededShowNewFeature]) {
         
-    } else { // 版本号不同，进入新特性页面
-        IONewFeatureViewController *newFeatureVC = [[IONewFeatureViewController alloc] init];
+        // 需要显示新特性页面
+        [self enterNewFeature];
         
-        [IORootTool changeRootViewControllerTo:newFeatureVC];
-        
-        [YWJVersionTool saveVersion:currentVersion];
+    } else {
+        // 不需要则判断是否需要登录
+        if ([self checkIfNeededLogin]) {
+            // 需要
+            [self enterLogin];
+        } else {
+            // 不需要
+            [self enterHome];
+        }
     }
-     */
 }
 
 /** 检测是否总是允许使用位置信息 */
@@ -120,8 +112,15 @@ Singleton_implementation(Manager)
     return status == UNAuthorizationStatusAuthorized;
 }
 
+// 进入新特性页面
++ (void)enterNewFeature {
+    IONewFeatureViewController *newFeatureVC = [[IONewFeatureViewController alloc] init];
+    
+    [IORootTool changeRootViewControllerTo:newFeatureVC];
+}
+
 // 进入登录页面
-- (void)enterLogin {
++ (void)enterLogin {
     IOLoginViewController *loginVc = [[IOLoginViewController alloc] init];
     YWJRootNavigationViewController *loginNav = [[YWJRootNavigationViewController alloc] initWithRootViewController:loginVc];
     
@@ -129,7 +128,7 @@ Singleton_implementation(Manager)
 }
 
 // 进入主页
-- (void)enterHome {
++ (void)enterHome {
     // 切换窗口根控制器到tabBarVC
     IOTabBarController *tabBarVC = [[IOTabBarController alloc] init];
     [IORootTool changeRootViewControllerTo:tabBarVC];
@@ -228,6 +227,42 @@ Singleton_implementation(Manager)
 }
 
 #pragma mark - Private Method
+
+/**
+ 检查是否需要显示新特性页面
+
+ @return YES：需要，NO：不需要
+ */
++ (BOOL)checkIfNeededShowNewFeature {
+    return NO;
+    /*
+    //    [YWJVersionTool saveVersion:@"0.1"];
+    
+    NSString *currentVersion = [NSBundle mainBundle].infoDictionary[@"CFBundleVersion"];
+    NSString *savedVersion = [YWJVersionTool savedVersion];
+    
+    // 判断版本，版本相同就不需要显示，版本不同就需要显示
+    if ([currentVersion isEqualToString:savedVersion]) {
+        // 版本相同，不需要
+        return NO;
+    } else {
+        // 版本不同，需要显示，并保存当前版本
+        [YWJVersionTool saveVersion:currentVersion];
+        return YES;
+    }
+     */
+}
+
+/**
+ 检查是否需要登录
+
+ @return YES:需要，NO:不需要
+ */
++ (BOOL)checkIfNeededLogin {
+    // 检查refreshToken是否有效，有效就不需要登录，无效就需要登录
+    return ![IOAccountTool checkIfRefreshTokenValid];
+}
+
 /**
  推送beacon通知
  
