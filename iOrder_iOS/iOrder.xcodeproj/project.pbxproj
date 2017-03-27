@@ -55,6 +55,8 @@
 		9A1BFE001E6EA99B00A0007F /* IOLoginView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A1BFDFD1E6EA99B00A0007F /* IOLoginView.m */; };
 		9A1BFE011E6EA99B00A0007F /* IORegisterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A1BFDFF1E6EA99B00A0007F /* IORegisterView.m */; };
 		9A1BFE611E6EACE200A0007F /* IOGlobalManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A1BFE601E6EACE200A0007F /* IOGlobalManager.m */; };
+		9A20FE911E88A7DA00CF0006 /* IOLoginParam.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A20FE901E88A7DA00CF0006 /* IOLoginParam.m */; };
+		9A20FE951E88B05C00CF0006 /* NSDictionary+TRPropertyCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A20FE941E88B05C00CF0006 /* NSDictionary+TRPropertyCode.m */; };
 		9A2B872D1E83A8F2006DCD53 /* IOError.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A2B872C1E83A8F2006DCD53 /* IOError.m */; };
 		9A2B87361E83C3D5006DCD53 /* IOLoginManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A2B87351E83C3D5006DCD53 /* IOLoginManager.m */; };
 		9A2B87391E83C532006DCD53 /* IORegisterManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A2B87381E83C532006DCD53 /* IORegisterManager.m */; };
@@ -223,6 +225,10 @@
 		9A1BFE5F1E6EACE200A0007F /* IOGlobalManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOGlobalManager.h; sourceTree = "<group>"; };
 		9A1BFE601E6EACE200A0007F /* IOGlobalManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOGlobalManager.m; sourceTree = "<group>"; };
 		9A1BFE621E6F9EB500A0007F /* Singleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Singleton.h; sourceTree = "<group>"; };
+		9A20FE8F1E88A7DA00CF0006 /* IOLoginParam.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOLoginParam.h; sourceTree = "<group>"; };
+		9A20FE901E88A7DA00CF0006 /* IOLoginParam.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOLoginParam.m; sourceTree = "<group>"; };
+		9A20FE931E88B05C00CF0006 /* NSDictionary+TRPropertyCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+TRPropertyCode.h"; sourceTree = "<group>"; };
+		9A20FE941E88B05C00CF0006 /* NSDictionary+TRPropertyCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+TRPropertyCode.m"; sourceTree = "<group>"; };
 		9A2B872B1E83A8F2006DCD53 /* IOError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOError.h; sourceTree = "<group>"; };
 		9A2B872C1E83A8F2006DCD53 /* IOError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOError.m; sourceTree = "<group>"; };
 		9A2B872F1E83AE80006DCD53 /* CommonHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommonHeader.h; sourceTree = "<group>"; };
@@ -621,6 +627,8 @@
 			children = (
 				9A2B873A1E83CC77006DCD53 /* IORegisterParam.h */,
 				9A2B873B1E83CC77006DCD53 /* IORegisterParam.m */,
+				9A20FE8F1E88A7DA00CF0006 /* IOLoginParam.h */,
+				9A20FE901E88A7DA00CF0006 /* IOLoginParam.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -643,6 +651,15 @@
 				9A1BFE601E6EACE200A0007F /* IOGlobalManager.m */,
 			);
 			path = GlobalManager;
+			sourceTree = "<group>";
+		};
+		9A20FE921E88B05C00CF0006 /* TRPropertyCode */ = {
+			isa = PBXGroup;
+			children = (
+				9A20FE931E88B05C00CF0006 /* NSDictionary+TRPropertyCode.h */,
+				9A20FE941E88B05C00CF0006 /* NSDictionary+TRPropertyCode.m */,
+			);
+			path = TRPropertyCode;
 			sourceTree = "<group>";
 		};
 		9A2B87331E83C23F006DCD53 /* Manager */ = {
@@ -1117,6 +1134,7 @@
 		CAE8F0621CB94170005618B0 /* Category */ = {
 			isa = PBXGroup;
 			children = (
+				9A20FE921E88B05C00CF0006 /* TRPropertyCode */,
 				9A1BFE621E6F9EB500A0007F /* Singleton.h */,
 				CAE8F0631CB94170005618B0 /* UIView+YWJFrame.h */,
 				CAE8F0641CB94170005618B0 /* UIView+YWJFrame.m */,
@@ -1440,6 +1458,7 @@
 				9A3963E11E82482E000E2E40 /* YWJShoppingCartInfoResult.m in Sources */,
 				9A3963E51E82482E000E2E40 /* YWJShopsTool.m in Sources */,
 				9A1BFDCA1E6EA8DE00A0007F /* IODishInfo.m in Sources */,
+				9A20FE951E88B05C00CF0006 /* NSDictionary+TRPropertyCode.m in Sources */,
 				9A1BFDC51E6EA8DE00A0007F /* IODishViewController.m in Sources */,
 				9A405B0E1E81521F0037A5AC /* IOOrderedViewController.m in Sources */,
 				9A1BFDD61E6EA8DE00A0007F /* IOShoppingCartView.m in Sources */,
@@ -1466,6 +1485,7 @@
 				9A2B87531E84BDCE006DCD53 /* IOOrdersVC.m in Sources */,
 				9A1BFDE41E6EA8DE00A0007F /* YWJBadgeView.m in Sources */,
 				9A1BFDF21E6EA8DE00A0007F /* IOProfileMyCollectView.m in Sources */,
+				9A20FE911E88A7DA00CF0006 /* IOLoginParam.m in Sources */,
 				9A3963DA1E82482E000E2E40 /* IOOrdersParam.m in Sources */,
 				9A3963ED1E824A10000E2E40 /* IONetworkTool.m in Sources */,
 				9A1BFDD51E6EA8DE00A0007F /* IOShopHeaderView.m in Sources */,

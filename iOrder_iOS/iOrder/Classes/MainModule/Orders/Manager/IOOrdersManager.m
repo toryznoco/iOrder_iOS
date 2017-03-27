@@ -19,11 +19,11 @@
     NSString *urlStr = [NSString stringWithFormat:@"%@%@", kIOHTTPBaseUrl, kIOHTTPOrderListUrl];
     
     
-    [IONetworkTool GET:urlStr parameters: success:^(NSURLSessionDataTask * _Nonnull task, id _Nullable obj) {
-        success(obj);
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        failure(error);
-    }];
+//    [IONetworkTool GET:urlStr parameters: success:^(NSURLSessionDataTask * _Nonnull task, id _Nullable obj) {
+//        success(obj);
+//    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+//        failure(error);
+//    }];
 }
 
 @end

@@ -21,8 +21,8 @@
  */
 + (NSURLSessionDataTask *)GET:(NSString *)URLString
                    parameters:(id)parameters
-                      success:(void (^)(NSURLSessionDataTask * _Nonnull, id _Nullable))success
-                      failure:(void (^)(NSURLSessionDataTask * _Nullable, NSError * _Nonnull))failure;
+                      success:(void (^)(NSURLSessionDataTask * _Nonnull task, id _Nullable responseObj))success
+                      failure:(void (^)(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error))failure;
 
 /**
  Post请求
@@ -35,7 +35,7 @@
  */
 + (NSURLSessionDataTask *)POST:(NSString *)URLString
                     parameters:(id)parameters
-                       success:(void (^)(NSURLSessionDataTask * _Nonnull, id _Nullable))success
-                       failure:(void (^)(NSURLSessionDataTask * _Nullable, NSError * _Nonnull))failure;
+                       success:(void (^)(NSURLSessionDataTask * _Nonnull task, id _Nullable responseObj))success
+                       failure:(void (^)(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error))failure;
 
 @end

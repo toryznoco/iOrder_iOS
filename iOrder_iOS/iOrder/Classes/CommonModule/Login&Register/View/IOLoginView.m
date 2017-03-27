@@ -12,6 +12,8 @@
 #import "YWJLoginParam.h"
 #import "YWJLoginResult.h"
 #import "MBProgressHUD.h"
+#import "IOLoginManager.h"
+#import "IOLoginParam.h"
 
 #pragma mark - IOLoginView
 
@@ -161,10 +163,15 @@
     // 异步请求
     dispatch_sync(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
         
-        YWJLoginParam *param = [[YWJLoginParam alloc] init];
-        param.userName = self.userName.text;
-        param.userPass = self.password.text;
+//        YWJLoginParam *param = [[YWJLoginParam alloc] init];
+//        param.userName = self.userName.text;
+//        param.userPass = self.password.text;
         
+        IOLoginParam *param = [[IOLoginParam alloc] init];
+        param.account = self.userName.text;
+        param.password = self.password.text;
+        
+        /*
         [YWJLoginTool loginWithLoginParam:param success:^(YWJLoginResult *loginResult) {
             if (loginResult.code == 1) {
                 // 登录成功
@@ -194,6 +201,28 @@
         } failure:^(NSError *error) {
             IOLog(@"%@", error);
         }];
+         */
+        
+        [IOLoginManager loginWithParam:param success:^(id  _Nullable responseObj) {
+            IOLog(@"%@", responseObj);
+            [responseObj createPropertyCode];
+        } failure:^(NSError * _Nonnull error) {
+            // 登录失败
+            dispatch_async(dispatch_get_main_queue(), ^{
+                // Set the custom view mode to show any view.
+                hud.mode = MBProgressHUDModeCustomView;
+                // Set an image view with a checkmark.
+                UIImage *image = [[UIImage imageNamed:@"error"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+                hud.customView = [[UIImageView alloc] initWithImage:image];
+                // Looks a bit nicer if we make it square.
+                hud.square = YES;
+                // Optional label text.
+                hud.label.text = NSLocalizedString(error.localizedDescription, @"HUD failed title");
+                
+                [hud hideAnimated:YES afterDelay:1.5];
+            });
+        }];
+        
     });
 }
 

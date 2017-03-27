@@ -18,8 +18,8 @@ PODS:
   - FMDB (2.6.2):
     - FMDB/standard (= 2.6.2)
   - FMDB/standard (2.6.2)
-  - FSCalendar (2.4.0)
-  - IQKeyboardManager (4.0.7)
+  - FSCalendar (2.7.4)
+  - IQKeyboardManager (4.0.8)
   - Masonry (1.0.2)
   - MBProgressHUD (1.0.0)
   - MJExtension (3.0.13)
@@ -50,8 +50,8 @@ SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
   AprilSDK: b6d2b35b7012955618e022772c0d2b202b25f277
   FMDB: 854a0341b4726e53276f2a8996f06f1b80f9259a
-  FSCalendar: a9a02ab39a385b5a25bae2f96b50204292154a82
-  IQKeyboardManager: 69002bb4fea60596b710e57d426abc00e5063630
+  FSCalendar: e95995a746acae531c4a7dd636b8393233125ec5
+  IQKeyboardManager: 1a8189fa153bf09044355ee0ad36826f6767e7f7
   Masonry: 7c429b56da9d4ee0bbb3ed77a5ea710d6a5df39e
   MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
   MJExtension: 5932755f451458eefa24239358817f8d291240c7

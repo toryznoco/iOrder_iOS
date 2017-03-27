@@ -17,6 +17,6 @@
  *  @param success    登录请求成功的时候的回调
  *  @param failure    登录请求失败的时候的回调
  */
-//+ (void)registerWithLoginParam:(YWJLoginParam *)loginParam success:(void(^)(YWJLoginResult *loginResult))success failure:(void(^)(NSError *error))failure;
+//+ (void)registerWithParam:(IORegisterParam *)param success:(void(^)(YWJLoginResult *loginResult))success failure:(void(^)(NSError *error))failure;
 
 @end
