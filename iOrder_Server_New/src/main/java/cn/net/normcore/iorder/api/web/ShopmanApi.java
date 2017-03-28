@@ -85,7 +85,7 @@ public class ShopmanApi {
 
         String refreshToken = UuidUtils.simpleUuid();
         String accessToken = UuidUtils.simpleUuid();
-        refreshTokenCacheService.save(refreshToken, new RefreshToken(shopman.getId(), UserType.SHOPMAN, clientId, accessToken));
+        refreshTokenCacheService.save(refreshToken, new RefreshToken(shopman.getId(), UserType.SHOPMAN, accessToken));
         accessTokenCacheService.save(accessToken, new AccessToken(shopman.getId(), UserType.SHOPMAN, clientId));
         clientCacheService.save(clientKey, new Client(clientId, refreshToken));
 

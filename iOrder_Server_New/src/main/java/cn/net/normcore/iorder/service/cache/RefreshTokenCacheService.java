@@ -32,4 +32,8 @@ public class RefreshTokenCacheService {
         template.delete(get(key).getAccessToken());
         template.delete(key);
     }
+
+    public long getTTL(String key) {
+        return template.getExpire(key);
+    }
 }

@@ -40,11 +40,11 @@ public class CustomerApi {
     @Autowired
     private SignInRecordService signInRecordService;
     @Autowired
-    private ClientCacheService clientCacheService;
-    @Autowired
     private RefreshTokenCacheService refreshTokenCacheService;
     @Autowired
     private AccessTokenCacheService accessTokenCacheService;
+    @Autowired
+    private SimpleCacheService simpleCacheService;
 
     /**
      * 顾客账号注册
@@ -80,6 +80,7 @@ public class CustomerApi {
      */
     @POST
     @Path("/login")
+    @Consumes(MediaType.APPLICATION_JSON)
     public Map<String, Object> login(JsonNode data, @Context HttpServletRequest request) {
         JsonNode account = data.get("account");
         JsonNode password = data.get("password");
@@ -88,6 +89,10 @@ public class CustomerApi {
         if (password == null)
             return SimpleResult.pessimistic(4004, "参数[password]不能为空");
 
+        String clientId = ClientUtils.buildClientId(request);
+        if (simpleCacheService.get(clientId) != null)
+            return SimpleResult.pessimistic(4011, "调用接口过于频繁");
+
         Customer customer = customerService.findByMobile(account.asText());
         if (customer == null)
             return SimpleResult.pessimistic(4006, "账号不存在");
@@ -95,60 +100,95 @@ public class CustomerApi {
             return SimpleResult.pessimistic(4006, "密码错误");
 
         String clientKey = String.format("customer[%d]", customer.getId());
-        String clientId = ClientUtils.buildClientId(request);
-        Client savedClient = clientCacheService.get(clientKey);
-        if (savedClient != null && savedClient.getClientId().equals(clientId)) {
-            return SimpleResult.pessimistic(4011, "你已经登陆");
-        }
+        String savedClient = simpleCacheService.get(clientKey);
         if (savedClient != null) {
-            refreshTokenCacheService.delete(savedClient.getRefreshToken());
+            refreshTokenCacheService.delete(savedClient);
         }
 
         String refreshToken = UuidUtils.simpleUuid();
         String accessToken = UuidUtils.simpleUuid();
-        refreshTokenCacheService.save(refreshToken, new RefreshToken(customer.getId(), UserType.CUSTOMER, clientId, accessToken));
+        simpleCacheService.save(clientKey, refreshToken);
+        refreshTokenCacheService.save(refreshToken, new RefreshToken(customer.getId(), UserType.CUSTOMER, accessToken));
         accessTokenCacheService.save(accessToken, new AccessToken(customer.getId(), UserType.CUSTOMER, clientId));
-        clientCacheService.save(clientKey, new Client(clientId, refreshToken));
+        simpleCacheService.save(clientId, clientId, Config.getLong("open_api_time_limit"));
 
         Map<String, Object> result = SimpleResult.optimistic("登陆成功");
         result.put("refreshToken", refreshToken);
+        result.put("refreshTokenTTL", refreshTokenCacheService.getTTL(refreshToken));
         result.put("accessToken", accessToken);
+        result.put("accessTokenTTL", accessTokenCacheService.getTTL(accessToken));
+        return result;
+    }
+
+    /**
+     * 刷新Refresh Token
+     *
+     * @param refreshToken
+     * @param request
+     * @return
+     */
+    @POST
+    @Path("/refreshToken")
+    public Map<String, Object> refreshToken(@FormParam("refreshToken") String refreshToken, @Context HttpServletRequest request) {
+        String clientId = ClientUtils.buildClientId(request);
+        if (simpleCacheService.get(clientId) != null)
+            return SimpleResult.pessimistic(4011, "调用接口过于频繁");
+
+        RefreshToken savedRefreshToken = refreshTokenCacheService.get(refreshToken);
+        if (savedRefreshToken == null)
+            return SimpleResult.pessimistic(4013, "Refresh Token无效");
+
+        refreshTokenCacheService.delete(refreshToken);
+        String newRefreshToken = UuidUtils.simpleUuid();
+        String newAccessToken = UuidUtils.simpleUuid();
+        simpleCacheService.save(String.format("customer[%d]", savedRefreshToken.getUserId()), newRefreshToken);
+        savedRefreshToken.setAccessToken(newAccessToken);
+        refreshTokenCacheService.save(newRefreshToken, savedRefreshToken);
+        accessTokenCacheService.save(newAccessToken, new AccessToken(savedRefreshToken.getUserId(), savedRefreshToken.getUserType(), clientId));
+        simpleCacheService.save(clientId, clientId, Config.getLong("open_api_time_limit"));
+
+        Map<String, Object> result = SimpleResult.optimistic("刷新Refresh Token成功");
+        result.put("refreshToken", newRefreshToken);
+        result.put("refreshTokenTTL", refreshTokenCacheService.getTTL(newRefreshToken));
+        result.put("accessToken", newAccessToken);
+        result.put("accessTokenTTL", accessTokenCacheService.getTTL(newAccessToken));
         return result;
     }
 
     /**
      * 获取Access Token
      *
-     * @param data
+     * @param refreshToken
      * @param request
      * @return
      */
     @POST
     @Path("/token")
-    public Map<String, Object> token(JsonNode data, @Context HttpServletRequest request) {
-        String refreshTokenKey = data.get("refreshToken").asText();
-        RefreshToken refreshToken = refreshTokenCacheService.get(refreshTokenKey);
-        if (refreshToken == null || !ClientUtils.buildClientId(request).equals(refreshToken.getClientId())) {
-            return SimpleResult.pessimistic(4002, "TOKEN无效");
+    public Map<String, Object> token(@FormParam("refreshToken") String refreshToken, @Context HttpServletRequest request) {
+        String clientId = ClientUtils.buildClientId(request);
+        if (simpleCacheService.get(clientId) != null)
+            return SimpleResult.pessimistic(4011, "调用接口过于频繁");
+
+        RefreshToken savedRefreshToken = refreshTokenCacheService.get(refreshToken);
+        if (savedRefreshToken == null) {
+            return SimpleResult.pessimistic(4013, "Refresh Token无效");
         }
-        AccessToken accessToken = accessTokenCacheService.get(refreshToken.getAccessToken());
-        if (accessToken != null && accessTokenCacheService.getTTL(refreshToken.getAccessToken()) > (Config.getLong("access_token_ttl") - Config.getLong("access_token_interval"))) {
-            return SimpleResult.pessimistic(4007, "获取token过于频繁");
-        }
-        refreshTokenCacheService.delete(refreshTokenKey);
+
+        AccessToken accessToken = accessTokenCacheService.get(savedRefreshToken.getAccessToken());
+        if (accessToken != null)
+            simpleCacheService.delete(savedRefreshToken.getAccessToken());
         if (accessToken == null)
-            accessToken = new AccessToken(refreshToken.getUserId(), refreshToken.getUserType(), refreshToken.getClientId());
-        String accessTokenKey = UuidUtils.simpleUuid();
-        accessTokenCacheService.save(accessTokenKey, accessToken);
-        refreshTokenKey = UuidUtils.simpleUuid();
-        refreshToken.setAccessToken(accessTokenKey);
-        refreshTokenCacheService.save(refreshTokenKey, refreshToken);
-        String clientKey = String.format("customer[%d]", refreshToken.getUserId());
-        clientCacheService.save(clientKey, new Client(refreshToken.getClientId(), refreshTokenKey));
+            accessToken = new AccessToken(savedRefreshToken.getUserId(), savedRefreshToken.getUserType(), clientId);
+
+        String newAccessToken = UuidUtils.simpleUuid();
+        accessTokenCacheService.save(newAccessToken, accessToken);
+        savedRefreshToken.setAccessToken(newAccessToken);
+        refreshTokenCacheService.save(refreshToken, savedRefreshToken);
+        simpleCacheService.save(clientId, clientId, Config.getLong("open_api_time_limit"));
 
         Map<String, Object> result = SimpleResult.optimistic("刷新TOKEN成功");
-        result.put("refreshToken", refreshTokenKey);
-        result.put("accessToken", accessTokenKey);
+        result.put("accessToken", newAccessToken);
+        result.put("accessTokenTTL", accessTokenCacheService.getTTL(newAccessToken));
         return result;
     }
 
