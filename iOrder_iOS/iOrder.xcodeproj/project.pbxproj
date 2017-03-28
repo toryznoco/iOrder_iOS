@@ -104,11 +104,11 @@
 		9ADFA8571E88DFEE006E465A /* IORegisterResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 9ADFA8561E88DFEE006E465A /* IORegisterResult.m */; };
 		CA41C87A1D2BF0C90092921E /* UIView+Masonry_YWJ.m in Sources */ = {isa = PBXBuildFile; fileRef = CA41C8791D2BF0C90092921E /* UIView+Masonry_YWJ.m */; };
 		CA7069CB1CE5F564007C5F3F /* UIBarButtonItem+IOBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = CA7069CA1CE5F564007C5F3F /* UIBarButtonItem+IOBarButtonItem.m */; };
-		CAE49CAD1E8A5A8E00E76445 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE49CAC1E8A5A8E00E76445 /* MBProgressHUD.m */; };
 		CAE8F02C1CB940E2005618B0 /* iOrderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F02B1CB940E2005618B0 /* iOrderTests.m */; };
 		CAE8F0371CB940E2005618B0 /* iOrderUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F0361CB940E2005618B0 /* iOrderUITests.m */; };
 		CAE8F0811CB94170005618B0 /* UIView+YWJFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F0641CB94170005618B0 /* UIView+YWJFrame.m */; };
 		CAE8F0861CB9417F005618B0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CAE8F0851CB9417F005618B0 /* Assets.xcassets */; };
+		CAF60A771E8A619500291D90 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = CAF60A761E8A619500291D90 /* MBProgressHUD.m */; };
 		CFEA7B973FA4FE6762466625 /* libPods-iOrder.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 565EF0A881111C2576CC81D4 /* libPods-iOrder.a */; };
 /* End PBXBuildFile section */
 
@@ -332,8 +332,6 @@
 		CA41C8791D2BF0C90092921E /* UIView+Masonry_YWJ.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Masonry_YWJ.m"; sourceTree = "<group>"; };
 		CA7069C91CE5F564007C5F3F /* UIBarButtonItem+IOBarButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBarButtonItem+IOBarButtonItem.h"; sourceTree = "<group>"; };
 		CA7069CA1CE5F564007C5F3F /* UIBarButtonItem+IOBarButtonItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBarButtonItem+IOBarButtonItem.m"; sourceTree = "<group>"; };
-		CAE49CAB1E8A5A8E00E76445 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
-		CAE49CAC1E8A5A8E00E76445 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		CAE8F00E1CB940E2005618B0 /* iOrder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOrder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CAE8F0221CB940E2005618B0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CAE8F0271CB940E2005618B0 /* iOrderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iOrderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -345,6 +343,8 @@
 		CAE8F0631CB94170005618B0 /* UIView+YWJFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+YWJFrame.h"; sourceTree = "<group>"; };
 		CAE8F0641CB94170005618B0 /* UIView+YWJFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+YWJFrame.m"; sourceTree = "<group>"; };
 		CAE8F0851CB9417F005618B0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		CAF60A751E8A619500291D90 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
+		CAF60A761E8A619500291D90 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		E54237A12030477D4B151FF1 /* Pods-iOrder.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOrder.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iOrder/Pods-iOrder.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1064,22 +1064,6 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		CAE49CA91E8A598E00E76445 /* Vendor */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Vendor;
-			sourceTree = "<group>";
-		};
-		CAE49CAA1E8A5A8E00E76445 /* MBProgressHUD */ = {
-			isa = PBXGroup;
-			children = (
-				CAE49CAB1E8A5A8E00E76445 /* MBProgressHUD.h */,
-				CAE49CAC1E8A5A8E00E76445 /* MBProgressHUD.m */,
-			);
-			path = MBProgressHUD;
-			sourceTree = "<group>";
-		};
 		CAE8F0051CB940E2005618B0 = {
 			isa = PBXGroup;
 			children = (
@@ -1153,8 +1137,7 @@
 		CAE8F05F1CB94170005618B0 /* Other */ = {
 			isa = PBXGroup;
 			children = (
-				CAE49CA91E8A598E00E76445 /* Vendor */,
-				CAE49CAA1E8A5A8E00E76445 /* MBProgressHUD */,
+				CAF60A731E8A619500291D90 /* Vendor */,
 				9AC08D711E39F4E200D728AD /* Base */,
 				9A3963871E82482E000E2E40 /* Utilities */,
 				9AC08D721E39F4E200D728AD /* Core */,
@@ -1180,6 +1163,23 @@
 				9A2B87471E83FF52006DCD53 /* MBProgressHUD+YWJ.m */,
 			);
 			path = Category;
+			sourceTree = "<group>";
+		};
+		CAF60A731E8A619500291D90 /* Vendor */ = {
+			isa = PBXGroup;
+			children = (
+				CAF60A741E8A619500291D90 /* MBProgressHUD */,
+			);
+			path = Vendor;
+			sourceTree = "<group>";
+		};
+		CAF60A741E8A619500291D90 /* MBProgressHUD */ = {
+			isa = PBXGroup;
+			children = (
+				CAF60A751E8A619500291D90 /* MBProgressHUD.h */,
+				CAF60A761E8A619500291D90 /* MBProgressHUD.m */,
+			);
+			path = MBProgressHUD;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1547,7 +1547,7 @@
 				9A1BFDD31E6EA8DE00A0007F /* IOShopDetail.m in Sources */,
 				9A2B873C1E83CC77006DCD53 /* IORegisterParam.m in Sources */,
 				9A1BFDD91E6EA8DE00A0007F /* IOSubmitCell.m in Sources */,
-				CAE49CAD1E8A5A8E00E76445 /* MBProgressHUD.m in Sources */,
+				CAF60A771E8A619500291D90 /* MBProgressHUD.m in Sources */,
 				9A1BFDCE1E6EA8DE00A0007F /* IOShoppingViewInfo.m in Sources */,
 				9AC08D701E39F3C600D728AD /* main.m in Sources */,
 				CA7069CB1CE5F564007C5F3F /* UIBarButtonItem+IOBarButtonItem.m in Sources */,
