@@ -6,7 +6,7 @@
 //  Copyright © 2017 TianLiWuYe. All rights reserved.
 //
 
-#import <MBProgressHUD/MBProgressHUD.h>
+#import "MBProgressHUD.h"
 
 @interface MBProgressHUD (YWJ)
 

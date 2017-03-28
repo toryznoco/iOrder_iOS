@@ -12,7 +12,7 @@ target 'iOrder' do
     pod 'MJExtension'
     pod 'MJRefresh'
     pod 'FSCalendar'
-    pod 'MBProgressHUD'
+    #pod 'MBProgressHUD'
     pod 'Masonry'
     pod 'AprilSDK'
     pod 'Reveal-SDK', '~> 4'
