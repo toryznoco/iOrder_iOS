@@ -173,9 +173,9 @@
             IOLog(@"%@", result);
             if (result.result == YES) {
                 // 登录成功
-                // 保存accessToken和refreshToken
-                [IOAccountTool saveAccessToken:result.accessToken];
-                [IOAccountTool saveRefreshToken:result.refreshToken];
+                // 保存accessToken及过期时间，refreshToken及过期时间
+                [IOAccountTool saveAccessToken:result.accessToken validTime:result.accessTokenValidTime];
+                [IOAccountTool saveRefreshToken:result.refreshToken validTime:result.refreshTokenValidTime];
                 
                 // 通知主线程
                 dispatch_async(dispatch_get_main_queue(), ^{

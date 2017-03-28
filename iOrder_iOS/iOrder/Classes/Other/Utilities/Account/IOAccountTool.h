@@ -11,25 +11,33 @@
 @interface IOAccountTool : NSObject
 
 /**
- 检查RefreshToken是否过期
+ 检查AccessToken是否有效
+ 
+ @return YES为有效，NO为无效(1.没有，2.有但是过期)
+ */
++ (BOOL)checkIfAccessTokenValid;
+
+/**
+ 检查RefreshToken是否有效
 
  @return YES为有效，NO为无效(1.没有，2.有但是过期)
  */
 + (BOOL)checkIfRefreshTokenValid;
 
 /**
- 保存accessToken
-
- @param accessToken accessToken30分钟过期
+ 保存accessToken和过期时间
+ 
+ @param accessToken accessToken
+ @param time 有效时间
  */
-+ (void)saveAccessToken:(NSString *)accessToken;
-
++ (void)saveAccessToken:(NSString *)accessToken validTime:(NSTimeInterval)time;
 
 /**
- 保存refreshToken
-
+ 保存refreshToken和过期时间
+ 
  @param refreshToken refreshToken
+ @param time 有效时间
  */
-+ (void)saveRefreshToken:(NSString *)refreshToken;
++ (void)saveRefreshToken:(NSString *)refreshToken validTime:(NSTimeInterval)time;
 
 @end

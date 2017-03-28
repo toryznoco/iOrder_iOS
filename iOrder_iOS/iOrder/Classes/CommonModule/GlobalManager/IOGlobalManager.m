@@ -76,22 +76,15 @@ Singleton_implementation(Manager)
 /** 进入App时，根据情况选择根控制器 */
 + (void)chooseRootViewController {
     
-    // 判断是否需要显示新特性页面
-    if ([self checkIfNeededShowNewFeature]) {
-        
-        // 需要显示新特性页面
-        [self enterNewFeature];
-        
-    } else {
-        // 不需要则判断是否需要登录
-        if ([self checkIfNeededLogin]) {
-            // 需要
-            [self enterLogin];
-        } else {
-            // 不需要
-            [self enterHome];
-        }
-    }
+    // 判断是否需要显示新特性页面，需要就显示
+    if ([self checkIfNeededShowNewFeature]) [self enterNewFeature];
+
+    // 不需要新特性就判断是否需要登录
+    if ([self checkIfNeededLogin]) [self enterLogin];
+    
+    // 不需要登录就进入主页
+    [self enterHome];
+    
 }
 
 /** 检测是否总是允许使用位置信息 */
@@ -259,6 +252,10 @@ Singleton_implementation(Manager)
  @return YES:需要，NO:不需要
  */
 + (BOOL)checkIfNeededLogin {
+    
+    // 检查accessToken是否有效，有效就不需要登录，无效就检查refreshToken
+    if ([IOAccountTool checkIfAccessTokenValid]) return NO;
+    
     // 检查refreshToken是否有效，有效就不需要登录，无效就需要登录
     return ![IOAccountTool checkIfRefreshTokenValid];
 }

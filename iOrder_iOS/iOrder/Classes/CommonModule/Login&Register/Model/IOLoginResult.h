@@ -11,13 +11,19 @@
 @interface IOLoginResult : IOHTTPBaseResult
 
 /**
- 接口调用凭据，有效时间30分钟
+ 接口调用凭据
  */
 @property (nonatomic, strong) NSString *accessToken;
 
+/** AccessToken有效时间 */
+@property (nonatomic, assign) double accessTokenValidTime;
+
 /**
- 用于获取Access Token，3天不访问后台过期
+ 用于获取Access Token
  */
 @property (nonatomic, strong) NSString *refreshToken;
+
+/** RefreshToken有效时间 */
+@property (nonatomic, assign) double refreshTokenValidTime;
 
 @end
