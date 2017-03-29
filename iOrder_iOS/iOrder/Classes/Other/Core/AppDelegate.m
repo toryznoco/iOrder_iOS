@@ -57,9 +57,9 @@
     [self.window makeKeyAndVisible];
     
     // 全局管理者根据情况选择根控制器
-    [IOGlobalManager chooseRootViewController];
+//    [IOGlobalManager chooseRootViewController];
     
-    
+    [IOGlobalManager enterLogin];
     
     return YES;
 }

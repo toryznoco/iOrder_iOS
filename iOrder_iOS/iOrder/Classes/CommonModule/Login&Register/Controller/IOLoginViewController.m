@@ -73,9 +73,8 @@
 #pragma mark - IOLoginViewDelegate
 
 - (void)loginView:(IOLoginView *)loginView registerBtnDidPressed:(UIButton *)registerBtn {
-    [MBProgressHUD showSuccess:@"hao" toView:self.view];
-//    IORegisterViewController *registerVc = [[IORegisterViewController alloc] init];
-//    [self.navigationController pushViewController:registerVc animated:YES];
+    IORegisterViewController *registerVc = [[IORegisterViewController alloc] init];
+    [self.navigationController pushViewController:registerVc animated:YES];
 }
 
 - (void)loginView:(IOLoginView *)loginView loginBtnDidPressed:(UIButton *)loginBtn {

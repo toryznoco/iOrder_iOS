@@ -14,4 +14,7 @@
 
 #import "CommonHeader.h"
 
+
+#define kBackStageServerPath @"https://iorder.normcore.net.cn/api/"
+
 #endif /* IOIOrder_pch */
