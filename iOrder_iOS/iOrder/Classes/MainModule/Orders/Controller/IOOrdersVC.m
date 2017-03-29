@@ -35,6 +35,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.title = @"订单";
+    self.view.backgroundColor = kIOBackgroundColor;
+    
     [self setupTableView];
 }
 
@@ -42,10 +45,20 @@
     UITableView *tableView = [UITableView new];
     [self.view addSubview:tableView];
     _tableView = tableView;
+    
+    // 设置代理和数据源
     tableView.dataSource = self;
     tableView.delegate = self;
     
-    self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewOrders)];
+    // 设置UI
+    tableView.rowHeight = 150;
+    tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    tableView.tableFooterView = [[UIView alloc] init];
+    
+    //  添加下拉刷新控件
+    tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewOrders)];
+    //  请求最新订单数据
+    [tableView.mj_header beginRefreshing];
 }
 
 - (void)loadNewOrders {
@@ -62,11 +75,13 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
     IOOrderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Order"];
+    
     if (!cell) {
         cell = [[IOOrderCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Order"];
     }
-    cell.textLabel.text = self.orders[indexPath.row].shopName;
+    cell.order = self.orders[indexPath.row];
     return cell;
 }
 
