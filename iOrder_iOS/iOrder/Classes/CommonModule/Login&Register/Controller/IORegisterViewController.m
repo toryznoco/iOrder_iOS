@@ -221,8 +221,8 @@
     
     //2.发送注册请求
     [YWJRegisterTool registerWithParam:param success:^(YWJRegisterResult *result) {
-        NSLog(@"%@ %@ %@", result.result, result.code, result.message);
-        if ([result.code isEqualToString:@"2000"]) {
+        NSLog(@"%d %ld %@", result.result, result.code, result.message);
+        if (result.code == 2000) {
             [MBProgressHUD showSuccess:result.message];
             [self.navigationController popViewControllerAnimated:YES];
         } else {

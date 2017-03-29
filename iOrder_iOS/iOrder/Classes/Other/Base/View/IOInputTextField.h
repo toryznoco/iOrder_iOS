@@ -1,13 +1,13 @@
 //
-//  YWJRegisterResult.h
+//  IOInputTextField.h
 //  iOrder
 //
 //  Created by 易无解 on 22/03/2017.
 //  Copyright © 2017 normcore. All rights reserved.
 //
 
-#import "IOHTTPBaseResult.h"
+#import <UIKit/UIKit.h>
 
-@interface YWJRegisterResult : IOHTTPBaseResult
+@interface IOInputTextField : UITextField
 
 @end

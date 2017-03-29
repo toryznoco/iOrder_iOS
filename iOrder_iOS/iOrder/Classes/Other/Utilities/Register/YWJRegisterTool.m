@@ -16,7 +16,7 @@
 
 + (void)registerWithParam:(id)param success:(void (^)(YWJRegisterResult *))success failure:(void (^)(NSError *))failure {
     //1.获取URL
-    NSString *urlString = [NSString stringWithFormat:@"%@app/customer/register", kBackStageServerPath];
+    NSString *urlString = [NSString stringWithFormat:@"%@app/customer/register", kIOHTTPBaseUrl];
     
     //2.发送post请求
 //    [IONetworkTool POST:urlString parameters:param success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObj) {
