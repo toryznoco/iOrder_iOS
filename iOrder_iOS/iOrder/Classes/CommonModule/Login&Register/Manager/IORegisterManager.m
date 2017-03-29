@@ -11,6 +11,8 @@
 #import "IORegisterResult.h"
 #import "IOHttpTool.h"
 
+#define kIOHTTPRegisterUrl @"app/customer/register"
+
 @implementation IORegisterManager
 
 /**
@@ -22,7 +24,7 @@
  */
 + (void)registerWithParam:(id)param success:(void (^)(IORegisterResult * _Nullable))success failure:(void (^)(NSError * _Nullable))failure {
     //1.获取URL
-    NSString *urlString = [NSString stringWithFormat:@"%@app/customer/register", kIOHTTPBaseUrl];
+    NSString *urlString = [NSString stringWithFormat:@"%@%@", kIOHTTPBaseUrl, kIOHTTPRegisterUrl];
     
     [IOHttpTool JSONPOST:urlString parameters:param success:^(id responseObject) {
         IORegisterResult *result = [IORegisterResult mj_objectWithKeyValues:responseObject];

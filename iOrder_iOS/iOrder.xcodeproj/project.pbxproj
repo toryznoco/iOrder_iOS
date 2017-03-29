@@ -46,7 +46,6 @@
 		9A1BFDF21E6EA8DE00A0007F /* IOProfileMyCollectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A1BFDC21E6EA8DE00A0007F /* IOProfileMyCollectView.m */; };
 		9A1BFDFA1E6EA98100A0007F /* IOLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A1BFDF71E6EA98100A0007F /* IOLoginViewController.m */; };
 		9A1BFDFB1E6EA98100A0007F /* IORegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A1BFDF91E6EA98100A0007F /* IORegisterViewController.m */; };
-		9A1BFE001E6EA99B00A0007F /* IOLoginView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A1BFDFD1E6EA99B00A0007F /* IOLoginView.m */; };
 		9A1BFE611E6EACE200A0007F /* IOGlobalManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A1BFE601E6EACE200A0007F /* IOGlobalManager.m */; };
 		9A20FE911E88A7DA00CF0006 /* IOLoginParam.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A20FE901E88A7DA00CF0006 /* IOLoginParam.m */; };
 		9A20FE951E88B05C00CF0006 /* NSDictionary+TRPropertyCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A20FE941E88B05C00CF0006 /* NSDictionary+TRPropertyCode.m */; };
@@ -211,8 +210,6 @@
 		9A1BFDF71E6EA98100A0007F /* IOLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOLoginViewController.m; sourceTree = "<group>"; };
 		9A1BFDF81E6EA98100A0007F /* IORegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IORegisterViewController.h; sourceTree = "<group>"; };
 		9A1BFDF91E6EA98100A0007F /* IORegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IORegisterViewController.m; sourceTree = "<group>"; };
-		9A1BFDFC1E6EA99B00A0007F /* IOLoginView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOLoginView.h; sourceTree = "<group>"; };
-		9A1BFDFD1E6EA99B00A0007F /* IOLoginView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOLoginView.m; sourceTree = "<group>"; };
 		9A1BFE5F1E6EACE200A0007F /* IOGlobalManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOGlobalManager.h; sourceTree = "<group>"; };
 		9A1BFE601E6EACE200A0007F /* IOGlobalManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOGlobalManager.m; sourceTree = "<group>"; };
 		9A1BFE621E6F9EB500A0007F /* Singleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Singleton.h; sourceTree = "<group>"; };
@@ -612,8 +609,6 @@
 		9A1BFDF51E6EA96400A0007F /* View */ = {
 			isa = PBXGroup;
 			children = (
-				9A1BFDFC1E6EA99B00A0007F /* IOLoginView.h */,
-				9A1BFDFD1E6EA99B00A0007F /* IOLoginView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1530,7 +1525,6 @@
 				9A1BFDCF1E6EA8DE00A0007F /* IOHomeCell.m in Sources */,
 				9A3963DD1E82482E000E2E40 /* IORootTool.m in Sources */,
 				9A1BFDC91E6EA8DE00A0007F /* IOSubmitViewController.m in Sources */,
-				9A1BFE001E6EA99B00A0007F /* IOLoginView.m in Sources */,
 				9A1BFDDA1E6EA8DE00A0007F /* IOSubmitOrderView.m in Sources */,
 				9A1BFDEA1E6EA8DE00A0007F /* IOProfileMyCollectController.m in Sources */,
 				9A1BFDD21E6EA8DE00A0007F /* IOShopCell.m in Sources */,

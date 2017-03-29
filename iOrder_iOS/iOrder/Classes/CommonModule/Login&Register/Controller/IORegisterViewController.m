@@ -42,7 +42,7 @@
 
 @implementation IORegisterViewController
 
-#pragma mark - privacy
+#pragma mark - 系统回调函数
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
