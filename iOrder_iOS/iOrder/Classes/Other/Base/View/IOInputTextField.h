@@ -1,13 +1,13 @@
 //
-//  YWJRegisterParam.m
+//  IOInputTextField.h
 //  iOrder
 //
 //  Created by 易无解 on 22/03/2017.
 //  Copyright © 2017 normcore. All rights reserved.
 //
 
-#import "YWJRegisterParam.h"
+#import <UIKit/UIKit.h>
 
-@implementation YWJRegisterParam
+@interface IOInputTextField : UITextField
 
 @end

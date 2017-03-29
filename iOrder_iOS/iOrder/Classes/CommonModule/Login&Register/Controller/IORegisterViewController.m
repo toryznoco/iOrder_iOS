@@ -8,9 +8,8 @@
 
 #import "IORegisterViewController.h"
 #import "IOInputTextField.h"
-#import "YWJRegisterParam.h"
-#import "YWJRegisterResult.h"
-#import "YWJRegisterTool.h"
+#import "IORegisterManager.h"
+#import "IORegisterResult.h"
 #import "MBProgressHUD+YWJ.h"
 
 @interface IORegisterViewController ()
@@ -220,15 +219,15 @@
     param[@"password"] = self.password.text;
     
     //2.发送注册请求
-    [YWJRegisterTool registerWithParam:param success:^(YWJRegisterResult *result) {
-        NSLog(@"%@ %@ %@", result.result, result.code, result.message);
-        if ([result.code isEqualToString:@"2000"]) {
+    [IORegisterManager registerWithParam:param success:^(IORegisterResult * _Nullable result) {
+        NSLog(@"%d %ld %@", result.result, result.code, result.message);
+        if (result.code == 2000) {
             [MBProgressHUD showSuccess:result.message];
             [self.navigationController popViewControllerAnimated:YES];
         } else {
             [MBProgressHUD showError:result.message];
         }
-    } failure:^(NSError *error) {
+    } failure:^(NSError * _Nullable error) {
         NSLog(@"%@", error);
     }];
 }

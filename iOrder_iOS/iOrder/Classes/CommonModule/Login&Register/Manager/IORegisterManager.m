@@ -9,18 +9,31 @@
 #import "IORegisterManager.h"
 #import "IORegisterParam.h"
 #import "IORegisterResult.h"
+#import "IOHttpTool.h"
 
 @implementation IORegisterManager
 
 /**
- 注册
- 
- @param param 参数
- @param success 成功的回调
- @param failure 失败的回调
+ *  注册账号所返回的情况
+ *
+ *  @param param 注册请求参数
+ *  @param success    注册请求成功的时候的回调
+ *  @param failure    注册请求失败的时候的回调
  */
-//+ (void)registerWithParam:(IORegisterParam *)param
-//                  success:(void (^)(IORegisterResult * _Nullable result))success
-//                  failure:(void (^)(NSError * _Nonnull error))failure;
++ (void)registerWithParam:(id)param success:(void (^)(IORegisterResult * _Nullable))success failure:(void (^)(NSError * _Nullable))failure {
+    //1.获取URL
+    NSString *urlString = [NSString stringWithFormat:@"%@app/customer/register", kIOHTTPBaseUrl];
+    
+    [IOHttpTool JSONPOST:urlString parameters:param success:^(id responseObject) {
+        IORegisterResult *result = [IORegisterResult mj_objectWithKeyValues:responseObject];
+        if (success) {
+            success(result);
+        }
+    } failure:^(NSError *error) {
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
 
 @end

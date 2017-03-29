@@ -31,7 +31,7 @@
  4012：生成订单失败，原因有提交的店铺ID不正确、商品所属店铺与提交的店铺ID不对应等；
  5000：系统内部错误，暂不确定原因的错误；
  */
-@property (nonatomic, assign) double code;
+@property (nonatomic, assign) NSInteger code;
 
 /**
  请求结果说明信息
