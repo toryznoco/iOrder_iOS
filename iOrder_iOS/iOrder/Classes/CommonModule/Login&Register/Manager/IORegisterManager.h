@@ -13,14 +13,12 @@
 @interface IORegisterManager : NSObject
 
 /**
- 注册
- 
- @param param 参数
- @param success 成功的回调
- @param failure 失败的回调
+ *  注册账号所返回的情况
+ *
+ *  @param param 注册请求参数
+ *  @param success    注册请求成功的时候的回调
+ *  @param failure    注册请求失败的时候的回调
  */
-+ (void)registerWithParam:(IORegisterParam *)param
-               success:(void (^)(IORegisterResult * _Nullable result))success
-               failure:(void (^)(NSError * _Nonnull error))failure;
++ (void)registerWithParam:(id _Nullable )param success:(void(^_Nullable)(IORegisterResult * _Nullable result))success failure:(void(^_Nullable)(NSError * _Nullable error))failure;
 
 @end

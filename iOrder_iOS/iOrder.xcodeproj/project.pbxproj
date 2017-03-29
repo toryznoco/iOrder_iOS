@@ -103,9 +103,6 @@
 		9ADFA8571E88DFEE006E465A /* IORegisterResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 9ADFA8561E88DFEE006E465A /* IORegisterResult.m */; };
 		CA41C87A1D2BF0C90092921E /* UIView+Masonry_YWJ.m in Sources */ = {isa = PBXBuildFile; fileRef = CA41C8791D2BF0C90092921E /* UIView+Masonry_YWJ.m */; };
 		CA7069CB1CE5F564007C5F3F /* UIBarButtonItem+IOBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = CA7069CA1CE5F564007C5F3F /* UIBarButtonItem+IOBarButtonItem.m */; };
-		CA77AD5E1E8B3B5B000FCB80 /* YWJRegisterParam.m in Sources */ = {isa = PBXBuildFile; fileRef = CA77AD581E8B3B5B000FCB80 /* YWJRegisterParam.m */; };
-		CA77AD5F1E8B3B5B000FCB80 /* YWJRegisterResult.m in Sources */ = {isa = PBXBuildFile; fileRef = CA77AD5B1E8B3B5B000FCB80 /* YWJRegisterResult.m */; };
-		CA77AD601E8B3B5B000FCB80 /* YWJRegisterTool.m in Sources */ = {isa = PBXBuildFile; fileRef = CA77AD5D1E8B3B5B000FCB80 /* YWJRegisterTool.m */; };
 		CA77AD631E8B4E2F000FCB80 /* IOInputTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = CA77AD621E8B4E2F000FCB80 /* IOInputTextField.m */; };
 		CAE8F02C1CB940E2005618B0 /* iOrderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F02B1CB940E2005618B0 /* iOrderTests.m */; };
 		CAE8F0371CB940E2005618B0 /* iOrderUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F0361CB940E2005618B0 /* iOrderUITests.m */; };
@@ -333,12 +330,6 @@
 		CA41C8791D2BF0C90092921E /* UIView+Masonry_YWJ.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Masonry_YWJ.m"; sourceTree = "<group>"; };
 		CA7069C91CE5F564007C5F3F /* UIBarButtonItem+IOBarButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBarButtonItem+IOBarButtonItem.h"; sourceTree = "<group>"; };
 		CA7069CA1CE5F564007C5F3F /* UIBarButtonItem+IOBarButtonItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBarButtonItem+IOBarButtonItem.m"; sourceTree = "<group>"; };
-		CA77AD571E8B3B5B000FCB80 /* YWJRegisterParam.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWJRegisterParam.h; sourceTree = "<group>"; };
-		CA77AD581E8B3B5B000FCB80 /* YWJRegisterParam.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWJRegisterParam.m; sourceTree = "<group>"; };
-		CA77AD5A1E8B3B5B000FCB80 /* YWJRegisterResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWJRegisterResult.h; sourceTree = "<group>"; };
-		CA77AD5B1E8B3B5B000FCB80 /* YWJRegisterResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWJRegisterResult.m; sourceTree = "<group>"; };
-		CA77AD5C1E8B3B5B000FCB80 /* YWJRegisterTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWJRegisterTool.h; sourceTree = "<group>"; };
-		CA77AD5D1E8B3B5B000FCB80 /* YWJRegisterTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWJRegisterTool.m; sourceTree = "<group>"; };
 		CA77AD611E8B4E2F000FCB80 /* IOInputTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOInputTextField.h; sourceTree = "<group>"; };
 		CA77AD621E8B4E2F000FCB80 /* IOInputTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOInputTextField.m; sourceTree = "<group>"; };
 		CAE8F00E1CB940E2005618B0 /* iOrder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOrder.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -668,7 +659,6 @@
 		9A3963871E82482E000E2E40 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				CA77AD551E8B3B5B000FCB80 /* Register */,
 				9A3963881E82482E000E2E40 /* DatabaseCache */,
 				9A39638B1E82482E000E2E40 /* Dishes */,
 				9A3963941E82482E000E2E40 /* Http */,
@@ -1072,35 +1062,6 @@
 				8FE323846CDF736BC72802A4 /* libPods-iOrderUITests.a */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		CA77AD551E8B3B5B000FCB80 /* Register */ = {
-			isa = PBXGroup;
-			children = (
-				CA77AD561E8B3B5B000FCB80 /* Param */,
-				CA77AD591E8B3B5B000FCB80 /* Result */,
-				CA77AD5C1E8B3B5B000FCB80 /* YWJRegisterTool.h */,
-				CA77AD5D1E8B3B5B000FCB80 /* YWJRegisterTool.m */,
-			);
-			path = Register;
-			sourceTree = "<group>";
-		};
-		CA77AD561E8B3B5B000FCB80 /* Param */ = {
-			isa = PBXGroup;
-			children = (
-				CA77AD571E8B3B5B000FCB80 /* YWJRegisterParam.h */,
-				CA77AD581E8B3B5B000FCB80 /* YWJRegisterParam.m */,
-			);
-			path = Param;
-			sourceTree = "<group>";
-		};
-		CA77AD591E8B3B5B000FCB80 /* Result */ = {
-			isa = PBXGroup;
-			children = (
-				CA77AD5A1E8B3B5B000FCB80 /* YWJRegisterResult.h */,
-				CA77AD5B1E8B3B5B000FCB80 /* YWJRegisterResult.m */,
-			);
-			path = Result;
 			sourceTree = "<group>";
 		};
 		CAE8F0051CB940E2005618B0 = {
@@ -1532,7 +1493,6 @@
 				9A20FE951E88B05C00CF0006 /* NSDictionary+TRPropertyCode.m in Sources */,
 				9A1BFDC51E6EA8DE00A0007F /* IODishViewController.m in Sources */,
 				9A405B0E1E81521F0037A5AC /* IOOrderedViewController.m in Sources */,
-				CA77AD601E8B3B5B000FCB80 /* YWJRegisterTool.m in Sources */,
 				9A1BFDD61E6EA8DE00A0007F /* IOShoppingCartView.m in Sources */,
 				9A3963D41E82482E000E2E40 /* YWJDishesTool.m in Sources */,
 				9A2B87481E83FF52006DCD53 /* MBProgressHUD+YWJ.m in Sources */,
@@ -1561,7 +1521,6 @@
 				9A1BFDEF1E6EA8DE00A0007F /* IOUserInfo.m in Sources */,
 				9A2B87531E84BDCE006DCD53 /* IOOrdersVC.m in Sources */,
 				9A1BFDF21E6EA8DE00A0007F /* IOProfileMyCollectView.m in Sources */,
-				CA77AD5E1E8B3B5B000FCB80 /* YWJRegisterParam.m in Sources */,
 				9A20FE911E88A7DA00CF0006 /* IOLoginParam.m in Sources */,
 				9A3963DA1E82482E000E2E40 /* IOOrdersParam.m in Sources */,
 				9A3963ED1E824A10000E2E40 /* IONetworkTool.m in Sources */,
@@ -1592,7 +1551,6 @@
 				9AC08D701E39F3C600D728AD /* main.m in Sources */,
 				CA7069CB1CE5F564007C5F3F /* UIBarButtonItem+IOBarButtonItem.m in Sources */,
 				CA77AD631E8B4E2F000FCB80 /* IOInputTextField.m in Sources */,
-				CA77AD5F1E8B3B5B000FCB80 /* YWJRegisterResult.m in Sources */,
 				9A1BFDFB1E6EA98100A0007F /* IORegisterViewController.m in Sources */,
 				9A1BFDC61E6EA8DE00A0007F /* IOHomeViewController.m in Sources */,
 				9A1BFDCB1E6EA8DE00A0007F /* IOShop.m in Sources */,
