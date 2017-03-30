@@ -10,6 +10,7 @@
 #import "IORegisterParam.h"
 #import "IORegisterResult.h"
 #import "IOHttpTool.h"
+#import "IONetworkTool.h"
 
 #define kIOHTTPRegisterUrl @"app/customer/register"
 
@@ -25,13 +26,13 @@
 + (void)registerWithParam:(id)param success:(void (^)(IORegisterResult * _Nullable))success failure:(void (^)(NSError * _Nullable))failure {
     //1.获取URL
     NSString *urlString = [NSString stringWithFormat:@"%@%@", kIOHTTPBaseUrl, kIOHTTPRegisterUrl];
-    
-    [IOHttpTool JSONPOST:urlString parameters:param success:^(id responseObject) {
-        IORegisterResult *result = [IORegisterResult mj_objectWithKeyValues:responseObject];
+
+    [IONetworkTool JSONPOST:urlString parameters:param success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObj) {
+        IORegisterResult *result = [IORegisterResult mj_objectWithKeyValues:responseObj];
         if (success) {
             success(result);
         }
-    } failure:^(NSError *error) {
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         if (failure) {
             failure(error);
         }
