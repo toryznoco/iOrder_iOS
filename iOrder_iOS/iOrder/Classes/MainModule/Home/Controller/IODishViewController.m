@@ -23,12 +23,7 @@
 
 @implementation IODishViewController
 
-#pragma mark - privacy
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    
-    [self refreshView];
-}
+#pragma mark - 系统回调函数
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
@@ -40,14 +35,18 @@
     [navigationBar setShadowImage:[UIImage new]];
 }
 
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    [self refreshView];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - public
-
-#pragma mark - custom
+#pragma mark - 设置界面相关函数
 
 - (void)refreshView {
     

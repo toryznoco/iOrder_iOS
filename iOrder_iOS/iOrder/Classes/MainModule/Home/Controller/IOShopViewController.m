@@ -44,7 +44,26 @@
 
 @implementation IOShopViewController
 
-#pragma mark - privacy
+#pragma mark - 懒加载
+
+- (NSMutableArray *)dishInfos {
+    if (!_dishInfos) {
+        _dishInfos = [NSMutableArray array];
+    }
+    return _dishInfos;
+}
+
+#pragma mark - 系统回调函数
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    UINavigationBar *navigationBar = self.navigationController.navigationBar;
+    
+    //去除导航栏下方的横线 透明
+    [navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
+    [navigationBar setShadowImage:[UIImage new]];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -60,16 +79,6 @@
     [self setupSegmentScrollView];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    
-    UINavigationBar *navigationBar = self.navigationController.navigationBar;
-
-    //去除导航栏下方的横线 透明
-    [navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
-    [navigationBar setShadowImage:[UIImage new]];
-}
-
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     
@@ -83,18 +92,7 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - YWJDoubleTableViewDelegate
-
-- (void)doubleTableView:(UIView *)doubleTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    IODishViewController *dishVc = [[IODishViewController alloc] init];
-    
-    IODishes *dishes = _dishInfos[indexPath.section];
-    dishVc.dishInfo = dishes.dishes[indexPath.row];
-    
-    [self.navigationController pushViewController:dishVc animated:YES];
-}
-
-#pragma mark - custom methods
+#pragma mark - 设置界面相关函数
 
 - (void)refreshView {
     //    初始化数组和加载数据
@@ -108,29 +106,29 @@
     NSMutableArray *subViewArray = [NSMutableArray array];
     CGRect subViewFrame = CGRectMake(0, kHeaderHeight + 44, self.view.width, self.view.height - kHeaderHeight - 44);
     
-//    1、添加点菜View
+    //    1、添加点菜View
     UIView *orderView = [[UIView alloc] initWithFrame:subViewFrame];
     [subViewArray addObject:orderView];
-//    a、添加DoubleTableView
+    //    a、添加DoubleTableView
     YWJDoubleTableView *doubleTableView = [[YWJDoubleTableView alloc] initWithFrame:CGRectMake(0, 0, orderView.width, orderView.height - 54)];
     doubleTableView.delegate = self;
     _doubleTableView = doubleTableView;
     [orderView addSubview:doubleTableView];
-//    b、添加购物车view
+    //    b、添加购物车view
     IOShoppingCartView *shoppingCartView = [[IOShoppingCartView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(doubleTableView.frame), orderView.width, 54)];
     shoppingCartView.delegate = self;
     _shoppingCartView = shoppingCartView;
     [orderView addSubview:shoppingCartView];
     
-//    2、添加商店评价界面
+    //    2、添加商店评价界面
     IOShopEvaluate *evaluateView = [[IOShopEvaluate alloc] initWithFrame:subViewFrame];
     [subViewArray addObject:evaluateView];
     
-//    3、添加店铺详情界面
+    //    3、添加店铺详情界面
     IOShopDetail *detailView = [[IOShopDetail alloc] initWithFrame:subViewFrame];
     [subViewArray addObject:detailView];
     
-//    4、添加SegmentScrollView以便左右滑动
+    //    4、添加SegmentScrollView以便左右滑动
     IOSegmentScrollView *scrollView = [[IOSegmentScrollView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(_shopHeaderView.frame), self.view.width, self.view.height - kHeaderHeight) titleArray:@[@"点菜", @"评价", @"店铺详情"] contentViewArray:subViewArray];
     [self.view addSubview:scrollView];
 }
@@ -153,12 +151,7 @@
     self.navigationItem.backBarButtonItem = backItem;
 }
 
-- (NSMutableArray *)dishInfos {
-    if (!_dishInfos) {
-        _dishInfos = [NSMutableArray array];
-    }
-    return _dishInfos;
-}
+#pragma mark - 数据请求相关函数
 
 - (void)loadDishInfosWithShopId:(int)shopId {
     [YWJDishesTool newShopDishesWithShopId:shopId Success:^(NSArray *shops) {
@@ -201,6 +194,8 @@
     }];
 }
 
+#pragma mark - 事件监听函数
+
 - (void)collectBtnClick {
     IOLog(@"collectBtn click");
 }
@@ -217,6 +212,17 @@
 //- (void)backBtnClick {
 //    [self.navigationController popViewControllerAnimated:YES];
 //}
+
+#pragma mark - YWJDoubleTableViewDelegate
+
+- (void)doubleTableView:(UIView *)doubleTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    IODishViewController *dishVc = [[IODishViewController alloc] init];
+    
+    IODishes *dishes = _dishInfos[indexPath.section];
+    dishVc.dishInfo = dishes.dishes[indexPath.row];
+    
+    [self.navigationController pushViewController:dishVc animated:YES];
+}
 
 #pragma mark - DoubleTableViewDelegate
 

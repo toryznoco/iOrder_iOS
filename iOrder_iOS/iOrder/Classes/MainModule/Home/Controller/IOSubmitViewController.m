@@ -25,7 +25,7 @@
 
 @implementation IOSubmitViewController
 
-#pragma mark - privacy
+#pragma mark - 系统回调函数
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -44,7 +44,45 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - Table view data source
+#pragma mark - 设置界面相关函数
+
+- (void)setupSubmitOrderView {
+    IOSubmitOrderView *submitOrderView = [[IOSubmitOrderView alloc] initWithFrame:CGRectMake(0, self.view.height - 44, self.view.width, 44)];
+    submitOrderView.delegate = self;
+    [self.view addSubview:submitOrderView];
+    _submitOrderView = submitOrderView;
+    
+    submitOrderView.price = _totalPrice;
+}
+
+- (void)setupTableView {
+    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 44)];
+    tableView.tableFooterView = [[UIView alloc] init];
+    tableView.backgroundColor = IORGBColor(245, 245, 245, 1);
+    tableView.scrollEnabled = NO;
+    tableView.dataSource = self;
+    tableView.delegate = self;
+    [self.view addSubview:tableView];
+    _tableView = tableView;
+}
+
+- (void)setupNavigationItem {
+    self.title = @"提交订单";
+    UIColor *titleColor = [UIColor whiteColor];
+    NSMutableDictionary *titleAttr = [NSMutableDictionary dictionary];
+    titleAttr[NSForegroundColorAttributeName] = titleColor;
+    self.navigationController.navigationBar.titleTextAttributes = titleAttr;
+    UIBarButtonItem *backBtn = [UIBarButtonItem initWithNormalImage:@"arrow" target:self action:@selector(backBtnClick) width:12 height:21];
+    self.navigationItem.leftBarButtonItem = backBtn;
+}
+
+#pragma mark - 事件监听函数
+
+- (void)backBtnClick {
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+#pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 3;
@@ -129,47 +167,6 @@
     return 12;
 }
 
-#pragma mark - custom methods
-
-- (void)setupSubmitOrderView {
-    IOSubmitOrderView *submitOrderView = [[IOSubmitOrderView alloc] initWithFrame:CGRectMake(0, self.view.height - 44, self.view.width, 44)];
-    submitOrderView.delegate = self;
-    [self.view addSubview:submitOrderView];
-    _submitOrderView = submitOrderView;
-    
-    submitOrderView.price = _totalPrice;
-}
-
-- (void)setupTableView {
-    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 44)];
-    tableView.tableFooterView = [[UIView alloc] init];
-    tableView.backgroundColor = IORGBColor(245, 245, 245, 1);
-    tableView.scrollEnabled = NO;
-    tableView.dataSource = self;
-    tableView.delegate = self;
-    [self.view addSubview:tableView];
-    _tableView = tableView;
-}
-
-- (void)setupNavigationItem {
-    self.title = @"提交订单";
-    UIColor *titleColor = [UIColor whiteColor];
-    NSMutableDictionary *titleAttr = [NSMutableDictionary dictionary];
-    titleAttr[NSForegroundColorAttributeName] = titleColor;
-    self.navigationController.navigationBar.titleTextAttributes = titleAttr;
-    UIBarButtonItem *backBtn = [UIBarButtonItem initWithNormalImage:@"arrow" target:self action:@selector(backBtnClick) width:12 height:21];
-    self.navigationItem.leftBarButtonItem = backBtn;
-}
-
-- (void)backBtnClick {
-    [self.navigationController popViewControllerAnimated:YES];
-}
-
-- (void)doSomeWork {
-    sleep(2.);
-}
-
-
 #pragma mark - IOSubmitOrderViewDelegate
 
 - (void)submitOrderView:(IOSubmitOrderView *)submitOrderView submitClicked:(UIButton *)btn {
@@ -213,6 +210,10 @@
             });
         });
     }
+}
+
+- (void)doSomeWork {
+    sleep(2.);
 }
 
 @end

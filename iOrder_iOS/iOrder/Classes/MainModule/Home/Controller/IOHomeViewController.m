@@ -29,7 +29,16 @@
 
 @implementation IOHomeViewController
 
-#pragma mark - privacy
+#pragma mark - 懒加载属性
+
+- (NSMutableArray *)shops {
+    if (!_shops) {
+        _shops = [NSMutableArray array];
+    }
+    return _shops;
+}
+
+#pragma mark - 系统回调函数
 
 - (instancetype)init {
     if (self = [super init]) {
@@ -37,13 +46,6 @@
     }
     
     return self;
-}
-
-- (NSMutableArray *)shops {
-    if (!_shops) {
-        _shops = [NSMutableArray array];
-    }
-    return _shops;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -84,7 +86,97 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-#pragma mark - Table view data source
+#pragma mark - 设置界面相关函数
+
+- (void)setupProgressView {
+    //    UIView *mask = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 250, 250)];
+    UIView *mask = [[UIView alloc] initWithFrame:self.view.frame];
+    //    mask.center = CGPointMake(self.view.center.x, 150);
+    mask.backgroundColor = [UIColor clearColor];
+    [self.view addSubview:mask];
+    
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:mask animated:YES];
+    hud.mode = MBProgressHUDModeCustomView;
+    
+    UIImage *image = [[UIImage imageNamed:@"success"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    hud.customView = [[UIImageView alloc] initWithImage:image];
+    hud.square = YES;
+    hud.label.text = NSLocalizedString(@"Login Successed", @"HUD done title");
+    //    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    //        [mask removeFromSuperview];
+    //    });
+    //    [hud hide:YES afterDelay:1.0];
+}
+
+/**
+ 设置导航栏界面
+ */
+- (void)setupNavigationView {
+    [self.navigationController.navigationBar setBarTintColor:kIOThemeColors];
+    
+    UIBarButtonItem *locatingBtn = [UIBarButtonItem initWithNormalImage:@"address_icon" target:self action:@selector(locatingBtnClick:) width:15 height:20];
+    UIBarButtonItem *locatingLabel = [UIBarButtonItem initWithtitleColor:[UIColor whiteColor] target:self action:@selector(locatingBtnClick:) title:@"定位"];
+    self.navigationItem.rightBarButtonItems = @[locatingBtn, locatingLabel];
+    
+    UIView *locationView = [[UIView alloc] init];
+    locationView.frame = CGRectMake(0, 0, 54, 18);
+    UILabel *locationName = [[UILabel alloc] init];
+    locationName.font = [UIFont systemFontOfSize:13];
+    locationName.text = @"都江堰";
+    locationName.textColor = [UIColor whiteColor];
+    [locationName sizeToFit];
+    [locationView addSubview:locationName];
+    UIImageView *arrowImageView = [[UIImageView alloc] initWithFrame:CGRectMake(locationView.width - 10, 8, 12, 8)];
+    [arrowImageView setImage:[UIImage imageNamed:@"arrows_icon"]];
+    [locationView addSubview:arrowImageView];
+    UIBarButtonItem *locationBarItem = [[UIBarButtonItem alloc] initWithCustomView:locationView];
+    self.navigationItem.leftBarButtonItem = locationBarItem;
+    
+    CGFloat searchViewW = 2 * (self.view.width - CGRectGetMaxX(locationView.frame) - 20);
+    
+    UIView *searchView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, searchViewW, 28)];
+    searchView.backgroundColor = [UIColor whiteColor];
+    searchView.layer.cornerRadius = 14;
+    searchView.layer.masksToBounds = YES;
+    
+    UIImageView *searchImg = [[UIImageView alloc] initWithFrame:CGRectMake(7, 7, 15, 15)];
+    [searchImg setImage:[UIImage imageNamed:@"select-icon"]];
+    [searchView addSubview:searchImg];
+    
+    CGFloat textW = searchView.width - 7 - searchImg.width - 10;
+    CGFloat textH = 15;
+    CGFloat textX = CGRectGetMaxX(searchImg.frame) + 10;
+    CGFloat textY = searchImg.y + 2;
+    UITextField *searchTextField = [[UITextField alloc] initWithFrame:CGRectMake(textX, textY, textW, textH)];
+    searchTextField.placeholder = @"输入商家、品类";
+    searchTextField.font = [UIFont systemFontOfSize:13];
+    [searchView addSubview:searchTextField];
+    
+    self.navigationItem.titleView = searchView;
+}
+
+#pragma mark - 数据请求相关函数
+
+- (void)loadShopInfos {
+    [YWJShopsTool newShopsSuccess:^(NSArray *shops) {
+        if (_shops.count < shops.count) {
+            [_shops addObjectsFromArray:shops];
+        }
+        
+        [self.tableView reloadData];
+        [self.tableView.mj_header endRefreshing];
+    } failure:^(NSError *error) {
+        IOLog(@"%@", error);
+    }];
+}
+
+#pragma mark - 事件监听函数
+
+- (void)locatingBtnClick:(UIButton *)btn {
+    
+}
+
+#pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
@@ -130,89 +222,6 @@
 //  收起键盘
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
     [self.navigationItem.titleView endEditing:YES];
-}
-
-#pragma mark - custom method
-
-- (void)setupProgressView {
-//    UIView *mask = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 250, 250)];
-    UIView *mask = [[UIView alloc] initWithFrame:self.view.frame];
-//    mask.center = CGPointMake(self.view.center.x, 150);
-    mask.backgroundColor = [UIColor clearColor];
-    [self.view addSubview:mask];
-    
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:mask animated:YES];
-    hud.mode = MBProgressHUDModeCustomView;
-    
-    UIImage *image = [[UIImage imageNamed:@"success"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    hud.customView = [[UIImageView alloc] initWithImage:image];
-    hud.square = YES;
-    hud.label.text = NSLocalizedString(@"Login Successed", @"HUD done title");
-//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//        [mask removeFromSuperview];
-//    });
-//    [hud hide:YES afterDelay:1.0];
-}
-
-- (void)setupNavigationView {
-    [self.navigationController.navigationBar setBarTintColor:kIOThemeColors];
-    
-    UIBarButtonItem *locatingBtn = [UIBarButtonItem initWithNormalImage:@"address_icon" target:self action:@selector(locatingBtnClick:) width:15 height:20];
-    UIBarButtonItem *locatingLabel = [UIBarButtonItem initWithtitleColor:[UIColor whiteColor] target:self action:@selector(locatingBtnClick:) title:@"定位"];
-    self.navigationItem.rightBarButtonItems = @[locatingBtn, locatingLabel];
-    
-    UIView *locationView = [[UIView alloc] init];
-    locationView.frame = CGRectMake(0, 0, 54, 18);
-    UILabel *locationName = [[UILabel alloc] init];
-    locationName.font = [UIFont systemFontOfSize:13];
-    locationName.text = @"都江堰";
-    locationName.textColor = [UIColor whiteColor];
-    [locationName sizeToFit];
-    [locationView addSubview:locationName];
-    UIImageView *arrowImageView = [[UIImageView alloc] initWithFrame:CGRectMake(locationView.width - 10, 8, 12, 8)];
-    [arrowImageView setImage:[UIImage imageNamed:@"arrows_icon"]];
-    [locationView addSubview:arrowImageView];
-    UIBarButtonItem *locationBarItem = [[UIBarButtonItem alloc] initWithCustomView:locationView];
-    self.navigationItem.leftBarButtonItem = locationBarItem;
-    
-    CGFloat searchViewW = 2 * (self.view.width - CGRectGetMaxX(locationView.frame) - 20);
-    
-    UIView *searchView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, searchViewW, 28)];
-    searchView.backgroundColor = [UIColor whiteColor];
-    searchView.layer.cornerRadius = 14;
-    searchView.layer.masksToBounds = YES;
-    
-    UIImageView *searchImg = [[UIImageView alloc] initWithFrame:CGRectMake(7, 7, 15, 15)];
-    [searchImg setImage:[UIImage imageNamed:@"select-icon"]];
-    [searchView addSubview:searchImg];
-    
-    CGFloat textW = searchView.width - 7 - searchImg.width - 10;
-    CGFloat textH = 15;
-    CGFloat textX = CGRectGetMaxX(searchImg.frame) + 10;
-    CGFloat textY = searchImg.y + 2;
-    UITextField *searchTextField = [[UITextField alloc] initWithFrame:CGRectMake(textX, textY, textW, textH)];
-    searchTextField.placeholder = @"输入商家、品类";
-    searchTextField.font = [UIFont systemFontOfSize:13];
-    [searchView addSubview:searchTextField];
-    
-    self.navigationItem.titleView = searchView;
-}
-
-- (void)loadShopInfos {
-    [YWJShopsTool newShopsSuccess:^(NSArray *shops) {
-        if (_shops.count < shops.count) {
-            [_shops addObjectsFromArray:shops];
-        }
-        
-        [self.tableView reloadData];
-        [self.tableView.mj_header endRefreshing];
-    } failure:^(NSError *error) {
-        IOLog(@"%@", error);
-    }];
-}
-
-- (void)locatingBtnClick:(UIButton *)btn {
-    
 }
 
 @end
