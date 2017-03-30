@@ -40,4 +40,14 @@
  */
 + (void)saveRefreshToken:(NSString *)refreshToken validTime:(NSTimeInterval)time;
 
+/**
+ 获取本地保存的accessToken
+ */
++ (NSString *)accessToken;
+
+/**
+ 获取本地保存的refreshToken
+ */
++ (NSString *)refreshToken;
+
 @end

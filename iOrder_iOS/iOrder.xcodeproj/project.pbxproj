@@ -88,6 +88,9 @@
 		9A405B0E1E81521F0037A5AC /* IOOrderedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A405B071E81521F0037A5AC /* IOOrderedViewController.m */; };
 		9A405B0F1E81521F0037A5AC /* IOOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A405B0A1E81521F0037A5AC /* IOOrder.m */; };
 		9A405B101E81521F0037A5AC /* IOOrderViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A405B0D1E81521F0037A5AC /* IOOrderViewCell.m */; };
+		9A41DC7B1E8BA3C3006192FF /* IOHomeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A41DC7A1E8BA3C3006192FF /* IOHomeManager.m */; };
+		9A41DC7E1E8CD112006192FF /* IONearbyShopsParam.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A41DC7D1E8CD112006192FF /* IONearbyShopsParam.m */; };
+		9A41DC811E8CD771006192FF /* IONearbyShopsResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A41DC801E8CD771006192FF /* IONearbyShopsResult.m */; };
 		9AC08D701E39F3C600D728AD /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AC08D6F1E39F3C600D728AD /* main.m */; };
 		9AC08D791E39F4E200D728AD /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AC08D741E39F4E200D728AD /* AppDelegate.m */; };
 		9ADFA8391E88C4F7006E465A /* IOLoginResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 9ADFA8381E88C4F7006E465A /* IOLoginResult.m */; };
@@ -298,6 +301,12 @@
 		9A405B0A1E81521F0037A5AC /* IOOrder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOOrder.m; sourceTree = "<group>"; };
 		9A405B0C1E81521F0037A5AC /* IOOrderViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOOrderViewCell.h; sourceTree = "<group>"; };
 		9A405B0D1E81521F0037A5AC /* IOOrderViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOOrderViewCell.m; sourceTree = "<group>"; };
+		9A41DC791E8BA3C3006192FF /* IOHomeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOHomeManager.h; sourceTree = "<group>"; };
+		9A41DC7A1E8BA3C3006192FF /* IOHomeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOHomeManager.m; sourceTree = "<group>"; };
+		9A41DC7C1E8CD112006192FF /* IONearbyShopsParam.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IONearbyShopsParam.h; sourceTree = "<group>"; };
+		9A41DC7D1E8CD112006192FF /* IONearbyShopsParam.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IONearbyShopsParam.m; sourceTree = "<group>"; };
+		9A41DC7F1E8CD771006192FF /* IONearbyShopsResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IONearbyShopsResult.h; sourceTree = "<group>"; };
+		9A41DC801E8CD771006192FF /* IONearbyShopsResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IONearbyShopsResult.m; sourceTree = "<group>"; };
 		9AC08D6F1E39F3C600D728AD /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		9AC08D731E39F4E200D728AD /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		9AC08D741E39F4E200D728AD /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -457,6 +466,7 @@
 		9A1BFD571E6EA8DE00A0007F /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				9A41DC781E8BA3AE006192FF /* Manager */,
 				9A1BFD581E6EA8DE00A0007F /* Controller */,
 				9A1BFD631E6EA8DE00A0007F /* Model */,
 				9A1BFD6E1E6EA8DE00A0007F /* View */,
@@ -467,10 +477,10 @@
 		9A1BFD581E6EA8DE00A0007F /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				9A1BFD591E6EA8DE00A0007F /* IODishViewController.h */,
-				9A1BFD5A1E6EA8DE00A0007F /* IODishViewController.m */,
 				9A1BFD5B1E6EA8DE00A0007F /* IOHomeViewController.h */,
 				9A1BFD5C1E6EA8DE00A0007F /* IOHomeViewController.m */,
+				9A1BFD591E6EA8DE00A0007F /* IODishViewController.h */,
+				9A1BFD5A1E6EA8DE00A0007F /* IODishViewController.m */,
 				9A1BFD5D1E6EA8DE00A0007F /* IOShopViewController.h */,
 				9A1BFD5E1E6EA8DE00A0007F /* IOShopViewController.m */,
 				9A1BFD5F1E6EA8DE00A0007F /* IOSingInViewController.h */,
@@ -494,6 +504,10 @@
 				9A1BFD6B1E6EA8DE00A0007F /* IOShoppingCartInfo.m */,
 				9A1BFD6C1E6EA8DE00A0007F /* IOShoppingViewInfo.h */,
 				9A1BFD6D1E6EA8DE00A0007F /* IOShoppingViewInfo.m */,
+				9A41DC7C1E8CD112006192FF /* IONearbyShopsParam.h */,
+				9A41DC7D1E8CD112006192FF /* IONearbyShopsParam.m */,
+				9A41DC7F1E8CD771006192FF /* IONearbyShopsResult.h */,
+				9A41DC801E8CD771006192FF /* IONearbyShopsResult.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -949,6 +963,15 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		9A41DC781E8BA3AE006192FF /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				9A41DC791E8BA3C3006192FF /* IOHomeManager.h */,
+				9A41DC7A1E8BA3C3006192FF /* IOHomeManager.m */,
+			);
+			path = Manager;
+			sourceTree = "<group>";
+		};
 		9AC052EB1E76894D00C73F81 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
@@ -1254,7 +1277,7 @@
 				TargetAttributes = {
 					CAE8F00D1CB940E2005618B0 = {
 						CreatedOnToolsVersion = 7.0.1;
-						DevelopmentTeam = V2RZX97NSW;
+						DevelopmentTeam = CQA977E7GY;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
@@ -1469,6 +1492,7 @@
 				9A1BFDF01E6EA8DE00A0007F /* IOProfileCell.m in Sources */,
 				9A1BFDF11E6EA8DE00A0007F /* IOProfileHeaderView.m in Sources */,
 				9A1BFDFA1E6EA98100A0007F /* IOLoginViewController.m in Sources */,
+				9A41DC7B1E8BA3C3006192FF /* IOHomeManager.m in Sources */,
 				9A3963D11E82482E000E2E40 /* YWJCacheTool.m in Sources */,
 				9A3963DE1E82482E000E2E40 /* YWJRootTool.m in Sources */,
 				9A1BFDC71E6EA8DE00A0007F /* IOShopViewController.m in Sources */,
@@ -1497,6 +1521,7 @@
 				9A1BFDEB1E6EA8DE00A0007F /* IOProfileMyCouponController.m in Sources */,
 				9A405B101E81521F0037A5AC /* IOOrderViewCell.m in Sources */,
 				9ADFA84E1E88DCAC006E465A /* IOUser.m in Sources */,
+				9A41DC811E8CD771006192FF /* IONearbyShopsResult.m in Sources */,
 				9ADFA8391E88C4F7006E465A /* IOLoginResult.m in Sources */,
 				9A3963E31E82482E000E2E40 /* YWJShopsParam.m in Sources */,
 				9A1BFDC31E6EA8DE00A0007F /* IONewFeatureViewController.m in Sources */,
@@ -1505,6 +1530,7 @@
 				9ADFA84D1E88DCAC006E465A /* IOHTTPBaseResult.m in Sources */,
 				9A1BFDCD1E6EA8DE00A0007F /* IOShoppingCartInfo.m in Sources */,
 				9AC08D791E39F4E200D728AD /* AppDelegate.m in Sources */,
+				9A41DC7E1E8CD112006192FF /* IONearbyShopsParam.m in Sources */,
 				9A1BFDD41E6EA8DE00A0007F /* IOShopEvaluate.m in Sources */,
 				CA41C87A1D2BF0C90092921E /* UIView+Masonry_YWJ.m in Sources */,
 				9A1BFDD01E6EA8DE00A0007F /* IOHomeHeaderView.m in Sources */,
@@ -1685,7 +1711,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = V2RZX97NSW;
+				DEVELOPMENT_TEAM = CQA977E7GY;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -1729,7 +1755,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = V2RZX97NSW;
+				DEVELOPMENT_TEAM = CQA977E7GY;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",

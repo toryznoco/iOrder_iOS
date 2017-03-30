@@ -13,43 +13,43 @@
 @interface IOShop : NSObject<MJKeyValue>
 
 /**
- *  商铺综合评星，0-5，一位小数
+ *  商铺综合评星，0-5，最多一位小数
  */
 @property (nonatomic, assign) float score;
 
 /**
- *  商铺距离，单位M
+ *  店铺距离，单位米
  */
 @property (nonatomic, assign) int distance;
 
 /**
- *  已售数量
+ *  店铺销售总量
  */
-@property (nonatomic, assign) int toSal;
+@property (nonatomic, assign) int totalSale;
 
 /**
  *  商铺名称
  */
-@property (nonatomic, copy) NSString *name;
+@property (nonatomic, strong) NSString *name;
 
 /**
  *  人均消费，即多少钱一人，两位小数
  */
-@property (nonatomic, assign) float perPri;
+@property (nonatomic, assign) float personalPrice;
 
 /**
  *  商铺ID，唯一标识，后面用这个ID请求指定商铺菜品
  */
-@property (nonatomic, assign) int shopId;
+@property (nonatomic, assign) NSInteger shopId;
 
 /**
  *  商铺当前优惠信息，或者商铺广告语
  */
-@property (nonatomic, copy) NSString *cheap;
+@property (nonatomic, strong) NSString *cheapInfo;
 
 /**
  *  商铺图片url，不包含图片服务器根地址，需自行拼接
  */
-@property (nonatomic, copy) NSString *picture;
+@property (nonatomic, strong) NSString *picture;
 
 @end

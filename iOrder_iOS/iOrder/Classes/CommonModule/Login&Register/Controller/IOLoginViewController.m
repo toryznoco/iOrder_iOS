@@ -248,44 +248,25 @@
     // Set the label text.
     hud.label.text = NSLocalizedString(@"Logining...", @"HUD loading title");
     
-    // 异步请求
-    dispatch_sync(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
-        
-        IOLoginParam *param = [[IOLoginParam alloc] init];
-        param.account = self.userName.text;
-        param.password = self.password.text;
-        
-        [IOLoginManager loginWithParam:param success:^(IOLoginResult * _Nullable result) {
-            IOLog(@"%@", result);
-            if (result.result == YES) {
-                // 登录成功
-                // 保存accessToken及过期时间，refreshToken及过期时间
-                [IOAccountTool saveAccessToken:result.accessToken validTime:result.accessTokenValidTime];
-                [IOAccountTool saveRefreshToken:result.refreshToken validTime:result.refreshTokenValidTime];
-                
-                // 通知主线程
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    // 隐藏菊花
-                    [hud hideAnimated:YES];
+    IOLoginParam *param = [[IOLoginParam alloc] init];
+    param.account = self.userName.text;
+    param.password = self.password.text;
+    
+    [IOLoginManager loginWithParam:param success:^(IOLoginResult * _Nullable result) {
+        IOLog(@"%@", result);
+        if (result.result == YES) {
+            // 登录成功
+            // 保存accessToken及过期时间，refreshToken及过期时间
+            [IOAccountTool saveAccessToken:result.accessToken validTime:result.accessTokenTTL];
+            [IOAccountTool saveRefreshToken:result.refreshToken validTime:result.refreshTokenTTL];
+            
+            // 通知主线程
+            dispatch_async(dispatch_get_main_queue(), ^{
+                // 隐藏菊花
+                [hud hideAnimated:YES];
                     [IOGlobalManager enterHome];
-                });
-            } else {
-                // 登录失败
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    // Set the custom view mode to show any view.
-                    hud.mode = MBProgressHUDModeCustomView;
-                    // Set an image view with a checkmark.
-                    UIImage *image = [[UIImage imageNamed:@"error"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-                    hud.customView = [[UIImageView alloc] initWithImage:image];
-                    // Looks a bit nicer if we make it square.
-                    hud.square = YES;
-                    // Optional label text.
-                    hud.label.text = NSLocalizedString(@"Login Failed", @"HUD failed title");
-                    
-                    [hud hideAnimated:YES afterDelay:1.5];
-                });
-            }
-        } failure:^(NSError * _Nonnull error) {
+            });
+        } else {
             // 登录失败
             dispatch_async(dispatch_get_main_queue(), ^{
                 // Set the custom view mode to show any view.
@@ -296,12 +277,27 @@
                 // Looks a bit nicer if we make it square.
                 hud.square = YES;
                 // Optional label text.
-                hud.label.text = NSLocalizedString(error.localizedDescription, @"HUD failed title");
+                hud.label.text = NSLocalizedString(@"Login Failed", @"HUD failed title");
                 
                 [hud hideAnimated:YES afterDelay:1.5];
             });
-        }];
-    });
+        }
+    } failure:^(NSError * _Nonnull error) {
+        // 登录失败
+        dispatch_async(dispatch_get_main_queue(), ^{
+            // Set the custom view mode to show any view.
+            hud.mode = MBProgressHUDModeCustomView;
+            // Set an image view with a checkmark.
+            UIImage *image = [[UIImage imageNamed:@"error"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+            hud.customView = [[UIImageView alloc] initWithImage:image];
+            // Looks a bit nicer if we make it square.
+            hud.square = YES;
+            // Optional label text.
+            hud.label.text = NSLocalizedString(error.localizedDescription, @"HUD failed title");
+            
+            [hud hideAnimated:YES afterDelay:1.5];
+        });
+    }];
 }
 
 - (void)registerBtnDidPressed:(UIButton *)btn {

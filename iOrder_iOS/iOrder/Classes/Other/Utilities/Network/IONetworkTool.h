@@ -48,4 +48,19 @@
                        success:(void (^)(NSURLSessionDataTask * _Nonnull task, id _Nullable responseObj))success
                        failure:(void (^)(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error))failure;
 
+
+/**
+ 发送格式为JSON的POST请求
+
+ @param URLString url
+ @param parameters 参数
+ @param success 请求成功的回调
+ @param failure 请求失败的回调
+ @return dataTask
+ */
++ (NSURLSessionDataTask *)JSONPOST:(NSString *)URLString
+                    parameters:(id)parameters
+                       success:(void (^)(NSURLSessionDataTask * _Nonnull task, id _Nullable responseObj))success
+                           failure:(void (^)(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error))failure;
+
 @end

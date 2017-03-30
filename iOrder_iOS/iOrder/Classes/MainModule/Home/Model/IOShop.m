@@ -10,4 +10,10 @@
 
 @implementation IOShop
 
++ (NSDictionary *)mj_replacedKeyFromPropertyName {
+    return @{
+             @"shopId" : @"id"
+             };
+}
+
 @end

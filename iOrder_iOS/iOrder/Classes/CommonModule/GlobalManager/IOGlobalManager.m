@@ -23,10 +23,13 @@
 #import "IOTabBarController.h"
 #import "IONetworkTool.h"
 #import "IOAccountTool.h"
+#import "IOLoginResult.h"
+#import "MBProgressHUD.h"
 
 @import UserNotifications;
 
 BOOL isInRegion = NO;
+BOOL ifNeededRefreshToken = NO;
 
 @interface IOGlobalManager () <ABBeaconManagerDelegate, CBCentralManagerDelegate, UNUserNotificationCenterDelegate>
 
@@ -51,6 +54,9 @@ Singleton_implementation(Manager)
 
 - (instancetype)init {
     if (self = [super init]) {
+        // 开始监听网络状态
+        [IONetworkTool startMonitoring];
+        
         // 设置通知中心代理
         UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
         center.delegate = self;
@@ -64,9 +70,6 @@ Singleton_implementation(Manager)
         
         // 设置蓝牙管理者及代理
         self.centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil options:nil];
-        
-        // 开始监听网络状态
-        [IONetworkTool startMonitoring];
     }
     return self;
 }
@@ -74,17 +77,19 @@ Singleton_implementation(Manager)
 
 #pragma mark - Public Method
 /** 进入App时，根据情况选择根控制器 */
-+ (void)chooseRootViewController {
+- (void)chooseRootViewController {
     
     // 判断是否需要显示新特性页面，需要就显示
-    if ([self checkIfNeededShowNewFeature]) [self enterNewFeature];
-
+    if ([IOGlobalManager checkIfNeededShowNewFeature]) return [IOGlobalManager enterNewFeature];
+    
     // 不需要新特性就判断是否需要登录
-    if ([self checkIfNeededLogin]) [self enterLogin];
+    if ([IOGlobalManager checkIfNeededLogin]) return [IOGlobalManager enterLogin];
+    
+    // 设置需要刷新两个Token
+    ifNeededRefreshToken = YES;
     
     // 不需要登录就进入主页
-    [self enterHome];
-    
+    [IOGlobalManager enterHome];
 }
 
 /** 检测是否总是允许使用位置信息 */
@@ -252,12 +257,8 @@ Singleton_implementation(Manager)
  @return YES:需要，NO:不需要
  */
 + (BOOL)checkIfNeededLogin {
-    
-    // 检查accessToken是否有效，有效就不需要登录，无效就检查refreshToken
-    if ([IOAccountTool checkIfAccessTokenValid]) return NO;
-    
     // 检查refreshToken是否有效，有效就不需要登录，无效就需要登录
-    return ![IOAccountTool checkIfRefreshTokenValid];
+    return (![IOAccountTool checkIfRefreshTokenValid]);
 }
 
 /**

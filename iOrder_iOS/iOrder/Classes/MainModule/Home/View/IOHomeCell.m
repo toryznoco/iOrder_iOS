@@ -77,7 +77,7 @@
     _shopName.font = [UIFont systemFontOfSize:15];
     [_shopIcon sizeToFit];
     
-    _shopIntro.text = _shop.cheap;
+    _shopIntro.text = _shop.cheapInfo;
     _shopIntro.textColor = [UIColor colorWithRed:180/255.0 green:180/255.0 blue:180/255.0 alpha:1];
     _shopIntro.font = [UIFont systemFontOfSize:13];
     
@@ -87,11 +87,11 @@
     
     _shopStarView.startCount = _shop.score;
     
-    _shopPrice.text = [NSString stringWithFormat:@"¥%.2f/人", _shop.perPri];
+    _shopPrice.text = [NSString stringWithFormat:@"¥%.2f/人", _shop.personalPrice];
     _shopPrice.font = [UIFont systemFontOfSize:13];
     _shopPrice.textColor = [UIColor colorWithRed:180/255.0 green:180/255.0 blue:180/255.0 alpha:1];
     
-    _shopSaleCount.text = [NSString stringWithFormat:@"已售%d", _shop.toSal];
+    _shopSaleCount.text = [NSString stringWithFormat:@"已售%d", _shop.totalSale];
     _shopSaleCount.font = [UIFont systemFontOfSize:13];
     _shopSaleCount.textColor = [UIColor colorWithRed:180/255.0 green:180/255.0 blue:180/255.0 alpha:1];
 }

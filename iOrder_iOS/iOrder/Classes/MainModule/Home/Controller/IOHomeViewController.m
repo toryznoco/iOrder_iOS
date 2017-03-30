@@ -19,10 +19,13 @@
 
 #import "MJRefresh.h"
 #import "MBProgressHUD.h"
+#import "IOHomeManager.h"
+
+extern BOOL ifNeededRefreshToken;
 
 @interface IOHomeViewController ()<UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate>
 
-@property (nonatomic, strong) NSMutableArray *shops;
+@property (nonatomic, strong) NSMutableArray *nearbyShops;
 @property (nonatomic, weak) IOHomeHeaderView *homeHeaderView;
 
 @end
@@ -39,11 +42,11 @@
     return self;
 }
 
-- (NSMutableArray *)shops {
-    if (!_shops) {
-        _shops = [NSMutableArray array];
+- (NSMutableArray *)nearbyShops {
+    if (!_nearbyShops) {
+        _nearbyShops = @[].mutableCopy;
     }
-    return _shops;
+    return _nearbyShops;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -52,22 +55,52 @@
     [self.navigationController.navigationBar setBarTintColor:kIOThemeColors];
 }
 
+- (void)refreshToken {
+    
+    [IOHomeManager refreshTokenSuccess: ^{
+        // 刷新token并保存成功
+        ifNeededRefreshToken = NO;
+        
+        // 开始请求数据
+        [self loadNearbyShops];
+        
+    } failure:^(NSError * _Nonnull error) {
+        IOLog(@"%@", error);
+    }];
+}
+
+- (void)loadNearbyShops {
+    [IOHomeManager loadNearbyShopsSuccess:^(NSArray *nearbyShops) {
+        if (self.nearbyShops.count < nearbyShops.count) {
+            self.nearbyShops = nearbyShops.mutableCopy;
+        }
+
+        [self.tableView reloadData];
+        [self.tableView.mj_header endRefreshing];
+    } failure:^(NSError *error) {
+        IOLog(@"%@", error);
+        [self.tableView.mj_header endRefreshing];
+    }];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     [self setupNavigationView];
     
     self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-        _shops = [self shops];
-        
-        [self loadShopInfos];
+        if (ifNeededRefreshToken) {
+            [self refreshToken];
+        } else {
+            [self loadNearbyShops];
+        }
     }];
-    [self.tableView.mj_header beginRefreshing];
     
+    [self.tableView.mj_header beginRefreshing];
     
     self.title = @"首页";
     self.view.backgroundColor = [UIColor whiteColor];
-    //    设置行高
+    // 设置行高
     self.tableView.rowHeight = 70;
     
     IOHomeHeaderView *homeHeaderView = [[IOHomeHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 280)];
@@ -91,14 +124,14 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.shops.count;
+    return self.nearbyShops.count;
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     IOHomeCell *cell = [IOHomeCell cellWithTableView:tableView];
     
-    IOShop *info = self.shops[indexPath.row];
+    IOShop *info = self.nearbyShops[indexPath.row];
     cell.shop = info;
     
     return cell;
@@ -119,8 +152,8 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     IOShopViewController *shopVc = [[IOShopViewController alloc] init];
     int shopId = (int)(indexPath.row);
-    shopVc.shopInfo = self.shops[shopId];
-    IOShop *shop = self.shops[shopId];
+    shopVc.shopInfo = self.nearbyShops[shopId];
+    IOShop *shop = self.nearbyShops[shopId];
     shopVc.shopId = shop.shopId;
     
     [self.navigationController pushViewController:shopVc animated:YES];
@@ -198,18 +231,7 @@
     self.navigationItem.titleView = searchView;
 }
 
-- (void)loadShopInfos {
-    [YWJShopsTool newShopsSuccess:^(NSArray *shops) {
-        if (_shops.count < shops.count) {
-            [_shops addObjectsFromArray:shops];
-        }
-        
-        [self.tableView reloadData];
-        [self.tableView.mj_header endRefreshing];
-    } failure:^(NSError *error) {
-        IOLog(@"%@", error);
-    }];
-}
+
 
 - (void)locatingBtnClick:(UIButton *)btn {
     

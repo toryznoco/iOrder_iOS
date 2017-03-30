@@ -27,11 +27,15 @@
                failure:(void (^)(NSError * _Nonnull error))failure {
     
     NSString *urlStr = [NSString stringWithFormat:@"%@%@", kIOHTTPBaseUrl, kIOHTTPLoginUrl];
-    [IONetworkTool POST:urlStr parameters:param.mj_keyValues success:^(NSURLSessionDataTask * _Nonnull task, id _Nullable responseObj) {
+    [IONetworkTool JSONPOST:urlStr parameters:param.mj_keyValues success:^(NSURLSessionDataTask * _Nonnull task, id _Nullable responseObj) {
         IOLoginResult *result = [IOLoginResult mj_objectWithKeyValues:responseObj];
-        success(result);
+        if (success) {
+            success(result);
+        }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        failure(error);
+        if (failure) {
+            failure(error);
+        }
     }];
 }
 
