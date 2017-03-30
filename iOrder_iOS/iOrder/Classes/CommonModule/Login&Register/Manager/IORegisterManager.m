@@ -27,6 +27,7 @@
     //1.获取URL
     NSString *urlString = [NSString stringWithFormat:@"%@%@", kIOHTTPBaseUrl, kIOHTTPRegisterUrl];
 
+    //2.发送json网络请求
     [IONetworkTool JSONPOST:urlString parameters:param success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObj) {
         IORegisterResult *result = [IORegisterResult mj_objectWithKeyValues:responseObj];
         if (success) {
