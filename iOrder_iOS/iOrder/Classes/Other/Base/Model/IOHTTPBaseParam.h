@@ -13,6 +13,6 @@
 /**
  token，接口调用凭据，有效时间30分钟
  */
-@property (nonatomic, strong) NSString *token;
+//@property (nonatomic, strong) NSString *token;
 
 @end

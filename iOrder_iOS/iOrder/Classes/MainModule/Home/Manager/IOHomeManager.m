@@ -66,9 +66,8 @@
     param.lat = 103.59;
     param.pageNum = 1;
     param.pageSize = 10;
-    param.token = [IOAccountTool accessToken];
-    IOLog(@"accessToken-%@", param.token);
-    [IONetworkTool GET:urlStr parameters:param.mj_keyValues success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObj) {
+    
+    [IONetworkTool tokenGET:urlStr parameters:param.mj_keyValues success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObj) {
         IONearbyShopsResult *result = [IONearbyShopsResult mj_objectWithKeyValues:responseObj];
         if (result.result) {
             if (success) {

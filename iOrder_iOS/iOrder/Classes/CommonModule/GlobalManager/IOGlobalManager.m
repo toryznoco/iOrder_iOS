@@ -29,6 +29,7 @@
 @import UserNotifications;
 
 BOOL isInRegion = NO;
+// 是否需要刷新两个token
 BOOL ifNeededRefreshToken = NO;
 
 @interface IOGlobalManager () <ABBeaconManagerDelegate, CBCentralManagerDelegate, UNUserNotificationCenterDelegate>

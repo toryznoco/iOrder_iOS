@@ -91,6 +91,7 @@
 		9A41DC7B1E8BA3C3006192FF /* IOHomeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A41DC7A1E8BA3C3006192FF /* IOHomeManager.m */; };
 		9A41DC7E1E8CD112006192FF /* IONearbyShopsParam.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A41DC7D1E8CD112006192FF /* IONearbyShopsParam.m */; };
 		9A41DC811E8CD771006192FF /* IONearbyShopsResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A41DC801E8CD771006192FF /* IONearbyShopsResult.m */; };
+		9A41DC841E8CF877006192FF /* IOAccessTokenResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A41DC831E8CF877006192FF /* IOAccessTokenResult.m */; };
 		9AC08D701E39F3C600D728AD /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AC08D6F1E39F3C600D728AD /* main.m */; };
 		9AC08D791E39F4E200D728AD /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AC08D741E39F4E200D728AD /* AppDelegate.m */; };
 		9ADFA8391E88C4F7006E465A /* IOLoginResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 9ADFA8381E88C4F7006E465A /* IOLoginResult.m */; };
@@ -307,6 +308,8 @@
 		9A41DC7D1E8CD112006192FF /* IONearbyShopsParam.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IONearbyShopsParam.m; sourceTree = "<group>"; };
 		9A41DC7F1E8CD771006192FF /* IONearbyShopsResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IONearbyShopsResult.h; sourceTree = "<group>"; };
 		9A41DC801E8CD771006192FF /* IONearbyShopsResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IONearbyShopsResult.m; sourceTree = "<group>"; };
+		9A41DC821E8CF877006192FF /* IOAccessTokenResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOAccessTokenResult.h; sourceTree = "<group>"; };
+		9A41DC831E8CF877006192FF /* IOAccessTokenResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOAccessTokenResult.m; sourceTree = "<group>"; };
 		9AC08D6F1E39F3C600D728AD /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		9AC08D731E39F4E200D728AD /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		9AC08D741E39F4E200D728AD /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -915,6 +918,8 @@
 				9A3963EC1E824A10000E2E40 /* IONetworkTool.m */,
 				9A2B872B1E83A8F2006DCD53 /* IOError.h */,
 				9A2B872C1E83A8F2006DCD53 /* IOError.m */,
+				9A41DC821E8CF877006192FF /* IOAccessTokenResult.h */,
+				9A41DC831E8CF877006192FF /* IOAccessTokenResult.m */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -1517,6 +1522,7 @@
 				9A2B87481E83FF52006DCD53 /* MBProgressHUD+YWJ.m in Sources */,
 				9A3963E21E82482E000E2E40 /* YWJShoppingCartTool.m in Sources */,
 				9ADFA84B1E88DCAB006E465A /* IONavigationController.m in Sources */,
+				9A41DC841E8CF877006192FF /* IOAccessTokenResult.m in Sources */,
 				9A2B87561E84C1A1006DCD53 /* IOOrderCell.m in Sources */,
 				9A1BFDEB1E6EA8DE00A0007F /* IOProfileMyCouponController.m in Sources */,
 				9A405B101E81521F0037A5AC /* IOOrderViewCell.m in Sources */,
