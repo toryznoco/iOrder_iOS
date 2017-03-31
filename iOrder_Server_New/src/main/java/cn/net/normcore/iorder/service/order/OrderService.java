@@ -80,4 +80,19 @@ public interface OrderService extends BaseService<Order, Long> {
      * @return
      */
     Order order(JsonNode data, Long customerId);
+
+    /**
+     * 取餐
+     *
+     * @param orderId
+     */
+    void take(Long orderId);
+
+    /**
+     * 查询店铺的所有订单
+     *
+     * @param shopmanId
+     * @return
+     */
+    List<Order> findShopAll(Long shopmanId);
 }

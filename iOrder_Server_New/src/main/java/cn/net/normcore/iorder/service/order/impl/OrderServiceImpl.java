@@ -1,6 +1,7 @@
 package cn.net.normcore.iorder.service.order.impl;
 
 import cn.net.normcore.iorder.entity.business.Shop;
+import cn.net.normcore.iorder.entity.business.Shopman;
 import cn.net.normcore.iorder.entity.customer.Customer;
 import cn.net.normcore.iorder.entity.goods.Goods;
 import cn.net.normcore.iorder.entity.order.Order;
@@ -9,6 +10,7 @@ import cn.net.normcore.iorder.repository.order.OrderRepository;
 import cn.net.normcore.iorder.service.BaseServiceImpl;
 import cn.net.normcore.iorder.service.business.CouponService;
 import cn.net.normcore.iorder.service.business.ShopService;
+import cn.net.normcore.iorder.service.business.ShopmanService;
 import cn.net.normcore.iorder.service.customer.CustomerService;
 import cn.net.normcore.iorder.service.goods.GoodsService;
 import cn.net.normcore.iorder.service.order.OrderItemService;
@@ -39,6 +41,8 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Long, OrderReposito
     private CouponService couponService;
     @Autowired
     private ShopService shopService;
+    @Autowired
+    private ShopmanService shopmanService;
 
     /**
      * 重写get方法，计算出订单商品总数量
@@ -212,6 +216,23 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Long, OrderReposito
         order.setPayPrice(order.getTotalPrice() - (order.getCoupon() == null ? 0 : order.getCoupon().getMoney()));
         save(order);
         return order;
+    }
+
+    @Override
+    @Transactional
+    public void take(Long orderId) {
+        Order order = get(orderId);
+        order.setGetTime(new Date());
+        order.setStatus(Character.valueOf('5'));
+        save(order);
+    }
+
+    @Override
+    public List<Order> findShopAll(Long shopmanId) {
+        Shopman shopman = shopmanService.get(shopmanId);
+        List<Order> orders = repository.findByShopOrderByCreateTimeDesc(shopman.getShop());
+        orders.forEach(order -> order.setGoodsAmount(getOrderGoodsAmount(order)));
+        return orders;
     }
 
 }
