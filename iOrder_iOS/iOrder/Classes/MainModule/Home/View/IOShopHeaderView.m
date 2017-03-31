@@ -126,7 +126,7 @@
     
     _shopTitle.text = _shopInfo.name;
     
-    _hintInfo.text = _shopInfo.cheap;
+    _hintInfo.text = _shopInfo.cheapInfo;
 }
 
 - (void)setupChildViewWithFrame:(CGRect)frame {

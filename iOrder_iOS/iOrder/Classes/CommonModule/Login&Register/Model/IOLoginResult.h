@@ -16,7 +16,7 @@
 @property (nonatomic, strong) NSString *accessToken;
 
 /** AccessToken有效时间 */
-@property (nonatomic, assign) double accessTokenValidTime;
+@property (nonatomic, assign) long accessTokenTTL;
 
 /**
  用于获取Access Token
@@ -24,6 +24,6 @@
 @property (nonatomic, strong) NSString *refreshToken;
 
 /** RefreshToken有效时间 */
-@property (nonatomic, assign) double refreshTokenValidTime;
+@property (nonatomic, assign) long refreshTokenTTL;
 
 @end

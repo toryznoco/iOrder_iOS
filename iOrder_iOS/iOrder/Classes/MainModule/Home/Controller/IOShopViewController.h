@@ -12,7 +12,7 @@
 
 @interface IOShopViewController : UIViewController
 
-@property (nonatomic, assign) int shopId;
+@property (nonatomic, assign) NSInteger shopId;
 
 @property (nonatomic, strong) IOShop *shopInfo;
 

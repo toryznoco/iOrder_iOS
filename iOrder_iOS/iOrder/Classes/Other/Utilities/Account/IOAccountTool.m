@@ -16,12 +16,27 @@
  @return YES为有效，NO为无效(1.没有，2.有但是过期)
  */
 + (BOOL)checkIfAccessTokenValid {
-    // 拿到过期时间
-    NSDate *expiredDate = [IOUserDefaults objectForKey:kIOAccessTokenValidityKey];
-    // 和当前时间作比较，精确到分钟
-    NSDate *date = [NSDate date];
+    // 先判断有没有accessToken，没有则无效
+    if (![IOUserDefaults objectForKey:kIOAccessTokenKey]) return NO;
     
-    return NO;
+    // 拿到过期时间，精确到分钟
+    NSDate *expiredDate = [IOUserDefaults objectForKey:kIOAccessTokenExpiredTimeKey];
+    NSDateFormatter *fmt = [NSDateFormatter new];
+    fmt.dateFormat = @"yyyyMMddHHmm";
+    NSString *expiredTime = [fmt stringFromDate:expiredDate];
+    IOLog(@"AccessToken过期时间%ld", expiredTime.integerValue);
+    
+    // 和当前时间作比较，
+    NSDate *date = [NSDate date];
+    NSString *currentTime = [fmt stringFromDate:date];
+    IOLog(@"%ld", currentTime.integerValue);
+    
+    if (expiredTime.integerValue >= currentTime.integerValue) {
+        // 过期时间大于当前时间，没过期，有效
+        return YES;
+    } else {
+        return NO;
+    }
 }
 
 /**
@@ -30,12 +45,27 @@
  @return YES为有效，NO为无效(1.没有，2.有但是过期)
  */
 + (BOOL)checkIfRefreshTokenValid {
-    // 拿到过期时间
-    NSDate *expiredDate = [IOUserDefaults objectForKey:kIORefreshTokenValidityKey];
-    // 和当前时间作比较，精确到日
-    NSDate *date = [NSDate date];
+    // 先判断有没有refreshToken，没有则无效
+    if (![IOUserDefaults objectForKey:kIORefreshTokenKey]) return NO;
     
-    return NO;
+    // 拿到过期时间，精确到日
+    NSDate *expiredDate = [IOUserDefaults objectForKey:kIORefreshTokenExpiredTimeKey];
+    NSDateFormatter *fmt = [NSDateFormatter new];
+    fmt.dateFormat = @"yyyyMMdd";
+    NSString *expiredTime = [fmt stringFromDate:expiredDate];
+    IOLog(@"RefreshToken过期时间%ld", expiredTime.integerValue);
+    
+    // 和当前时间作比较，
+    NSDate *date = [NSDate date];
+    NSString *currentTime = [fmt stringFromDate:date];
+    IOLog(@"%ld", currentTime.integerValue);
+    
+    if (expiredTime.integerValue >= currentTime.integerValue) {
+        // 过期时间大于当前时间，没过期，有效
+        return YES;
+    } else {
+        return NO;
+    }
 }
 
 /**
@@ -50,8 +80,7 @@
     
     // 保存accessToken过期时间
     NSDate *date = [NSDate dateWithTimeIntervalSinceNow:time];
-    
-    [IOUserDefaults setObject:date forKey:kIOAccessTokenValidityKey];
+    [IOUserDefaults setObject:date forKey:kIOAccessTokenExpiredTimeKey];
 }
 
 /**
@@ -66,8 +95,22 @@
     
     // 保存refreshToken过期时间
     NSDate *date = [NSDate dateWithTimeIntervalSinceNow:time];
+    [IOUserDefaults setObject:date forKey:kIORefreshTokenExpiredTimeKey];
+}
+
+/**
+ 获取本地保存的refreshToken
+ */
++ (NSString *)refreshToken {
+    return [IOUserDefaults objectForKey:kIORefreshTokenKey];
     
-    [IOUserDefaults setObject:date forKey:kIORefreshTokenValidityKey];
+}
+
+/**
+ 获取本地保存的accessToken
+ */
++ (NSString *)accessToken {
+    return [IOUserDefaults objectForKey:kIOAccessTokenKey];
 }
 
 @end
