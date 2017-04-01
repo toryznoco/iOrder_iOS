@@ -32,7 +32,16 @@ extern BOOL ifNeededRefreshToken;
 
 @implementation IOHomeViewController
 
-#pragma mark - privacy
+#pragma mark - 懒加载属性
+
+- (NSMutableArray *)nearbyShops {
+    if (!_nearbyShops) {
+        _nearbyShops = @[].mutableCopy;
+    }
+    return _nearbyShops;
+}
+
+#pragma mark - 系统回调函数
 
 - (instancetype)init {
     if (self = [super init]) {
@@ -42,45 +51,10 @@ extern BOOL ifNeededRefreshToken;
     return self;
 }
 
-- (NSMutableArray *)nearbyShops {
-    if (!_nearbyShops) {
-        _nearbyShops = @[].mutableCopy;
-    }
-    return _nearbyShops;
-}
-
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
     [self.navigationController.navigationBar setBarTintColor:kIOThemeColors];
-}
-
-- (void)refreshToken {
-    
-    [IOHomeManager refreshTokenSuccess: ^{
-        // 刷新token并保存成功
-        ifNeededRefreshToken = NO;
-        
-        // 开始请求数据
-        [self loadNearbyShops];
-        
-    } failure:^(NSError * _Nonnull error) {
-        IOLog(@"%@", error);
-    }];
-}
-
-- (void)loadNearbyShops {
-    [IOHomeManager loadNearbyShopsSuccess:^(NSArray *nearbyShops) {
-        if (self.nearbyShops.count < nearbyShops.count) {
-            self.nearbyShops = nearbyShops.mutableCopy;
-        }
-
-        [self.tableView reloadData];
-        [self.tableView.mj_header endRefreshing];
-    } failure:^(NSError *error) {
-        IOLog(@"%@", error);
-        [self.tableView.mj_header endRefreshing];
-    }];
 }
 
 - (void)viewDidLoad {
@@ -117,60 +91,12 @@ extern BOOL ifNeededRefreshToken;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-#pragma mark - Table view data source
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.nearbyShops.count;
-}
-
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    IOHomeCell *cell = [IOHomeCell cellWithTableView:tableView];
-    
-    IOShop *info = self.nearbyShops[indexPath.row];
-    cell.shop = info;
-    
-    return cell;
-}
-
-#pragma mark - UITableViewDelegate
-
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 25;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    IOHomeCellHeaderView *tableViewHeaderView = [[IOHomeCellHeaderView alloc] init];
-    return tableViewHeaderView;
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    IOShopViewController *shopVc = [[IOShopViewController alloc] init];
-    int shopId = (int)(indexPath.row);
-    shopVc.shopInfo = self.nearbyShops[shopId];
-    IOShop *shop = self.nearbyShops[shopId];
-    shopVc.shopId = shop.shopId;
-    
-    [self.navigationController pushViewController:shopVc animated:YES];
-}
-
-#pragma mark - UIScrollViewDelegate
-//  收起键盘
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
-    [self.navigationItem.titleView endEditing:YES];
-}
-
-#pragma mark - custom method
+#pragma mark - 设置界面相关函数
 
 - (void)setupProgressView {
-//    UIView *mask = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 250, 250)];
+    //    UIView *mask = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 250, 250)];
     UIView *mask = [[UIView alloc] initWithFrame:self.view.frame];
-//    mask.center = CGPointMake(self.view.center.x, 150);
+    //    mask.center = CGPointMake(self.view.center.x, 150);
     mask.backgroundColor = [UIColor clearColor];
     [self.view addSubview:mask];
     
@@ -181,10 +107,10 @@ extern BOOL ifNeededRefreshToken;
     hud.customView = [[UIImageView alloc] initWithImage:image];
     hud.square = YES;
     hud.label.text = NSLocalizedString(@"Login Successed", @"HUD done title");
-//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//        [mask removeFromSuperview];
-//    });
-//    [hud hide:YES afterDelay:1.0];
+    //    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    //        [mask removeFromSuperview];
+    //    });
+    //    [hud hide:YES afterDelay:1.0];
 }
 
 - (void)setupNavigationView {
@@ -231,10 +157,88 @@ extern BOOL ifNeededRefreshToken;
     self.navigationItem.titleView = searchView;
 }
 
+- (void)refreshToken {
+    
+    [IOHomeManager refreshTokenSuccess: ^{
+        // 刷新token并保存成功
+        ifNeededRefreshToken = NO;
+        
+        // 开始请求数据
+        [self loadNearbyShops];
+        
+    } failure:^(NSError * _Nonnull error) {
+        IOLog(@"%@", error);
+    }];
+}
 
+#pragma mark - 数据请求相关函数
+
+- (void)loadNearbyShops {
+    [IOHomeManager loadNearbyShopsSuccess:^(NSArray *nearbyShops) {
+        if (self.nearbyShops.count < nearbyShops.count) {
+            self.nearbyShops = nearbyShops.mutableCopy;
+        }
+        
+        [self.tableView reloadData];
+        [self.tableView.mj_header endRefreshing];
+    } failure:^(NSError *error) {
+        IOLog(@"%@", error);
+        [self.tableView.mj_header endRefreshing];
+    }];
+}
+
+#pragma mark - 事件监听函数
 
 - (void)locatingBtnClick:(UIButton *)btn {
     
 }
+
+#pragma mark - UITableViewDataSource
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return self.nearbyShops.count;
+}
+
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    IOHomeCell *cell = [IOHomeCell cellWithTableView:tableView];
+    
+    IOShop *info = self.nearbyShops[indexPath.row];
+    cell.shop = info;
+    
+    return cell;
+}
+
+#pragma mark - UITableViewDelegate
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 25;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    IOHomeCellHeaderView *tableViewHeaderView = [[IOHomeCellHeaderView alloc] init];
+    return tableViewHeaderView;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    IOShopViewController *shopVc = [[IOShopViewController alloc] init];
+    int shopId = (int)(indexPath.row);
+    shopVc.shopInfo = self.nearbyShops[shopId];
+    IOShop *shop = self.nearbyShops[shopId];
+    shopVc.shopId = shop.shopId;
+    
+    [self.navigationController pushViewController:shopVc animated:YES];
+}
+
+#pragma mark - UIScrollViewDelegate
+//  收起键盘
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+    [self.navigationItem.titleView endEditing:YES];
+}
+
 
 @end
