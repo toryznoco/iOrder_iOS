@@ -2637,11 +2637,12 @@
         .module('app.core')
         .run(appRun);
 
-    appRun.$inject = ['$rootScope', '$state', '$stateParams', '$window', '$templateCache', 'Colors'];
+    appRun.$inject = ['$rootScope', '$state', '$stateParams', '$window', '$templateCache', 'Colors', '$localStorage'];
 
-    function appRun($rootScope, $state, $stateParams, $window, $templateCache, Colors) {
+    function appRun($rootScope, $state, $stateParams, $window, $templateCache, Colors, $localStorage) {
         //用户信息，account: 登陆名, accessToken，refreshToken
         $rootScope.currentUser = {};
+        $rootScope.currentUser.token = $rootScope.currentUser['token'];
 
         // Set reference to access them from any scope
         $rootScope.$state = $state;
@@ -2680,7 +2681,7 @@
                 console.log(error);
             });
         // Hook success
-        $rootScope.$on('$stateChangeSuccess',
+        $rootScope.$on('$stateChangeStart',
             function (event, toState, toParams, fromState, fromParams) {
                 // 如果是进入登录界面则允许
                 if (toState.name == 'page.login') {
@@ -2692,6 +2693,7 @@
                 }
                 //如果用户不存在
                 if (!$rootScope.currentUser || !$rootScope.currentUser.token) {
+                    console.log($rootScope.currentUser);
                     event.preventDefault();// 取消默认跳转行为
                     $state.go("page.login", {from: fromState.name, note: 'notLogin'});//跳转到登录界面
                     return;
@@ -6965,8 +6967,8 @@
         .module('app.pages')
         .controller('LoginFormController', LoginFormController);
 
-    LoginFormController.$inject = ['$http', '$state', '$rootScope'];
-    function LoginFormController($http, $state, $rootScope) {
+    LoginFormController.$inject = ['$http', '$state', '$rootScope', '$localStorage'];
+    function LoginFormController($http, $state, $rootScope, $localStorage) {
         var vm = this;
 
         activate();
@@ -7001,6 +7003,7 @@
                                     $rootScope.currentUser.shopName = u.shopName;
                                     $rootScope.currentUser.picture = 'app/img/user/02.jpg';
                                 });
+                                $localStorage['token'] = $rootScope.currentUser.token;
                             }
                         }, function () {
                             vm.authMsg = 'Server Request Error';
