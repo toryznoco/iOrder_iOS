@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class IOLoginParam, IOLoginResult, YWJShopsParam, YWJShopsResult;
+@class IOLoginParam, IOLoginResult, IONearbyShopsParam, IONearbyShopsResult;
 
 @interface IOCacheTool : NSObject
 
@@ -36,7 +36,7 @@
  *  @param param  获取商店信息的参数
  *  @param result 商店信息
  */
-+ (void)saveShopInfoWithShopParam:(YWJShopsParam *)param andShopResult:(id)result;
++ (void)saveShopInfoWithShopParam:(IONearbyShopsParam *)param andShopResult:(id)result;
 /**
  *  返回所有商店信息
  *
@@ -44,6 +44,6 @@
  *
  *  @return 商店信息
  */
-+ (YWJShopsResult *)shopResultWithShopParam:(YWJShopsParam *)param;
++ (IONearbyShopsResult *)shopResultWithShopParam:(IONearbyShopsParam *)param;
 
 @end

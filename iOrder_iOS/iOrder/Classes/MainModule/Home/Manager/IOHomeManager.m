@@ -15,6 +15,7 @@
 #import "IOShop.h"
 #import "IONearbyShopsParam.h"
 #import "IOError.h"
+#import "IOCacheTool.h"
 
 #define kIOHTTPRefreshTokenUrl @"app/customer/refreshToken"
 #define kIOHTTPNearbyShopsUrl @"app/shop/near"
@@ -67,23 +68,32 @@
     param.pageNum = 1;
     param.pageSize = 10;
     
-    [IONetworkTool tokenGET:urlStr parameters:param.mj_keyValues success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObj) {
-        IONearbyShopsResult *result = [IONearbyShopsResult mj_objectWithKeyValues:responseObj];
-        if (result.result) {
-            if (success) {
-                success(result.nearShops);
+    IONearbyShopsResult *shopsResult = [IOCacheTool shopResultWithShopParam:param];
+    if (shopsResult) {
+        if (success) {
+            success(shopsResult.nearShops);
+        }
+        return ;
+    } else {
+        [IONetworkTool tokenGET:urlStr parameters:param.mj_keyValues success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObj) {
+            IONearbyShopsResult *result = [IONearbyShopsResult mj_objectWithKeyValues:responseObj];
+            if (result.result) {
+                if (success) {
+                    success(result.nearShops);
+                }
+                [IOCacheTool saveShopInfoWithShopParam:param andShopResult:responseObj];
+            } else {
+                IOLog(@"%@", result.message);
+                if (failure) {
+                    failure([IOError errorWithCode:result.code description:@"获取失败"]);
+                }
             }
-        } else {
-            IOLog(@"%@", result.message);
+        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
             if (failure) {
-                failure([IOError errorWithCode:result.code description:@"获取失败"]);
+                failure(error);
             }
-        }
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        if (failure) {
-            failure(error);
-        }
-    }];
+        }];
+    }
 }
 
 @end

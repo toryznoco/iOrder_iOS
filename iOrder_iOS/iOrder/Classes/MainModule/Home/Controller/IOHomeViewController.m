@@ -157,6 +157,8 @@ extern BOOL ifNeededRefreshToken;
     self.navigationItem.titleView = searchView;
 }
 
+#pragma mark - 数据请求相关函数
+
 - (void)refreshToken {
     
     [IOHomeManager refreshTokenSuccess: ^{
@@ -170,8 +172,6 @@ extern BOOL ifNeededRefreshToken;
         IOLog(@"%@", error);
     }];
 }
-
-#pragma mark - 数据请求相关函数
 
 - (void)loadNearbyShops {
     [IOHomeManager loadNearbyShopsSuccess:^(NSArray *nearbyShops) {

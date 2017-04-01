@@ -11,8 +11,8 @@
 #import "FMDB.h"
 #import "IOLoginParam.h"
 #import "IOLoginResult.h"
-#import "YWJShopsParam.h"
-#import "YWJShopsResult.h"
+#import "IONearbyShopsResult.h"
+#import "IONearbyShopsParam.h"
 
 #import "MJExtension.h"
 
@@ -83,21 +83,21 @@ static FMDatabase *_db;
 }
 
 #pragma mark - ShopInfo
-+ (void)saveShopInfoWithShopParam:(YWJShopsParam *)param andShopResult:(id)result {
-    BOOL flag = [_db executeUpdate:@"create table if not exists t_shops (id integer primary key autoincrement, startId integer, amount integer, userLng double, userLat double, shopInfo blob);"];
++ (void)saveShopInfoWithShopParam:(IONearbyShopsParam *)param andShopResult:(id)result {
+    BOOL flag = [_db executeUpdate:@"create table if not exists t_shops (id integer primary key autoincrement, pageNum integer, pageSize integer, lng double, lat double, shopInfo blob);"];
     if (flag) {
         NSLog(@"create t_shops successful");
         NSData *data = [NSKeyedArchiver archivedDataWithRootObject:result];
         //        判断记录是否已经存在
-        NSString *sql = [NSString stringWithFormat:@"select * from t_shops where startId = %d and amount = %d and userLng = %lf and userLat = %lf", param.startId, param.amount, param.userLng, param.userLat];
+        NSString *sql = [NSString stringWithFormat:@"select * from t_shops where pageNum = %ld and pageSize = %ld and lng = %lf and lat = %lf", param.pageNum, param.pageSize, param.lng, param.lat];
         FMResultSet *queryResult = [_db executeQuery:sql];
         [queryResult next];
-        BOOL flag2 = ([queryResult intForColumn:@"startId"] == param.startId && [queryResult intForColumn:@"amount"] == param.amount && [queryResult intForColumn:@"userLng"] == param.userLng && [queryResult intForColumn:@"userLat"] == param.userLat);
+        BOOL flag2 = ([queryResult intForColumn:@"pageNum"] == param.pageNum && [queryResult intForColumn:@"pageSize"] == param.pageSize && [queryResult intForColumn:@"lng"] == param.lng && [queryResult intForColumn:@"lat"] == param.lat);
         
         if (flag2) {
             IOLog(@"The data has exists");
         } else {//插入新记录
-            BOOL flag3 = [_db executeUpdate:@"insert into t_shops (startid, amount, userlng, userlat, shopinfo) values(?, ?, ?, ?, ?)", @(param.startId), @(param.amount), @(param.userLng), @(param.userLat), data];
+            BOOL flag3 = [_db executeUpdate:@"insert into t_shops (pageNum, pageSize, lng, lat, shopinfo) values(?, ?, ?, ?, ?)", @(param.pageNum), @(param.pageSize), @(param.lng), @(param.lat), data];
             if (flag3) {
                 IOLog(@"insert data - shopInfo successful");
             } else {
@@ -109,14 +109,14 @@ static FMDatabase *_db;
     }
 }
 
-+ (YWJShopsResult *)shopResultWithShopParam:(YWJShopsParam *)param {
++ (IONearbyShopsResult *)shopResultWithShopParam:(IONearbyShopsParam *)param {
     //    编写查询语句
-    NSString *sql = [NSString stringWithFormat:@"select * from t_shops where startId = %d and amount = %d and userLng = %lf and userLat = %lf", param.startId, param.amount, param.userLng, param.userLat];
+    NSString *sql = [NSString stringWithFormat:@"select * from t_shops where pageNum = %ld and pageSize = %ld and lng = %lf and lat = %lf", param.pageNum, param.pageSize, param.lng, param.lat];
     FMResultSet *set = [_db executeQuery:sql];
     if ([set next]) {
         NSData *data = [set dataForColumn:@"shopInfo"];
         NSDictionary *dict = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-        YWJShopsResult *shopResult = [YWJShopsResult mj_objectWithKeyValues:dict];
+        IONearbyShopsResult *shopResult = [IONearbyShopsResult mj_objectWithKeyValues:dict];
         return shopResult;
     } else {
         return nil;
