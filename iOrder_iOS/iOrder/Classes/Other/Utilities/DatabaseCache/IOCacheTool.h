@@ -1,5 +1,5 @@
 //
-//  YWJCacheTool.h
+//  IOCacheTool.h
 //  iOrder
 //
 //  Created by 易无解 on 9/21/16.
@@ -8,9 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-@class YWJLoginParam, YWJLoginResult, YWJShopsParam, YWJShopsResult;
+@class IOLoginParam, IOLoginResult, YWJShopsParam, YWJShopsResult;
 
-@interface YWJCacheTool : NSObject
+@interface IOCacheTool : NSObject
 
 #pragma mark - UserInfo
 /**
@@ -18,7 +18,7 @@
  *
  *  @param loginParam 登录时的账号和密码
  */
-+ (void)saveUserInfoWithLoginParam:(YWJLoginParam *)param andLoginResult:(YWJLoginResult *)result;
++ (void)saveUserInfoWithLoginParam:(IOLoginParam *)param andLoginResult:(IOLoginResult *)result;
 /**
  *  返回用户信息
  *
@@ -26,7 +26,7 @@
  *
  *  @return 用户所有信息
  */
-+ (YWJLoginResult *)loginResultWithLoginParam:(YWJLoginParam *)param;
++ (IOLoginResult *)loginResultWithLoginParam:(IOLoginParam *)param;
 
 
 #pragma mark - ShopInfo

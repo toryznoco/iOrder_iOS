@@ -13,7 +13,7 @@
 #import "IOHttpTool.h"
 
 #import "MJExtension.h"
-#import "YWJCacheTool.h"
+#import "IOCacheTool.h"
 
 @implementation YWJShopsTool
 
@@ -25,7 +25,7 @@
     param.userLng = 30.59;
     param.userLat = 103.59;
     //先从数据库获取数据
-    YWJShopsResult *shopsResult = [YWJCacheTool shopResultWithShopParam:param];
+    YWJShopsResult *shopsResult = [IOCacheTool shopResultWithShopParam:param];
     if (shopsResult) {
         if (success) {
             success(shopsResult.shops);
@@ -39,7 +39,7 @@
                 success(result.shops);
             }
             //        保存到数据库
-            [YWJCacheTool saveShopInfoWithShopParam:param andShopResult:responseObject];
+            [IOCacheTool saveShopInfoWithShopParam:param andShopResult:responseObject];
         } failure:^(NSError *error) {
             if (failure) {
                 failure(error);
