@@ -167,7 +167,6 @@
         _isRelate = NO;
         [self.leftTableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionMiddle];
         IODishCategory *dishCategory = _dishInfos[indexPath.row];
-        NSLog(@"%ld", dishCategory.goodsList.count);
         if (dishCategory.goodsList.count == 0) {
             [self.rightTableView scrollToNearestSelectedRowAtScrollPosition:UITableViewScrollPositionNone animated:YES];
         } else {

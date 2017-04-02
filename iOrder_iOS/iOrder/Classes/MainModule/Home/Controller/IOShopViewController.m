@@ -91,11 +91,6 @@
     [navigationBar setShadowImage:[UIImage imageNamed:@"navigationBGI_1"]];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 #pragma mark - 设置界面相关函数
 
 - (void)refreshView {
@@ -210,8 +205,8 @@
 - (void)doubleTableView:(UIView *)doubleTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     IODishViewController *dishVc = [[IODishViewController alloc] init];
     
-//    IODishes *dishes = _dishInfos[indexPath.section];
-//    dishVc.dishInfo = dishes.dishes[indexPath.row];
+    IODishCategory *dishes = _dishInfos[indexPath.section];
+    dishVc.dishInfo = dishes.goodsList[indexPath.row];
     
     [self.navigationController pushViewController:dishVc animated:YES];
 }
