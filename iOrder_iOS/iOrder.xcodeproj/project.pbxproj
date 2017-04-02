@@ -90,6 +90,7 @@
 		9A41DC8D1E8E47F7006192FF /* IOOrderLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A41DC8C1E8E47F7006192FF /* IOOrderLayout.m */; };
 		9A41DC931E90FB28006192FF /* IOOrdersResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A41DC921E90FB28006192FF /* IOOrdersResult.m */; };
 		9A41DC961E91502A006192FF /* IOPayOrderParam.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A41DC951E91502A006192FF /* IOPayOrderParam.m */; };
+		9A41DC991E915782006192FF /* IOGetDishParam.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A41DC981E915782006192FF /* IOGetDishParam.m */; };
 		9AC08D701E39F3C600D728AD /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AC08D6F1E39F3C600D728AD /* main.m */; };
 		9AC08D791E39F4E200D728AD /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AC08D741E39F4E200D728AD /* AppDelegate.m */; };
 		9ADFA8391E88C4F7006E465A /* IOLoginResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 9ADFA8381E88C4F7006E465A /* IOLoginResult.m */; };
@@ -306,6 +307,8 @@
 		9A41DC921E90FB28006192FF /* IOOrdersResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOOrdersResult.m; sourceTree = "<group>"; };
 		9A41DC941E91502A006192FF /* IOPayOrderParam.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOPayOrderParam.h; sourceTree = "<group>"; };
 		9A41DC951E91502A006192FF /* IOPayOrderParam.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOPayOrderParam.m; sourceTree = "<group>"; };
+		9A41DC971E915782006192FF /* IOGetDishParam.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOGetDishParam.h; sourceTree = "<group>"; };
+		9A41DC981E915782006192FF /* IOGetDishParam.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOGetDishParam.m; sourceTree = "<group>"; };
 		9AC08D6F1E39F3C600D728AD /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		9AC08D731E39F4E200D728AD /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		9AC08D741E39F4E200D728AD /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -929,6 +932,8 @@
 				9A41DC921E90FB28006192FF /* IOOrdersResult.m */,
 				9A41DC941E91502A006192FF /* IOPayOrderParam.h */,
 				9A41DC951E91502A006192FF /* IOPayOrderParam.m */,
+				9A41DC971E915782006192FF /* IOGetDishParam.h */,
+				9A41DC981E915782006192FF /* IOGetDishParam.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1487,6 +1492,7 @@
 				9A3963D51E82482E000E2E40 /* IOHttpTool.m in Sources */,
 				9A3963E11E82482E000E2E40 /* YWJShoppingCartInfoResult.m in Sources */,
 				9A41DC871E8DEF27006192FF /* TRTableViewCell.m in Sources */,
+				9A41DC991E915782006192FF /* IOGetDishParam.m in Sources */,
 				9A3963E51E82482E000E2E40 /* YWJShopsTool.m in Sources */,
 				9A1BFDCA1E6EA8DE00A0007F /* IODishInfo.m in Sources */,
 				9A20FE951E88B05C00CF0006 /* NSDictionary+TRPropertyCode.m in Sources */,

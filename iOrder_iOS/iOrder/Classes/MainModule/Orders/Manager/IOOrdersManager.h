@@ -10,6 +10,7 @@
 @class IOOrder;
 @class IOHTTPBaseResult;
 @class IOPayOrderParam;
+@class IOGetDishParam;
 
 @interface IOOrdersManager : NSObject
 
@@ -31,5 +32,16 @@
  */
 + (void)payOrder:(IOPayOrderParam *)param success:(void (^)(IOHTTPBaseResult * _Nullable result))success
                 failure:(void (^)(NSError * _Nonnull error))failure;
+
+
+/**
+ 取餐
+
+ @param param 订单id
+ @param success 成功的回调
+ @param failure 失败的回调
+ */
++ (void)getDish:(IOGetDishParam *)param success:(void (^)(IOHTTPBaseResult * _Nullable result))success
+        failure:(void (^)(NSError * _Nonnull error))failure;
 
 @end

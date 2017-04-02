@@ -102,9 +102,14 @@
 
 #pragma mark - UITableViewDelegate
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    IOLog(@"%ld", indexPath.row);
+}
+
 #pragma mark - IOOrderCellDelegate
 - (void)payBtnDidClick:(UIButton *)btn {
     IOLog(@"去支付");
+    // 可以用购物车那个页面
 }
 
 - (void)cancelBtnDidClick:(UIButton *)btn {
@@ -117,6 +122,12 @@
 
 - (void)getBtnDidClick:(UIButton *)btn {
     IOLog(@"取餐");
+//    IOGetDishParam *param = [];
+//    [IOOrdersManager getDish:<#(IOGetDishParam *)#> success:^(IOHTTPBaseResult * _Nullable result) {
+//        IOLog(@"%@", result.message);
+//    } failure:^(NSError * _Nonnull error) {
+//        IOLog(@"%@", error);
+//    }];
 }
 
 - (void)commentBtnDidClick:(UIButton *)btn {

@@ -285,7 +285,7 @@
     _commentBtn.size = CGSizeMake(kIOCellButtonWidth, kIOCellBarHeight - 2*kIOCellButtonMarginTop);
     _commentBtn.right = IOScreenWidth - kIOCellButtonMarginRight;
     _commentBtn.top = kIOCellButtonMarginTop;
-    [_commentBtn setTitle:@"取消" forState:UIControlStateNormal];
+    [_commentBtn setTitle:@"去评价" forState:UIControlStateNormal];
     [_commentBtn addTarget:self action:@selector(commentBtnDidClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_commentBtn];
     _commentBtn.titleLabel.font = kIOCellFont;
