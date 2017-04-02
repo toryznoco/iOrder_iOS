@@ -49,7 +49,7 @@
 
 #define kIOLineColor [UIColor colorWithRed:200/255.0 green:200/255.0 blue:200/255.0 alpha:0.2]
 #define kIOTextColor [UIColor colorWithRed:120/255.0 green:120/255.0 blue:120/255.0 alpha:1]
-
+#define kIOBarTextColor [UIColor colorWithRed:255/255.0 green:128/255.0 blue:0/255.0 alpha:0.7]
 /**
  一个 Cell 的布局。
  布局排版应该在后台线程完成。

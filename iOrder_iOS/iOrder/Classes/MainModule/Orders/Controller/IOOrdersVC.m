@@ -39,6 +39,9 @@
     self.title = @"订单";
     self.view.backgroundColor = kIOBackgroundColor;
     
+    [self.navigationController.navigationBar setBarTintColor:kIOThemeColor];
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
+    
     [self setupTableView];
 }
 

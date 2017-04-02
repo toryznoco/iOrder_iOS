@@ -61,7 +61,7 @@
     /** 店铺Icon */
     _shopIconView = [UIImageView new];
     _shopIconView.size = CGSizeMake(kIOCellIconWidth, kIOCellIconWidth);
-    _shopIconView.origin = CGPointMake(kIOCellShopNameMarginLeft, kIOCellPadding);
+    _shopIconView.origin = CGPointMake(kIOCellPadding, kIOCellPadding);
     _shopIconView.contentMode = UIViewContentModeScaleAspectFill;
     [self addSubview:_shopIconView];
     _shopIconView.clipsToBounds = YES;
@@ -125,11 +125,6 @@
     }
     self = [super initWithFrame:frame];
     
-    CALayer *separator = [CALayer layer];
-    separator.frame = CGRectMake(0, 0, IOScreenWidth, 1);
-    [self.layer addSublayer:separator];
-    separator.backgroundColor = kIOLineColor.CGColor;
-    
     _cancelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     _cancelBtn.size = CGSizeMake(kIOCellButtonWidth, kIOCellBarHeight - 2*kIOCellButtonMarginTop);
     _cancelBtn.right = IOScreenWidth - kIOCellButtonMarginRight;
@@ -138,7 +133,7 @@
     [_cancelBtn addTarget:self action:@selector(cancelBtnDidClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_cancelBtn];
     _cancelBtn.titleLabel.font = kIOCellFont;
-    [_cancelBtn setTitleColor:kIOThemeColor forState:UIControlStateNormal];
+    [_cancelBtn setTitleColor:kIOBarTextColor forState:UIControlStateNormal];
     
     _payBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     _payBtn.size = CGSizeMake(kIOCellButtonWidth, _cancelBtn.height);
@@ -148,7 +143,12 @@
     [_payBtn addTarget:self action:@selector(payBtnDidClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_payBtn];
     _payBtn.titleLabel.font = kIOCellFont;
-    [_payBtn setTitleColor:kIOThemeColor forState:UIControlStateNormal];
+    [_payBtn setTitleColor:kIOBarTextColor forState:UIControlStateNormal];
+    
+    CALayer *separator = [CALayer layer];
+    separator.frame = CGRectMake(0, kIOCellBarHeight-1, IOScreenWidth, 1);
+    [self.layer addSublayer:separator];
+    separator.backgroundColor = kIOLineColor.CGColor;
     
     return self;
 }
@@ -176,11 +176,6 @@
     }
     self = [super initWithFrame:frame];
     
-    CALayer *separator = [CALayer layer];
-    separator.frame = CGRectMake(0, 0, IOScreenWidth, 1);
-    [self.layer addSublayer:separator];
-    separator.backgroundColor = kIOLineColor.CGColor;
-    
     _cancelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     _cancelBtn.size = CGSizeMake(kIOCellButtonWidth, kIOCellBarHeight - 2*kIOCellButtonMarginTop);
     _cancelBtn.right = IOScreenWidth - kIOCellButtonMarginRight;
@@ -189,7 +184,12 @@
     [_cancelBtn addTarget:self action:@selector(cancelBtnDidClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_cancelBtn];
     _cancelBtn.titleLabel.font = kIOCellFont;
-    [_cancelBtn setTitleColor:kIOThemeColor forState:UIControlStateNormal];
+    [_cancelBtn setTitleColor:kIOBarTextColor forState:UIControlStateNormal];
+    
+    CALayer *separator = [CALayer layer];
+    separator.frame = CGRectMake(0, kIOCellBarHeight-1, IOScreenWidth, 1);
+    [self.layer addSublayer:separator];
+    separator.backgroundColor = kIOLineColor.CGColor;
     
     return self;
 }
@@ -211,11 +211,6 @@
     }
     self = [super initWithFrame:frame];
     
-    CALayer *separator = [CALayer layer];
-    separator.frame = CGRectMake(0, 0, IOScreenWidth, 1);
-    [self.layer addSublayer:separator];
-    separator.backgroundColor = kIOLineColor.CGColor;
-    
     _alertBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     _alertBtn.size = CGSizeMake(kIOCellButtonWidth, kIOCellBarHeight - 2*kIOCellButtonMarginTop);
     _alertBtn.right = IOScreenWidth - kIOCellButtonMarginRight;
@@ -224,7 +219,13 @@
     [_alertBtn addTarget:self action:@selector(alertBtnDidClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_alertBtn];
     _alertBtn.titleLabel.font = kIOCellFont;
-    [_alertBtn setTitleColor:kIOThemeColor forState:UIControlStateNormal];
+    [_alertBtn setTitleColor:kIOBarTextColor forState:UIControlStateNormal];
+    
+    CALayer *separator = [CALayer layer];
+    separator.frame = CGRectMake(0, kIOCellBarHeight-1, IOScreenWidth, 1);
+    [self.layer addSublayer:separator];
+    separator.backgroundColor = kIOLineColor.CGColor;
+    
     return self;
 }
 
@@ -245,11 +246,6 @@
     }
     self = [super initWithFrame:frame];
     
-    CALayer *separator = [CALayer layer];
-    separator.frame = CGRectMake(0, 0, IOScreenWidth, 1);
-    [self.layer addSublayer:separator];
-    separator.backgroundColor = kIOLineColor.CGColor;
-    
     _getBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     _getBtn.size = CGSizeMake(kIOCellButtonWidth, kIOCellBarHeight - 2*kIOCellButtonMarginTop);
     _getBtn.right = IOScreenWidth - kIOCellButtonMarginRight;
@@ -258,7 +254,13 @@
     [_getBtn addTarget:self action:@selector(getBtnDidClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_getBtn];
     _getBtn.titleLabel.font = kIOCellFont;
-    [_getBtn setTitleColor:kIOThemeColor forState:UIControlStateNormal];
+    [_getBtn setTitleColor:kIOBarTextColor forState:UIControlStateNormal];
+    
+    CALayer *separator = [CALayer layer];
+    separator.frame = CGRectMake(0, kIOCellBarHeight-1, IOScreenWidth, 1);
+    [self.layer addSublayer:separator];
+    separator.backgroundColor = kIOLineColor.CGColor;
+    
     return self;
 }
 
@@ -279,11 +281,6 @@
     }
     self = [super initWithFrame:frame];
     
-    CALayer *separator = [CALayer layer];
-    separator.frame = CGRectMake(0, 0, IOScreenWidth, 1);
-    [self.layer addSublayer:separator];
-    separator.backgroundColor = kIOLineColor.CGColor;
-    
     _commentBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     _commentBtn.size = CGSizeMake(kIOCellButtonWidth, kIOCellBarHeight - 2*kIOCellButtonMarginTop);
     _commentBtn.right = IOScreenWidth - kIOCellButtonMarginRight;
@@ -292,7 +289,13 @@
     [_commentBtn addTarget:self action:@selector(commentBtnDidClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_commentBtn];
     _commentBtn.titleLabel.font = kIOCellFont;
-    [_commentBtn setTitleColor:kIOThemeColor forState:UIControlStateNormal];
+    [_commentBtn setTitleColor:kIOBarTextColor forState:UIControlStateNormal];
+    
+    CALayer *separator = [CALayer layer];
+    separator.frame = CGRectMake(0, kIOCellBarHeight-1, IOScreenWidth, 1);
+    [self.layer addSublayer:separator];
+    separator.backgroundColor = kIOLineColor.CGColor;
+    
     return self;
 }
 
