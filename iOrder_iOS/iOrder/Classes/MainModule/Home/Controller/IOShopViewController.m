@@ -27,13 +27,15 @@
 #import "IOShopEvaluate.h"
 #import "IOShopDetail.h"
 #import "IOHomeManager.h"
+#import "IODishesParam.h"
+#import "IODishesResult.h"
 
 #define kHeaderHeight 136
 
 @interface IOShopViewController ()<YWJDoubleTableViewDelegate, IOShoppingCartViewDelegate, IOSubmitViewControllerDelegate>
 
 @property (nonatomic, strong) NSArray *dataArray;
-@property (nonatomic, strong) IODishesResult *dishInfos;
+@property (nonatomic, strong) NSMutableArray *dishInfos;
 @property (nonatomic, weak) NSMutableArray *subViewArray;
 @property (nonatomic, strong) IOShoppingCartInfo *shoppingCartInfo;
 
@@ -46,6 +48,14 @@
 @implementation IOShopViewController
 
 #pragma mark - 懒加载
+
+- (NSArray *)dishInfos {
+    if (!_dishInfos) {
+        _dishInfos = [NSMutableArray array];
+    }
+    
+    return _dishInfos;
+}
 
 #pragma mark - 系统回调函数
 
@@ -160,9 +170,8 @@
 //            dishes.dishes = dishArray;
 //            [dishInfosArray addObject:dishes];
 //        }
-        
-//        [_dishInfos addObjectsFromArray:dishInfosArray];
-//        _doubleTableView.dishInfos = _dishInfos;
+        [_dishInfos addObjectsFromArray:dishesResult.categories];
+        _doubleTableView.dishInfos = _dishInfos;
     } failure:^(NSError * _Nullable error) {
         IOLog(@"%@", error);
     }];

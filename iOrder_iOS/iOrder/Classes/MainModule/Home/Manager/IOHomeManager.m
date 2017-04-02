@@ -115,8 +115,7 @@
     IODishesParam *param = [[IODishesParam alloc] init];
     param.shopId = shopId;
     
-    [IONetworkTool GET:urlStr parameters:param.mj_keyValues success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObj) {
-        
+    [IONetworkTool tokenGET:urlStr parameters:param.mj_keyValues success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObj) {
         IODishesResult *result = [IODishesResult mj_objectWithKeyValues:responseObj];
         NSMutableArray *tempArr = [NSMutableArray array];
         for (NSDictionary *dic in result.goods) {
