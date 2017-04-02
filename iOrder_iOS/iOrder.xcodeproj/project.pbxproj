@@ -89,6 +89,7 @@
 		9A41DC8A1E8DEFC2006192FF /* IOOrderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A41DC891E8DEFC2006192FF /* IOOrderCell.m */; };
 		9A41DC8D1E8E47F7006192FF /* IOOrderLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A41DC8C1E8E47F7006192FF /* IOOrderLayout.m */; };
 		9A41DC931E90FB28006192FF /* IOOrdersResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A41DC921E90FB28006192FF /* IOOrdersResult.m */; };
+		9A41DC961E91502A006192FF /* IOPayOrderParam.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A41DC951E91502A006192FF /* IOPayOrderParam.m */; };
 		9AC08D701E39F3C600D728AD /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AC08D6F1E39F3C600D728AD /* main.m */; };
 		9AC08D791E39F4E200D728AD /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AC08D741E39F4E200D728AD /* AppDelegate.m */; };
 		9ADFA8391E88C4F7006E465A /* IOLoginResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 9ADFA8381E88C4F7006E465A /* IOLoginResult.m */; };
@@ -303,6 +304,8 @@
 		9A41DC8C1E8E47F7006192FF /* IOOrderLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOOrderLayout.m; sourceTree = "<group>"; };
 		9A41DC911E90FB28006192FF /* IOOrdersResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOOrdersResult.h; sourceTree = "<group>"; };
 		9A41DC921E90FB28006192FF /* IOOrdersResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOOrdersResult.m; sourceTree = "<group>"; };
+		9A41DC941E91502A006192FF /* IOPayOrderParam.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOPayOrderParam.h; sourceTree = "<group>"; };
+		9A41DC951E91502A006192FF /* IOPayOrderParam.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOPayOrderParam.m; sourceTree = "<group>"; };
 		9AC08D6F1E39F3C600D728AD /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		9AC08D731E39F4E200D728AD /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		9AC08D741E39F4E200D728AD /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -924,6 +927,8 @@
 				9A41DC8C1E8E47F7006192FF /* IOOrderLayout.m */,
 				9A41DC911E90FB28006192FF /* IOOrdersResult.h */,
 				9A41DC921E90FB28006192FF /* IOOrdersResult.m */,
+				9A41DC941E91502A006192FF /* IOPayOrderParam.h */,
+				9A41DC951E91502A006192FF /* IOPayOrderParam.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1529,6 +1534,7 @@
 				9A1BFDEA1E6EA8DE00A0007F /* IOProfileMyCollectController.m in Sources */,
 				9A1BFDD21E6EA8DE00A0007F /* IOShopCell.m in Sources */,
 				CAE8F0811CB94170005618B0 /* UIView+YWJFrame.m in Sources */,
+				9A41DC961E91502A006192FF /* IOPayOrderParam.m in Sources */,
 				9A1BFDCC1E6EA8DE00A0007F /* IOShopDetailCellInfo.m in Sources */,
 				9ADFA84F1E88DCAC006E465A /* YWJBadgeView.m in Sources */,
 				9A1BFDC41E6EA8DE00A0007F /* YWJNewFeatureScrollPage.m in Sources */,
