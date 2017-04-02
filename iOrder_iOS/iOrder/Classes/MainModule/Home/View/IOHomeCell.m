@@ -348,7 +348,7 @@
     
     [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.iconView.mas_right).offset(10);
-        make.width.equalTo(@60);
+        make.width.equalTo(@100);
         make.height.equalTo(@15);
         make.centerY.equalTo(self);
     }];
