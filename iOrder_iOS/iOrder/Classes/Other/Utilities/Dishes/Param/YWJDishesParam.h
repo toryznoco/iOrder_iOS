@@ -13,6 +13,6 @@
 /**
  *  商铺ID，唯一标识
  */
-@property (nonatomic, assign) int shopId;
+@property (nonatomic, assign) NSInteger shopId;
 
 @end

@@ -1,5 +1,5 @@
 //
-//  YWJCacheTool.h
+//  IOCacheTool.h
 //  iOrder
 //
 //  Created by 易无解 on 9/21/16.
@@ -8,9 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-@class YWJLoginParam, YWJLoginResult, YWJShopsParam, YWJShopsResult;
+@class IOLoginParam, IOLoginResult, IONearbyShopsParam, IONearbyShopsResult;
 
-@interface YWJCacheTool : NSObject
+@interface IOCacheTool : NSObject
 
 #pragma mark - UserInfo
 /**
@@ -18,7 +18,7 @@
  *
  *  @param loginParam 登录时的账号和密码
  */
-+ (void)saveUserInfoWithLoginParam:(YWJLoginParam *)param andLoginResult:(YWJLoginResult *)result;
++ (void)saveUserInfoWithLoginParam:(IOLoginParam *)param andLoginResult:(IOLoginResult *)result;
 /**
  *  返回用户信息
  *
@@ -26,7 +26,7 @@
  *
  *  @return 用户所有信息
  */
-+ (YWJLoginResult *)loginResultWithLoginParam:(YWJLoginParam *)param;
++ (IOLoginResult *)loginResultWithLoginParam:(IOLoginParam *)param;
 
 
 #pragma mark - ShopInfo
@@ -36,7 +36,7 @@
  *  @param param  获取商店信息的参数
  *  @param result 商店信息
  */
-+ (void)saveShopInfoWithShopParam:(YWJShopsParam *)param andShopResult:(id)result;
++ (void)saveShopInfoWithShopParam:(IONearbyShopsParam *)param andShopResult:(id)result;
 /**
  *  返回所有商店信息
  *
@@ -44,6 +44,6 @@
  *
  *  @return 商店信息
  */
-+ (YWJShopsResult *)shopResultWithShopParam:(YWJShopsParam *)param;
++ (IONearbyShopsResult *)shopResultWithShopParam:(IONearbyShopsParam *)param;
 
 @end

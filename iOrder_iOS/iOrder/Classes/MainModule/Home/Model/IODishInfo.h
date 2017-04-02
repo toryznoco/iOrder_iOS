@@ -33,12 +33,7 @@
 /**
  *  菜品ID，唯一标识,
  */
-@property (nonatomic, assign) NSInteger dishesId;
-
-/**
- *  菜品图片url，不包含图片服务器根地址，需自行拼接
- */
-@property (nonatomic, copy) NSString *picture;
+@property (nonatomic, assign) NSInteger goodsId;
 
 /**
  *  菜品名称
@@ -46,24 +41,39 @@
 @property (nonatomic, copy) NSString *name;
 
 /**
- *  菜品月售数量
+ *  商品原价
  */
-@property (nonatomic, assign) int monSal;
+@property (nonatomic, assign) CGFloat originalPrice;
 
 /**
- *  菜品点赞数量
+ *  商品现价
  */
-@property (nonatomic, assign) int praAmt;
+@property (nonatomic, assign) CGFloat nowPrice;
 
 /**
- *  菜品价格，两位小数
+ *  商品图片url，不包含图片服务器根地址，需自行拼接
  */
-@property (nonatomic, assign) float price;
+@property (nonatomic, copy) NSString *picture;
 
 /**
- *  菜品评论数量
+ *  评论数量
  */
-@property (nonatomic, assign) int comAmt;
+@property (nonatomic, assign) NSInteger commentAmount;
+
+/**
+ *  当月销售数量
+ */
+@property (nonatomic, assign) NSInteger monthSale;
+
+/**
+ *  商品获得点赞数量
+ */
+@property (nonatomic, assign) NSInteger praiseAmount;
+
+/**
+ *  广告语
+ */
+@property (nonatomic, assign) NSInteger adInfo;
 
 @end
 
@@ -73,7 +83,7 @@
 @interface IODishes : NSObject<MJKeyValue>
 
 /**
- *  某个分类下的所有菜品列表
+ *  商品分类ID
  */
 @property (nonatomic, strong) NSArray *dishes;
 
@@ -81,5 +91,30 @@
  *  该分类的名称
  */
 @property (nonatomic, copy) NSString *catgName;
+
+
+@end
+
+@interface IODishCategory : NSObject<MJKeyValue>
+
+/**
+ *  商品分类ID
+ */
+@property (nonatomic, assign) NSInteger *categoryId;
+
+/**
+ *  分类名称
+ */
+@property (nonatomic, copy) NSString *name;
+
+/**
+ *  描述信息
+ */
+@property (nonatomic, copy) NSString *desc;
+
+/**
+ *  该分类下的商品列表
+ */
+@property (nonatomic, strong) NSArray *goodsList;
 
 @end

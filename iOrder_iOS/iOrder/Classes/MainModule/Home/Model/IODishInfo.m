@@ -18,10 +18,27 @@
 #pragma mark - implementation IODish
 @implementation IODish
 
++ (NSDictionary *)mj_replacedKeyFromPropertyName {
+    return @{
+             @"goodsId" : @"id"
+             };
+}
+
 @end
 
 
 #pragma mark - implementation IODishes
 @implementation IODishes
+
+@end
+
+@implementation IODishCategory
+
++ (NSDictionary *)mj_replacedKeyFromPropertyName {
+    return @{
+             @"categoryId" : @"id",
+             @"desc" : @"description"
+             };
+}
 
 @end

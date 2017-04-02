@@ -40,7 +40,8 @@
             'app.tables',
             'app.extras',
             'app.mailbox',
-            'app.utils'
+            'app.utils',
+            'app.orders'
         ]);
 })();
 
@@ -200,6 +201,12 @@
 
     angular
         .module('app.tables', []);
+})();
+(function () {
+    'use strict';
+
+    angular
+        .module('app.orders', []);
 })();
 (function () {
     'use strict';
@@ -2584,8 +2591,9 @@
         .module('app.core')
         .config(coreConfig);
 
-    coreConfig.$inject = ['$controllerProvider', '$compileProvider', '$filterProvider', '$provide', '$animateProvider'];
-    function coreConfig($controllerProvider, $compileProvider, $filterProvider, $provide, $animateProvider) {
+    coreConfig.$inject = ['$controllerProvider', '$compileProvider', '$filterProvider', '$provide', '$animateProvider', '$httpProvider'];
+    function coreConfig($controllerProvider, $compileProvider, $filterProvider, $provide, $animateProvider, $httpProvider) {
+        $httpProvider.interceptors.push('UserInterceptor');
 
         var core = angular.module('app.core');
         // registering components after bootstrap
@@ -2629,14 +2637,12 @@
         .module('app.core')
         .run(appRun);
 
-    appRun.$inject = ['$rootScope', '$state', '$stateParams', '$window', '$templateCache', 'Colors'];
+    appRun.$inject = ['$rootScope', '$state', '$stateParams', '$window', '$templateCache', 'Colors', '$localStorage'];
 
-    function appRun($rootScope, $state, $stateParams, $window, $templateCache, Colors) {
+    function appRun($rootScope, $state, $stateParams, $window, $templateCache, Colors, $localStorage) {
         //用户信息，account: 登陆名, accessToken，refreshToken
-        $rootScope.currentUser = {
-            refreshToken: "28947d56918949428d99a16da46b763f",
-            accessToken: "a27a8125f417440e9d99725d87d69a22"
-        };
+        $rootScope.currentUser = {};
+        $rootScope.currentUser.token = $rootScope.currentUser['token'];
 
         // Set reference to access them from any scope
         $rootScope.$state = $state;
@@ -2675,7 +2681,7 @@
                 console.log(error);
             });
         // Hook success
-        $rootScope.$on('$stateChangeSuccess',
+        $rootScope.$on('$stateChangeStart',
             function (event, toState, toParams, fromState, fromParams) {
                 // 如果是进入登录界面则允许
                 if (toState.name == 'page.login') {
@@ -2686,7 +2692,8 @@
                     return;
                 }
                 //如果用户不存在
-                if (!$rootScope.currentUser || !$rootScope.currentUser.refreshToken) {
+                if (!$rootScope.currentUser || !$rootScope.currentUser.token) {
+                    console.log($rootScope.currentUser);
                     event.preventDefault();// 取消默认跳转行为
                     $state.go("page.login", {from: fromState.name, note: 'notLogin'});//跳转到登录界面
                     return;
@@ -2696,6 +2703,11 @@
                 // Save the route title
                 $rootScope.currTitle = $state.current.title;
             });
+
+        //token过期
+        $rootScope.$on('userIntercepted', function (errorType) {
+            $state.go("page.login", {from: fromState.name, note: 'tokenTimeOut'});//跳转到登录界面
+        });
 
         // Load a title dynamically
         $rootScope.currTitle = $state.current.title;
@@ -6680,10 +6692,11 @@
                 'ar': 'Arabic',
                 'ja': 'Japanese',
                 'ko': 'Korean',
-                'zh': 'Chinese'
+                'zh': 'Chinese',
+                'zh_CN': '中国大陆'
             };
 
-            $rootScope.model = {selectedLocale: 'en'};
+            $rootScope.model = {selectedLocale: 'zh_CN'};
 
             $rootScope.$locale = $locale;
 
@@ -6954,8 +6967,8 @@
         .module('app.pages')
         .controller('LoginFormController', LoginFormController);
 
-    LoginFormController.$inject = ['$http', '$state', '$rootScope'];
-    function LoginFormController($http, $state, $rootScope) {
+    LoginFormController.$inject = ['$http', '$state', '$rootScope', '$localStorage'];
+    function LoginFormController($http, $state, $rootScope, $localStorage) {
         var vm = this;
 
         activate();
@@ -6982,9 +6995,15 @@
                                 vm.authMsg = response.data.message;
                             } else {
                                 $rootScope.currentUser.account = vm.user.account;
-                                $rootScope.currentUser.refreshToken = response.data.refreshToken;
-                                $rootScope.currentUser.accessToken = response.data.accessToken;
+                                $rootScope.currentUser.token = response.data.token;
                                 $state.go('app.dashboard');
+                                $http.get("api/web/shopman/info").then(function (response) {
+                                    var u = response.data.shopman;
+                                    $rootScope.currentUser.realName = u.realName;
+                                    $rootScope.currentUser.shopName = u.shopName;
+                                    $rootScope.currentUser.picture = 'app/img/user/02.jpg';
+                                });
+                                $localStorage['token'] = $rootScope.currentUser.token;
                             }
                         }, function () {
                             vm.authMsg = 'Server Request Error';
@@ -8041,7 +8060,7 @@
             // -----------------------------------
             .state('app.orders', {
                 url: '/orders',
-                title: 'Orders',
+                title: '订单管理',
                 templateUrl: helper.basepath('ecommerce-orders.html'),
                 resolve: helper.resolveFor('datatables')
             })
@@ -8132,7 +8151,7 @@
             })
             .state('page.login', {
                 url: '/login',
-                title: 'Login',
+                title: '登录',
                 templateUrl: 'app/pages/login.html'
             })
             .state('page.register', {
@@ -8522,26 +8541,13 @@
 
     UserBlockController.$inject = ['$rootScope', '$scope', '$http', '$state'];
     function UserBlockController($rootScope, $scope, $http, $state) {
-
         activate();
 
         ////////////////
 
         function activate() {
-            if ($rootScope.realName) {
-                $http.get("api/web/shopman/info").then(function (response) {
-                    console.log(response.data);
-                });
-            }
-
-            $rootScope.user = {
-                name: 'John',
-                job: 'ng-developer',
-                picture: 'app/img/user/02.jpg'
-            };
-
             $rootScope.logout = function () {
-                $http.post("api/web/shopman/logout", {}, {headers: {accessToken: $rootScope.currentUser.accessToken}}).then(function (response) {
+                $http.post("api/web/shopman/logout").then(function (response) {
                     if (response.data.result) {
                         $state.go("page.login", {}, {reload: true});
                     }
@@ -9558,7 +9564,7 @@
             suffix: '.json'
         });
 
-        $translateProvider.preferredLanguage('en');
+        $translateProvider.preferredLanguage('zh_CN');
         $translateProvider.useLocalStorage();
         $translateProvider.usePostCompiling(true);
         $translateProvider.useSanitizeValueStrategy('sanitizeParameters');
@@ -9585,7 +9591,8 @@
             // list of available languages
             available: {
                 'en': 'English',
-                'es_AR': 'Español'
+                'es_AR': 'Español',
+                'zh_CN': '简体中文'
             },
             // display always the current ui language
             init: function () {
@@ -10053,8 +10060,8 @@
         // Global Settings
         // -----------------------------------
         $rootScope.app = {
-            name: 'Angle',
-            description: 'Angular Bootstrap Admin Template',
+            name: 'iOrder',
+            description: '后台管理系统',
             year: ((new Date()).getFullYear()),
             layout: {
                 isFixed: true,
@@ -10133,6 +10140,125 @@
 
         function activate() {
             $log.log('I\'m a line from custom.js');
+        }
+    }
+})();
+
+/**========================================================
+ * 用户拦截器，用于判断token
+ =========================================================*/
+(function () {
+    'use strict';
+
+    angular.module('app.core').factory("UserInterceptor", UserInterceptor);
+
+    UserInterceptor.$inject = ["$rootScope"];
+    function UserInterceptor($rootScope) {
+        return {
+            request: function (config) {
+                config.headers["token"] = $rootScope.currentUser.token;
+                return config;
+            },
+            response: function (response) {
+                var data = response.data;
+                if (data["code"] == "4002") {
+                    $rootScope.$emit("userIntercepted", "tokenError", response);
+                }
+                return response;
+            }
+        };
+    }
+})();
+
+(function () {
+    'use strict';
+
+    angular
+        .module('app.orders')
+        .controller('OrderController', OrderController);
+
+    OrderController.$inject = ['DTOptionsBuilder', 'DTColumnDefBuilder', '$http'];
+    function OrderController(DTOptionsBuilder, DTColumnDefBuilder, $http) {
+        var vm = this;
+
+        activate();
+
+        ////////////////
+
+        function activate() {
+
+            // Ajax
+            vm.orders = [];
+            vm.loadOrders = function () {
+                return vm.orders.length ? null : $http.get('api/web/order/list').success(function (data) {
+                        vm.orders = data.orders;
+                        $.each(vm.orders, function (index, order) {
+                            if (order.status == 0) {
+                                order.status = '已取消';
+                                order.statusClass = 'label-inverse';
+                            }
+                            if (order.status == 1) {
+                                order.status = '未支付';
+                                order.statusClass = 'label-info';
+                            }
+                            if (order.status == 2) {
+                                order.status = '待接单';
+                                order.statusClass = 'label-success';
+                            }
+                            if (order.status == 3) {
+                                order.status = '待发货';
+                                order.statusClass = 'label-success';
+                            }
+                            if (order.status == 4) {
+                                order.status = '待收货';
+                                order.statusClass = 'label-purple';
+                            }
+                            if (order.status == 5) {
+                                order.status = '待评价';
+                                order.statusClass = 'label-purple';
+                            }
+                            if (order.status == 6) {
+                                order.status = '已完成';
+                                order.statusClass = 'label-purple';
+                            }
+                        });
+                    });
+            }
+
+            vm.dtOptions = DTOptionsBuilder.newOptions().withPaginationType('full_numbers');
+            vm.dtColumnDefs = [
+                DTColumnDefBuilder.newColumnDef(0),
+                DTColumnDefBuilder.newColumnDef(1),
+                DTColumnDefBuilder.newColumnDef(2),
+                DTColumnDefBuilder.newColumnDef(3).notSortable()
+            ];
+            vm.person2Add = _buildPerson2Add(1);
+            vm.addPerson = addPerson;
+            vm.modifyPerson = modifyPerson;
+            vm.removePerson = removePerson;
+
+            function _buildPerson2Add(id) {
+                return {
+                    id: id,
+                    firstName: 'Foo' + id,
+                    lastName: 'Bar' + id
+                };
+            }
+
+            function addPerson() {
+                vm.heroes.push(angular.copy(vm.person2Add));
+                vm.person2Add = _buildPerson2Add(vm.person2Add.id + 1);
+            }
+
+            function modifyPerson(index) {
+                vm.heroes.splice(index, 1, angular.copy(vm.person2Add));
+                vm.person2Add = _buildPerson2Add(vm.person2Add.id + 1);
+            }
+
+            function removePerson(index) {
+                vm.heroes.splice(index, 1);
+            }
+
         }
     }
 })();

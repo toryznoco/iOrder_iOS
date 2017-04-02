@@ -13,7 +13,7 @@
 #import "YWJLoginResult.h"
 #import "MJExtension.h"
 
-#import "YWJCacheTool.h"
+#import "IOCacheTool.h"
 
 @implementation YWJLoginTool
 
@@ -21,7 +21,7 @@
     NSString *urlString = [NSString stringWithFormat:@"%@user!login.action", kIOHTTPBaseUrl];
     
     //先从数据库获取数据
-    YWJLoginResult *loginResult = [YWJCacheTool loginResultWithLoginParam:loginParam];
+    YWJLoginResult *loginResult = [IOCacheTool loginResultWithLoginParam:loginParam];
     if (loginResult) {//获取成功
         if (success) {
             success(loginResult);
@@ -35,7 +35,7 @@
                 success(result);
             }
             // 保存到数据库
-            [YWJCacheTool saveUserInfoWithLoginParam:loginParam andLoginResult:result];
+            [IOCacheTool saveUserInfoWithLoginParam:loginParam andLoginResult:result];
         } failure:^(NSError *error) {
             if (failure) {
                 failure(error);

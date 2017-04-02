@@ -17,6 +17,7 @@ public class ShopmanVo extends BaseVo {
 
     public static ShopmanVo fromShopman(Shopman shopman) {
         ShopmanVo shopmanVo = new ShopmanVo();
+        shopmanVo.setId(shopman.getId());
         shopmanVo.setLoginName(shopman.getLoginName());
         shopmanVo.setRealName(shopman.getRealName());
         shopmanVo.setMobile(shopman.getMobile());

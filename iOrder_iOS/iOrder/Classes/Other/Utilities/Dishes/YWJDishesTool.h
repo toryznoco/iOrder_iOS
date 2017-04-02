@@ -16,6 +16,6 @@
  *  @param success 请求成功的时候回调
  *  @param failure 请求失败的时候回调，错误传递给外界
  */
-+ (void)newShopDishesWithShopId:(int)shopId Success:(void(^)(NSArray *shops))success failure:(void(^)(NSError *error))failure;
++ (void)newShopDishesWithShopId:(NSInteger)shopId Success:(void(^)(NSArray *shops))success failure:(void(^)(NSError *error))failure;
 
 @end

@@ -24,6 +24,7 @@ public class OrderVo extends BaseVo {
     private Float payPrice;  //订单实际支付金额
     private int goodsAmount;  //订单商品总数量
     private ShopVo shop;  //订单所属店铺信息
+    private String customerName;  //顾客姓名
 
     public static List<OrderVo> listFromOrders(List<Order> orders) {
         List<OrderVo> orderVos = new ArrayList<>();
@@ -46,7 +47,16 @@ public class OrderVo extends BaseVo {
         orderVo.setPayPrice(order.getPayPrice());
         orderVo.setGoodsAmount(order.getGoodsAmount());
         orderVo.setShop(ShopVo.fromShop(order.getShop()));
+        orderVo.setCustomerName(order.getCustomer().getNickName());
         return orderVo;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
     }
 
     public ShopVo getShop() {

@@ -70,11 +70,11 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {//刷新tableView中的数据
-    IODishes *dishInfo = _dishInfos[section];
+    IODishCategory *dishInfo = _dishInfos[section];
     if (tableView == self.leftTableView) {
         return _dishInfos.count;
     }else{
-        return dishInfo.dishes.count;
+        return dishInfo.goodsList.count;
     }
 }
 
@@ -84,14 +84,14 @@
     if (tableView == self.leftTableView) {
         cell = [IOShopLeftCell cellWithTableView:tableView];
         
-        IODishes *dishInfo = _dishInfos[indexPath.row];
+        IODishCategory *dishInfo = _dishInfos[indexPath.row];
         
-        ((IOShopLeftCell *)cell).category = dishInfo.catgName;
+        ((IOShopLeftCell *)cell).category = dishInfo.name;
     }else{
         cell = [IOShopRightCell cellWithTableView:tableView];
         ((IOShopRightCell *)cell).delegate = self;
-        IODishes *dishInfo = _dishInfos[indexPath.section];
-        IODish *dish = dishInfo.dishes[indexPath.row];
+        IODishCategory *dishInfo = _dishInfos[indexPath.section];
+        IODish *dish = dishInfo.goodsList[indexPath.row];
         
         ((IOShopRightCell *)cell).dish = dish;
     }
@@ -131,8 +131,8 @@
         view.backgroundColor = IORGBColor(217, 217, 217, 0.7);
         
         UILabel *label = [[UILabel alloc] initWithFrame:view.bounds];
-        IODishes *dishInfo = _dishInfos[section];
-        label.text = [NSString stringWithFormat:@"   %@", dishInfo.catgName];
+        IODishCategory *dishInfo = _dishInfos[section];
+        label.text = [NSString stringWithFormat:@"   %@", dishInfo.name];
         label.textColor = IORGBColor(88, 88, 88, 1);
         label.font = [UIFont systemFontOfSize:15];
         [view addSubview:label];
@@ -166,7 +166,13 @@
     if (tableView == self.leftTableView) {
         _isRelate = NO;
         [self.leftTableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionMiddle];
-        [self.rightTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:indexPath.row] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+        IODishCategory *dishCategory = _dishInfos[indexPath.row];
+        NSLog(@"%ld", dishCategory.goodsList.count);
+        if (dishCategory.goodsList.count == 0) {
+            [self.rightTableView scrollToNearestSelectedRowAtScrollPosition:UITableViewScrollPositionNone animated:YES];
+        } else {
+            [self.rightTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:indexPath.row] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+        }
     }else{
         [self.rightTableView deselectRowAtIndexPath:indexPath animated:NO];
         
@@ -186,14 +192,14 @@
 
 - (void)shopRightCell:(IOShopRightCell *)shopRightCell dishPrice:(float)dishPrice clickedBtn:(UIButton *)btn {
     if (btn.tag == 1) {
-        [YWJShoppingCartTool addDishToShoppingCartWithUserId:1 dishesId:shopRightCell.dish.dishesId amount:1 success:^{
+        [YWJShoppingCartTool addDishToShoppingCartWithUserId:1 dishesId:shopRightCell.dish.goodsId amount:1 success:^{
             IOLog(@"成功");
         } failure:^(NSError *error) {
             IOLog(@"%@", error);
         }];
     } else {
         
-        [YWJShoppingCartTool removeDishFromShoppingCartWithUserId:1 dishesId:shopRightCell.dish.dishesId amount:1 success:^{
+        [YWJShoppingCartTool removeDishFromShoppingCartWithUserId:1 dishesId:shopRightCell.dish.goodsId amount:1 success:^{
             IOLog(@"移除");
         } failure:^(NSError *error) {
             IOLog(@"%@", error);

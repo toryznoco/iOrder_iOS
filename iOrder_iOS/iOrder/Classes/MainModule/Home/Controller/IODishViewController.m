@@ -96,14 +96,14 @@
     UILabel *saleCount = [[UILabel alloc] initWithFrame:CGRectMake(0, dishDetailView.height * 0.5, self.view.width, 20)];
     saleCount.font = [UIFont systemFontOfSize:20];
     saleCount.textAlignment = NSTextAlignmentCenter;
-    saleCount.text = [NSString stringWithFormat:@"月售 %d", _dishInfo.monSal];
+    saleCount.text = [NSString stringWithFormat:@"月售 %d", _dishInfo.monthSale];
     [dishDetailView addSubview:saleCount];
     
     UILabel *dishPrice = [[UILabel alloc] initWithFrame:CGRectMake(0, dishDetailView.height * 0.8, self.view.width, 30)];
     dishPrice.font = [UIFont systemFontOfSize:30];
     dishPrice.textAlignment = NSTextAlignmentCenter;
     dishPrice.textColor = kIOThemeColor;
-    dishPrice.text = [NSString stringWithFormat:@"¥ %.2f", _dishInfo.price];
+    dishPrice.text = [NSString stringWithFormat:@"¥ %.2f", _dishInfo.nowPrice];
     [dishDetailView addSubview:dishPrice];
 }
 
