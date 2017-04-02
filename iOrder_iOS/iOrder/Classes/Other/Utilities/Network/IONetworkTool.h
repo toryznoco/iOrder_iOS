@@ -22,6 +22,7 @@
 
 /**
  Get请求
+ 在App启动时需要调用startMonitoring方法监控网络状态
 
  @param URLString URL
  @param parameters 参数
@@ -38,6 +39,7 @@
  Get请求带accessToken
  先判断accessToken，未过期就正常请求，accessToken放在了请求头中
  过期则请求刷新accessToken再请求数据
+ 在App启动时需要调用startMonitoring方法监控网络状态
  
  @param URLString URL
  @param parameters 参数
@@ -52,6 +54,7 @@
 
 /**
  Post请求
+ 在App启动时需要调用startMonitoring方法监控网络状态
 
  @param URLString URL
  @param parameters 参数
@@ -64,9 +67,26 @@
                        success:(void (^)(NSURLSessionDataTask * _Nonnull task, id _Nullable responseObj))success
                        failure:(void (^)(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error))failure;
 
+/**
+ Post请求带accessToken
+ 先判断accessToken，未过期就正常请求，accessToken放在了请求头中
+ 过期则请求刷新accessToken再请求数据
+ 在App启动时需要调用startMonitoring方法监控网络状态
+ 
+ @param URLString URL
+ @param parameters 参数
+ @param success 请求成功时的回调
+ @param failure 请求失败时的回调
+ @return dataTask
+ */
++ (NSURLSessionDataTask *)tokenPOST:(NSString *)URLString
+                    parameters:(id)parameters
+                       success:(void (^)(NSURLSessionDataTask * _Nonnull task, id _Nullable responseObj))success
+                       failure:(void (^)(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error))failure;
 
 /**
  发送格式为JSON的POST请求
+ 在App启动时需要调用startMonitoring方法监控网络状态
 
  @param URLString url
  @param parameters 参数
