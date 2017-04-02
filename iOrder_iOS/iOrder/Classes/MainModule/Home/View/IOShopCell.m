@@ -222,11 +222,11 @@
     
     _dishName.text = _dish.name;
     
-    _dishSaleCount.text = [NSString stringWithFormat:@"月售%d", _dish.monSal];
+    _dishSaleCount.text = [NSString stringWithFormat:@"月售%ld", _dish.monthSale];
     
-    _followCount.text = [NSString stringWithFormat:@"%d", _dish.praAmt];
+    _followCount.text = [NSString stringWithFormat:@"%ld", _dish.praiseAmount];
     
-    _dishPrice.text = [NSString stringWithFormat:@"¥%.2f", _dish.price];
+    _dishPrice.text = [NSString stringWithFormat:@"¥%.2f", _dish.nowPrice];
     _dishPrice.font = [UIFont systemFontOfSize:15];
     
     _unOrderBtn.hidden = YES;
@@ -252,7 +252,7 @@
     }
     
     if ([_delegate respondsToSelector:@selector(shopRightCell:dishPrice:clickedBtn:)]) {
-        [_delegate shopRightCell:self dishPrice:_dish.price clickedBtn:btn];
+        [_delegate shopRightCell:self dishPrice:_dish.nowPrice clickedBtn:btn];
     }
 }
 

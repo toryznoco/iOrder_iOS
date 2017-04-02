@@ -11,14 +11,18 @@
 #import "IOAccountTool.h"
 #import "IOLoginResult.h"
 #import "IOError.h"
-#import "IONearbyShopsResult.h"
 #import "IOShop.h"
-#import "IONearbyShopsParam.h"
 #import "IOError.h"
 #import "IOCacheTool.h"
+#import "IONearbyShopsResult.h"
+#import "IONearbyShopsParam.h"
+#import "IODishesParam.h"
+#import "IODishesResult.h"
+#import "IODishInfo.h"
 
 #define kIOHTTPRefreshTokenUrl @"app/customer/refreshToken"
 #define kIOHTTPNearbyShopsUrl @"app/shop/near"
+#define kIOHTTPShopDishesUrl @"app/shop/goods"
 
 @implementation IOHomeManager
 
@@ -97,6 +101,49 @@
             }
         }];
     }
+}
+
+/**
+ *  请求商店内所有菜的数据
+ *
+ *  @param success 请求成功的时候回调
+ *  @param failure 请求失败的时候回调，错误传递给外界
+ */
+
++ (void)loadShopDishesWithShopId:(NSInteger)shopId Success:(void (^)(IODishesResult * _Nullable))success failure:(void (^)(NSError * _Nullable))failure {
+    NSString *urlStr = [NSString stringWithFormat:@"%@%@", kIOHTTPBaseUrl, kIOHTTPShopDishesUrl];
+    IODishesParam *param = [[IODishesParam alloc] init];
+    param.shopId = shopId;
+    
+    [IONetworkTool GET:urlStr parameters:param.mj_keyValues success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObj) {
+        
+        IODishesResult *result = [IODishesResult mj_objectWithKeyValues:responseObj];
+        NSMutableArray *tempArr = [NSMutableArray array];
+        for (NSDictionary *dic in result.goods) {
+            IODish *dish = [IODish mj_objectWithKeyValues:dic];
+            [tempArr addObject:dish];
+        }
+        result.goods = tempArr;
+        NSMutableArray *tempArr1 = [NSMutableArray array];
+        for (NSDictionary *dic in result.categories) {
+            IODishCategory *category = [IODishCategory mj_objectWithKeyValues:dic];
+            NSMutableArray *tempArr2 = [NSMutableArray array];
+            for (NSDictionary *dic in category.goodsList) {
+                IODish *dish = [IODish mj_objectWithKeyValues:dic];
+                [tempArr2 addObject:dish];
+            }
+            category.goodsList = tempArr2;
+            [tempArr1 addObject:category];
+        }
+        result.categories = tempArr1;
+        if (success) {
+            success(result);
+        }
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        if (failure) {
+            failure(error);
+        }
+    }];
 }
 
 @end

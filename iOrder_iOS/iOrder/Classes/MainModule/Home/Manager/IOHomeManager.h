@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class IOLoginResult;
+@class IOLoginResult, IODishesResult;
 
 @interface IOHomeManager : NSObject
 
@@ -28,5 +28,14 @@
  @param failure 获取失败的回调
  */
 + (void)loadNearbyShopsSuccess:(void(^_Nullable)(NSArray * _Nullable shops))success failure:(void(^_Nullable)(NSError * _Nullable error))failure;
+
+/**
+ *  请求商店内所有菜的数据
+ *
+ *  @param success 请求成功的时候回调
+ *  @param failure 请求失败的时候回调，错误传递给外界
+ */
++ (void)loadShopDishesWithShopId:(NSInteger)shopId Success:(void(^_Nullable)(IODishesResult * _Nullable dishesResult))success failure:(void(^_Nullable)(NSError * _Nullable error))failure;
+
 
 @end

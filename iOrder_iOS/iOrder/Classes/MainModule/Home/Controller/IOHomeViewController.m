@@ -14,7 +14,6 @@
 #import "IOHomeCell.h"
 #import "IOHomeHeaderView.h"
 
-#import "YWJShopsTool.h"
 #import "IOShop.h"
 
 #import "MJRefresh.h"
@@ -43,14 +42,6 @@ extern BOOL ifNeededRefreshToken;
 
 #pragma mark - 系统回调函数
 
-- (instancetype)init {
-    if (self = [super init]) {
-//        [self setupProgressView];
-    }
-    
-    return self;
-}
-
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
@@ -59,6 +50,8 @@ extern BOOL ifNeededRefreshToken;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    self.view.backgroundColor = [UIColor whiteColor];
     
     [self setupNavigationView];
     
@@ -226,9 +219,9 @@ extern BOOL ifNeededRefreshToken;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     IOShopViewController *shopVc = [[IOShopViewController alloc] init];
-    int shopId = (int)(indexPath.row);
-    shopVc.shopInfo = self.nearbyShops[shopId];
-    IOShop *shop = self.nearbyShops[shopId];
+//    int shopId = (int)(indexPath.row);
+    shopVc.shopInfo = self.nearbyShops[indexPath.row];
+    IOShop *shop = self.nearbyShops[indexPath.row];
     shopVc.shopId = shop.shopId;
     
     [self.navigationController pushViewController:shopVc animated:YES];

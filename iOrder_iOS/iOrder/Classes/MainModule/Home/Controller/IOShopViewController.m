@@ -26,13 +26,14 @@
 #import "IOSegmentScrollView.h"
 #import "IOShopEvaluate.h"
 #import "IOShopDetail.h"
+#import "IOHomeManager.h"
 
 #define kHeaderHeight 136
 
 @interface IOShopViewController ()<YWJDoubleTableViewDelegate, IOShoppingCartViewDelegate, IOSubmitViewControllerDelegate>
 
 @property (nonatomic, strong) NSArray *dataArray;
-@property (nonatomic, strong) NSMutableArray *dishInfos;
+@property (nonatomic, strong) IODishesResult *dishInfos;
 @property (nonatomic, weak) NSMutableArray *subViewArray;
 @property (nonatomic, strong) IOShoppingCartInfo *shoppingCartInfo;
 
@@ -45,13 +46,6 @@
 @implementation IOShopViewController
 
 #pragma mark - 懒加载
-
-- (NSMutableArray *)dishInfos {
-    if (!_dishInfos) {
-        _dishInfos = [NSMutableArray array];
-    }
-    return _dishInfos;
-}
 
 #pragma mark - 系统回调函数
 
@@ -70,9 +64,9 @@
     
     self.view.backgroundColor = [UIColor whiteColor];
     
+    [self setupNavigationView];
     [self refreshView];
     
-    [self setupNavigationItem];
     
     [self setupShopHeaderView];
     
@@ -98,7 +92,7 @@
     //    初始化数组和加载数据
     [self dishInfos];
     [self loadDishInfosWithShopId:self.shopId];
-    [self loadShoppingCartInfosWithUserId:1 shopId:_shopId];
+//    [self loadShoppingCartInfosWithUserId:1 shopId:_shopId];
 }
 
 - (void)setupSegmentScrollView {//设置SegmentScrollView及其内容
@@ -140,7 +134,7 @@
     [self.view addSubview:shopHeaderView];
 }
 
-- (void)setupNavigationItem {
+- (void)setupNavigationView {
     
     UIBarButtonItem *collectBtn = [UIBarButtonItem initWithNormalImage:@"heart" target:self action:@selector(collectBtnClick) width:22 height:20];
     UIBarButtonItem *signInBtn = [UIBarButtonItem initWithNormalImage:@"calendar" target:self action:@selector(signInBtnClick) width:18 height:22];
@@ -153,23 +147,23 @@
 
 #pragma mark - 数据请求相关函数
 
-- (void)loadDishInfosWithShopId:(int)shopId {
-    [YWJDishesTool newShopDishesWithShopId:shopId Success:^(NSArray *shops) {
-        NSMutableArray *dishInfosArray = [NSMutableArray array];
-        for (NSDictionary *dishInfoDic in shops) {
-            IODishes *dishes = [IODishes mj_objectWithKeyValues:dishInfoDic];
-            NSMutableArray *dishArray = [NSMutableArray array];
-            for (NSDictionary *dishDic in dishes.dishes) {
-                IODish *dish = [IODish mj_objectWithKeyValues:dishDic];
-                [dishArray addObject:dish];
-            }
-            dishes.dishes = dishArray;
-            [dishInfosArray addObject:dishes];
-        }
+- (void)loadDishInfosWithShopId:(NSInteger)shopId {
+    [IOHomeManager loadShopDishesWithShopId:shopId Success:^(IODishesResult * _Nullable dishesResult) {
+//        NSMutableArray *dishInfosArray = [NSMutableArray array];
+//        for (NSDictionary *dishInfoDic in shops) {
+//            IODishes *dishes = [IODishes mj_objectWithKeyValues:dishInfoDic];
+//            NSMutableArray *dishArray = [NSMutableArray array];
+//            for (NSDictionary *dishDic in dishes.dishes) {
+//                IODish *dish = [IODish mj_objectWithKeyValues:dishDic];
+//                [dishArray addObject:dish];
+//            }
+//            dishes.dishes = dishArray;
+//            [dishInfosArray addObject:dishes];
+//        }
         
-        [_dishInfos addObjectsFromArray:dishInfosArray];
-        _doubleTableView.dishInfos = _dishInfos;
-    } failure:^(NSError *error) {
+//        [_dishInfos addObjectsFromArray:dishInfosArray];
+//        _doubleTableView.dishInfos = _dishInfos;
+    } failure:^(NSError * _Nullable error) {
         IOLog(@"%@", error);
     }];
 }
@@ -218,8 +212,8 @@
 - (void)doubleTableView:(UIView *)doubleTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     IODishViewController *dishVc = [[IODishViewController alloc] init];
     
-    IODishes *dishes = _dishInfos[indexPath.section];
-    dishVc.dishInfo = dishes.dishes[indexPath.row];
+//    IODishes *dishes = _dishInfos[indexPath.section];
+//    dishVc.dishInfo = dishes.dishes[indexPath.row];
     
     [self.navigationController pushViewController:dishVc animated:YES];
 }
@@ -270,12 +264,12 @@
 
 - (void)submitViewController:(IOSubmitViewController *)submitVc isPaySuccessful:(BOOL)suc{
     if (suc == YES) {
-        if (_dishInfos.count != 0) {
-            [_dishInfos removeAllObjects];
+//        if (_dishInfos.count != 0) {
+//            [_dishInfos removeAllObjects];
             [_shoppingCartInfo.itmes removeAllObjects];
             _shoppingCartInfo.totalPri = 0;
             [self refreshView];
-        }
+//        }
     }
 }
 

@@ -60,7 +60,7 @@
 /**
  *  人均消费，即多少钱一人，两位小数
  */
-@property (nonatomic, assign) float personalPrice;
+@property (nonatomic, assign) CGFloat personalPrice;
 
 /**
  *  店铺详情页面背景图片
@@ -70,7 +70,7 @@
 /**
  *  商铺综合评星，0-5，最多一位小数
  */
-@property (nonatomic, assign) float score;
+@property (nonatomic, assign) CGFloat score;
 
 /**
  *  每日开门时间

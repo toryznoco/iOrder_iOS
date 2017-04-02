@@ -55,6 +55,7 @@ extern BOOL ifNeededRefreshAccessToken;
     
     // 用AFNetworking发送请求
     AFHTTPSessionManager *mgr = [AFHTTPSessionManager manager];
+    mgr.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", @"text/plain", nil];
     return [mgr GET:URLString parameters:parameters progress:nil success:success failure:failure];
 }
 
