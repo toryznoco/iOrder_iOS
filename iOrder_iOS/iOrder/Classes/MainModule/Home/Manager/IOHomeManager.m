@@ -116,6 +116,7 @@
     param.shopId = shopId;
     
     [IONetworkTool tokenGET:urlStr parameters:param.mj_keyValues success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObj) {
+        NSLog(@"%@", responseObj);
         IODishesResult *result = [IODishesResult mj_objectWithKeyValues:responseObj];
         NSMutableArray *tempArr = [NSMutableArray array];
         for (NSDictionary *dic in result.goods) {

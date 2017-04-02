@@ -159,17 +159,6 @@
 
 - (void)loadDishInfosWithShopId:(NSInteger)shopId {
     [IOHomeManager loadShopDishesWithShopId:shopId Success:^(IODishesResult * _Nullable dishesResult) {
-//        NSMutableArray *dishInfosArray = [NSMutableArray array];
-//        for (NSDictionary *dishInfoDic in shops) {
-//            IODishes *dishes = [IODishes mj_objectWithKeyValues:dishInfoDic];
-//            NSMutableArray *dishArray = [NSMutableArray array];
-//            for (NSDictionary *dishDic in dishes.dishes) {
-//                IODish *dish = [IODish mj_objectWithKeyValues:dishDic];
-//                [dishArray addObject:dish];
-//            }
-//            dishes.dishes = dishArray;
-//            [dishInfosArray addObject:dishes];
-//        }
         [_dishInfos addObjectsFromArray:dishesResult.categories];
         _doubleTableView.dishInfos = _dishInfos;
     } failure:^(NSError * _Nullable error) {

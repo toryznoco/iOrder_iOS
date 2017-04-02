@@ -166,7 +166,13 @@
     if (tableView == self.leftTableView) {
         _isRelate = NO;
         [self.leftTableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionMiddle];
-        [self.rightTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:indexPath.row] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+        IODishCategory *dishCategory = _dishInfos[indexPath.row];
+        NSLog(@"%ld", dishCategory.goodsList.count);
+        if (dishCategory.goodsList.count == 0) {
+            [self.rightTableView scrollToNearestSelectedRowAtScrollPosition:UITableViewScrollPositionNone animated:YES];
+        } else {
+            [self.rightTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:indexPath.row] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+        }
     }else{
         [self.rightTableView deselectRowAtIndexPath:indexPath animated:NO];
         
