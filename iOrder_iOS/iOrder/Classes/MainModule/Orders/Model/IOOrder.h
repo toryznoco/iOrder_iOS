@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "IOShop.h"
 
 /// 订单状态
 typedef NS_ENUM(NSUInteger, IOOrderStatus){
@@ -20,39 +21,17 @@ typedef NS_ENUM(NSUInteger, IOOrderStatus){
 };
 
 @interface IOOrder : NSObject
-/**
- *  餐厅ID
- */
-@property (nonatomic, assign) NSString *shopId;
-
-/**
- *  餐厅名字
- */
-@property (nonatomic, copy) NSString *shopName;
-
-/**
- *  订单状态
- */
+/** 订单ID */
+@property (nonatomic, assign) NSInteger orderId;
+/** 店铺信息 */
+@property (nonatomic, strong) IOShop *shop;
+/** 订单状态 */
 @property (nonatomic, assign) IOOrderStatus status;
-
-/**
- *  店铺图片url，不包含图片服务器根地址，需自行拼接
- */
-@property (nonatomic, copy) NSString *shopPic;
-
-/**
- *  菜品数量
- */
-@property (nonatomic, assign) int dishesAmt;
-
-/**
- *  订单金额
- */
-@property (nonatomic, assign) double price;
-
-/**
- *  下单时间
- */
+/** 菜品数量 */
+@property (nonatomic, assign) int goodsAmount;
+/** 订单金额 */
+@property (nonatomic, assign) float totalPrice;
+/** 下单时间 */
 @property (nonatomic, copy) NSString *orderTime;
 
 @end

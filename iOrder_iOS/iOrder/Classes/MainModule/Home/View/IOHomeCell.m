@@ -69,7 +69,7 @@
 #pragma custom methods
 
 - (void)setupShopInfo {
-    NSString *pictureStr = [NSString stringWithFormat:@"%@%@", kPictureServerPath, _shop.picture];
+    NSString *pictureStr = [NSString stringWithFormat:@"%@%@", kIOHTTPPictureServerUrl, _shop.picture];
     NSURL *pictureURL = [NSURL URLWithString:pictureStr];
     [_shopIcon sd_setImageWithURL:pictureURL placeholderImage:[UIImage imageNamed:@"timeline_image_placeholder"]];
     

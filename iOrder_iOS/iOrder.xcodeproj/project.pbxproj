@@ -57,8 +57,6 @@
 		9A2B87481E83FF52006DCD53 /* MBProgressHUD+YWJ.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A2B87471E83FF52006DCD53 /* MBProgressHUD+YWJ.m */; };
 		9A2B874D1E84BAB1006DCD53 /* IOOrdersManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A2B874C1E84BAB1006DCD53 /* IOOrdersManager.m */; };
 		9A2B87531E84BDCE006DCD53 /* IOOrdersVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A2B87521E84BDCE006DCD53 /* IOOrdersVC.m */; };
-		9A2B87561E84C1A1006DCD53 /* IOOrderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A2B87551E84C1A1006DCD53 /* IOOrderCell.m */; };
-		9A2B87591E84D15B006DCD53 /* IOOrderListParam.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A2B87581E84D15B006DCD53 /* IOOrderListParam.m */; };
 		9A3963D11E82482E000E2E40 /* YWJCacheTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A39638A1E82482E000E2E40 /* YWJCacheTool.m */; };
 		9A3963D21E82482E000E2E40 /* YWJDishesParam.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A39638E1E82482E000E2E40 /* YWJDishesParam.m */; };
 		9A3963D31E82482E000E2E40 /* YWJDishesResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A3963911E82482E000E2E40 /* YWJDishesResult.m */; };
@@ -85,13 +83,15 @@
 		9A3963E81E82482E000E2E40 /* IOTransmitters.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A3963CD1E82482E000E2E40 /* IOTransmitters.m */; };
 		9A3963E91E82482E000E2E40 /* YWJVersionTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A3963D01E82482E000E2E40 /* YWJVersionTool.m */; };
 		9A3963ED1E824A10000E2E40 /* IONetworkTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A3963EC1E824A10000E2E40 /* IONetworkTool.m */; };
-		9A405B0E1E81521F0037A5AC /* IOOrderedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A405B071E81521F0037A5AC /* IOOrderedViewController.m */; };
 		9A405B0F1E81521F0037A5AC /* IOOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A405B0A1E81521F0037A5AC /* IOOrder.m */; };
-		9A405B101E81521F0037A5AC /* IOOrderViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A405B0D1E81521F0037A5AC /* IOOrderViewCell.m */; };
 		9A41DC7B1E8BA3C3006192FF /* IOHomeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A41DC7A1E8BA3C3006192FF /* IOHomeManager.m */; };
 		9A41DC7E1E8CD112006192FF /* IONearbyShopsParam.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A41DC7D1E8CD112006192FF /* IONearbyShopsParam.m */; };
 		9A41DC811E8CD771006192FF /* IONearbyShopsResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A41DC801E8CD771006192FF /* IONearbyShopsResult.m */; };
 		9A41DC841E8CF877006192FF /* IOAccessTokenResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A41DC831E8CF877006192FF /* IOAccessTokenResult.m */; };
+		9A41DC871E8DEF27006192FF /* TRTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A41DC861E8DEF27006192FF /* TRTableViewCell.m */; };
+		9A41DC8A1E8DEFC2006192FF /* IOOrderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A41DC891E8DEFC2006192FF /* IOOrderCell.m */; };
+		9A41DC8D1E8E47F7006192FF /* IOOrderLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A41DC8C1E8E47F7006192FF /* IOOrderLayout.m */; };
+		9A41DC931E90FB28006192FF /* IOOrdersResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A41DC921E90FB28006192FF /* IOOrdersResult.m */; };
 		9AC08D701E39F3C600D728AD /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AC08D6F1E39F3C600D728AD /* main.m */; };
 		9AC08D791E39F4E200D728AD /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AC08D741E39F4E200D728AD /* AppDelegate.m */; };
 		9ADFA8391E88C4F7006E465A /* IOLoginResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 9ADFA8381E88C4F7006E465A /* IOLoginResult.m */; };
@@ -240,10 +240,6 @@
 		9A2B874C1E84BAB1006DCD53 /* IOOrdersManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOOrdersManager.m; sourceTree = "<group>"; };
 		9A2B87511E84BDCE006DCD53 /* IOOrdersVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOOrdersVC.h; sourceTree = "<group>"; };
 		9A2B87521E84BDCE006DCD53 /* IOOrdersVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOOrdersVC.m; sourceTree = "<group>"; };
-		9A2B87541E84C1A1006DCD53 /* IOOrderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOOrderCell.h; sourceTree = "<group>"; };
-		9A2B87551E84C1A1006DCD53 /* IOOrderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOOrderCell.m; sourceTree = "<group>"; };
-		9A2B87571E84D15B006DCD53 /* IOOrderListParam.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOOrderListParam.h; sourceTree = "<group>"; };
-		9A2B87581E84D15B006DCD53 /* IOOrderListParam.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOOrderListParam.m; sourceTree = "<group>"; };
 		9A3963891E82482E000E2E40 /* YWJCacheTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWJCacheTool.h; sourceTree = "<group>"; };
 		9A39638A1E82482E000E2E40 /* YWJCacheTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWJCacheTool.m; sourceTree = "<group>"; };
 		9A39638D1E82482E000E2E40 /* YWJDishesParam.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWJDishesParam.h; sourceTree = "<group>"; };
@@ -296,12 +292,8 @@
 		9A3963D01E82482E000E2E40 /* YWJVersionTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWJVersionTool.m; sourceTree = "<group>"; };
 		9A3963EB1E824A10000E2E40 /* IONetworkTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IONetworkTool.h; sourceTree = "<group>"; };
 		9A3963EC1E824A10000E2E40 /* IONetworkTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IONetworkTool.m; sourceTree = "<group>"; };
-		9A405B061E81521F0037A5AC /* IOOrderedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOOrderedViewController.h; sourceTree = "<group>"; };
-		9A405B071E81521F0037A5AC /* IOOrderedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOOrderedViewController.m; sourceTree = "<group>"; };
 		9A405B091E81521F0037A5AC /* IOOrder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOOrder.h; sourceTree = "<group>"; };
 		9A405B0A1E81521F0037A5AC /* IOOrder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOOrder.m; sourceTree = "<group>"; };
-		9A405B0C1E81521F0037A5AC /* IOOrderViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOOrderViewCell.h; sourceTree = "<group>"; };
-		9A405B0D1E81521F0037A5AC /* IOOrderViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOOrderViewCell.m; sourceTree = "<group>"; };
 		9A41DC791E8BA3C3006192FF /* IOHomeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOHomeManager.h; sourceTree = "<group>"; };
 		9A41DC7A1E8BA3C3006192FF /* IOHomeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOHomeManager.m; sourceTree = "<group>"; };
 		9A41DC7C1E8CD112006192FF /* IONearbyShopsParam.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IONearbyShopsParam.h; sourceTree = "<group>"; };
@@ -310,6 +302,14 @@
 		9A41DC801E8CD771006192FF /* IONearbyShopsResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IONearbyShopsResult.m; sourceTree = "<group>"; };
 		9A41DC821E8CF877006192FF /* IOAccessTokenResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOAccessTokenResult.h; sourceTree = "<group>"; };
 		9A41DC831E8CF877006192FF /* IOAccessTokenResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOAccessTokenResult.m; sourceTree = "<group>"; };
+		9A41DC851E8DEF27006192FF /* TRTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTableViewCell.h; sourceTree = "<group>"; };
+		9A41DC861E8DEF27006192FF /* TRTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTableViewCell.m; sourceTree = "<group>"; };
+		9A41DC881E8DEFC2006192FF /* IOOrderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOOrderCell.h; sourceTree = "<group>"; };
+		9A41DC891E8DEFC2006192FF /* IOOrderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOOrderCell.m; sourceTree = "<group>"; };
+		9A41DC8B1E8E47F7006192FF /* IOOrderLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOOrderLayout.h; sourceTree = "<group>"; };
+		9A41DC8C1E8E47F7006192FF /* IOOrderLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOOrderLayout.m; sourceTree = "<group>"; };
+		9A41DC911E90FB28006192FF /* IOOrdersResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOOrdersResult.h; sourceTree = "<group>"; };
+		9A41DC921E90FB28006192FF /* IOOrdersResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOOrdersResult.m; sourceTree = "<group>"; };
 		9AC08D6F1E39F3C600D728AD /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		9AC08D731E39F4E200D728AD /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		9AC08D741E39F4E200D728AD /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -938,8 +938,6 @@
 		9A405B051E81521F0037A5AC /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				9A405B061E81521F0037A5AC /* IOOrderedViewController.h */,
-				9A405B071E81521F0037A5AC /* IOOrderedViewController.m */,
 				9A2B87511E84BDCE006DCD53 /* IOOrdersVC.h */,
 				9A2B87521E84BDCE006DCD53 /* IOOrdersVC.m */,
 			);
@@ -951,8 +949,10 @@
 			children = (
 				9A405B091E81521F0037A5AC /* IOOrder.h */,
 				9A405B0A1E81521F0037A5AC /* IOOrder.m */,
-				9A2B87571E84D15B006DCD53 /* IOOrderListParam.h */,
-				9A2B87581E84D15B006DCD53 /* IOOrderListParam.m */,
+				9A41DC8B1E8E47F7006192FF /* IOOrderLayout.h */,
+				9A41DC8C1E8E47F7006192FF /* IOOrderLayout.m */,
+				9A41DC911E90FB28006192FF /* IOOrdersResult.h */,
+				9A41DC921E90FB28006192FF /* IOOrdersResult.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -960,10 +960,8 @@
 		9A405B0B1E81521F0037A5AC /* View */ = {
 			isa = PBXGroup;
 			children = (
-				9A405B0C1E81521F0037A5AC /* IOOrderViewCell.h */,
-				9A405B0D1E81521F0037A5AC /* IOOrderViewCell.m */,
-				9A2B87541E84C1A1006DCD53 /* IOOrderCell.h */,
-				9A2B87551E84C1A1006DCD53 /* IOOrderCell.m */,
+				9A41DC881E8DEFC2006192FF /* IOOrderCell.h */,
+				9A41DC891E8DEFC2006192FF /* IOOrderCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1066,6 +1064,8 @@
 				9ADFA8481E88DCAB006E465A /* YWJTabBar.m */,
 				9ADFA8491E88DCAB006E465A /* YWJTabBarButton.h */,
 				9ADFA84A1E88DCAB006E465A /* YWJTabBarButton.m */,
+				9A41DC851E8DEF27006192FF /* TRTableViewCell.h */,
+				9A41DC861E8DEF27006192FF /* TRTableViewCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1509,28 +1509,26 @@
 				9A3963D81E82482E000E2E40 /* YWJLoginTool.m in Sources */,
 				9A3963DC1E82482E000E2E40 /* YWJRootNavigationViewController.m in Sources */,
 				9A3963D91E82482E000E2E40 /* IOOrdersTool.m in Sources */,
-				9A2B87591E84D15B006DCD53 /* IOOrderListParam.m in Sources */,
 				9A3963D51E82482E000E2E40 /* IOHttpTool.m in Sources */,
 				9A3963E11E82482E000E2E40 /* YWJShoppingCartInfoResult.m in Sources */,
+				9A41DC871E8DEF27006192FF /* TRTableViewCell.m in Sources */,
 				9A3963E51E82482E000E2E40 /* YWJShopsTool.m in Sources */,
 				9A1BFDCA1E6EA8DE00A0007F /* IODishInfo.m in Sources */,
 				9A20FE951E88B05C00CF0006 /* NSDictionary+TRPropertyCode.m in Sources */,
 				9A1BFDC51E6EA8DE00A0007F /* IODishViewController.m in Sources */,
-				9A405B0E1E81521F0037A5AC /* IOOrderedViewController.m in Sources */,
 				9A1BFDD61E6EA8DE00A0007F /* IOShoppingCartView.m in Sources */,
 				9A3963D41E82482E000E2E40 /* YWJDishesTool.m in Sources */,
 				9A2B87481E83FF52006DCD53 /* MBProgressHUD+YWJ.m in Sources */,
 				9A3963E21E82482E000E2E40 /* YWJShoppingCartTool.m in Sources */,
 				9ADFA84B1E88DCAB006E465A /* IONavigationController.m in Sources */,
 				9A41DC841E8CF877006192FF /* IOAccessTokenResult.m in Sources */,
-				9A2B87561E84C1A1006DCD53 /* IOOrderCell.m in Sources */,
 				9A1BFDEB1E6EA8DE00A0007F /* IOProfileMyCouponController.m in Sources */,
-				9A405B101E81521F0037A5AC /* IOOrderViewCell.m in Sources */,
 				9ADFA84E1E88DCAC006E465A /* IOUser.m in Sources */,
 				9A41DC811E8CD771006192FF /* IONearbyShopsResult.m in Sources */,
 				9ADFA8391E88C4F7006E465A /* IOLoginResult.m in Sources */,
 				9A3963E31E82482E000E2E40 /* YWJShopsParam.m in Sources */,
 				9A1BFDC31E6EA8DE00A0007F /* IONewFeatureViewController.m in Sources */,
+				9A41DC8D1E8E47F7006192FF /* IOOrderLayout.m in Sources */,
 				9A3963E41E82482E000E2E40 /* YWJShopsResult.m in Sources */,
 				9A3963E81E82482E000E2E40 /* IOTransmitters.m in Sources */,
 				9ADFA84D1E88DCAC006E465A /* IOHTTPBaseResult.m in Sources */,
@@ -1582,11 +1580,13 @@
 				9A1BFDCB1E6EA8DE00A0007F /* IOShop.m in Sources */,
 				9A3963D61E82482E000E2E40 /* YWJLoginParam.m in Sources */,
 				9ADFA8501E88DCAC006E465A /* YWJTabBar.m in Sources */,
+				9A41DC931E90FB28006192FF /* IOOrdersResult.m in Sources */,
 				9A1BFDD71E6EA8DE00A0007F /* IOSignInFooterView.m in Sources */,
 				9A1BFDDB1E6EA8DE00A0007F /* YWJDoubleTableView.m in Sources */,
 				9A3963D71E82482E000E2E40 /* YWJLoginResult.m in Sources */,
 				9A3963E91E82482E000E2E40 /* YWJVersionTool.m in Sources */,
 				9A3963DB1E82482E000E2E40 /* IOOrderResult.m in Sources */,
+				9A41DC8A1E8DEFC2006192FF /* IOOrderCell.m in Sources */,
 				9A2B874D1E84BAB1006DCD53 /* IOOrdersManager.m in Sources */,
 				9A3963E71E82482E000E2E40 /* YWJSubmitOrderTool.m in Sources */,
 				9ADFA8571E88DFEE006E465A /* IORegisterResult.m in Sources */,

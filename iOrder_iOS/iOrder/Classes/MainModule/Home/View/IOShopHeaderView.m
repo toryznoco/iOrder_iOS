@@ -21,7 +21,7 @@
 #pragma mark - privacy
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
-        self.backgroundColor = kIOThemeColors;
+        self.backgroundColor = kIOThemeColor;
         
         [self setupChildViewWithFrame:frame];
     }
@@ -120,7 +120,7 @@
 #pragma mark - custom methods
 
 - (void)setupShopInfo {
-    NSString *pictureStr = [NSString stringWithFormat:@"%@%@", kPictureServerPath, _shopInfo.picture];
+    NSString *pictureStr = [NSString stringWithFormat:@"%@%@", kIOHTTPPictureServerUrl, _shopInfo.picture];
     NSURL *pictureURL = [NSURL URLWithString:pictureStr];
     [_shopIcon sd_setImageWithURL:pictureURL placeholderImage:[UIImage imageNamed:@"timeline_image_placeholder"]];
     

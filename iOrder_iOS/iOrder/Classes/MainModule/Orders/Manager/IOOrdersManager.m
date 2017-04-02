@@ -8,6 +8,8 @@
 
 #import "IOOrdersManager.h"
 #import "IONetworkTool.h"
+#import "IOOrdersResult.h"
+#import "IOError.h"
 
 #define kIOHTTPOrderListUrl @"app/order/list"
 
@@ -18,12 +20,23 @@
     
     NSString *urlStr = [NSString stringWithFormat:@"%@%@", kIOHTTPBaseUrl, kIOHTTPOrderListUrl];
     
-    
-//    [IONetworkTool GET:urlStr parameters: success:^(NSURLSessionDataTask * _Nonnull task, id _Nullable obj) {
-//        success(obj);
-//    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-//        failure(error);
-//    }];
+    [IONetworkTool tokenGET:urlStr parameters:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObj) {
+        IOOrdersResult *result = [IOOrdersResult mj_objectWithKeyValues:responseObj];
+        // 请求成功
+        if (result.result == YES) {
+            if (success) {
+                success(result.orders);
+            }
+        } else {
+            if (failure) {
+                failure([IOError errorWithCode:result.code description:@"订单刷新失败"]);
+            }
+        }
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        if (failure) {
+            failure(error);
+        }
+    }];
 }
 
 @end

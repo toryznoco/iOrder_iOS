@@ -106,7 +106,7 @@
                 info.detail = @"13308050850";
                 
                 ((IOShopDetailCell *)cell).info = info;
-                ((IOShopDetailCell *)cell).detailLabel.textColor = kIOThemeColors;
+                ((IOShopDetailCell *)cell).detailLabel.textColor = kIOThemeColor;
                 break;
                 
             case 3:

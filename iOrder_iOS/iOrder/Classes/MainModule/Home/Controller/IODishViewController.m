@@ -73,7 +73,7 @@
     [evaluateView addSubview:title];
     
     UILabel *evaluate = [[UILabel alloc] initWithFrame:CGRectMake(0, evaluateView.height * 0.4, self.view.width, 20)];
-    evaluate.textColor = kIOThemeColors;
+    evaluate.textColor = kIOThemeColor;
     evaluate.textAlignment = NSTextAlignmentCenter;
     evaluate.font = [UIFont systemFontOfSize:20];
     evaluate.text = [NSString stringWithFormat:@"好评度 %.0f%%", 80.00];
@@ -102,7 +102,7 @@
     UILabel *dishPrice = [[UILabel alloc] initWithFrame:CGRectMake(0, dishDetailView.height * 0.8, self.view.width, 30)];
     dishPrice.font = [UIFont systemFontOfSize:30];
     dishPrice.textAlignment = NSTextAlignmentCenter;
-    dishPrice.textColor = kIOThemeColors;
+    dishPrice.textColor = kIOThemeColor;
     dishPrice.text = [NSString stringWithFormat:@"¥ %.2f", _dishInfo.price];
     [dishDetailView addSubview:dishPrice];
 }
@@ -111,7 +111,7 @@
     CGFloat kImageViewHeight = 282.0 / 734;
     UIImageView *dishImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, kImageViewHeight * self.view.height)];
     [self.view addSubview:dishImageView];
-    NSString *pictureStr = [NSString stringWithFormat:@"%@%@", kPictureServerPath, _dishInfo.picture];
+    NSString *pictureStr = [NSString stringWithFormat:@"%@%@", kIOHTTPPictureServerUrl, _dishInfo.picture];
     NSURL *pictureURL = [NSURL URLWithString:pictureStr];
     [dishImageView sd_setImageWithURL:pictureURL placeholderImage:[UIImage imageNamed:@"timeline_image_placeholder"]];
     _dishImageView  = dishImageView;

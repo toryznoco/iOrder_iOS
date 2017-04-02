@@ -31,7 +31,7 @@
 /*************************************************************************************
  颜色常量（Color）
  *************************************************************************************/
-#define kIOThemeColors [UIColor orangeColor]
+#define kIOThemeColor [UIColor orangeColor]
 #define kIOBackgroundColor [UIColor colorWithRed:244.0/255.0 green:244.0/255.0 blue:244.0/255.0 alpha:1.0]
 
 #endif /* IOConst_h */

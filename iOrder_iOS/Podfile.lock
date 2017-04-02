@@ -30,6 +30,9 @@ PODS:
   - SDWebImage (3.8.2):
     - SDWebImage/Core (= 3.8.2)
   - SDWebImage/Core (3.8.2)
+  - YYKit (1.0.9):
+    - YYKit/no-arc (= 1.0.9)
+  - YYKit/no-arc (1.0.9)
 
 DEPENDENCIES:
   - AFNetworking
@@ -43,6 +46,7 @@ DEPENDENCIES:
   - RDVTabBarController
   - Reveal-SDK (~> 4)
   - SDCycleScrollView
+  - YYKit
 
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
@@ -57,7 +61,8 @@ SPEC CHECKSUMS:
   Reveal-SDK: 178c927f1a3230648d3a92b96f6e730a35b2750a
   SDCycleScrollView: f72904c77698a7f93a41bcbbc2d78b073bf7326c
   SDWebImage: '098e97e6176540799c27e804c96653ee0833d13c'
+  YYKit: 7cda43304a8dc3696c449041e2cb3107b4e236e7
 
-PODFILE CHECKSUM: 5eba41fffe6fe6ae9c5a8bbf43f19631eb671e99
+PODFILE CHECKSUM: 569a0c51c61b2bdd93f8a458ec1898ad8ad8abb6
 
 COCOAPODS: 1.2.0

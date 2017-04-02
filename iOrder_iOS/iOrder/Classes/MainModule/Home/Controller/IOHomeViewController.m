@@ -52,7 +52,7 @@ extern BOOL ifNeededRefreshToken;
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [self.navigationController.navigationBar setBarTintColor:kIOThemeColors];
+    [self.navigationController.navigationBar setBarTintColor:kIOThemeColor];
 }
 
 - (void)refreshToken {
@@ -188,7 +188,7 @@ extern BOOL ifNeededRefreshToken;
 }
 
 - (void)setupNavigationView {
-    [self.navigationController.navigationBar setBarTintColor:kIOThemeColors];
+    [self.navigationController.navigationBar setBarTintColor:kIOThemeColor];
     
     UIBarButtonItem *locatingBtn = [UIBarButtonItem initWithNormalImage:@"address_icon" target:self action:@selector(locatingBtnClick:) width:15 height:20];
     UIBarButtonItem *locatingLabel = [UIBarButtonItem initWithtitleColor:[UIColor whiteColor] target:self action:@selector(locatingBtnClick:) title:@"定位"];

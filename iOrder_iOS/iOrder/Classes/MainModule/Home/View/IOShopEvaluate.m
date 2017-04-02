@@ -164,7 +164,7 @@
     _totalEvaluateView = totalEvaluateView;
     UILabel *evaluateValue = [[UILabel alloc] init];
     evaluateValue.text  = @"4.8";
-    evaluateValue.textColor = kIOThemeColors;
+    evaluateValue.textColor = kIOThemeColor;
     evaluateValue.font = [UIFont systemFontOfSize:26];
     [totalEvaluateView addSubview:evaluateValue];
     _evaluateValue = evaluateValue;
@@ -209,14 +209,14 @@
     UILabel *serveValue = [[UILabel alloc] init];
     serveValue.text = @"8.0分";
     serveValue.font = [UIFont systemFontOfSize:10];
-    serveValue.textColor = kIOThemeColors;
+    serveValue.textColor = kIOThemeColor;
     [headerView addSubview:serveValue];
     _serveValue = serveValue;
     
     UILabel *qualityValue = [[UILabel alloc] init];
     qualityValue.text = @"8.0分";
     qualityValue.font = [UIFont systemFontOfSize:10];
-    qualityValue.textColor = kIOThemeColors;
+    qualityValue.textColor = kIOThemeColor;
     [headerView addSubview:qualityValue];
     _qualityValue = qualityValue;
     
@@ -234,7 +234,7 @@
         UIButton *evaluateBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         evaluateBtn.titleLabel.font = [UIFont systemFontOfSize:8];
         [evaluateBtn setTitleColor:IORGBColor(139, 139, 139, 1) forState:UIControlStateNormal];
-        [evaluateBtn setTitleColor:kIOThemeColors forState:UIControlStateSelected];
+        [evaluateBtn setTitleColor:kIOThemeColor forState:UIControlStateSelected];
         [evaluateBtn setBackgroundImage:[UIImage imageNamed:@"ellipse_normal"] forState:UIControlStateNormal];
         [evaluateBtn setBackgroundImage:[UIImage imageNamed:@"ellipse_light"] forState:UIControlStateSelected];
         [footerView addSubview:evaluateBtn];

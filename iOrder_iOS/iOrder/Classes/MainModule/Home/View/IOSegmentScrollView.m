@@ -99,7 +99,7 @@
         _titleFont = [UIFont systemFontOfSize:15];
         _btns = [[NSMutableArray alloc] initWithCapacity:15];
         _titleNomalColor = IORGBColor(92, 91, 92, 1);
-        _titleSelectColor = kIOThemeColors;
+        _titleSelectColor = kIOThemeColor;
         _bgScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, IOScreenWidth, self.frame.size.height)];
         _bgScrollView.backgroundColor = [UIColor whiteColor];
         _bgScrollView.showsHorizontalScrollIndicator = NO;

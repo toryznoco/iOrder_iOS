@@ -7,29 +7,30 @@
 //
 
 #import "IOOrdersVC.h"
-#import "IOOrder.h"
+#import "IOOrderLayout.h"
 #import "IOOrderCell.h"
 #import "MJRefresh.h"
 #import "IOOrdersManager.h"
 
-@interface IOOrdersVC () <UITableViewDataSource, UITableViewDelegate>
+@interface IOOrdersVC () <UITableViewDataSource, UITableViewDelegate, IOOrderCellDelegate>
 
 /** tableView */
 @property (nonatomic, weak) UITableView *tableView;
 
 /** 订单列表 */
-@property (nonatomic, strong) NSArray<IOOrder *> *orders;
+@property (nonatomic, strong) NSMutableArray<IOOrderLayout *> *layouts;
 
 @end
 
 @implementation IOOrdersVC
 
 #pragma mark - Private
-- (NSArray *)orders {
-    if (!_orders) {
-        _orders = @[];
+
+- (NSMutableArray<IOOrderLayout *> *)layouts {
+    if (!_layouts) {
+        _layouts = [NSMutableArray array];
     }
-    return _orders;
+    return _layouts;
 }
 
 - (void)viewDidLoad {
@@ -42,7 +43,7 @@
 }
 
 - (void)setupTableView {
-    UITableView *tableView = [UITableView new];
+    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, IOScreenWidth, IOScreenHeight-49)];
     [self.view addSubview:tableView];
     _tableView = tableView;
     
@@ -51,7 +52,7 @@
     tableView.delegate = self;
     
     // 设置UI
-    tableView.rowHeight = 150;
+//    tableView.rowHeight = 150;
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     tableView.tableFooterView = [[UIView alloc] init];
     
@@ -63,30 +64,61 @@
 
 - (void)loadNewOrders {
     [IOOrdersManager loadNewOrdersSuccess:^(NSArray<IOOrder *> * _Nullable orders) {
-        
+        [orders enumerateObjectsUsingBlock:^(IOOrder * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            IOOrderLayout *layout = [[IOOrderLayout alloc] initWithStatus:obj];
+            [self.layouts addObject:layout];
+        }];
+        [self.tableView reloadData];
+        [self.tableView.mj_header endRefreshing];
     } failure:^(NSError * _Nonnull error) {
-        
+        IOLog(@"%@", error);
+        [self.tableView.mj_header endRefreshing];
     }];
 }
 
 #pragma mark - UITableViewDataSource
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return self.layouts[indexPath.row].height;
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.orders.count;
+    return self.layouts.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    IOOrderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Order"];
+    NSString *cellID = @"cell";
+    IOOrderCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
     
     if (!cell) {
         cell = [[IOOrderCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Order"];
+        cell.delegate = self;
     }
-    cell.order = self.orders[indexPath.row];
+    [cell setLayout:_layouts[indexPath.row]];
     return cell;
 }
 
 #pragma mark - UITableViewDelegate
 
+#pragma mark - IOOrderCellDelegate
+- (void)payBtnDidClick:(UIButton *)btn {
+    IOLog(@"去支付");
+}
+
+- (void)cancelBtnDidClick:(UIButton *)btn {
+    IOLog(@"取消");
+}
+
+- (void)alertBtnDidClick:(UIButton *)btn {
+    IOLog(@"催单");
+}
+
+- (void)getBtnDidClick:(UIButton *)btn {
+    IOLog(@"取餐");
+}
+
+- (void)commentBtnDidClick:(UIButton *)btn {
+    IOLog(@"去评价");
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

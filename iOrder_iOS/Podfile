@@ -17,6 +17,7 @@ target 'iOrder' do
     pod 'AprilSDK'
     pod 'Reveal-SDK', '~> 4'
     pod 'IQKeyboardManager'
+    pod 'YYKit'
     
     # Pods for iOrder
     

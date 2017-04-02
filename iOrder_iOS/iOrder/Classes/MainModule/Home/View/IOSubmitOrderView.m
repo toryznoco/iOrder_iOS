@@ -45,7 +45,7 @@
 - (void)setupAllChildView {
     UIView *submitView = [[UIView alloc] init];
     submitView.frame = CGRectMake(self.width * (1 - kScale), 0, self.width * kScale, 44);
-    submitView.backgroundColor = kIOThemeColors;
+    submitView.backgroundColor = kIOThemeColor;
     [self addSubview:submitView];
     _submitView = submitView;
     
@@ -59,7 +59,7 @@
     [submitBtn addTarget:self action:@selector(submitBtnclicked:) forControlEvents:UIControlEventTouchUpInside];
     
     UILabel *totalPrice = [[UILabel alloc] initWithFrame:CGRectMake(submitView.x - 70, 14, 70, 14)];
-    totalPrice.textColor = kIOThemeColors;
+    totalPrice.textColor = kIOThemeColor;
     totalPrice.font = [UIFont systemFontOfSize:17];
     _totalPrice = totalPrice;
     [self addSubview:totalPrice];

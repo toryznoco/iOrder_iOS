@@ -13,7 +13,7 @@
  Key
  *************************************************************************************/
 #define kVersionKey @"version"
-#define kPictureServerPath @"http://normcore.net.cn/fileServ/picture/"
+#define kIOHTTPPictureServerUrl @"http://normcore.net.cn/fileServ/picture/"
 #define kIOHTTPBaseUrl @"https://iorder.normcore.net.cn/api/"
 
 #define kIOAccessTokenKey @"accessToken"

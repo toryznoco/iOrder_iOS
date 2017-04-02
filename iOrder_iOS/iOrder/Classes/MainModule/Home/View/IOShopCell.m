@@ -175,7 +175,7 @@
     
     //    菜品价格
     UILabel *dishPrice = [[UILabel alloc] init];
-    dishPrice.textColor = kIOThemeColors;
+    dishPrice.textColor = kIOThemeColor;
     dishPrice.font = [UIFont systemFontOfSize:15];
     [self addSubview:dishPrice];
     _dishPrice = dishPrice;
@@ -216,7 +216,7 @@
 }
 
 - (void)setupDish {
-    NSString *pictureStr = [NSString stringWithFormat:@"%@%@", kPictureServerPath, _dish.picture];
+    NSString *pictureStr = [NSString stringWithFormat:@"%@%@", kIOHTTPPictureServerUrl, _dish.picture];
     NSURL *pictureURL = [NSURL URLWithString:pictureStr];
     [_dishIcon sd_setImageWithURL:pictureURL placeholderImage:[UIImage imageNamed:@"timeline_image_placeholder"]];
     
