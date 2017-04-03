@@ -154,14 +154,14 @@
 }
 
 - (void)cancelBtnDidClick:(UIButton *)btn {
-    if (self.cell.delegate && [self.cell.delegate respondsToSelector:@selector(cancelBtnDidClick:)]) {
-        [self.cell.delegate performSelector:@selector(cancelBtnDidClick:) withObject:btn];
+    if (self.cell.delegate && [self.cell.delegate respondsToSelector:@selector(cancelBtnDidClick:order:)]) {
+        [self.cell.delegate performSelector:@selector(cancelBtnDidClick:order:) withObject:btn withObject:self.order];
     }
 }
 
 - (void)payBtnDidClick:(UIButton *)btn {
-    if (self.cell.delegate && [self.cell.delegate respondsToSelector:@selector(payBtnDidClick:)]) {
-        [self.cell.delegate performSelector:@selector(payBtnDidClick:) withObject:btn];
+    if (self.cell.delegate && [self.cell.delegate respondsToSelector:@selector(payBtnDidClick:order:)]) {
+        [self.cell.delegate performSelector:@selector(payBtnDidClick:order:) withObject:btn withObject:self.order];
     }
 }
 
@@ -195,8 +195,8 @@
 }
 
 - (void)cancelBtnDidClick:(UIButton *)btn {
-    if (self.cell.delegate && [self.cell.delegate respondsToSelector:@selector(cancelBtnDidClick:)]) {
-        [self.cell.delegate performSelector:@selector(cancelBtnDidClick:) withObject:btn];
+    if (self.cell.delegate && [self.cell.delegate respondsToSelector:@selector(cancelBtnDidClick:order:)]) {
+        [self.cell.delegate performSelector:@selector(cancelBtnDidClick:order:) withObject:btn withObject:self.order];
     }
 }
 
@@ -230,8 +230,8 @@
 }
 
 - (void)alertBtnDidClick:(UIButton *)btn {
-    if (self.cell.delegate && [self.cell.delegate respondsToSelector:@selector(alertBtnDidClick:)]) {
-        [self.cell.delegate performSelector:@selector(alertBtnDidClick:) withObject:btn];
+    if (self.cell.delegate && [self.cell.delegate respondsToSelector:@selector(alertBtnDidClick:order:)]) {
+        [self.cell.delegate performSelector:@selector(alertBtnDidClick:order:) withObject:btn withObject:self.order];
     }
 }
 
@@ -265,8 +265,8 @@
 }
 
 - (void)getBtnDidClick:(UIButton *)btn {
-    if (self.cell.delegate && [self.cell.delegate respondsToSelector:@selector(getBtnDidClick:)]) {
-        [self.cell.delegate performSelector:@selector(getBtnDidClick:) withObject:btn];
+    if (self.cell.delegate && [self.cell.delegate respondsToSelector:@selector(getBtnDidClick:order:)]) {
+        [self.cell.delegate performSelector:@selector(getBtnDidClick:order:) withObject:btn withObject:self.order];
     }
 }
 
@@ -300,8 +300,8 @@
 }
 
 - (void)commentBtnDidClick:(UIButton *)btn {
-    if (self.cell.delegate && [self.cell.delegate respondsToSelector:@selector(commentBtnDidClick:)]) {
-        [self.cell.delegate performSelector:@selector(commentBtnDidClick:) withObject:btn];
+    if (self.cell.delegate && [self.cell.delegate respondsToSelector:@selector(commentBtnDidClick:order:)]) {
+        [self.cell.delegate performSelector:@selector(commentBtnDidClick:order:) withObject:btn withObject:self.order];
     }
 }
 
@@ -391,7 +391,14 @@
 }
 
 - (void)setLayout:(IOOrderLayout *)layout {
+    // 传递模型
     _layout = layout;
+    IOOrder *order = layout.order;
+    _submitedBarView.order = order;
+    _paidBarView.order = order;
+    _cookingBarView.order = order;
+    _cookedBarView.order = order;
+    _receiptBarView.order = order;
     
     self.height = layout.height;
     _contentView.top = layout.marginTop;

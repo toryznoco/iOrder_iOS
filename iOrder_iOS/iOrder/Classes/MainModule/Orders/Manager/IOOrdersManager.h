@@ -8,9 +8,9 @@
 
 #import <Foundation/Foundation.h>
 @class IOOrder;
-@class IOHTTPBaseResult;
-@class IOPayOrderParam;
-@class IOGetDishParam;
+#import "IOHTTPBaseResult.h"
+#import "IOPayOrderParam.h"
+#import "IOGetDishParam.h"
 
 @interface IOOrdersManager : NSObject
 

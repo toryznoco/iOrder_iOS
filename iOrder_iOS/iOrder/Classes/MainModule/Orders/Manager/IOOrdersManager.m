@@ -10,8 +10,6 @@
 #import "IONetworkTool.h"
 #import "IOOrdersResult.h"
 #import "IOError.h"
-#import "IOPayOrderParam.h"
-#import "IOGetDishParam.h"
 
 #define kIOHTTPOrderListUrl @"app/order/list"
 #define kIOHTTPPayOrderUrl @"app/order/pay"

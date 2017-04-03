@@ -50,6 +50,8 @@
 @property (nonatomic, strong) UIButton *cancelBtn;
 /** cell */
 @property (nonatomic, weak) IOOrderCell *cell;
+/** 订单数据 */
+@property (nonatomic, strong) IOOrder *order;
 @end
 
 #pragma mark - IOOrderPaidBarView
@@ -58,6 +60,8 @@
 @property (nonatomic, strong) UIButton *cancelBtn;
 /** cell */
 @property (nonatomic, weak) IOOrderCell *cell;
+/** 订单数据 */
+@property (nonatomic, strong) IOOrder *order;
 @end
 
 #pragma mark - IOOrderCookingBarView
@@ -66,6 +70,8 @@
 @property (nonatomic, strong) UIButton *alertBtn;
 /** cell */
 @property (nonatomic, weak) IOOrderCell *cell;
+/** 订单数据 */
+@property (nonatomic, strong) IOOrder *order;
 @end
 
 #pragma mark - IOOrderCookedBarView
@@ -74,6 +80,8 @@
 @property (nonatomic, strong) UIButton *getBtn;
 /** cell */
 @property (nonatomic, weak) IOOrderCell *cell;
+/** 订单数据 */
+@property (nonatomic, strong) IOOrder *order;
 @end
 
 #pragma mark - IOOrderReceiptBarView
@@ -82,6 +90,8 @@
 @property (nonatomic, strong) UIButton *commentBtn;
 /** cell */
 @property (nonatomic, weak) IOOrderCell *cell;
+/** 订单数据 */
+@property (nonatomic, strong) IOOrder *order;
 @end
 
 #pragma mark - IOOrderView
@@ -127,9 +137,9 @@
 
 @protocol IOOrderCellDelegate <NSObject>
 @optional
-- (void)payBtnDidClick:(UIButton *)btn;
-- (void)cancelBtnDidClick:(UIButton *)btn;
-- (void)alertBtnDidClick:(UIButton *)btn;
-- (void)getBtnDidClick:(UIButton *)btn;
-- (void)commentBtnDidClick:(UIButton *)btn;
+- (void)payBtnDidClick:(UIButton *)btn order:(IOOrder *)order;
+- (void)cancelBtnDidClick:(UIButton *)btn order:(IOOrder *)order;
+- (void)alertBtnDidClick:(UIButton *)btn order:(IOOrder *)order;
+- (void)getBtnDidClick:(UIButton *)btn order:(IOOrder *)order;
+- (void)commentBtnDidClick:(UIButton *)btn order:(IOOrder *)order;
 @end

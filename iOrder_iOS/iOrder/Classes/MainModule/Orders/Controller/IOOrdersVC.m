@@ -107,30 +107,31 @@
 }
 
 #pragma mark - IOOrderCellDelegate
-- (void)payBtnDidClick:(UIButton *)btn {
+- (void)payBtnDidClick:(UIButton *)btn order:(IOOrder *)order {
     IOLog(@"去支付");
     // 可以用购物车那个页面
 }
 
-- (void)cancelBtnDidClick:(UIButton *)btn {
+- (void)cancelBtnDidClick:(UIButton *)btn order:(IOOrder *)order {
     IOLog(@"取消");
 }
 
-- (void)alertBtnDidClick:(UIButton *)btn {
+- (void)alertBtnDidClick:(UIButton *)btn order:(IOOrder *)order {
     IOLog(@"催单");
 }
 
-- (void)getBtnDidClick:(UIButton *)btn {
+- (void)getBtnDidClick:(UIButton *)btn order:(IOOrder *)order {
     IOLog(@"取餐");
-//    IOGetDishParam *param = [];
-//    [IOOrdersManager getDish:<#(IOGetDishParam *)#> success:^(IOHTTPBaseResult * _Nullable result) {
-//        IOLog(@"%@", result.message);
-//    } failure:^(NSError * _Nonnull error) {
-//        IOLog(@"%@", error);
-//    }];
+    IOGetDishParam *param = [[IOGetDishParam alloc] init];
+    param.orderId = order.orderId;
+    [IOOrdersManager getDish:param success:^(IOHTTPBaseResult * _Nullable result) {
+        IOLog(@"%@", result.message);
+    } failure:^(NSError * _Nonnull error) {
+        IOLog(@"%@", error);
+    }];
 }
 
-- (void)commentBtnDidClick:(UIButton *)btn {
+- (void)commentBtnDidClick:(UIButton *)btn order:(IOOrder *)order {
     IOLog(@"去评价");
 }
 
