@@ -10,4 +10,10 @@
 
 @implementation IOOrder
 
++ (NSDictionary *)mj_replacedKeyFromPropertyName {
+    return @{
+             @"orderId": @"id"
+             };
+}
+
 @end

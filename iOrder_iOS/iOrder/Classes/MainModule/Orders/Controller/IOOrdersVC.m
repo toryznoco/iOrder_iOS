@@ -67,10 +67,12 @@
 
 - (void)loadNewOrders {
     [IOOrdersManager loadNewOrdersSuccess:^(NSArray<IOOrder *> * _Nullable orders) {
+        NSMutableArray *tempLayouts = @[].mutableCopy;
         [orders enumerateObjectsUsingBlock:^(IOOrder * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             IOOrderLayout *layout = [[IOOrderLayout alloc] initWithStatus:obj];
-            [self.layouts addObject:layout];
+            [tempLayouts addObject:layout];
         }];
+        self.layouts = tempLayouts;
         [self.tableView reloadData];
         [self.tableView.mj_header endRefreshing];
     } failure:^(NSError * _Nonnull error) {
