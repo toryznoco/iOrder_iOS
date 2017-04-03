@@ -97,29 +97,33 @@
     
     //    4、用户名输入框
     IOInputTextField *phoneNumber = [[IOInputTextField alloc] init];
+    phoneNumber.textColor = [UIColor whiteColor];
     phoneNumber.background = [UIImage imageNamed:@"phone number_backgroud_frame"];
     phoneNumber.placeholder = @"phone number";
-    [phoneNumber setValue:IORGBColor(111, 95, 97, 1) forKeyPath:@"_placeholderLabel.textColor"];
+    [phoneNumber setValue:[UIColor whiteColor] forKeyPath:@"_placeholderLabel.textColor"];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textLabelChanged) name:UITextFieldTextDidChangeNotification object:phoneNumber];
     [self.view addSubview:phoneNumber];
     _phoneNumber = phoneNumber;
     
     //    5、密码输入框
     IOInputTextField *password = [[IOInputTextField alloc] init];
+    password.textColor = [UIColor whiteColor];
     password.background = [UIImage imageNamed:@"password_backgroud_frame"];
     password.placeholder = @"password";
     [password setSecureTextEntry:YES];
-    [password setValue:IORGBColor(111, 95, 97, 1) forKeyPath:@"_placeholderLabel.textColor"];
+    [password setValue:[UIColor whiteColor] forKeyPath:@"_placeholderLabel.textColor"];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textLabelChanged) name:UITextFieldTextDidChangeNotification object:password];
     [self.view addSubview:password];
     _password = password;
     
     //    6、验证码输入框
     UITextField *verificationCode = [[UITextField alloc] init];
+    verificationCode.textAlignment = NSTextAlignmentCenter;
+    verificationCode.textColor = [UIColor whiteColor];
     verificationCode.background = [UIImage imageNamed:@"Verificationcode_backgroud_frame"];
     verificationCode.placeholder = @"Verification code";
     //    verificationCode.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
-    [verificationCode setValue:IORGBColor(111, 95, 97, 1) forKeyPath:@"_placeholderLabel.textColor"];
+    [verificationCode setValue:[UIColor whiteColor] forKeyPath:@"_placeholderLabel.textColor"];
     //    [verificationCode setValue:[UIFont boldSystemFontOfSize:13] forKeyPath:@"_placeholderLabel.font"];
     [self.view addSubview:verificationCode];
     _verificationCode = verificationCode;
