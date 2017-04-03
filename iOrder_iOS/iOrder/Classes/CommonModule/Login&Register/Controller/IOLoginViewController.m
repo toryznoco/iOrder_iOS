@@ -103,19 +103,21 @@
     
 //    4、用户名输入框
     IOInputTextField *userName = [[IOInputTextField alloc] init];
+    userName.textColor = [UIColor whiteColor];
     userName.background = [UIImage imageNamed:@"usename_bar"];
     userName.placeholder = @"username";
-    [userName setValue:IORGBColor(111, 95, 97, 1) forKeyPath:@"_placeholderLabel.textColor"];
+    [userName setValue:[UIColor whiteColor] forKeyPath:@"_placeholderLabel.textColor"];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textLabelChanged) name:UITextFieldTextDidChangeNotification object:userName];
     [self.view addSubview:userName];
     _userName = userName;
     
 //    5、密码输入框
     IOInputTextField *password = [[IOInputTextField alloc] init];
+    password.textColor = [UIColor whiteColor];
     password.background = [UIImage imageNamed:@"password_bar"];
     password.placeholder = @"password";
     [password setSecureTextEntry:YES];
-    [password setValue:IORGBColor(111, 95, 97, 1) forKeyPath:@"_placeholderLabel.textColor"];
+    [password setValue:[UIColor whiteColor] forKeyPath:@"_placeholderLabel.textColor"];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textLabelChanged) name:UITextFieldTextDidChangeNotification object:password];
     [self.view addSubview:password];
     _password = password;
