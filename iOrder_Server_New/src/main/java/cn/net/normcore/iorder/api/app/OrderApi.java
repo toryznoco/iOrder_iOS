@@ -205,6 +205,13 @@ public class OrderApi {
         return SimpleResult.optimistic();
     }
 
+    /**
+     * 顾客取餐
+     *
+     * @param orderId
+     * @param customerId
+     * @return
+     */
     @POST
     @Path("/take")
     public Map<String, Object> take(@FormParam("orderId") Long orderId, @HeaderParam("customerId") Long customerId) {
@@ -216,6 +223,27 @@ public class OrderApi {
         if (!order.getStatus().equals(Character.valueOf('4')))
             return SimpleResult.pessimistic(4010, "订单当前状态无法执行该操作：orderId = {}, status = {}", orderId, order.getStatus());
         orderService.take(orderId);
+        return SimpleResult.optimistic();
+    }
+
+    /**
+     * 顾客取消订单
+     *
+     * @param orderId
+     * @param customerId
+     * @return
+     */
+    @POST
+    @Path("/cancel")
+    public Map<String, Object> cancel(@FormParam("orderId") Long orderId, @HeaderParam("customerId") Long customerId) {
+        if (orderId == null)
+            return SimpleResult.pessimistic(4004, "参数[orderId]不能为空");
+        Order order = orderService.get(orderId);
+        if (!order.getCustomer().getId().equals(customerId))
+            return SimpleResult.pessimistic(4009, "订单不属于当前顾客：customerId = {}, orderId = {}", customerId, orderId);
+        if (!order.getStatus().equals(Character.valueOf('1')) && !order.getStatus().equals(Character.valueOf('2')))
+            return SimpleResult.pessimistic(4010, "订单当前状态无法执行该操作：orderId = {}, status = {}", orderId, order.getStatus());
+        orderService.cancel(orderId);
         return SimpleResult.optimistic();
     }
 

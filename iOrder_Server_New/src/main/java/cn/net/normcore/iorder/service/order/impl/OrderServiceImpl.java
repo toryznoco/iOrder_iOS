@@ -235,4 +235,31 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Long, OrderReposito
         return orders;
     }
 
+    @Override
+    @Transactional
+    public void cancel(Long orderId) {
+        Order order = get(orderId);
+        order.setCancelTime(new Date());
+        order.setStatus(Character.valueOf('0'));
+        save(order);
+    }
+
+    @Override
+    @Transactional
+    public void receive(Long orderId) {
+        Order order = get(orderId);
+        order.setReceiveTime(new Date());
+        order.setStatus(Character.valueOf('3'));
+        save(order);
+    }
+
+    @Override
+    @Transactional
+    public void complete(Long orderId) {
+        Order order = get(orderId);
+        order.setCompleteTime(new Date());
+        order.setStatus(Character.valueOf('4'));
+        save(order);
+    }
+
 }

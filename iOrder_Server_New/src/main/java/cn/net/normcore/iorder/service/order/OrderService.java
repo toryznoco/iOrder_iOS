@@ -95,4 +95,25 @@ public interface OrderService extends BaseService<Order, Long> {
      * @return
      */
     List<Order> findShopAll(Long shopmanId);
+
+    /**
+     * 取消订单
+     *
+     * @param orderId
+     */
+    void cancel(Long orderId);
+
+    /**
+     * 接单
+     *
+     * @param orderId
+     */
+    void receive(Long orderId);
+
+    /**
+     * 制作完成，通知取餐
+     *
+     * @param orderId
+     */
+    void complete(Long orderId);
 }

@@ -25,7 +25,7 @@ public class SimpleResult {
         if (args != null && args.length > 0) {
             for (Object o :
                     args) {
-                message = message.replace("{}", o.toString());
+                message = message.replaceFirst("\\{}", o.toString());
             }
         }
         return optimistic(message);
@@ -43,7 +43,7 @@ public class SimpleResult {
         if (args != null && args.length > 0) {
             for (Object o :
                     args) {
-                message = message.replace("{}", o.toString());
+                message = message.replaceFirst("\\{}", o.toString());
             }
         }
         return pessimistic(code, message);

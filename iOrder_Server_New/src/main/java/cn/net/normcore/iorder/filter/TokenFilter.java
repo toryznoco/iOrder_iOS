@@ -11,7 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
+import javax.ws.rs.container.PreMatching;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Response;
 import java.io.IOException;
 
 /**
@@ -35,14 +37,22 @@ public class TokenFilter implements ContainerRequestFilter {
         }
         //TOKEN格式错误
         if (tokenValue == null || tokenValue.length() != 32) {
-            response.sendRedirect("/api/basic/token/error");
+            requestContext.abortWith(Response.status(Response.Status.OK).entity("{\n" +
+                    "  \"result\": false,\n" +
+                    "  \"code\": 4001,\n" +
+                    "  \"message\": \"TOKEN格式错误\"\n" +
+                    "}").build());
             return;
         }
         //查询缓存中的TOKEN数据
         AccessToken accessToken = accessTokenCacheService.get(tokenValue);
         //缓存中没有查询到TOKEN或者存入TOKEN的客户端ID与当前请求客户端ID不匹配（说明TOKEN被盗用）都视为TOKEN验证失败
         if (accessToken == null || !accessToken.getClientId().equals(ClientUtils.buildClientId(request))) {
-            response.sendRedirect("/api/basic/token/invalid");
+            requestContext.abortWith(Response.status(Response.Status.OK).entity("{\n" +
+                    "  \"result\": false,\n" +
+                    "  \"code\": 4002,\n" +
+                    "  \"message\": \"TOKEN无效\"\n" +
+                    "}").build());
             return;
         }
 

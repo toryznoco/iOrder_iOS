@@ -1,51 +1,59 @@
 <h3>订单列表</h3>
-<div class="table-responsive b0"  ng-controller="OrderController as orderCon">
-   <table datatable="orderCon.loadOrders()" ng-init="orderCon.loadOrders()" class="table table-hover">
-      <thead>
-         <tr>
-            <th style="width:80px">
-               <strong>订单编号</strong>
+<div class="table-responsive b0" ng-controller="OrderController as orderCon">
+    <table datatable="ng" class="table table-hover">
+        <thead>
+        <tr>
+            <th style="width:150px">
+                <strong>订单编号</strong>
             </th>
             <th>
-               <strong>下单时间</strong>
+                <strong>下单时间</strong>
             </th>
             <th>
-               <strong>顾客姓名</strong>
+                <strong>顾客姓名</strong>
             </th>
             <th>
-               <strong>总金额</strong>
+                <strong>总金额</strong>
             </th>
             <th>
-               <strong>商品数量</strong>
-            </th>
-            <th>
-               <strong>SHIPMENT</strong>
+                <strong>商品数量</strong>
             </th>
             <th class="text-center">
-               <strong>状态</strong>
+                <strong>状态</strong>
             </th>
             <th class="text-center">
-               <strong>操作</strong>
+                <strong>操作</strong>
             </th>
-         </tr>
-      </thead>
-      <tbody>
-         <tr ng-repeat="order in orderCon.orders">
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="order in orderCon.orders">
             <td>{{order.code}}</td>
-            <td>{{order.orderTime}}</td>
+            <td>{{order.orderTime | date:'yyyy-MM-dd hh:mm:ss'}}</td>
             <td>{{order.customerName}}</td>
             <td>{{order.totalPrice}}</td>
             <td>{{order.goodsAmount}}</td>
-            <td>{{order.payTime}}</td>
             <td class="text-center">
-               <span class="label {{order.statusClass}}">{{order.status}}</span>
+                <span class="label {{order.statusClass}}">{{order.status}}</span>
             </td>
             <td class="text-center">
-               <button type="button" class="btn btn-sm btn-default">
-                  <em class="fa fa-search"></em>
-               </button>
+                <button type="button" title="查看订单" class="btn btn-sm btn-default">
+                    <em class="fa fa-search"></em>
+                </button>
+                <button ng-show="order.options.receive" ng-click="orderCon.receiveOrder(order.id)" title="接单"
+                        type="button" class="btn btn-sm btn-primary">
+                    <em class="fa fa-check"></em>
+                </button>
+                <button ng-show="order.options.complete" ng-click="orderCon.completeOrder(order.id)" type="button"
+                        title="通知取餐" class="btn btn-sm btn-success">
+                    <em style="width: 13px;" class="fa fa-spoon"></em>
+                </button>
+                <button ng-show="order.options.cancel" ng-click="orderCon.cancelOrder(order.id)" type="button"
+                        title="取消订单" class="btn btn-sm btn-danger">
+                    <em class="fa fa-reply"></em>
+                </button>
             </td>
-         </tr>
-      </tbody>
-   </table>
+        </tr>
+        </tbody>
+    </table>
 </div>

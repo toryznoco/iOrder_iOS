@@ -29,7 +29,9 @@ public class RefreshTokenCacheService {
     }
 
     public void delete(String key) {
-        template.delete(get(key).getAccessToken());
+        RefreshToken savedRefreshToken = get(key);
+        if (savedRefreshToken != null)
+            template.delete(get(key).getAccessToken());
         template.delete(key);
     }
 

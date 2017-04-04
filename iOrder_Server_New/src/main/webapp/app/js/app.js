@@ -2642,7 +2642,7 @@
     function appRun($rootScope, $state, $stateParams, $window, $templateCache, Colors, $localStorage) {
         //用户信息，account: 登陆名, accessToken，refreshToken
         $rootScope.currentUser = {};
-        $rootScope.currentUser.token = $rootScope.currentUser['token'];
+        $rootScope.currentUser.token = $localStorage['token'];
 
         // Set reference to access them from any scope
         $rootScope.$state = $state;
@@ -2706,7 +2706,7 @@
 
         //token过期
         $rootScope.$on('userIntercepted', function (errorType) {
-            $state.go("page.login", {from: fromState.name, note: 'tokenTimeOut'});//跳转到登录界面
+            $state.go("page.login", {from: $state.current.name, note: errorType});//跳转到登录界面
         });
 
         // Load a title dynamically
@@ -6997,12 +6997,6 @@
                                 $rootScope.currentUser.account = vm.user.account;
                                 $rootScope.currentUser.token = response.data.token;
                                 $state.go('app.dashboard');
-                                $http.get("api/web/shopman/info").then(function (response) {
-                                    var u = response.data.shopman;
-                                    $rootScope.currentUser.realName = u.realName;
-                                    $rootScope.currentUser.shopName = u.shopName;
-                                    $rootScope.currentUser.picture = 'app/img/user/02.jpg';
-                                });
                                 $localStorage['token'] = $rootScope.currentUser.token;
                             }
                         }, function () {
@@ -8541,11 +8535,21 @@
 
     UserBlockController.$inject = ['$rootScope', '$scope', '$http', '$state'];
     function UserBlockController($rootScope, $scope, $http, $state) {
+        var vm = this;
         activate();
 
         ////////////////
 
         function activate() {
+            vm.getUserInfo = function () {
+                $http.get("api/web/shopman/info").then(function (response) {
+                    var u = response.data.shopman;
+                    $rootScope.currentUser.realName = u.realName;
+                    $rootScope.currentUser.shopName = u.shopName;
+                    $rootScope.currentUser.picture = 'app/img/user/02.jpg';
+                });
+            }
+
             $rootScope.logout = function () {
                 $http.post("api/web/shopman/logout").then(function (response) {
                     if (response.data.result) {
@@ -10177,8 +10181,8 @@
         .module('app.orders')
         .controller('OrderController', OrderController);
 
-    OrderController.$inject = ['DTOptionsBuilder', 'DTColumnDefBuilder', '$http'];
-    function OrderController(DTOptionsBuilder, DTColumnDefBuilder, $http) {
+    OrderController.$inject = ['DTOptionsBuilder', 'DTColumnDefBuilder', '$resource', '$http', '$state'];
+    function OrderController(DTOptionsBuilder, DTColumnDefBuilder, $resource, $http, $state) {
         var vm = this;
 
         activate();
@@ -10187,43 +10191,67 @@
 
         function activate() {
 
-            // Ajax
-            vm.orders = [];
-            vm.loadOrders = function () {
-                return vm.orders.length ? null : $http.get('api/web/order/list').success(function (data) {
-                        vm.orders = data.orders;
-                        $.each(vm.orders, function (index, order) {
-                            if (order.status == 0) {
-                                order.status = '已取消';
-                                order.statusClass = 'label-inverse';
-                            }
-                            if (order.status == 1) {
-                                order.status = '未支付';
-                                order.statusClass = 'label-info';
-                            }
-                            if (order.status == 2) {
-                                order.status = '待接单';
-                                order.statusClass = 'label-success';
-                            }
-                            if (order.status == 3) {
-                                order.status = '待发货';
-                                order.statusClass = 'label-success';
-                            }
-                            if (order.status == 4) {
-                                order.status = '待收货';
-                                order.statusClass = 'label-purple';
-                            }
-                            if (order.status == 5) {
-                                order.status = '待评价';
-                                order.statusClass = 'label-purple';
-                            }
-                            if (order.status == 6) {
-                                order.status = '已完成';
-                                order.statusClass = 'label-purple';
-                            }
-                        });
-                    });
+            vm.receiveOrder = function (orderId) {
+                $http.post('api/web/order/receive', {orderId: orderId}).success(function (data) {
+                    if (data.code == 2000) {
+                        $state.reload();
+                    }
+                });
+            };
+
+            vm.completeOrder = function (orderId) {
+                $http.post('api/web/order/complete', {orderId: orderId}).success(function (data) {
+                    if (data.code == 2000) {
+                        $state.reload();
+                    }
+                });
             }
+
+            vm.cancelOrder = function (orderId) {
+                $http.post('api/web/order/cancel', {orderId: orderId}).success(function (data) {
+                    if (data.code == 2000) {
+                        $state.reload();
+                    }
+                });
+            }
+
+            $resource('api/web/order/list').query().$promise.then(function (data) {
+                vm.orders = data;
+                $.each(vm.orders, function (index, order) {
+                    if (order.status == 0) {
+                        order.status = '已取消';
+                        order.statusClass = 'label-inverse';
+                        order.options = {};
+                    }
+                    if (order.status == 1) {
+                        order.status = '未支付';
+                        order.statusClass = 'label-info';
+                        order.options = {cancel: true};
+                    }
+                    if (order.status == 2) {
+                        order.status = '待接单';
+                        order.statusClass = 'label-success';
+                        order.options = {receive: true, cancel: true};
+                    }
+                    if (order.status == 3) {
+                        order.status = '待发货';
+                        order.statusClass = 'label-success';
+                        order.options = {complete: true, cancel: true};
+                    }
+                    if (order.status == 4) {
+                        order.status = '待收货';
+                        order.statusClass = 'label-purple';
+                    }
+                    if (order.status == 5) {
+                        order.status = '待评价';
+                        order.statusClass = 'label-purple';
+                    }
+                    if (order.status == 6) {
+                        order.status = '已完成';
+                        order.statusClass = 'label-purple';
+                    }
+                });
+            });
 
             vm.dtOptions = DTOptionsBuilder.newOptions().withPaginationType('full_numbers');
             vm.dtColumnDefs = [

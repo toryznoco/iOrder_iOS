@@ -35,6 +35,7 @@ public class Shop extends BaseEntity {
     private Boolean payOnline;  //是否支持在线支付
     private int distance;  //距离
     private boolean isTodaySigned;  //今日是否已签到
+    private Shopman shopman;  //店铺账号
     private List<IBeacon> iBeacons;  //店铺的IBeacon列表
     private List<GoodsCategory> goodsCategories;  //店铺的商品分类列表
     private List<Goods> goods;  //店铺的商品列表
@@ -216,6 +217,15 @@ public class Shop extends BaseEntity {
 
     public void setTodaySigned(boolean todaySigned) {
         isTodaySigned = todaySigned;
+    }
+
+    @OneToOne(mappedBy = "shop", fetch = FetchType.LAZY, optional = false)
+    public Shopman getShopman() {
+        return shopman;
+    }
+
+    public void setShopman(Shopman shopman) {
+        this.shopman = shopman;
     }
 
     @OneToMany(mappedBy = "shop", fetch = FetchType.LAZY)
