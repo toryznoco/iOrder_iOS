@@ -12,7 +12,6 @@
 
 @class IOShop;
 
-#pragma mark - interface IOHomeCell
 @interface IOHomeCell : UITableViewCell
 
 /**
@@ -29,8 +28,6 @@
 
 @end
 
-
-#pragma mark - interface IOHomeShopStarView
 @interface IOHomeShopStarView : UIView
 
 /**
@@ -39,8 +36,6 @@
 @property (nonatomic, assign) float startCount;
 
 @end
-
-#pragma mark - interface IOHomeCellHeaderView
 
 @interface IOHomeCellHeaderView : UIView
 

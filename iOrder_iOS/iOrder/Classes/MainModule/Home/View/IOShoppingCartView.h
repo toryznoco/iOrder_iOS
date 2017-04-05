@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-#pragma mark - interface IOBadgeView
 @interface IOBadgeView : UIButton
 
 /**
@@ -18,9 +17,10 @@
 
 @end
 
-
-#pragma mark - interface IOShoppingView
 @class IOShoppingCartView;
+
+#pragma mark - IOShoppingCartViewDelegate
+
 @protocol IOShoppingCartViewDelegate <NSObject>
 
 - (void)shoppingCartView:(IOShoppingCartView *)shoppingCartView checkOutBtnClick:(UIButton *)btn;

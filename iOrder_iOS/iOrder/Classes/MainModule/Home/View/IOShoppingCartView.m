@@ -12,11 +12,9 @@
 
 #define kBadgeViewFont [UIFont systemFontOfSize:11]
 
-
-#pragma mark - implementation IOBadgeView
 @implementation IOBadgeView
 
-#pragma mark - privacy
+#pragma mark - 系统回调函数
 
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
@@ -30,7 +28,7 @@
     return self;
 }
 
-#pragma mark - public
+#pragma mark - 属性赋值方法
 
 - (void)setBadgeValue:(NSString *)badgeValue {
     _badgeValue = badgeValue;
@@ -60,11 +58,9 @@
 
 @end
 
-
-#pragma mark - implementation IOShoppingCartView
 @implementation IOShoppingCartView
 
-#pragma mark - privacy
+#pragma mark - 系统回调函数
 
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
@@ -77,6 +73,8 @@
     }
     return self;
 }
+
+#pragma mark - 设置界面相关函数
 
 - (void)setupAllChildViewWith:(CGRect)frame {
     UIButton *shoppingCarBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -120,7 +118,7 @@
     [checkOutBtn addTarget:self action:@selector(clickedCheckOut:) forControlEvents:UIControlEventTouchUpInside];
 }
 
-#pragma mark - public
+#pragma mark - 属性赋值方法
 
 - (void)setTotalPri:(CGFloat)totalPri {
     if (totalPri == 0.00) {
@@ -137,7 +135,7 @@
     _totalPrice.text = [NSString stringWithFormat:@"¥ %.2f", totalPri];
 }
 
-#pragma mark - custom method
+#pragma mark - 事件监听函数
 
 - (void)clickedCheckOut:(UIButton *)btn {
     if ([self.delegate respondsToSelector:@selector(shoppingCartView:checkOutBtnClick:)]) {
