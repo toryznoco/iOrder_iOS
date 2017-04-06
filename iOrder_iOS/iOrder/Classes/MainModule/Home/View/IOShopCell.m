@@ -251,9 +251,10 @@
         }
     }
     
-    if ([_delegate respondsToSelector:@selector(shopRightCell:dishPrice:clickedBtn:)]) {
-        [_delegate shopRightCell:self dishPrice:_dish.nowPrice clickedBtn:btn];
+    if ([_delegate respondsToSelector:@selector(shopRightCell:dishInfo:clickedBtn:)]) {
+        [_delegate shopRightCell:self dishInfo:self.dish clickedBtn:btn];
     }
+//    [_delegate shopRightCell:self dishPrice:_dish.nowPrice clickedBtn:btn];
 }
 
 @end

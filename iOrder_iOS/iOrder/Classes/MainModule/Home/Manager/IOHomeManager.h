@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class IOLoginResult, IODishesResult, IOShoppingCartParam, IOShoppingCartResult;
+@class IOLoginResult, IODishesResult, IOShoppingCartParam, IOShoppingCartResult, IOShoppingCartAddParam, IOShoppingCartAddResult, IOShoppingCartDropParam, IOShoppingCartDropResult;
 
 @interface IOHomeManager : NSObject
 
@@ -45,5 +45,23 @@
  *  @param failure 请求失败的时候回调，错误传递给外界
  */
 + (void)loadShoppingCartInfosWithShopId:(IOShoppingCartParam *_Nullable)param Success:(void(^_Nullable)(IOShoppingCartResult * _Nullable result))success failure:(void(^_Nullable)(NSError * _Nullable error))failure;
+
+/**
+ *  添加选好的菜品到购物车中
+ *
+ *  @param param    添加选好的菜品的参数
+ *  @param success  成功添加到购物车时的返回参数
+ *  @param failure  失败添加到购物车时的返回参数
+ */
++ (void)addDishToShoppingCartWithParam:(IOShoppingCartAddParam *_Nullable)param success:(void(^_Nullable)(IOShoppingCartAddResult * _Nullable result))success failure:(void(^_Nullable)(NSError * _Nullable error))failure;
+
+/**
+ *  移除购物车中的菜品
+ *
+ *  @param param    移除购物车中的菜品的参数
+ *  @param success  成功移除购物车中的菜品时
+ *  @param failure  失败移除购物车中的菜品时
+ */
++ (void)dropDishFromShoppingCartWithParam:(IOShoppingCartDropParam *_Nullable)param success:(void(^_Nullable)(IOShoppingCartDropResult * _Nullable result))success failure:(void(^_Nullable)(NSError * _Nullable error))failure;
 
 @end

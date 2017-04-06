@@ -21,11 +21,17 @@
 #import "IODishInfo.h"
 #import "IOShoppingCartParam.h"
 #import "IOShoppingCartResult.h"
+#import "IOShoppingCartAddParam.h"
+#import "IOShoppingCartAddResult.h"
+#import "IOShoppingCartDropParam.h"
+#import "IOShoppingCartDropResult.h"
 
 #define kIOHTTPRefreshTokenUrl @"app/customer/refreshToken"
 #define kIOHTTPNearbyShopsUrl @"app/shop/near"
 #define kIOHTTPShopDishesUrl @"app/shop/goods"
 #define kIOHTTPShoppingCartUrl @"app/order/cart"
+#define kIOHTTPShoppingCartAddUrl @"app/order/cart/add"
+#define kIOHTTPShoppingCartDropUrl @"app/order/cart/drop"
 
 @implementation IOHomeManager
 
@@ -173,6 +179,50 @@
         }
         result.items = tempArr;
         
+        if (success) {
+            success(result);
+        }
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
+/**
+ *  添加选好的菜品到购物车中
+ *
+ *  @param param    添加选好的菜品的参数
+ *  @param success  成功添加到购物车时的返回参数
+ *  @param failure  失败添加到购物车时的返回参数
+ */
++ (void)addDishToShoppingCartWithParam:(IOShoppingCartAddParam *)param success:(void (^)(IOShoppingCartAddResult * _Nullable))success failure:(void (^)(NSError * _Nullable))failure {
+    NSString *urlStr = [NSString stringWithFormat:@"%@%@", kIOHTTPBaseUrl, kIOHTTPShoppingCartAddUrl];
+    
+    [IONetworkTool tokenPOST:urlStr parameters:param.mj_keyValues success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObj) {
+        IOShoppingCartAddResult *result = [IOShoppingCartAddResult mj_objectWithKeyValues:responseObj];
+        if (success) {
+            success(result);
+        }
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
+/**
+ *  移除购物车中的菜品
+ *
+ *  @param param    移除购物车中的菜品的参数
+ *  @param success  成功移除购物车中的菜品时
+ *  @param failure  失败移除购物车中的菜品时
+ */
++ (void)dropDishFromShoppingCartWithParam:(IOShoppingCartDropParam *)param success:(void (^)(IOShoppingCartDropResult * _Nullable))success failure:(void (^)(NSError * _Nullable))failure {
+    NSString *urlStr = [NSString stringWithFormat:@"%@%@", kIOHTTPBaseUrl, kIOHTTPShoppingCartDropUrl];
+    
+    [IONetworkTool tokenPOST:urlStr parameters:param.mj_keyValues success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObj) {
+        IOShoppingCartDropResult *result = [IOShoppingCartDropResult mj_objectWithKeyValues:responseObj];
         if (success) {
             success(result);
         }

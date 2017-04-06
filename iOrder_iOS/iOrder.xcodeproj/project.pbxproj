@@ -104,6 +104,10 @@
 		9ADFA8541E88DE1E006E465A /* IOHTTPBaseParam.m in Sources */ = {isa = PBXBuildFile; fileRef = 9ADFA8531E88DE1E006E465A /* IOHTTPBaseParam.m */; };
 		9ADFA8571E88DFEE006E465A /* IORegisterResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 9ADFA8561E88DFEE006E465A /* IORegisterResult.m */; };
 		CA41C87A1D2BF0C90092921E /* UIView+Masonry_YWJ.m in Sources */ = {isa = PBXBuildFile; fileRef = CA41C8791D2BF0C90092921E /* UIView+Masonry_YWJ.m */; };
+		CA4EDB951E96659600034929 /* IOShoppingCartAddResult.m in Sources */ = {isa = PBXBuildFile; fileRef = CA4EDB941E96659600034929 /* IOShoppingCartAddResult.m */; };
+		CA4EDB981E9665C800034929 /* IOShoppingCartAddParam.m in Sources */ = {isa = PBXBuildFile; fileRef = CA4EDB971E9665C800034929 /* IOShoppingCartAddParam.m */; };
+		CA4EDB9B1E9665E200034929 /* IOShoppingCartDropParam.m in Sources */ = {isa = PBXBuildFile; fileRef = CA4EDB9A1E9665E200034929 /* IOShoppingCartDropParam.m */; };
+		CA4EDBA11E9674AC00034929 /* IOShoppingCartDropResult.m in Sources */ = {isa = PBXBuildFile; fileRef = CA4EDBA01E9674AC00034929 /* IOShoppingCartDropResult.m */; };
 		CA7069CB1CE5F564007C5F3F /* UIBarButtonItem+IOBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = CA7069CA1CE5F564007C5F3F /* UIBarButtonItem+IOBarButtonItem.m */; };
 		CA77859A1E8FA26700CAFC5A /* IODishesParam.m in Sources */ = {isa = PBXBuildFile; fileRef = CA7785991E8FA26700CAFC5A /* IODishesParam.m */; };
 		CA77859D1E8FA29200CAFC5A /* IODishesResult.m in Sources */ = {isa = PBXBuildFile; fileRef = CA77859C1E8FA29200CAFC5A /* IODishesResult.m */; };
@@ -338,6 +342,14 @@
 		AE9A5F02F74FC6AF7AEC81FD /* libPods-iOrderTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-iOrderTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA41C8781D2BF0C90092921E /* UIView+Masonry_YWJ.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Masonry_YWJ.h"; sourceTree = "<group>"; };
 		CA41C8791D2BF0C90092921E /* UIView+Masonry_YWJ.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Masonry_YWJ.m"; sourceTree = "<group>"; };
+		CA4EDB931E96659600034929 /* IOShoppingCartAddResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOShoppingCartAddResult.h; sourceTree = "<group>"; };
+		CA4EDB941E96659600034929 /* IOShoppingCartAddResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOShoppingCartAddResult.m; sourceTree = "<group>"; };
+		CA4EDB961E9665C800034929 /* IOShoppingCartAddParam.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOShoppingCartAddParam.h; sourceTree = "<group>"; };
+		CA4EDB971E9665C800034929 /* IOShoppingCartAddParam.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOShoppingCartAddParam.m; sourceTree = "<group>"; };
+		CA4EDB991E9665E200034929 /* IOShoppingCartDropParam.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOShoppingCartDropParam.h; sourceTree = "<group>"; };
+		CA4EDB9A1E9665E200034929 /* IOShoppingCartDropParam.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOShoppingCartDropParam.m; sourceTree = "<group>"; };
+		CA4EDB9F1E9674AC00034929 /* IOShoppingCartDropResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOShoppingCartDropResult.h; sourceTree = "<group>"; };
+		CA4EDBA01E9674AC00034929 /* IOShoppingCartDropResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOShoppingCartDropResult.m; sourceTree = "<group>"; };
 		CA7069C91CE5F564007C5F3F /* UIBarButtonItem+IOBarButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBarButtonItem+IOBarButtonItem.h"; sourceTree = "<group>"; };
 		CA7069CA1CE5F564007C5F3F /* UIBarButtonItem+IOBarButtonItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBarButtonItem+IOBarButtonItem.m"; sourceTree = "<group>"; };
 		CA7785981E8FA26700CAFC5A /* IODishesParam.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IODishesParam.h; sourceTree = "<group>"; };
@@ -528,6 +540,14 @@
 				CAF65F891E9520BA00454332 /* IOShoppingCartParam.m */,
 				CAF65F8B1E9520CB00454332 /* IOShoppingCartResult.h */,
 				CAF65F8C1E9520CB00454332 /* IOShoppingCartResult.m */,
+				CA4EDB931E96659600034929 /* IOShoppingCartAddResult.h */,
+				CA4EDB941E96659600034929 /* IOShoppingCartAddResult.m */,
+				CA4EDB961E9665C800034929 /* IOShoppingCartAddParam.h */,
+				CA4EDB971E9665C800034929 /* IOShoppingCartAddParam.m */,
+				CA4EDB991E9665E200034929 /* IOShoppingCartDropParam.h */,
+				CA4EDB9A1E9665E200034929 /* IOShoppingCartDropParam.m */,
+				CA4EDB9F1E9674AC00034929 /* IOShoppingCartDropResult.h */,
+				CA4EDBA01E9674AC00034929 /* IOShoppingCartDropResult.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1505,6 +1525,7 @@
 				9A41DC991E915782006192FF /* IOGetDishParam.m in Sources */,
 				9A3963E51E82482E000E2E40 /* YWJShopsTool.m in Sources */,
 				9A1BFDCA1E6EA8DE00A0007F /* IODishInfo.m in Sources */,
+				CA4EDB981E9665C800034929 /* IOShoppingCartAddParam.m in Sources */,
 				9A20FE951E88B05C00CF0006 /* NSDictionary+TRPropertyCode.m in Sources */,
 				9A1BFDC51E6EA8DE00A0007F /* IODishViewController.m in Sources */,
 				9A1BFDD61E6EA8DE00A0007F /* IOShoppingCartView.m in Sources */,
@@ -1521,6 +1542,7 @@
 				9A1BFDC31E6EA8DE00A0007F /* IONewFeatureViewController.m in Sources */,
 				9A41DC8D1E8E47F7006192FF /* IOOrderLayout.m in Sources */,
 				9A3963E41E82482E000E2E40 /* YWJShopsResult.m in Sources */,
+				CA4EDB951E96659600034929 /* IOShoppingCartAddResult.m in Sources */,
 				9A3963E81E82482E000E2E40 /* IOTransmitters.m in Sources */,
 				9ADFA84D1E88DCAC006E465A /* IOHTTPBaseResult.m in Sources */,
 				9A1BFDCD1E6EA8DE00A0007F /* IOShoppingCartInfo.m in Sources */,
@@ -1565,11 +1587,13 @@
 				9A1BFDD91E6EA8DE00A0007F /* IOSubmitCell.m in Sources */,
 				CAF65F8A1E9520BA00454332 /* IOShoppingCartParam.m in Sources */,
 				CAF60A771E8A619500291D90 /* MBProgressHUD.m in Sources */,
+				CA4EDB9B1E9665E200034929 /* IOShoppingCartDropParam.m in Sources */,
 				9A1BFDCE1E6EA8DE00A0007F /* IOShoppingViewInfo.m in Sources */,
 				9AC08D701E39F3C600D728AD /* main.m in Sources */,
 				CA7069CB1CE5F564007C5F3F /* UIBarButtonItem+IOBarButtonItem.m in Sources */,
 				CA77AD631E8B4E2F000FCB80 /* IOInputTextField.m in Sources */,
 				9A1BFDFB1E6EA98100A0007F /* IORegisterViewController.m in Sources */,
+				CA4EDBA11E9674AC00034929 /* IOShoppingCartDropResult.m in Sources */,
 				9A1BFDC61E6EA8DE00A0007F /* IOHomeViewController.m in Sources */,
 				9A1BFDCB1E6EA8DE00A0007F /* IOShop.m in Sources */,
 				9A3963D61E82482E000E2E40 /* YWJLoginParam.m in Sources */,

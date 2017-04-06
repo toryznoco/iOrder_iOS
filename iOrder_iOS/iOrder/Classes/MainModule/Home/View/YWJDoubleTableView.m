@@ -10,7 +10,11 @@
 
 #import "IOShopCell.h"
 #import "IODishInfo.h"
-#import "YWJShoppingCartTool.h"
+#import "IOHomeManager.h"
+#import "IOShoppingCartAddParam.h"
+#import "IOShoppingCartAddResult.h"
+#import "IOShoppingCartDropParam.h"
+#import "IOShoppingCartDropResult.h"
 
 #define kScale 0.25
 
@@ -187,26 +191,46 @@
     _isRelate = YES;
 }
 
-#pragma mark shop right cell delegate
+#pragma mark IOShopRightCellDelegate
 
-- (void)shopRightCell:(IOShopRightCell *)shopRightCell dishPrice:(float)dishPrice clickedBtn:(UIButton *)btn {
+- (void)shopRightCell:(IOShopRightCell *)shopRightCell dishInfo:(IODish *)dishInfo clickedBtn:(UIButton *)btn {
     if (btn.tag == 1) {
-        [YWJShoppingCartTool addDishToShoppingCartWithUserId:1 dishesId:shopRightCell.dish.goodsId amount:1 success:^{
-            IOLog(@"成功");
-        } failure:^(NSError *error) {
+        IOShoppingCartAddParam *param = [[IOShoppingCartAddParam alloc] init];
+        param.goodsId = dishInfo.goodsId;
+        param.amount = 1;
+        [IOHomeManager addDishToShoppingCartWithParam:param success:^(IOShoppingCartAddResult * _Nullable result) {
+            if (result.code == 2000) {
+                IOLog(@"添加成功");
+            }
+        } failure:^(NSError * _Nullable error) {
             IOLog(@"%@", error);
         }];
-    } else {
+//        [YWJShoppingCartTool addDishToShoppingCartWithUserId:1 dishesId:shopRightCell.dish.goodsId amount:1 success:^{
+//            IOLog(@"成功");
+//        } failure:^(NSError *error) {
+//            IOLog(@"%@", error);
+//        }];
         
-        [YWJShoppingCartTool removeDishFromShoppingCartWithUserId:1 dishesId:shopRightCell.dish.goodsId amount:1 success:^{
-            IOLog(@"移除");
-        } failure:^(NSError *error) {
+    } else {
+        IOShoppingCartDropParam *param = [[IOShoppingCartDropParam alloc] init];
+        param.goodsId = dishInfo.goodsId;
+        param.amount = 1;
+        [IOHomeManager dropDishFromShoppingCartWithParam:param success:^(IOShoppingCartDropResult * _Nullable result) {
+            if (result.code == 2000) {
+                IOLog(@"移除成功");
+            }
+        } failure:^(NSError * _Nullable error) {
             IOLog(@"%@", error);
         }];
+//        [YWJShoppingCartTool removeDishFromShoppingCartWithUserId:1 dishesId:shopRightCell.dish.goodsId amount:1 success:^{
+//            IOLog(@"移除");
+//        } failure:^(NSError *error) {
+//            IOLog(@"%@", error);
+//        }];
     }
     
     if ([self.delegate respondsToSelector:@selector(doubleTableView:dishPrice:clickedBtn:)]) {
-        [self.delegate doubleTableView:self dishPrice:dishPrice clickedBtn:btn];
+        [self.delegate doubleTableView:self dishPrice:dishInfo.nowPrice clickedBtn:btn];
     }
 }
 

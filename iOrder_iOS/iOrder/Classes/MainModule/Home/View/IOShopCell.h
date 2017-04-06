@@ -14,7 +14,7 @@
 #pragma mark - interface IOShopMenuCell
 @protocol IOShopRightCellDelegate <NSObject>
 
-- (void)shopRightCell:(IOShopRightCell *)shopRightCell dishPrice:(float)dishPrice clickedBtn:(UIButton *)btn;
+- (void)shopRightCell:(IOShopRightCell *)shopRightCell dishInfo:(IODish *)dishInfo clickedBtn:(UIButton *)btn;
 
 @end
 
