@@ -1,14 +1,14 @@
 //
-//  IODishesParam.h
+//  IOShoppingCartParam.h
 //  iOrder
 //
-//  Created by 易无解 on 01/04/2017.
+//  Created by 易无解 on 05/04/2017.
 //  Copyright © 2017 normcore. All rights reserved.
 //
 
 #import "IOHTTPBaseParam.h"
 
-@interface IODishesParam : IOHTTPBaseParam<MJKeyValue>
+@interface IOShoppingCartParam : IOHTTPBaseParam<MJKeyValue>
 
 /**
  *  商铺ID，唯一标识

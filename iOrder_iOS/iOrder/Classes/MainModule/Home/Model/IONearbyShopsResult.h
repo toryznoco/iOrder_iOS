@@ -8,7 +8,7 @@
 
 #import "IOHTTPBaseResult.h"
 @class IOShop;
-@interface IONearbyShopsResult : IOHTTPBaseResult
+@interface IONearbyShopsResult : IOHTTPBaseResult<MJKeyValue>
 
 /** 附近的店铺 */
 @property (nonatomic, strong) NSArray<IOShop *> *nearShops;

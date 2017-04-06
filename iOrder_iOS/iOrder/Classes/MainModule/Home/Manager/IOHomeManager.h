@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class IOLoginResult, IODishesResult;
+@class IOLoginResult, IODishesResult, IOShoppingCartParam, IOShoppingCartResult;
 
 @interface IOHomeManager : NSObject
 
@@ -37,5 +37,13 @@
  */
 + (void)loadShopDishesWithShopId:(NSInteger)shopId Success:(void(^_Nullable)(IODishesResult * _Nullable dishesResult))success failure:(void(^_Nullable)(NSError * _Nullable error))failure;
 
+/**
+ *  请求商店内所有菜的数据
+ *
+ *  @param shopId 店铺的id
+ *  @param success 请求成功的时候回调
+ *  @param failure 请求失败的时候回调，错误传递给外界
+ */
++ (void)loadShoppingCartInfosWithShopId:(IOShoppingCartParam *_Nullable)param Success:(void(^_Nullable)(IOShoppingCartResult * _Nullable result))success failure:(void(^_Nullable)(NSError * _Nullable error))failure;
 
 @end

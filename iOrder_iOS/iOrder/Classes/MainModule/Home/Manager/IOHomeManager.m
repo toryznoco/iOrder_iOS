@@ -19,10 +19,13 @@
 #import "IODishesParam.h"
 #import "IODishesResult.h"
 #import "IODishInfo.h"
+#import "IOShoppingCartParam.h"
+#import "IOShoppingCartResult.h"
 
 #define kIOHTTPRefreshTokenUrl @"app/customer/refreshToken"
 #define kIOHTTPNearbyShopsUrl @"app/shop/near"
 #define kIOHTTPShopDishesUrl @"app/shop/goods"
+#define kIOHTTPShoppingCartUrl @"app/order/cart"
 
 @implementation IOHomeManager
 
@@ -135,6 +138,41 @@
             [tempArr1 addObject:category];
         }
         result.categories = tempArr1;
+        if (success) {
+            success(result);
+        }
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
+/**
+ *  请求商店内所有菜的数据
+ *
+ *  @param shopId 店铺的id
+ *  @param success 请求成功的时候回调
+ *  @param failure 请求失败的时候回调，错误传递给外界
+ */
+
++ (void)loadShoppingCartInfosWithShopId:(IOShoppingCartParam *)param Success:(void (^)(IOShoppingCartResult * _Nullable))success failure:(void (^)(NSError * _Nullable))failure {
+    NSString *urlStr = [NSString stringWithFormat:@"%@%@", kIOHTTPBaseUrl, kIOHTTPShoppingCartUrl];
+    
+    [IONetworkTool tokenGET:urlStr parameters:param.mj_keyValues success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObj) {
+        IOShoppingCartResult *result = [IOShoppingCartResult mj_objectWithKeyValues:responseObj];
+        NSMutableArray *tempArr = [NSMutableArray array];
+        for (NSDictionary *dic in result.items) {
+            IOShoppingCartItem *item = [IOShoppingCartItem mj_objectWithKeyValues:dic];
+            NSMutableArray *tempArr1 = [NSMutableArray array];
+            for (NSDictionary *dic1 in item.goods) {
+                IODish *dish = [IODish mj_objectWithKeyValues:dic1];
+                [tempArr1 addObject:dish];
+            }
+            item.goods = tempArr1;
+        }
+        result.items = tempArr;
+        
         if (success) {
             success(result);
         }

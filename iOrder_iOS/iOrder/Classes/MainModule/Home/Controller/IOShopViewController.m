@@ -29,6 +29,8 @@
 #import "IOHomeManager.h"
 #import "IODishesParam.h"
 #import "IODishesResult.h"
+#import "IOShoppingCartParam.h"
+#import "IOShoppingCartResult.h"
 
 #define kHeaderHeight 136
 
@@ -37,7 +39,7 @@
 @property (nonatomic, strong) NSArray *dataArray;
 @property (nonatomic, strong) NSMutableArray *dishInfos;
 @property (nonatomic, weak) NSMutableArray *subViewArray;
-@property (nonatomic, strong) IOShoppingCartInfo *shoppingCartInfo;
+@property (nonatomic, strong) IOShoppingCartResult *shoppingCartInfo;
 
 @property (nonatomic, weak) IOShopHeaderView *shopHeaderView;
 @property (nonatomic, weak) YWJDoubleTableView *doubleTableView;
@@ -97,7 +99,7 @@
     //    初始化数组和加载数据
     [self dishInfos];
     [self loadDishInfosWithShopId:self.shopId];
-//    [self loadShoppingCartInfosWithUserId:1 shopId:_shopId];
+    [self loadShoppingCartInfosWithShopId:_shopId];
 }
 
 - (void)setupSegmentScrollView {//设置SegmentScrollView及其内容
@@ -161,22 +163,15 @@
     }];
 }
 
-- (void)loadShoppingCartInfosWithUserId:(NSInteger)userId shopId:(NSInteger)shopId {
-    [YWJShoppingCartTool newShoppingCartInfosWithUserId:userId shopId:shopId Success:^(YWJShoppingCartInfoResult *shoppingCartInfos) {
-        IOShoppingCartInfo *shoppingCartInfo = [[IOShoppingCartInfo alloc] init];
-        shoppingCartInfo.totalPri = shoppingCartInfos.totalPri;
-        
-        NSMutableArray *itemsArray = [NSMutableArray array];
-        for (NSDictionary *dic in shoppingCartInfos.itmes) {
-            IOShoppingCartDishesInfo *dishesInfo = [IOShoppingCartDishesInfo mj_objectWithKeyValues:dic];
-            [itemsArray addObject:dishesInfo];
-        }
-        
-        shoppingCartInfo.itmes = itemsArray;
-        _shoppingCartInfo = shoppingCartInfo;
-        _shoppingCartView.totalPri = _shoppingCartInfo.totalPri;
-        NSLog(@"%ld %f", shoppingCartInfo.itmes.count, _shoppingCartInfo.totalPri);
-    } failure:^(NSError *error) {
+- (void)loadShoppingCartInfosWithShopId:(NSInteger)shopId {
+    IOShoppingCartParam *param = [[IOShoppingCartParam alloc] init];
+    param.shopId = shopId;
+    __weak typeof(self) weakSelf = self;
+    [IOHomeManager loadShoppingCartInfosWithShopId:param Success:^(IOShoppingCartResult * _Nullable result) {
+        weakSelf.shoppingCartInfo = result;
+        weakSelf.shoppingCartView.totalPri = result.totalPrice;
+        NSLog(@"%ld %f", result.items.count, result.totalPrice);
+    } failure:^(NSError * _Nullable error) {
         IOLog(@"%@", error);
     }];
 }
@@ -257,12 +252,12 @@
 
 - (void)submitViewController:(IOSubmitViewController *)submitVc isPaySuccessful:(BOOL)suc{
     if (suc == YES) {
-//        if (_dishInfos.count != 0) {
-//            [_dishInfos removeAllObjects];
-            [_shoppingCartInfo.itmes removeAllObjects];
-            _shoppingCartInfo.totalPri = 0;
+        if (_dishInfos.count != 0) {
+            [_dishInfos removeAllObjects];
+            [_shoppingCartInfo.items removeAllObjects];
+            _shoppingCartInfo.totalPrice = 0;
             [self refreshView];
-//        }
+        }
     }
 }
 

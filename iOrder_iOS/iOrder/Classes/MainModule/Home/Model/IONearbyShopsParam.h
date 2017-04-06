@@ -8,7 +8,7 @@
 
 #import "IOHTTPBaseParam.h"
 
-@interface IONearbyShopsParam : IOHTTPBaseParam
+@interface IONearbyShopsParam : IOHTTPBaseParam<MJKeyValue>
 
 /** 经度 */
 @property (nonatomic, assign) double lng;

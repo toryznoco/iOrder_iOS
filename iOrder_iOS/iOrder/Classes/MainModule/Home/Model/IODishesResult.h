@@ -9,7 +9,7 @@
 #import "IOHTTPBaseResult.h"
 @class IODish;
 
-@interface IODishesResult : IOHTTPBaseResult
+@interface IODishesResult : IOHTTPBaseResult<MJKeyValue>
 
 /** 商品列表 */
 @property (nonatomic, strong) NSArray<IODish *> *goods;

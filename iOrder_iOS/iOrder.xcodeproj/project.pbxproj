@@ -113,6 +113,8 @@
 		CAE8F0811CB94170005618B0 /* UIView+YWJFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F0641CB94170005618B0 /* UIView+YWJFrame.m */; };
 		CAE8F0861CB9417F005618B0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CAE8F0851CB9417F005618B0 /* Assets.xcassets */; };
 		CAF60A771E8A619500291D90 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = CAF60A761E8A619500291D90 /* MBProgressHUD.m */; };
+		CAF65F8A1E9520BA00454332 /* IOShoppingCartParam.m in Sources */ = {isa = PBXBuildFile; fileRef = CAF65F891E9520BA00454332 /* IOShoppingCartParam.m */; };
+		CAF65F8D1E9520CB00454332 /* IOShoppingCartResult.m in Sources */ = {isa = PBXBuildFile; fileRef = CAF65F8C1E9520CB00454332 /* IOShoppingCartResult.m */; };
 		CFEA7B973FA4FE6762466625 /* libPods-iOrder.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 565EF0A881111C2576CC81D4 /* libPods-iOrder.a */; };
 /* End PBXBuildFile section */
 
@@ -357,6 +359,10 @@
 		CAE8F0851CB9417F005618B0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CAF60A751E8A619500291D90 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		CAF60A761E8A619500291D90 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
+		CAF65F881E9520BA00454332 /* IOShoppingCartParam.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOShoppingCartParam.h; sourceTree = "<group>"; };
+		CAF65F891E9520BA00454332 /* IOShoppingCartParam.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOShoppingCartParam.m; sourceTree = "<group>"; };
+		CAF65F8B1E9520CB00454332 /* IOShoppingCartResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOShoppingCartResult.h; sourceTree = "<group>"; };
+		CAF65F8C1E9520CB00454332 /* IOShoppingCartResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOShoppingCartResult.m; sourceTree = "<group>"; };
 		E54237A12030477D4B151FF1 /* Pods-iOrder.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOrder.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iOrder/Pods-iOrder.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -518,6 +524,10 @@
 				CA7785991E8FA26700CAFC5A /* IODishesParam.m */,
 				CA77859B1E8FA29200CAFC5A /* IODishesResult.h */,
 				CA77859C1E8FA29200CAFC5A /* IODishesResult.m */,
+				CAF65F881E9520BA00454332 /* IOShoppingCartParam.h */,
+				CAF65F891E9520BA00454332 /* IOShoppingCartParam.m */,
+				CAF65F8B1E9520CB00454332 /* IOShoppingCartResult.h */,
+				CAF65F8C1E9520CB00454332 /* IOShoppingCartResult.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1544,6 +1554,7 @@
 				9A1BFDCC1E6EA8DE00A0007F /* IOShopDetailCellInfo.m in Sources */,
 				9ADFA84F1E88DCAC006E465A /* YWJBadgeView.m in Sources */,
 				9A1BFDC41E6EA8DE00A0007F /* YWJNewFeatureScrollPage.m in Sources */,
+				CAF65F8D1E9520CB00454332 /* IOShoppingCartResult.m in Sources */,
 				9A2B872D1E83A8F2006DCD53 /* IOError.m in Sources */,
 				9A3963E61E82482E000E2E40 /* YWJSubmitOrderParam.m in Sources */,
 				9A1BFDEE1E6EA8DE00A0007F /* IOProfileViewController.m in Sources */,
@@ -1552,6 +1563,7 @@
 				9A1BFDD31E6EA8DE00A0007F /* IOShopDetail.m in Sources */,
 				9A2B873C1E83CC77006DCD53 /* IORegisterParam.m in Sources */,
 				9A1BFDD91E6EA8DE00A0007F /* IOSubmitCell.m in Sources */,
+				CAF65F8A1E9520BA00454332 /* IOShoppingCartParam.m in Sources */,
 				CAF60A771E8A619500291D90 /* MBProgressHUD.m in Sources */,
 				9A1BFDCE1E6EA8DE00A0007F /* IOShoppingViewInfo.m in Sources */,
 				9AC08D701E39F3C600D728AD /* main.m in Sources */,
