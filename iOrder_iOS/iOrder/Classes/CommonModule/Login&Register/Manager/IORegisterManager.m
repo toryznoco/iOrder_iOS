@@ -9,7 +9,6 @@
 #import "IORegisterManager.h"
 #import "IORegisterParam.h"
 #import "IORegisterResult.h"
-#import "IOHttpTool.h"
 #import "IONetworkTool.h"
 
 #define kIOHTTPRegisterUrl @"app/customer/register"
