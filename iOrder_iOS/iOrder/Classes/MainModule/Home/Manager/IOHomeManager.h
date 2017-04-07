@@ -8,13 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
-@class IOLoginResult, IODishesResult, IOShoppingCartParam, IOShoppingCartResult, IOShoppingCartAddParam, IOShoppingCartAddResult, IOShoppingCartDropParam, IOShoppingCartDropResult;
+@class IOLoginResult, IODishesResult, IOShoppingCartParam, IOShoppingCartResult, IOShoppingCartAddParam, IOShoppingCartAddResult, IOShoppingCartDropParam, IOShoppingCartDropResult, IOOrderGenerateParam, IOOrderGenerateResult;
 
 @interface IOHomeManager : NSObject
 
 /**
  刷新本地存储的accessToken和refreshToken
-
+ 
  @param success 刷新成功的回调
  @param failure 刷新失败的回调
  */
@@ -63,5 +63,14 @@
  *  @param failure  失败移除购物车中的菜品时
  */
 + (void)dropDishFromShoppingCartWithParam:(IOShoppingCartDropParam *_Nullable)param success:(void(^_Nullable)(IOShoppingCartDropResult * _Nullable result))success failure:(void(^_Nullable)(NSError * _Nullable error))failure;
+
+/**
+ *  提交订单数据
+ *
+ *  @param param    请求参数
+ *  @param success  提交成功时的返回结果
+ *  @param failure  提交失败时的返回结果
+ */
++ (void)submitOrderWithParam:(IOOrderGenerateParam *_Nullable)param success:(void(^_Nullable)(IOOrderGenerateResult * _Nullable result))success failure:(void(^_Nullable)(NSError * _Nullable error))failure;
 
 @end

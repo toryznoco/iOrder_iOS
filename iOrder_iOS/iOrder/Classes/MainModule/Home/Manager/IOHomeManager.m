@@ -25,6 +25,8 @@
 #import "IOShoppingCartAddResult.h"
 #import "IOShoppingCartDropParam.h"
 #import "IOShoppingCartDropResult.h"
+#import "IOOrderGenerateParam.h"
+#import "IOOrderGenerateResult.h"
 
 #define kIOHTTPRefreshTokenUrl @"app/customer/refreshToken"
 #define kIOHTTPNearbyShopsUrl @"app/shop/near"
@@ -32,6 +34,7 @@
 #define kIOHTTPShoppingCartUrl @"app/order/cart"
 #define kIOHTTPShoppingCartAddUrl @"app/order/cart/add"
 #define kIOHTTPShoppingCartDropUrl @"app/order/cart/drop"
+#define kIOHTTPOrderGenerateUrl @"app/order/generate"
 
 @implementation IOHomeManager
 
@@ -223,6 +226,28 @@
     
     [IONetworkTool tokenPOST:urlStr parameters:param.mj_keyValues success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObj) {
         IOShoppingCartDropResult *result = [IOShoppingCartDropResult mj_objectWithKeyValues:responseObj];
+        if (success) {
+            success(result);
+        }
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
+/**
+ *  提交订单数据
+ *
+ *  @param param    请求参数
+ *  @param success  提交成功时的返回结果
+ *  @param failure  提交失败时的返回结果
+ */
++ (void)submitOrderWithParam:(IOOrderGenerateParam *)param success:(void (^)(IOOrderGenerateResult * _Nullable))success failure:(void (^)(NSError * _Nullable))failure {
+    NSString *urlStr = [NSString stringWithFormat:@"%@%@", kIOHTTPBaseUrl, kIOHTTPOrderGenerateUrl];
+    
+    [IONetworkTool tokenPOST:urlStr parameters:param.mj_keyValues success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObj) {
+        IOOrderGenerateResult *result = [IOOrderGenerateResult mj_objectWithKeyValues:responseObj];
         if (success) {
             success(result);
         }

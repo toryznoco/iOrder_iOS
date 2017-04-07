@@ -15,6 +15,9 @@
 
 #import "YWJSubmitOrderTool.h"
 #import "IOShop.h"
+#import "IOHomeManager.h"
+#import "IOOrderGenerateParam.h"
+#import "IOOrderGenerateResult.h"
 
 @interface IOSubmitViewController ()<UITableViewDataSource, UITableViewDelegate, IOSubmitOrderViewDelegate, UIAlertViewDelegate>
 
@@ -173,7 +176,7 @@
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"确认支付" message:nil delegate:self cancelButtonTitle:@"否" otherButtonTitles:@"是", nil];
     
     [alertView show];
-//    [self.navigationController popViewControllerAnimated:YES];
+    //    [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark - UIAlertViewDelegate
@@ -182,7 +185,7 @@
     if (buttonIndex == 1) {
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         hud.label.text = NSLocalizedString(@"支付中...", @"HUD preparing title");
-        
+        __weak typeof(self) weakSelf = self;
         dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
             [self doSomeWork];
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -200,9 +203,14 @@
                     if ([_delegate respondsToSelector:@selector(submitViewController:isPaySuccessful:)]) {
                         [_delegate submitViewController:self isPaySuccessful:YES];
                     }
-                    [YWJSubmitOrderTool submitOrderWithUserId:1 shopId:_shopInfo.shopId couponId:0 success:^{
-                        IOLog(@"提交成功");
-                    } failure:^(NSError *error) {
+                    IOOrderGenerateParam *param = [[IOOrderGenerateParam alloc] init];
+                    param.shopId = weakSelf.shopInfo.shopId;
+                    param.couponId = 0;
+                    [IOHomeManager submitOrderWithParam:param success:^(IOOrderGenerateResult * _Nullable result) {
+                        if (result.code == 2000) {
+                            IOLog(@"提交成功");
+                        }
+                    } failure:^(NSError * _Nullable error) {
                         IOLog(@"%@", error);
                     }];
                     [self.navigationController popViewControllerAnimated:YES];
