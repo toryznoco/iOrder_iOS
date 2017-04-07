@@ -121,7 +121,14 @@
 #pragma mark - 属性赋值方法
 
 - (void)setTotalPri:(CGFloat)totalPri {
-    if (totalPri == 0.00) {
+    if (totalPri == 0.000000) {
+        
+        _checkOutBtn.enabled = NO;
+        _checkOutView.backgroundColor = [UIColor lightGrayColor];
+        _shoppingCarBtn.enabled = NO;
+        _totalPrice.textColor = [UIColor lightGrayColor];
+        _badge.badgeValue = @"0";
+        _totalPrice.text = @"购物车是空的";
         return;
     }
     

@@ -28,8 +28,11 @@
 #import "IODishesResult.h"
 #import "IOShoppingCartParam.h"
 #import "IOShoppingCartResult.h"
+#import "MJRefresh.h"
 
 #define kHeaderHeight 136
+
+extern BOOL ifNeededRefreshToken;
 
 @interface IOShopViewController ()<YWJDoubleTableViewDelegate, IOShoppingCartViewDelegate, IOSubmitViewControllerDelegate>
 
@@ -74,8 +77,9 @@
     self.view.backgroundColor = [UIColor whiteColor];
     
     [self setupNavigationView];
-    [self refreshView];
+//    [self refreshView];
     
+    [self dishInfos];
     
     [self setupShopHeaderView];
     
@@ -112,6 +116,7 @@
     doubleTableView.delegate = self;
     _doubleTableView = doubleTableView;
     [orderView addSubview:doubleTableView];
+    
     //    b、添加购物车view
     IOShoppingCartView *shoppingCartView = [[IOShoppingCartView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(doubleTableView.frame), orderView.width, 54)];
     shoppingCartView.delegate = self;
@@ -129,6 +134,18 @@
     //    4、添加SegmentScrollView以便左右滑动
     IOSegmentScrollView *scrollView = [[IOSegmentScrollView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(_shopHeaderView.frame), self.view.width, self.view.height - kHeaderHeight) titleArray:@[@"点菜", @"评价", @"店铺详情"] contentViewArray:subViewArray];
     [self.view addSubview:scrollView];
+    
+//    5.刷新数据
+    __weak typeof(self) weakSelf = self;
+    doubleTableView.rightTableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        if (ifNeededRefreshToken) {
+            [weakSelf refreshToken];
+        } else {
+            [weakSelf loadShopAndShoppingCartData];
+        }
+    }];
+    [doubleTableView.rightTableView.mj_header beginRefreshing];
+    
 }
 
 - (void)setupShopHeaderView {
@@ -151,10 +168,32 @@
 
 #pragma mark - 数据请求相关函数
 
+
+- (void)refreshToken {
+    __weak typeof(self) weakSelf = self;
+    [IOHomeManager refreshTokenSuccess: ^{
+        // 刷新token并保存成功
+        ifNeededRefreshToken = NO;
+        
+        // 开始请求数据
+        [weakSelf loadShopAndShoppingCartData];
+        
+    } failure:^(NSError * _Nonnull error) {
+        IOLog(@"%@", error);
+    }];
+}
+
+- (void)loadShopAndShoppingCartData {
+    [self loadDishInfosWithShopId:self.shopId];
+    [self loadShoppingCartInfosWithShopId:self.shopId];
+    [self.doubleTableView.rightTableView.mj_header endRefreshing];
+}
+
 - (void)loadDishInfosWithShopId:(NSInteger)shopId {
+    __weak typeof(self) weakSelf = self;
     [IOHomeManager loadShopDishesWithShopId:shopId Success:^(IODishesResult * _Nullable dishesResult) {
-        [_dishInfos addObjectsFromArray:dishesResult.categories];
-        _doubleTableView.dishInfos = _dishInfos;
+        [weakSelf.dishInfos addObjectsFromArray:dishesResult.categories];
+        weakSelf.doubleTableView.dishInfos = _dishInfos;
     } failure:^(NSError * _Nullable error) {
         IOLog(@"%@", error);
     }];
@@ -253,7 +292,8 @@
             [_dishInfos removeAllObjects];
             [_shoppingCartInfo.items removeAllObjects];
             _shoppingCartInfo.totalPrice = 0;
-            [self refreshView];
+            NSLog(@"----++++");
+            [self.doubleTableView.rightTableView.mj_header beginRefreshing];
         }
     }
 }
