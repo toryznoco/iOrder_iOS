@@ -13,7 +13,6 @@
 #import "IOSubmitOrderView.h"
 #import "IOSubmitCell.h"
 
-#import "YWJSubmitOrderTool.h"
 #import "IOShop.h"
 #import "IOHomeManager.h"
 #import "IOOrderGenerateParam.h"
