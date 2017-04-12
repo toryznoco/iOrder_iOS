@@ -284,7 +284,7 @@ extern BOOL ifNeededRefreshToken;
 }
 
 - (void)shoppingCartView:(IOShoppingCartView *)shoppingCartView shoppingCartBtnClick:(UIButton *)btn {
-    NSLog(@"shoppingCartBtnClick");
+    NSLog(@"shoppingCartBtnClick--");
 }
 
 #pragma mark - IOSubmitViewControllerDelegate
