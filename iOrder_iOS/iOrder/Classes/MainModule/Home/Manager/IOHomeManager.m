@@ -179,6 +179,7 @@
                 [tempArr1 addObject:dish];
             }
             item.goods = tempArr1;
+            [tempArr addObject:item];
         }
         result.items = tempArr;
         

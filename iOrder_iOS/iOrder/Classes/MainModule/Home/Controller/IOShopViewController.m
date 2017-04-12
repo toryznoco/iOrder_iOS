@@ -206,7 +206,7 @@ extern BOOL ifNeededRefreshToken;
     [IOHomeManager loadShoppingCartInfosWithShopId:param Success:^(IOShoppingCartResult * _Nullable result) {
         weakSelf.shoppingCartInfo = result;
         weakSelf.shoppingCartView.totalPri = result.totalPrice;
-        NSLog(@"%ld %f", result.items.count, result.totalPrice);
+        weakSelf.shoppingCartView.badge.badgeValue = [NSString stringWithFormat:@"%ld", result.items.count];
     } failure:^(NSError * _Nullable error) {
         IOLog(@"%@", error);
     }];
