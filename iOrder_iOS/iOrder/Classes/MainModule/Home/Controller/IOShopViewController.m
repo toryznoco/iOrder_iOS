@@ -77,7 +77,6 @@ extern BOOL ifNeededRefreshToken;
     self.view.backgroundColor = [UIColor whiteColor];
     
     [self setupNavigationView];
-//    [self refreshView];
     
     [self dishInfos];
     
@@ -282,6 +281,10 @@ extern BOOL ifNeededRefreshToken;
     _doubleTableView.rightTableView.dataSource = nil;
     
     [self.navigationController pushViewController:submitVc animated:YES];
+}
+
+- (void)shoppingCartView:(IOShoppingCartView *)shoppingCartView shoppingCartBtnClick:(UIButton *)btn {
+    NSLog(@"shoppingCartBtnClick");
 }
 
 #pragma mark - IOSubmitViewControllerDelegate

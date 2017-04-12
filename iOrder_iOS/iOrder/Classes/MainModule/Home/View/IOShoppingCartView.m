@@ -84,6 +84,7 @@
     shoppingCarBtn.clipsToBounds = YES;
     [shoppingCarBtn setImage:[UIImage imageNamed:@"shopping_car"] forState:UIControlStateDisabled];
     [shoppingCarBtn setImage:[UIImage imageNamed:@"shopping_car_heilighted"] forState:UIControlStateNormal];
+    [shoppingCarBtn addTarget:self action:@selector(shoppingCarBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:shoppingCarBtn];
     _shoppingCarBtn = shoppingCarBtn;
     
@@ -147,6 +148,12 @@
 - (void)clickedCheckOut:(UIButton *)btn {
     if ([self.delegate respondsToSelector:@selector(shoppingCartView:checkOutBtnClick:)]) {
         [self.delegate shoppingCartView:self checkOutBtnClick:btn];
+    }
+}
+
+- (void)shoppingCarBtnClick:(UIButton *)btn {
+    if ([self.delegate respondsToSelector:@selector(shoppingCartView:shoppingCartBtnClick:)]) {
+        [self.delegate shoppingCartView:self shoppingCartBtnClick:btn];
     }
 }
 

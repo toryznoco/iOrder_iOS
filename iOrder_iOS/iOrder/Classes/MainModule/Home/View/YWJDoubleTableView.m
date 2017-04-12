@@ -205,11 +205,6 @@
         } failure:^(NSError * _Nullable error) {
             IOLog(@"%@", error);
         }];
-//        [YWJShoppingCartTool addDishToShoppingCartWithUserId:1 dishesId:shopRightCell.dish.goodsId amount:1 success:^{
-//            IOLog(@"成功");
-//        } failure:^(NSError *error) {
-//            IOLog(@"%@", error);
-//        }];
         
     } else {
         IOShoppingCartDropParam *param = [[IOShoppingCartDropParam alloc] init];
@@ -222,11 +217,6 @@
         } failure:^(NSError * _Nullable error) {
             IOLog(@"%@", error);
         }];
-//        [YWJShoppingCartTool removeDishFromShoppingCartWithUserId:1 dishesId:shopRightCell.dish.goodsId amount:1 success:^{
-//            IOLog(@"移除");
-//        } failure:^(NSError *error) {
-//            IOLog(@"%@", error);
-//        }];
     }
     
     if ([self.delegate respondsToSelector:@selector(doubleTableView:dishPrice:clickedBtn:)]) {

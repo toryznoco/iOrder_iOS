@@ -24,6 +24,7 @@
 @protocol IOShoppingCartViewDelegate <NSObject>
 
 - (void)shoppingCartView:(IOShoppingCartView *)shoppingCartView checkOutBtnClick:(UIButton *)btn;
+- (void)shoppingCartView:(IOShoppingCartView *)shoppingCartView shoppingCartBtnClick:(UIButton *)btn;
 
 @end
 
