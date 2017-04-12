@@ -292,7 +292,6 @@ extern BOOL ifNeededRefreshToken;
             [_dishInfos removeAllObjects];
             [_shoppingCartInfo.items removeAllObjects];
             _shoppingCartInfo.totalPrice = 0;
-            NSLog(@"----++++");
             [self.doubleTableView.rightTableView.mj_header beginRefreshing];
         }
     }
