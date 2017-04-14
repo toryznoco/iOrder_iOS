@@ -202,22 +202,29 @@ Singleton_implementation(Manager)
 #pragma mark - ABBeaconManagerDelegate
 // 进入区域
 - (void)beaconManager:(ABBeaconManager *)manager didEnterRegion:(ABBeaconRegion *)region {
-    isInRegion = YES;
-    IOLog(@"进入区域了");
-    NSString *contentBody = [NSString localizedUserNotificationStringForKey:@"欢迎进入点餐区域！"
-                                                                  arguments:nil];
+    // 只有之前不在区域内时才提示进入区域
+    if (isInRegion == NO) {
+        isInRegion = YES;
+        IOLog(@"进入区域了");
+        NSString *contentBody = [NSString localizedUserNotificationStringForKey:@"欢迎进入点餐区域！"
+                                                                      arguments:nil];
+        
+        [self pushNotificationWithContentBody:contentBody identifier:@"EnterRegion"];
+    }
     
-    [self pushNotificationWithContentBody:contentBody identifier:@"EnterRegion"];
 }
 
 // 退出区域
 - (void)beaconManager:(ABBeaconManager *)manager didExitRegion:(ABBeaconRegion *)region {
-    isInRegion = NO;
-    IOLog(@"退出区域了");
-    NSString *contentBody= [NSString localizedUserNotificationStringForKey:@"您已退出点餐区域，欢迎下次再来！"
-                                                                 arguments:nil];
-    
-    [self pushNotificationWithContentBody:contentBody identifier:@"ExitRegion"];
+    // 只有之前在区域内时才提示推出区域
+    if (isInRegion == YES) {
+        isInRegion = NO;
+        IOLog(@"退出区域了");
+        NSString *contentBody= [NSString localizedUserNotificationStringForKey:@"您已退出点餐区域，欢迎下次再来！"
+                                                                     arguments:nil];
+        
+        [self pushNotificationWithContentBody:contentBody identifier:@"ExitRegion"];
+    }
 }
 
 // 监听失败
