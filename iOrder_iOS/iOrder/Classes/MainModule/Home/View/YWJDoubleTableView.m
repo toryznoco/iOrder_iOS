@@ -4,7 +4,7 @@
 //
 //  Created by 易无解 on 5/17/16.
 //  Copyright © 2016 normcore. All rights reserved.
-//  
+//
 
 #import "YWJDoubleTableView.h"
 
@@ -201,6 +201,9 @@
         [IOHomeManager addDishToShoppingCartWithParam:param success:^(IOShoppingCartAddResult * _Nullable result) {
             if (result.code == 2000) {
                 IOLog(@"添加成功");
+                if ([self.delegate respondsToSelector:@selector(doubleTableView:dishPrice:clickedBtn:)]) {
+                    [self.delegate doubleTableView:self dishPrice:dishInfo.nowPrice clickedBtn:btn];
+                }
             }
         } failure:^(NSError * _Nullable error) {
             IOLog(@"%@", error);
@@ -213,14 +216,13 @@
         [IOHomeManager dropDishFromShoppingCartWithParam:param success:^(IOShoppingCartDropResult * _Nullable result) {
             if (result.code == 2000) {
                 IOLog(@"移除成功");
+                if ([self.delegate respondsToSelector:@selector(doubleTableView:dishPrice:clickedBtn:)]) {
+                    [self.delegate doubleTableView:self dishPrice:dishInfo.nowPrice clickedBtn:btn];
+                }
             }
         } failure:^(NSError * _Nullable error) {
             IOLog(@"%@", error);
         }];
-    }
-    
-    if ([self.delegate respondsToSelector:@selector(doubleTableView:dishPrice:clickedBtn:)]) {
-        [self.delegate doubleTableView:self dishPrice:dishInfo.nowPrice clickedBtn:btn];
     }
 }
 

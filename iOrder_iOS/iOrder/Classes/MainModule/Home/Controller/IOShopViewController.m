@@ -10,6 +10,8 @@
 #import "IODishViewController.h"
 #import "IOSingInViewController.h"
 #import "IOSubmitViewController.h"
+#import "IOShoppingCartViewController.h"
+#import "IOShoppingCartAnimator.h"
 
 #import "IOShopCell.h"
 
@@ -34,7 +36,7 @@
 
 extern BOOL ifNeededRefreshToken;
 
-@interface IOShopViewController ()<YWJDoubleTableViewDelegate, IOShoppingCartViewDelegate, IOSubmitViewControllerDelegate>
+@interface IOShopViewController ()<YWJDoubleTableViewDelegate, IOShoppingCartViewDelegate, IOSubmitViewControllerDelegate, IOshoppingCartViewControllerDelegate>
 
 @property (nonatomic, strong) NSArray *dataArray;
 @property (nonatomic, strong) NSMutableArray *dishInfos;
@@ -44,6 +46,8 @@ extern BOOL ifNeededRefreshToken;
 @property (nonatomic, weak) IOShopHeaderView *shopHeaderView;
 @property (nonatomic, weak) YWJDoubleTableView *doubleTableView;
 @property (nonatomic, weak) IOShoppingCartView *shoppingCartView;
+@property (nonatomic, strong) IOShoppingCartAnimator *shoppingCartAnimator;
+@property (nonatomic, assign) CGRect shoppingCartVcFrame;
 
 @end
 
@@ -134,7 +138,7 @@ extern BOOL ifNeededRefreshToken;
     IOSegmentScrollView *scrollView = [[IOSegmentScrollView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(_shopHeaderView.frame), self.view.width, self.view.height - kHeaderHeight) titleArray:@[@"点菜", @"评价", @"店铺详情"] contentViewArray:subViewArray];
     [self.view addSubview:scrollView];
     
-//    5.刷新数据
+    //    5.刷新数据
     __weak typeof(self) weakSelf = self;
     doubleTableView.rightTableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         if (ifNeededRefreshToken) {
@@ -244,27 +248,7 @@ extern BOOL ifNeededRefreshToken;
 #pragma mark - DoubleTableViewDelegate
 
 - (void)doubleTableView:(UIView *)doubleTableView dishPrice:(float)dishPrice clickedBtn:(UIButton *)btn {
-    if (btn.tag == 1) {
-                _shoppingCartView.checkOutView.backgroundColor = [UIColor orangeColor];
-                _shoppingCartView.shoppingCarBtn.enabled = YES;
-                _shoppingCartView.totalPrice.textColor = [UIColor greenColor];
-                if ([_shoppingCartView.totalPrice.text isEqualToString:@"购物车是空的"]) {
-                    _shoppingCartView.totalPrice.text = @"0.00";
-                    _shoppingCartView.checkOutBtn.enabled = YES;
-                }
-                _shoppingCartView.badge.badgeValue = [NSString stringWithFormat:@"%lld", [_shoppingCartView.badge.badgeValue longLongValue] + 1];
-                _shoppingCartView.totalPrice.text = [NSString stringWithFormat:@"¥ %.2f", ([[_shoppingCartView.totalPrice.text substringFromIndex:1] floatValue] + dishPrice)];
-    } else {
-                _shoppingCartView.badge.badgeValue = [NSString stringWithFormat:@"%lld", [_shoppingCartView.badge.badgeValue longLongValue] - 1];
-                _shoppingCartView.totalPrice.text = [NSString stringWithFormat:@"¥ %.2f", ([[_shoppingCartView.totalPrice.text substringFromIndex:1] floatValue] - dishPrice)];
-                if ([_shoppingCartView.totalPrice.text isEqualToString:@"¥ 0.00"]) {
-                    _shoppingCartView.checkOutBtn.enabled = NO;
-                    _shoppingCartView.checkOutView.backgroundColor = [UIColor lightGrayColor];
-                    _shoppingCartView.shoppingCarBtn.enabled = NO;
-                    _shoppingCartView.totalPrice.textColor = [UIColor lightGrayColor];
-                    _shoppingCartView.totalPrice.text = @"购物车是空的";
-                }
-    }
+    [self loadShoppingCartInfosWithShopId:self.shopId];
 }
 
 #pragma mark - IOShoppingCartViewDelegate
@@ -274,7 +258,7 @@ extern BOOL ifNeededRefreshToken;
     submitVc.delegate = self;
     submitVc.totalPrice = shoppingCartView.totalPrice.text;
     
-//    将doubleTableView的代理设为空
+    //    将doubleTableView的代理设为空
     _doubleTableView.leftTableView.delegate = nil;
     _doubleTableView.leftTableView.dataSource = nil;
     _doubleTableView.rightTableView.delegate = nil;
@@ -284,7 +268,30 @@ extern BOOL ifNeededRefreshToken;
 }
 
 - (void)shoppingCartView:(IOShoppingCartView *)shoppingCartView shoppingCartBtnClick:(UIButton *)btn {
-    NSLog(@"shoppingCartBtnClick--");
+    
+    //    1.创建控制器
+    IOShoppingCartViewController *shoppingCartVc = [[IOShoppingCartViewController alloc] init];
+    shoppingCartVc.shoppingCartInfo = self.shoppingCartInfo;
+    shoppingCartVc.delegate = self;
+    
+    //    2.设置控制器的modal样式
+    shoppingCartVc.modalPresentationStyle = UIModalPresentationCustom;
+    
+    //    3.设置转场代理
+    IOShoppingCartAnimator *shoppingCartAnimator = [[IOShoppingCartAnimator alloc] initWithCallBack:^(BOOL presented) {
+        self.shoppingCartView.shoppingCarBtn.selected = presented;
+    }];
+    self.shoppingCartAnimator = shoppingCartAnimator;
+    CGFloat shoppingCartHeight = self.shoppingCartInfo.items.count * 44;
+    if (shoppingCartHeight > 250) {
+        shoppingCartHeight = 250;
+    }
+    CGRect tempFrame = CGRectMake(0, IOScreenHeight - 54 - 44 - shoppingCartHeight, IOScreenWidth, shoppingCartHeight + 44);
+    shoppingCartAnimator.presentedFrame = tempFrame;
+    shoppingCartVc.transitioningDelegate = shoppingCartAnimator;
+    
+    //    4.弹出控制器
+    [self.navigationController presentViewController:shoppingCartVc animated:YES completion:nil];
 }
 
 #pragma mark - IOSubmitViewControllerDelegate
@@ -298,6 +305,13 @@ extern BOOL ifNeededRefreshToken;
             [self.doubleTableView.rightTableView.mj_header beginRefreshing];
         }
     }
+}
+
+#pragma mark - IOshoppingCartViewControllerDelegate
+
+- (void)shoppingCartViewController:(IOShoppingCartViewController *)shoppingCartVc dishItem:(IOShoppingCartItem *)item clickedBtn:(UIButton *)btn {
+    [self loadShoppingCartInfosWithShopId:self.shopId];
+    [self.doubleTableView.rightTableView reloadData];
 }
 
 @end

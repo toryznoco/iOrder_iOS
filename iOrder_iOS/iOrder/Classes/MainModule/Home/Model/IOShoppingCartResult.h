@@ -8,6 +8,8 @@
 
 #import "IOHTTPBaseResult.h"
 
+@class IODish;
+
 @interface IOShoppingCartResult : IOHTTPBaseResult<MJKeyValue>
 
 /** 所有订单项的总金额 */
@@ -39,6 +41,6 @@
 @property (nonatomic, assign) CGFloat totalPrice;
 
 /** 订单项商品信息 */
-@property (nonatomic, strong) NSMutableArray *goods;
+@property (nonatomic, strong) IODish *goods;
 
 @end

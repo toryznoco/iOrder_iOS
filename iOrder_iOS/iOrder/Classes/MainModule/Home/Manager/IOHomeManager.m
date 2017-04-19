@@ -173,12 +173,6 @@
         NSMutableArray *tempArr = [NSMutableArray array];
         for (NSDictionary *dic in result.items) {
             IOShoppingCartItem *item = [IOShoppingCartItem mj_objectWithKeyValues:dic];
-            NSMutableArray *tempArr1 = [NSMutableArray array];
-            for (NSDictionary *dic1 in item.goods) {
-                IODish *dish = [IODish mj_objectWithKeyValues:dic1];
-                [tempArr1 addObject:dish];
-            }
-            item.goods = tempArr1;
             [tempArr addObject:item];
         }
         result.items = tempArr;
