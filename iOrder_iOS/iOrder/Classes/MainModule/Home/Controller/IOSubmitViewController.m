@@ -33,7 +33,7 @@
     [super viewDidLoad];
     
     self.view.backgroundColor = IORGBColor(245, 245, 245, 1);
-    
+    *(_isRefresh) = YES;
     [self setupNavigationItem];
     
     [self setupTableView];

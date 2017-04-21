@@ -48,6 +48,7 @@ extern BOOL ifNeededRefreshToken;
 @property (nonatomic, weak) IOShoppingCartView *shoppingCartView;
 @property (nonatomic, strong) IOShoppingCartAnimator *shoppingCartAnimator;
 @property (nonatomic, assign) CGRect shoppingCartVcFrame;
+@property (nonatomic, assign) BOOL isRefresh;
 
 @end
 
@@ -65,6 +66,14 @@ extern BOOL ifNeededRefreshToken;
 
 #pragma mark - 系统回调函数
 
+- (instancetype)init {
+    if (self = [super init]) {
+        _isRefresh = NO;
+    }
+    
+    return self;
+}
+
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
@@ -73,6 +82,11 @@ extern BOOL ifNeededRefreshToken;
     //去除导航栏下方的横线 透明
     [navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
     [navigationBar setShadowImage:[UIImage new]];
+    
+    if (self.isRefresh) {
+        [self loadShopAndShoppingCartData];
+        self.isRefresh = NO;
+    }
 }
 
 - (void)viewDidLoad {
@@ -254,6 +268,7 @@ extern BOOL ifNeededRefreshToken;
 #pragma mark - IOShoppingCartViewDelegate
 - (void)shoppingCartView:(IOShoppingCartView *)shoppingCartView checkOutBtnClick:(UIButton *)btn{
     IOSubmitViewController *submitVc = [[IOSubmitViewController alloc] init];
+    submitVc.isRefresh = &(_isRefresh);
     submitVc.shopInfo = self.shopInfo;
     submitVc.delegate = self;
     submitVc.totalPrice = shoppingCartView.totalPrice.text;

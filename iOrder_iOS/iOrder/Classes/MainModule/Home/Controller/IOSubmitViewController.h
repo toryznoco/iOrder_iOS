@@ -23,5 +23,6 @@
 @property (nonatomic, copy) NSString *totalPrice;
 @property (nonatomic, strong) IOShop *shopInfo;
 @property (nonatomic, weak) id<IOSubmitViewControllerDelegate> delegate;
+@property (nonatomic, assign) BOOL *isRefresh;
 
 @end
