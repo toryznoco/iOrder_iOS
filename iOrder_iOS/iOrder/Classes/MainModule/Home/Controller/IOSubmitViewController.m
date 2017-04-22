@@ -17,6 +17,9 @@
 #import "IOHomeManager.h"
 #import "IOOrderGenerateParam.h"
 #import "IOOrderGenerateResult.h"
+#import "MBProgressHUD+YWJ.h"
+
+extern BOOL isInRegion;
 
 @interface IOSubmitViewController ()<UITableViewDataSource, UITableViewDelegate, IOSubmitOrderViewDelegate, UIAlertViewDelegate>
 
@@ -172,9 +175,17 @@
 #pragma mark - IOSubmitOrderViewDelegate
 
 - (void)submitOrderView:(IOSubmitOrderView *)submitOrderView submitClicked:(UIButton *)btn {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"确认支付" message:nil delegate:self cancelButtonTitle:@"否" otherButtonTitles:@"是", nil];
-    
-    [alertView show];
+    if (isInRegion == YES) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"确认支付" message:nil delegate:self cancelButtonTitle:@"否" otherButtonTitles:@"是", nil];
+        
+        [alertView show];
+    } else {
+        [UIView animateWithDuration:3.0 animations:^{
+            [MBProgressHUD showMessage:@"请将手机移至iBeacon范围内..."];
+        } completion:^(BOOL finished) {
+            [MBProgressHUD hideHUD];
+        }];
+    }
     //    [self.navigationController popViewControllerAnimated:YES];
 }
 
