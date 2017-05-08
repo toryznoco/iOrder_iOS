@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class IOLoginResult, IODishesResult, IOShoppingCartParam, IOShoppingCartResult, IOShoppingCartAddParam, IOShoppingCartAddResult, IOShoppingCartDropParam, IOShoppingCartDropResult, IOOrderGenerateParam, IOOrderGenerateResult;
+@class IOLoginResult, IODishesResult, IOShoppingCartParam, IOShoppingCartResult, IOShoppingCartAddParam, IOShoppingCartAddResult, IOShoppingCartDropParam, IOShoppingCartDropResult, IOOrderSubmitParam, IOOrderSubmitResult;
 
 @interface IOHomeManager : NSObject
 
@@ -71,6 +71,6 @@
  *  @param success  提交成功时的返回结果
  *  @param failure  提交失败时的返回结果
  */
-+ (void)submitOrderWithParam:(IOOrderGenerateParam *_Nullable)param success:(void(^_Nullable)(IOOrderGenerateResult * _Nullable result))success failure:(void(^_Nullable)(NSError * _Nullable error))failure;
++ (void)submitOrderWithParam:(IOOrderSubmitParam *_Nullable)param success:(void(^_Nullable)(IOOrderSubmitResult * _Nullable result))success failure:(void(^_Nullable)(NSError * _Nullable error))failure;
 
 @end

@@ -75,6 +75,7 @@
 		9A41DC931E90FB28006192FF /* IOOrdersResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A41DC921E90FB28006192FF /* IOOrdersResult.m */; };
 		9A41DC961E91502A006192FF /* IOPayOrderParam.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A41DC951E91502A006192FF /* IOPayOrderParam.m */; };
 		9A41DC991E915782006192FF /* IOGetDishParam.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A41DC981E915782006192FF /* IOGetDishParam.m */; };
+		9A4EA0C11EC0877F000B4241 /* IOCancelOrderParam.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A4EA0C01EC0877F000B4241 /* IOCancelOrderParam.m */; };
 		9AC08D701E39F3C600D728AD /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AC08D6F1E39F3C600D728AD /* main.m */; };
 		9AC08D791E39F4E200D728AD /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AC08D741E39F4E200D728AD /* AppDelegate.m */; };
 		9ADFA8391E88C4F7006E465A /* IOLoginResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 9ADFA8381E88C4F7006E465A /* IOLoginResult.m */; };
@@ -87,8 +88,8 @@
 		9ADFA8511E88DCAC006E465A /* YWJTabBarButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 9ADFA84A1E88DCAB006E465A /* YWJTabBarButton.m */; };
 		9ADFA8541E88DE1E006E465A /* IOHTTPBaseParam.m in Sources */ = {isa = PBXBuildFile; fileRef = 9ADFA8531E88DE1E006E465A /* IOHTTPBaseParam.m */; };
 		9ADFA8571E88DFEE006E465A /* IORegisterResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 9ADFA8561E88DFEE006E465A /* IORegisterResult.m */; };
-		CA0DFB221E976F620098DB05 /* IOOrderGenerateParam.m in Sources */ = {isa = PBXBuildFile; fileRef = CA0DFB1F1E976F620098DB05 /* IOOrderGenerateParam.m */; };
-		CA0DFB231E976F620098DB05 /* IOOrderGenerateResult.m in Sources */ = {isa = PBXBuildFile; fileRef = CA0DFB211E976F620098DB05 /* IOOrderGenerateResult.m */; };
+		CA0DFB221E976F620098DB05 /* IOOrderSubmitParam.m in Sources */ = {isa = PBXBuildFile; fileRef = CA0DFB1F1E976F620098DB05 /* IOOrderSubmitParam.m */; };
+		CA0DFB231E976F620098DB05 /* IOOrderSubmitResult.m in Sources */ = {isa = PBXBuildFile; fileRef = CA0DFB211E976F620098DB05 /* IOOrderSubmitResult.m */; };
 		CA41C87A1D2BF0C90092921E /* UIView+Masonry_YWJ.m in Sources */ = {isa = PBXBuildFile; fileRef = CA41C8791D2BF0C90092921E /* UIView+Masonry_YWJ.m */; };
 		CA4EDB951E96659600034929 /* IOShoppingCartAddResult.m in Sources */ = {isa = PBXBuildFile; fileRef = CA4EDB941E96659600034929 /* IOShoppingCartAddResult.m */; };
 		CA4EDB981E9665C800034929 /* IOShoppingCartAddParam.m in Sources */ = {isa = PBXBuildFile; fileRef = CA4EDB971E9665C800034929 /* IOShoppingCartAddParam.m */; };
@@ -273,6 +274,8 @@
 		9A41DC951E91502A006192FF /* IOPayOrderParam.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOPayOrderParam.m; sourceTree = "<group>"; };
 		9A41DC971E915782006192FF /* IOGetDishParam.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOGetDishParam.h; sourceTree = "<group>"; };
 		9A41DC981E915782006192FF /* IOGetDishParam.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOGetDishParam.m; sourceTree = "<group>"; };
+		9A4EA0BF1EC0877F000B4241 /* IOCancelOrderParam.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOCancelOrderParam.h; sourceTree = "<group>"; };
+		9A4EA0C01EC0877F000B4241 /* IOCancelOrderParam.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOCancelOrderParam.m; sourceTree = "<group>"; };
 		9AC08D6F1E39F3C600D728AD /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		9AC08D731E39F4E200D728AD /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		9AC08D741E39F4E200D728AD /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -298,10 +301,10 @@
 		9ADFA8551E88DFEE006E465A /* IORegisterResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IORegisterResult.h; sourceTree = "<group>"; };
 		9ADFA8561E88DFEE006E465A /* IORegisterResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IORegisterResult.m; sourceTree = "<group>"; };
 		AE9A5F02F74FC6AF7AEC81FD /* libPods-iOrderTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-iOrderTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		CA0DFB1E1E976F620098DB05 /* IOOrderGenerateParam.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOOrderGenerateParam.h; sourceTree = "<group>"; };
-		CA0DFB1F1E976F620098DB05 /* IOOrderGenerateParam.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOOrderGenerateParam.m; sourceTree = "<group>"; };
-		CA0DFB201E976F620098DB05 /* IOOrderGenerateResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOOrderGenerateResult.h; sourceTree = "<group>"; };
-		CA0DFB211E976F620098DB05 /* IOOrderGenerateResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOOrderGenerateResult.m; sourceTree = "<group>"; };
+		CA0DFB1E1E976F620098DB05 /* IOOrderSubmitParam.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOOrderSubmitParam.h; sourceTree = "<group>"; };
+		CA0DFB1F1E976F620098DB05 /* IOOrderSubmitParam.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOOrderSubmitParam.m; sourceTree = "<group>"; };
+		CA0DFB201E976F620098DB05 /* IOOrderSubmitResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOOrderSubmitResult.h; sourceTree = "<group>"; };
+		CA0DFB211E976F620098DB05 /* IOOrderSubmitResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOOrderSubmitResult.m; sourceTree = "<group>"; };
 		CA41C8781D2BF0C90092921E /* UIView+Masonry_YWJ.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Masonry_YWJ.h"; sourceTree = "<group>"; };
 		CA41C8791D2BF0C90092921E /* UIView+Masonry_YWJ.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Masonry_YWJ.m"; sourceTree = "<group>"; };
 		CA4EDB931E96659600034929 /* IOShoppingCartAddResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOShoppingCartAddResult.h; sourceTree = "<group>"; };
@@ -519,10 +522,10 @@
 				CA4EDB9A1E9665E200034929 /* IOShoppingCartDropParam.m */,
 				CA4EDB9F1E9674AC00034929 /* IOShoppingCartDropResult.h */,
 				CA4EDBA01E9674AC00034929 /* IOShoppingCartDropResult.m */,
-				CA0DFB1E1E976F620098DB05 /* IOOrderGenerateParam.h */,
-				CA0DFB1F1E976F620098DB05 /* IOOrderGenerateParam.m */,
-				CA0DFB201E976F620098DB05 /* IOOrderGenerateResult.h */,
-				CA0DFB211E976F620098DB05 /* IOOrderGenerateResult.m */,
+				CA0DFB1E1E976F620098DB05 /* IOOrderSubmitParam.h */,
+				CA0DFB1F1E976F620098DB05 /* IOOrderSubmitParam.m */,
+				CA0DFB201E976F620098DB05 /* IOOrderSubmitResult.h */,
+				CA0DFB211E976F620098DB05 /* IOOrderSubmitResult.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -789,6 +792,8 @@
 				9A41DC951E91502A006192FF /* IOPayOrderParam.m */,
 				9A41DC971E915782006192FF /* IOGetDishParam.h */,
 				9A41DC981E915782006192FF /* IOGetDishParam.m */,
+				9A4EA0BF1EC0877F000B4241 /* IOCancelOrderParam.h */,
+				9A4EA0C01EC0877F000B4241 /* IOCancelOrderParam.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1365,12 +1370,13 @@
 				9A1BFDC51E6EA8DE00A0007F /* IODishViewController.m in Sources */,
 				9A1BFDD61E6EA8DE00A0007F /* IOShoppingCartView.m in Sources */,
 				9A2B87481E83FF52006DCD53 /* MBProgressHUD+YWJ.m in Sources */,
+				9A4EA0C11EC0877F000B4241 /* IOCancelOrderParam.m in Sources */,
 				9ADFA84B1E88DCAB006E465A /* IONavigationController.m in Sources */,
 				9A41DC841E8CF877006192FF /* IOAccessTokenResult.m in Sources */,
 				9A1BFDEB1E6EA8DE00A0007F /* IOProfileMyCouponController.m in Sources */,
 				9ADFA84E1E88DCAC006E465A /* IOUser.m in Sources */,
 				9A41DC811E8CD771006192FF /* IONearbyShopsResult.m in Sources */,
-				CA0DFB221E976F620098DB05 /* IOOrderGenerateParam.m in Sources */,
+				CA0DFB221E976F620098DB05 /* IOOrderSubmitParam.m in Sources */,
 				9ADFA8391E88C4F7006E465A /* IOLoginResult.m in Sources */,
 				9A1BFDC31E6EA8DE00A0007F /* IONewFeatureViewController.m in Sources */,
 				9A41DC8D1E8E47F7006192FF /* IOOrderLayout.m in Sources */,
@@ -1430,7 +1436,7 @@
 				9A41DC931E90FB28006192FF /* IOOrdersResult.m in Sources */,
 				CA77859A1E8FA26700CAFC5A /* IODishesParam.m in Sources */,
 				9A1BFDD71E6EA8DE00A0007F /* IOSignInFooterView.m in Sources */,
-				CA0DFB231E976F620098DB05 /* IOOrderGenerateResult.m in Sources */,
+				CA0DFB231E976F620098DB05 /* IOOrderSubmitResult.m in Sources */,
 				9A1BFDDB1E6EA8DE00A0007F /* YWJDoubleTableView.m in Sources */,
 				9A3963E91E82482E000E2E40 /* YWJVersionTool.m in Sources */,
 				9A41DC8A1E8DEFC2006192FF /* IOOrderCell.m in Sources */,

@@ -10,7 +10,7 @@
 
 @class IOShop, IOOrderInfo;
 
-@interface IOOrderGenerateResult : IOHTTPBaseResult<MJKeyValue>
+@interface IOOrderSubmitResult : IOHTTPBaseResult<MJKeyValue>
 
 /** 生成的订单信息 */
 @property (nonatomic, strong) IOOrderInfo *order;

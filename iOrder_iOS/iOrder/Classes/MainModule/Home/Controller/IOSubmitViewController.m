@@ -15,8 +15,8 @@
 
 #import "IOShop.h"
 #import "IOHomeManager.h"
-#import "IOOrderGenerateParam.h"
-#import "IOOrderGenerateResult.h"
+#import "IOOrderSubmitParam.h"
+#import "IOOrderSubmitResult.h"
 #import "MBProgressHUD+YWJ.h"
 
 extern BOOL isInRegion;
@@ -175,26 +175,108 @@ extern BOOL isInRegion;
 #pragma mark - IOSubmitOrderViewDelegate
 
 - (void)submitOrderView:(IOSubmitOrderView *)submitOrderView submitClicked:(UIButton *)btn {
+    // 判断是否在点餐区域
     if (isInRegion == YES) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"确认支付" message:nil delegate:self cancelButtonTitle:@"否" otherButtonTitles:@"是", nil];
-        
-        [alertView show];
-    } else {
-        [UIView animateWithDuration:3.0 animations:^{
-            [MBProgressHUD showMessage:@"请将手机移至iBeacon范围内..."];
-        } completion:^(BOOL finished) {
-            [MBProgressHUD hideHUD];
+        // 确认是否提交订单
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"注意" message:@"是否提交订单？" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"否" style:UIAlertActionStyleCancel handler:nil];
+        UIAlertAction *rightAction = [UIAlertAction actionWithTitle:@"是" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            
+            // 先开始转菊花
+            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+            
+            // Change the background view style and color.
+            hud.backgroundView.style = MBProgressHUDBackgroundStyleSolidColor;
+            hud.backgroundView.color = [UIColor colorWithWhite:0.f alpha:0.1f];
+            
+            // Set the label text.
+            hud.label.text = NSLocalizedString(@"提交中...", @"HUD loading title");
+            
+            // 请求提交订单
+            IOOrderSubmitParam *param = [[IOOrderSubmitParam alloc] init];
+            param.shopId = self.shopInfo.shopId;
+            param.couponId = 0;
+            
+            [IOHomeManager submitOrderWithParam:param success:^(IOOrderSubmitResult * _Nullable result) {
+                if (result.result == YES) {
+                    // 提交成功，在主线程提示
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        MBProgressHUD *hud1 = [MBProgressHUD HUDForView:self.view];
+                        
+                        UIImage *image = [[UIImage imageNamed:@"Checkmark"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+                        UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
+                        hud1.customView = imageView;
+                        hud1.mode = MBProgressHUDModeCustomView;
+                        hud1.label.text = NSLocalizedString(@"提交成功", @"HUD completed title");
+                        float delay = 1.5;
+                        [hud1 hideAnimated:YES afterDelay:delay];
+                        // 回到店铺页面
+                        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                            [self.navigationController popViewControllerAnimated:YES];
+                        });
+                    });
+                    // 清空购物车
+                    if ([_delegate respondsToSelector:@selector(submitViewController:isPaySuccessful:)]) {
+                        [_delegate submitViewController:self isPaySuccessful:YES];
+                    }
+                } else {
+                    // 提交失败
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        // Set the custom view mode to show any view.
+                        hud.mode = MBProgressHUDModeCustomView;
+                        // Set an image view with a checkmark.
+                        UIImage *image = [[UIImage imageNamed:@"error"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+                        hud.customView = [[UIImageView alloc] initWithImage:image];
+                        // Looks a bit nicer if we make it square.
+                        hud.square = YES;
+                        // Optional label text.
+                        hud.label.text = NSLocalizedString(@"订单提交失败！", @"HUD failed title");
+                        
+                        [hud hideAnimated:YES afterDelay:1.5];
+                    });
+                }
+            } failure:^(NSError * _Nonnull error) {
+                // 请求失败
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    // Set the custom view mode to show any view.
+                    hud.mode = MBProgressHUDModeCustomView;
+                    // Set an image view with a error img.
+                    UIImage *image = [[UIImage imageNamed:@"error"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+                    hud.customView = [[UIImageView alloc] initWithImage:image];
+                    // Looks a bit nicer if we make it square.
+                    hud.square = YES;
+                    // Optional label text.
+                    hud.label.text = NSLocalizedString(error.localizedDescription, @"HUD failed title");
+                    
+                    [hud hideAnimated:YES afterDelay:1.5];
+                });
+            }];
         }];
+        [alert addAction:defaultAction];
+        [alert addAction:rightAction];
+        [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:alert animated:YES completion:nil];
+        
+    } else {
+        
+        // 提示未在点餐区域不能提交订单
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"注意" message:@"您尚未进入点餐区域！" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"知道了" style:UIAlertActionStyleCancel handler:nil];
+        [alert addAction:defaultAction];
+        [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:alert animated:YES completion:nil];
+        
     }
-    //    [self.navigationController popViewControllerAnimated:YES];
 }
 
+/*
 #pragma mark - UIAlertViewDelegate
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 1) {
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-        hud.label.text = NSLocalizedString(@"支付中...", @"HUD preparing title");
+        hud.label.text = NSLocalizedString(@"提交中...", @"HUD preparing title");
+        
+        
+        
         __weak typeof(self) weakSelf = self;
         dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
             [self doSomeWork];
@@ -206,7 +288,7 @@ extern BOOL isInRegion;
                 UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
                 hud1.customView = imageView;
                 hud1.mode = MBProgressHUDModeCustomView;
-                hud1.label.text = NSLocalizedString(@"支付成功", @"HUD completed title");
+                hud1.label.text = NSLocalizedString(@"提交成功", @"HUD completed title");
                 
                 [hud1 hideAnimated:YES afterDelay:1.f];
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -233,5 +315,6 @@ extern BOOL isInRegion;
 - (void)doSomeWork {
     sleep(2.);
 }
+ */
 
 @end

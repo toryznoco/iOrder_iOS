@@ -14,6 +14,7 @@
 #define kIOHTTPOrderListUrl @"app/order/list"
 #define kIOHTTPPayOrderUrl @"app/order/pay"
 #define kIOHTTPGetDishUrl @"app/order/take"
+#define kIOHTTPCancelOrderUrl @"app/order/cancel"
 
 @implementation IOOrdersManager
 
@@ -68,6 +69,36 @@
         } else {
             if (failure) {
                 failure([IOError errorWithCode:result.code description:@"支付订单失败"]);
+            }
+        }
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
+/**
+ 取消订单
+ 
+ @param param 订单id
+ @param success 成功的回调
+ @param failure 失败的回调
+ */
++ (void)cancelOrder:(IOCancelOrderParam *)param success:(void (^)(IOHTTPBaseResult * _Nullable result))success
+         failure:(void (^)(NSError * _Nonnull error))failure {
+    NSString *urlStr = [NSString stringWithFormat:@"%@%@", kIOHTTPBaseUrl, kIOHTTPCancelOrderUrl];
+    
+    [IONetworkTool tokenPOST:urlStr parameters:param.mj_keyValues success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObj) {
+        IOHTTPBaseResult *result = [IOHTTPBaseResult mj_objectWithKeyValues:responseObj];
+        // 请求成功
+        if (result.result == YES) {
+            if (success) {
+                success(result);
+            }
+        } else {
+            if (failure) {
+                failure([IOError errorWithCode:result.code description:@"取消订单失败"]);
             }
         }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {

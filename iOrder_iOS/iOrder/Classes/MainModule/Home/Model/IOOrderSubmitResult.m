@@ -6,9 +6,9 @@
 //  Copyright © 2017 normcore. All rights reserved.
 //
 
-#import "IOOrderGenerateResult.h"
+#import "IOOrderSubmitResult.h"
 
-@implementation IOOrderGenerateResult
+@implementation IOOrderSubmitResult
 
 @end
 

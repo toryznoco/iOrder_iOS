@@ -6,8 +6,8 @@
 //  Copyright © 2017 normcore. All rights reserved.
 //
 
-#import "IOOrderGenerateParam.h"
+#import "IOOrderSubmitParam.h"
 
-@implementation IOOrderGenerateParam
+@implementation IOOrderSubmitParam
 
 @end

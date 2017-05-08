@@ -25,8 +25,8 @@
 #import "IOShoppingCartAddResult.h"
 #import "IOShoppingCartDropParam.h"
 #import "IOShoppingCartDropResult.h"
-#import "IOOrderGenerateParam.h"
-#import "IOOrderGenerateResult.h"
+#import "IOOrderSubmitParam.h"
+#import "IOOrderSubmitResult.h"
 
 #define kIOHTTPRefreshTokenUrl @"app/customer/refreshToken"
 #define kIOHTTPNearbyShopsUrl @"app/shop/near"
@@ -238,11 +238,11 @@
  *  @param success  提交成功时的返回结果
  *  @param failure  提交失败时的返回结果
  */
-+ (void)submitOrderWithParam:(IOOrderGenerateParam *)param success:(void (^)(IOOrderGenerateResult * _Nullable))success failure:(void (^)(NSError * _Nullable))failure {
++ (void)submitOrderWithParam:(IOOrderSubmitParam *)param success:(void (^)(IOOrderSubmitResult * _Nullable))success failure:(void (^)(NSError * _Nullable))failure {
     NSString *urlStr = [NSString stringWithFormat:@"%@%@", kIOHTTPBaseUrl, kIOHTTPOrderGenerateUrl];
     
     [IONetworkTool tokenPOST:urlStr parameters:param.mj_keyValues success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObj) {
-        IOOrderGenerateResult *result = [IOOrderGenerateResult mj_objectWithKeyValues:responseObj];
+        IOOrderSubmitResult *result = [IOOrderSubmitResult mj_objectWithKeyValues:responseObj];
         if (success) {
             success(result);
         }

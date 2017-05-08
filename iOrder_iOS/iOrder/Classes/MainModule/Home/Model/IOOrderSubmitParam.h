@@ -1,5 +1,5 @@
 //
-//  IOOrderGenerateParam.h
+//  IOOrderSubmitParam.h
 //  iOrder
 //
 //  Created by 易无解 on 07/04/2017.
@@ -8,7 +8,7 @@
 
 #import "IOHTTPBaseParam.h"
 
-@interface IOOrderGenerateParam : IOHTTPBaseParam
+@interface IOOrderSubmitParam : IOHTTPBaseParam
 
 /** 店铺ID */
 @property (nonatomic, assign) NSInteger shopId;

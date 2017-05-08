@@ -11,6 +11,7 @@
 #import "IOHTTPBaseResult.h"
 #import "IOPayOrderParam.h"
 #import "IOGetDishParam.h"
+#import "IOCancelOrderParam.h"
 
 @interface IOOrdersManager : NSObject
 
@@ -32,6 +33,16 @@
  */
 + (void)payOrder:(IOPayOrderParam *)param success:(void (^)(IOHTTPBaseResult * _Nullable result))success
                 failure:(void (^)(NSError * _Nonnull error))failure;
+
+/**
+ 取消订单
+ 
+ @param param 订单id
+ @param success 成功的回调
+ @param failure 失败的回调
+ */
++ (void)cancelOrder:(IOCancelOrderParam *)param success:(void (^)(IOHTTPBaseResult * _Nullable result))success
+         failure:(void (^)(NSError * _Nonnull error))failure;
 
 
 /**

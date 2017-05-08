@@ -266,7 +266,7 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 // 隐藏菊花
                 [hud hideAnimated:YES];
-                    [IOGlobalManager enterHome];
+                [IOGlobalManager enterHome];
             });
         } else {
             // 登录失败
